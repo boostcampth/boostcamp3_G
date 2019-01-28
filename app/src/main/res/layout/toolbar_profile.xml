@@ -16,9 +16,6 @@
 
         <ImageButton
             style="@style/ImageButton.Median"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:padding="@dimen/space_small"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/btn_setting"/>
