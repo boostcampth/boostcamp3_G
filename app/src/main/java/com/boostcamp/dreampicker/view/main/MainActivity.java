@@ -3,7 +3,6 @@ package com.boostcamp.dreampicker.view.main;
 import android.os.Bundle;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.view.MyPageFragment;
 import com.boostcamp.dreampicker.view.ResultFragment;
 import com.boostcamp.dreampicker.view.SearchFragment;
 import com.boostcamp.dreampicker.view.UpLoadFragment;
