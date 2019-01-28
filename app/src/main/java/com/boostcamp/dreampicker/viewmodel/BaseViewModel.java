@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class BaseViewModel extends AndroidViewModel {
-    private CompositeDisposable compositeDisposable;
+    CompositeDisposable compositeDisposable;
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
