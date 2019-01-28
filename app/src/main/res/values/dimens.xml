@@ -18,7 +18,16 @@
     <dimen name="space_large">20dp</dimen>
     <dimen name="space_x_large">24dp</dimen>
 
-    <!-- Text Size -->
+    <!-- button size -->
+    <dimen name="button_median_size">24dp</dimen>
+
+    <!-- text size -->
+    <dimen name="text_small">10sp</dimen>
+    <dimen name="text_s_small">12sp</dimen>
+    <dimen name="text_median">14sp</dimen>
+    <dimen name="text_s_large">16sp</dimen>
+    <dimen name="text_large">20sp</dimen>
+
     <dimen name="text_title_size">14sp</dimen>
     <dimen name="text_sub_size">12sp</dimen>
 

@@ -6,13 +6,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_margin="@dimen/space_large">
+        android:layout_marginStart="@dimen/space_large"
+        android:layout_marginEnd="@dimen/space_large">
 
         <TextView
             android:id="@+id/text_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
+            android:textSize="@dimen/text_large"
             android:textStyle="bold"
             android:textColor="@color/colorBlack"/>
 
@@ -20,7 +21,7 @@
             android:id="@+id/text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_median"
             android:textStyle="bold"/>
 
     </LinearLayout>

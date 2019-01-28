@@ -8,35 +8,22 @@
         <item name="android:windowBackground">@color/colorWhiteBackground</item>
     </style>
 
-    <!-- 이미지 뷰 기본 스타일 -->
+    <!-- 이미지 뷰 스타일 -->
     <style name="ImageView" parent="Widget.AppCompat.ImageButton">
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">centerInside</item>
         <item name="android:background">@null</item>
     </style>
 
-    <!-- 이미지 버튼 기본 스타일 -->
+    <!-- 이미지 버튼 스타일 -->
     <style name="ImageButton" parent="ImageView">
         <item name="android:scaleType">centerCrop</item>
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
-    <style name="ImageButton.Small" parent="ImageButton">
-        <item name="android:layout_width">@dimen/button_small</item>
-        <item name="android:layout_height">@dimen/button_small</item>
-        <item name="android:padding">@dimen/space_median</item>
-    </style>
-
     <style name="ImageButton.Median" parent="ImageButton">
-        <item name="android:layout_width">@dimen/button_median</item>
-        <item name="android:layout_height">@dimen/button_median</item>
-        <item name="android:padding">@dimen/space_median</item>
-    </style>
-
-    <style name="ImageButton.Large" parent="ImageButton">
-        <item name="android:layout_width">@dimen/button_large</item>
-        <item name="android:layout_height">@dimen/button_large</item>
-        <item name="android:padding">@dimen/space_median</item>
+        <item name="android:layout_width">@dimen/button_median_size</item>
+        <item name="android:layout_height">@dimen/button_median_size</item>
     </style>
 
 </resources>

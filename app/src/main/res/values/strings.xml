@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">정해드림</string>
-    <string name="title_activity_main">정해드림</string>
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
     <string name="title_dashboard">Dashboard</string>
