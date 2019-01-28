@@ -1,6 +1,6 @@
 <resources>
 
-    <!-- margin/padding 값 -->
+    <!-- margin/padding -->
     <dimen name="space_x_small">8dp</dimen>
     <dimen name="space_small">12dp</dimen>
     <dimen name="space_median">16dp</dimen>
@@ -15,5 +15,7 @@
 
     <!-- 특정 화면에서 쓰이는 dimen -->
     <dimen name="profile_tab_height">40dp</dimen>
+    <dimen name="login_logo_size">280dp</dimen>
+    <dimen name="splash_logo_size">150dp</dimen>
 
 </resources>
