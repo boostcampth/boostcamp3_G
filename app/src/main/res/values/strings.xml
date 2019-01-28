@@ -1,13 +1,11 @@
 <resources>
-    <string name="app_name">DreamPicker</string>
+    <string name="app_name">정해드림</string>
     <string name="title_activity_main">정해드림</string>
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_up_load">UpLoad</string>
     <string name="title_result">Result</string>
-    <string name="title_my_page">MyPage</string>
+    <string name="title_my_page">Profile</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
