@@ -22,7 +22,7 @@
         android:title="@string/title_result" />
 
     <item
-        android:id="@+id/navigation_my_page"
+        android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_my_page_gray_24dp"
         android:title="@string/title_my_page" />
 
