@@ -2,5 +2,9 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="splash_logo_size">240dp</dimen>
+
+
+
+    <!-- 스플래시 화면에서 사용할 dimen -->
+    <dimen name="splash_logo_size">150dp</dimen>
 </resources>
