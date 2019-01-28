@@ -1,4 +1,4 @@
 package com.boostcamp.dreampicker.viewmodel;
 
-public class BaseVIewModel {
+public class BaseViewModel {
 }
