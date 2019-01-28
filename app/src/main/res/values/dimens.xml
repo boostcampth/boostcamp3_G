@@ -22,6 +22,9 @@
     <dimen name="text_title_size">14sp</dimen>
     <dimen name="text_sub_size">12sp</dimen>
 
+    <!-- 특정 화면에서 쓰이는 dimen -->
+    <dimen name="profile_tab_height">40dp</dimen>
+
     <!-- Profile Image Size -->
     <dimen name="user_profile_image_size">40dp</dimen>
 
