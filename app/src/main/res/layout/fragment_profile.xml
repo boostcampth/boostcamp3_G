@@ -13,65 +13,74 @@
             app:contentPadding="0dp">
 
             <include
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 layout="@layout/toolbar_profile"/>
 
-            <LinearLayout
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/colorWhite"
-                android:gravity="center_horizontal">
-
-                <ImageView
-                    style="@style/ImageView"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="40dp"
-                    android:src="@drawable/profile"/>
+                android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_margin="@dimen/space_median"
+                    app:layout_collapseMode="parallax"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
+                    android:layout_marginBottom="@dimen/profile_tab_height"
+                    android:orientation="vertical"
+                    android:background="@color/colorWhite"
+                    android:gravity="center_horizontal">
 
-                    <com.boostcamp.dreampicker.view.custom.ProfileCountView
-                        android:layout_width="wrap_content"
+                    <ImageView
+                        style="@style/ImageView"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="40dp"
+                        android:src="@drawable/profile"/>
+
+                    <LinearLayout
+                        android:layout_margin="@dimen/space_median"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        app:count="110"
-                        app:title="포스팅"/>
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-                    <com.boostcamp.dreampicker.view.custom.ProfileCountView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        app:count="325"
-                        app:title="팔로워"/>
+                        <com.boostcamp.dreampicker.view.custom.ProfileCountView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:count="110"
+                            app:title="포스팅"/>
 
-                    <com.boostcamp.dreampicker.view.custom.ProfileCountView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        app:count="256"
-                        app:title="팔로잉"/>
+                        <com.boostcamp.dreampicker.view.custom.ProfileCountView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:count="325"
+                            app:title="팔로워"/>
 
+                        <com.boostcamp.dreampicker.view.custom.ProfileCountView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:count="256"
+                            app:title="팔로잉"/>
+
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_profile"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/profile_tab_height"
-                android:background="@null"
-                android:layout_gravity="bottom"
-                app:layout_collapseMode="pin"
-                app:tabGravity="fill"
-                app:tabIndicatorHeight="1dp"
-                app:tabIndicatorColor="@color/colorBlack"
-                app:tabMode="fixed"/>
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/profile_tab_height"
+                    android:background="@null"
+                    android:layout_gravity="bottom"
+                    app:layout_collapseMode="pin"
+                    app:tabGravity="fill"
+                    app:tabIndicatorHeight="1dp"
+                    app:tabIndicatorColor="@color/colorBlack"
+                    app:tabMode="fixed"/>
 
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager.widget.ViewPager
