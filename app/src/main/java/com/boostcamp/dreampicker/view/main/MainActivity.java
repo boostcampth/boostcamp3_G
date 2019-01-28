@@ -2,22 +2,17 @@ package com.boostcamp.dreampicker.view.main;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.view.FeedFragment;
 import com.boostcamp.dreampicker.view.MyPageFragment;
 import com.boostcamp.dreampicker.view.ResultFragment;
 import com.boostcamp.dreampicker.view.SearchFragment;
 import com.boostcamp.dreampicker.view.UpLoadFragment;
+import com.boostcamp.dreampicker.view.feed.FeedFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.view.MenuItem;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -15,7 +15,7 @@
         <activity android:name=".view.SplashActivity">
 
         </activity>
-      
+
         <activity
             android:name=".view.main.MainActivity"
             android:label="@string/title_activity_main">
@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
     </application>
 
 </manifest>
