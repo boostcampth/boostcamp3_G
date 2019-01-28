@@ -9,9 +9,14 @@
     <dimen name="space_x_large">24dp</dimen>
 
     <!-- button size -->
-    <dimen name="button_small">52dp</dimen>
-    <dimen name="button_median">56dp</dimen>
-    <dimen name="button_large">60dp</dimen>
+    <dimen name="button_median_size">24dp</dimen>
+
+    <!-- text size -->
+    <dimen name="text_small">10sp</dimen>
+    <dimen name="text_s_small">12sp</dimen>
+    <dimen name="text_median">14sp</dimen>
+    <dimen name="text_s_large">16sp</dimen>
+    <dimen name="text_large">20sp</dimen>
 
     <!-- 특정 화면에서 쓰이는 dimen -->
     <dimen name="profile_tab_height">40dp</dimen>
