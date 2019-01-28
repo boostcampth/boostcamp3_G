@@ -9,7 +9,7 @@
 
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/iv_login_logo"
             android:layout_width="@dimen/login_logo_size"
             android:layout_height="@dimen/login_logo_size"
             android:src="@drawable/img_logo"

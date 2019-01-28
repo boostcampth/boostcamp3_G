@@ -2,6 +2,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- 로그인 화면에서 사용하는  dimen-->
     <dimen name="login_logo_size">280dp</dimen>
 
 </resources>
