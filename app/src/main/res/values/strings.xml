@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">정해드림</string>
+    <string name="app_copyright">Boost Camp Android G Team</string>
 
     <!-- 메인화면에서 사용 -->
     <string name="main_navigation_home">홈</string>
