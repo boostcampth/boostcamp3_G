@@ -4,15 +4,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.boostcamp.dreampicker.BR;
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.databinding.ItemFeedBinding;
+import com.boostcamp.dreampicker.model.Feed;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
-    List<Feed> feedList;
+    private List<Feed> feedList = new ArrayList<>();
     @NonNull
     @Override
     public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -22,7 +27,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-
+        holder.binding.setVariable(BR.item, feedList.get(position));
     }
 
     @Override
@@ -31,12 +36,15 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     }
 
     public void addAll(List<Feed> feedList) {
-        this.feedList = feedList;
+        this.feedList.addAll(feedList);
+        notifyDataSetChanged();
     }
 
     class FeedViewHolder extends RecyclerView.ViewHolder {
-        public FeedViewHolder(@NonNull View itemView) {
+        ItemFeedBinding binding;
+        FeedViewHolder(@NonNull View itemView) {
             super(itemView);
+            binding = DataBindingUtil.bind(itemView);
         }
     }
 }
