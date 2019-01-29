@@ -1,6 +1,5 @@
 package com.boostcamp.dreampicker.view.profile;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FeedListAdapter extends BaseRecyclerViewAdapter<String, FeedListAdapter.ViewHolder> {
 
-    public FeedListAdapter(Context context) {
-        super(context);
-    }
-
     @Override
     protected void onBindView(ViewHolder holder, int position) {
 
@@ -28,7 +23,7 @@ public class FeedListAdapter extends BaseRecyclerViewAdapter<String, FeedListAda
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_feed_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feed_list, parent, false);
         return new ViewHolder(view);
     }
 
