@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.view.feed;
+package com.boostcamp.dreampicker.model;
 
 import java.util.List;
 
@@ -15,6 +15,9 @@ public class Feed {
     // TODO : Firestore 연동 이후 작업
     private List<String> upVodtedUserKeys;
     private List<String> downVotedUserKeys;
+
+    public Feed() {
+    }
 
     public Feed(String id, Image[] images, User user, String content, String date, boolean isEnded) {
         this.id = id;

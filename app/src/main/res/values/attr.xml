@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <declare-styleable name="ProfileCountView">
-        <attr name="title" format="reference|string"/>
-        <attr name="count" format="reference|string"/>
-    </declare-styleable>
-
-</resources>
