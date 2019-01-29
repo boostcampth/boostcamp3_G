@@ -14,17 +14,20 @@ public class Feed {
     private boolean isEnded;
 
     // TODO : Firestore 연동 이후 작업
-    private List<String> upVodtedUserKeys;
-    private List<String> downVotedUserKeys;
+    private List<String> upVotedUserIdList;
+    private List<String> downVotedUserIdList;
 
-    public Feed(String feedId, Image[] images, User user, String content, String date, int voteCount, boolean isEnded) {
+    public Feed(String feedId, Image[] images, User user, String content, String date, boolean isEnded) {
         this.feedId = feedId;
         this.images = images;
         this.user = user;
         this.content = content;
         this.date = date;
-        this.voteCount = voteCount;
         this.isEnded = isEnded;
+
+        // Todo : Firebase 연동 이후 작업
+        // voteCount = upVotedUserIdList.size() + downVotedUserIdList.size();
+        voteCount = 100;
     }
 
     public String getId() {
@@ -69,9 +72,5 @@ public class Feed {
 
     public int getVoteCount() {
         return voteCount;
-    }
-
-    public void setVoteCount(int voteCount) {
-        this.voteCount = voteCount;
     }
 }

@@ -39,7 +39,6 @@ public class FeedRepository implements FeedDataSource {
                 user1,
                 "내일 소개남이랑 첫 데이트인데 장소 좀 골라주세요~!ㅎㅎ",
                 "2018.01.28",
-                150,
                 false
         );
 
@@ -53,7 +52,6 @@ public class FeedRepository implements FeedDataSource {
                 user2,
                 "짬뽕, 짜장면",
                 "2019.01.29",
-                200,
                 false
         );
 
