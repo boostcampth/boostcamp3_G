@@ -1,156 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_margin="5dp"
-    android:layout_height="wrap_content">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="item"
+            type="com.boostcamp.dreampicker.model.Feed"/>
+    </data>
 
-    <androidx.cardview.widget.CardView
-        app:cardCornerRadius="5dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:cardCornerRadius="5dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="8dp">
+                android:layout_height="wrap_content">
 
+                <!-- 피드 상단 부분 -->
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:id="@+id/iv_user_img"
+                    android:layout_width="@dimen/user_profile_image_size"
+                    android:layout_height="@dimen/user_profile_image_size"
+                    android:layout_marginStart="@dimen/space_x_small"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginBottom="@dimen/space_x_small"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    android:src="@drawable/profile" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="박신혜"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2018.01.28"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent" />
+                    android:src="@drawable/profile"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_box"
-                    android:gravity="center_vertical"
-                    android:paddingRight="16dp"
+                    android:layout_marginStart="@dimen/space_x_small"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:text="@{item.user.name}"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_title_size"
+                    app:layout_constraintStart_toEndOf="@+id/iv_user_img"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_x_small"
+                    android:layout_marginBottom="@dimen/space_x_small"
+                    android:text="@{item.date}"
+                    android:textSize="@dimen/text_sub_size"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
+                    app:layout_constraintStart_toEndOf="@+id/iv_user_img" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:layout_marginBottom="@dimen/space_x_small"
+                    android:drawableStart="@drawable/ic_box"
                     android:text="152"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_title_size"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingBottom="8dp"
-                android:textColor="@android:color/black"
-                android:text="내일 소개남이랑 첫 데이트인데 장소 좀 골라주세요~!ㅎㅎ"
-                android:textSize="14sp" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_feed_content"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_x_small"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginEnd="@dimen/space_x_small"
+                    android:text="@{item.content}"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_title_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/guideline_feed_top_ver" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_feed_top_ver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="56dp" />
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/image1" />
+                <!-- 피드 하단 부분 -->
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="2dp"
+                    android:layout_height="@dimen/feed_photo_image_height"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:alpha="0.9"
-                            android:background="@android:color/darker_gray"
-                            android:paddingLeft="8dp"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="4dp"
-                            android:text="#밥먹고 #카페"
-                            android:textColor="@android:color/white"
-                            android:textSize="10sp" />
+                <include
+                    layout="@layout/layout_feed_photo_tag"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/feed_photo_image_height"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/view"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
+                    app:img="@{item.images[0].image}"
+                    app:tag="@{item.images[0].tag}"/>
 
-                    </LinearLayout>
+                <include
+                    layout="@layout/layout_feed_photo_tag"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/feed_photo_image_height"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/view"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
+                    app:img="@{item.images[1].image}"
+                    app:tag="@{item.images[1].tag}"/>
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/white" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/image2" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:alpha="0.9"
-                            android:background="@android:color/darker_gray"
-                            android:paddingLeft="8dp"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="4dp"
-                            android:text="#분위기좋은술집 #가볍게 #술한잔"
-                            android:textColor="@android:color/white"
-                            android:textSize="10sp" />
-
-                    </LinearLayout>
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</layout>
