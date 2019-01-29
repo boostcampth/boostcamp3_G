@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="user"
+            type="com.boostcamp.dreampicker.model.User"/>
+    </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -44,26 +51,20 @@
                         android:orientation="horizontal"
                         android:gravity="center">
 
-                        <com.boostcamp.dreampicker.view.custom.ProfileCountView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            app:count="110"
-                            app:title="포스팅"/>
+                        <include
+                            bind:count="@{String.valueOf(user.feedCount)}"
+                            bind:title="@{String.valueOf(@string/profile_feed_count)}"
+                            layout="@layout/layout_profile_count"/>
 
-                        <com.boostcamp.dreampicker.view.custom.ProfileCountView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            app:count="325"
-                            app:title="팔로워"/>
+                        <include
+                            bind:count="@{String.valueOf(user.followerCount)}"
+                            bind:title="@{String.valueOf(@string/profile_follower_count)}"
+                            layout="@layout/layout_profile_count"/>
 
-                        <com.boostcamp.dreampicker.view.custom.ProfileCountView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            app:count="256"
-                            app:title="팔로잉"/>
+                        <include
+                            bind:count="@{String.valueOf(user.followingCount)}"
+                            bind:title="@{String.valueOf(@string/profile_following_count)}"
+                            layout="@layout/layout_profile_count"/>
 
                     </LinearLayout>
                 </LinearLayout>

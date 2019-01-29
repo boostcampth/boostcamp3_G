@@ -17,6 +17,9 @@ public class Feed {
     private List<String> upVotedUserIdList;
     private List<String> downVotedUserIdList;
 
+    public Feed() {
+    }
+
     public Feed(String feedId, Image[] images, User user, String content, String date, boolean isEnded) {
         this.feedId = feedId;
         this.images = images;
