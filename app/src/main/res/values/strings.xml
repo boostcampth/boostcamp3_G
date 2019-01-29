@@ -8,4 +8,11 @@
     <string name="title_result">Result</string>
     <string name="title_my_page">Profile</string>
 
+    <!-- 프로필 화면에서 사용 -->
+    <string name="profile_feed_count">포스팅</string>
+    <string name="profile_follower_count">팔로워</string>
+    <string name="profile_following_count">팔로잉</string>
+    <string name="profile_tab_doing">진행중인 투표</string>
+    <string name="profile_tab_done">왼료된 투표</string>
+
 </resources>
