@@ -23,7 +23,6 @@ public class FeedRepository implements FeedDataSource {
                 }
             }
         }
-        System.out.println(instance + "");
         return instance;
     }
 

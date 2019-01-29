@@ -36,7 +36,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     }
 
     public void addAll(List<Feed> feedList) {
-        this.feedList.addAll(feedList);
+        this.feedList = feedList;
         notifyDataSetChanged();
     }
 
