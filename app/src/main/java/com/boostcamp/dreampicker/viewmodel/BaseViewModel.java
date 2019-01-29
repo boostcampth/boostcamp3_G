@@ -1,21 +1,29 @@
 package com.boostcamp.dreampicker.viewmodel;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.ViewModel;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
-public class BaseViewModel extends AndroidViewModel {
-    CompositeDisposable compositeDisposable;
+public abstract class BaseViewModel extends ViewModel {
+    private CompositeDisposable compositeDisposable;
 
-    public BaseViewModel(@NonNull Application application) {
-        super(application);
-
+    BaseViewModel() {
         compositeDisposable = new CompositeDisposable();
+        initViewModel();
     }
 
-    public CompositeDisposable getCompositeDisposable() {
-        return compositeDisposable;
+    void addDisposable(Disposable disposable) {
+        compositeDisposable.add(disposable);
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+
+        if(!compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
+        }
+    }
+
+    protected abstract void initViewModel();
 }
