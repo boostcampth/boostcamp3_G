@@ -1,12 +1,21 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <!-- 로그인 화면에서 사용하는  dimen-->
+    <!-- margin/padding -->
+    <dimen name="space_x_small">8dp</dimen>
+    <dimen name="space_small">12dp</dimen>
+    <dimen name="space_median">16dp</dimen>
+    <dimen name="space_s_large">18dp</dimen>
+    <dimen name="space_large">20dp</dimen>
+    <dimen name="space_x_large">24dp</dimen>
+
+    <!-- button size -->
+    <dimen name="button_small">52dp</dimen>
+    <dimen name="button_median">56dp</dimen>
+    <dimen name="button_large">60dp</dimen>
+
+    <!-- 특정 화면에서 쓰이는 dimen -->
+    <dimen name="profile_tab_height">40dp</dimen>
     <dimen name="login_logo_size">280dp</dimen>
-
-    <!-- 스플래시 화면에서 사용할 dimen -->
     <dimen name="splash_logo_size">150dp</dimen>
 
     <!-- 여백 -->

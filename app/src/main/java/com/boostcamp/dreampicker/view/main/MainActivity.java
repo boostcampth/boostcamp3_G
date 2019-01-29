@@ -6,15 +6,15 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.view.ResultFragment;
 import com.boostcamp.dreampicker.view.SearchFragment;
 import com.boostcamp.dreampicker.view.UpLoadFragment;
-import com.boostcamp.dreampicker.view.feed.FeedFragment;
+import com.boostcamp.dreampicker.view.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -22,31 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private SearchFragment searchFragment = new SearchFragment();
     private UpLoadFragment upLoadFragment = new UpLoadFragment();
     private ResultFragment resultFragment = new ResultFragment();
-    private MyPageFragment myPageFragment = new MyPageFragment();
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = item -> {
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                switch (item.getItemId()) {
-
-                    case R.id.navigation_home:
-                        fragmentTransaction.replace(R.id.frame,feedFragment).commitAllowingStateLoss();
-                        return true;
-                    case R.id.navigation_search:
-                        fragmentTransaction.replace(R.id.frame,searchFragment).commitAllowingStateLoss();
-                        return true;
-                    case R.id.navigation_upload:
-                        fragmentTransaction.replace(R.id.frame,upLoadFragment).commitAllowingStateLoss();
-                        return true;
-                    case R.id.navigation_notifications:
-                        fragmentTransaction.replace(R.id.frame,resultFragment).commitAllowingStateLoss();
-                        return true;
-                    case R.id.navigation_my_page:
-                        fragmentTransaction.replace(R.id.frame,myPageFragment).commitAllowingStateLoss();
-                        return true;
-                }
-                return false;
-            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +31,35 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame,feedFragment).commitAllowingStateLoss();
 
-         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        switch (menuItem.getItemId()) {
+
+            case R.id.navigation_home:
+                fragmentTransaction.replace(R.id.frame,feedFragment).commitAllowingStateLoss();
+                return true;
+            case R.id.navigation_search:
+                fragmentTransaction.replace(R.id.frame,searchFragment).commitAllowingStateLoss();
+                return true;
+            case R.id.navigation_upload:
+                fragmentTransaction.replace(R.id.frame,upLoadFragment).commitAllowingStateLoss();
+                return true;
+            case R.id.navigation_notifications:
+                fragmentTransaction.replace(R.id.frame,resultFragment).commitAllowingStateLoss();
+                return true;
+            case R.id.navigation_profile:
+                fragmentTransaction.replace(R.id.frame, ProfileFragment.getInstance())
+                        .commitAllowingStateLoss();
+                return true;
+        }
+        return false;
     }
 
 }
