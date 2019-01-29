@@ -1,9 +1,9 @@
-package com.boostcamp.dreampicker.view.feed;
+package com.boostcamp.dreampicker.model;
 
 import java.util.List;
 
 public class Feed {
-    private String id;
+    private String feedId;
     private Image[] images;
     private User user;
     private String content;
@@ -16,8 +16,8 @@ public class Feed {
     private List<String> upVodtedUserKeys;
     private List<String> downVotedUserKeys;
 
-    public Feed(String id, Image[] images, User user, String content, String date, boolean isEnded) {
-        this.id = id;
+    public Feed(String feedId, Image[] images, User user, String content, String date, boolean isEnded) {
+        this.feedId = feedId;
         this.images = images;
         this.user = user;
         this.content = content;
@@ -26,11 +26,11 @@ public class Feed {
     }
 
     public String getId() {
-        return id;
+        return feedId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String feedId) {
+        this.feedId = feedId;
     }
 
     public Image[] getImages() {

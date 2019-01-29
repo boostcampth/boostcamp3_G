@@ -1,23 +1,23 @@
-package com.boostcamp.dreampicker.view.feed;
+package com.boostcamp.dreampicker.model;
 
 public class User {
-    private String id;
+    private String userId;
     private String name;
     // TODO : 이후 url로 변경
     private int profileImageResource;
 
     public User(String id, String name, int profileImageResource) {
-        this.id = id;
+        this.userId = id;
         this.name = name;
         this.profileImageResource = profileImageResource;
     }
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getName() {
