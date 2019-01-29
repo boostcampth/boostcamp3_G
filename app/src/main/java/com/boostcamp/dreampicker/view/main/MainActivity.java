@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.view.FeedFragment;
 import com.boostcamp.dreampicker.view.ResultFragment;
 import com.boostcamp.dreampicker.view.SearchFragment;
 import com.boostcamp.dreampicker.view.UpLoadFragment;
+import com.boostcamp.dreampicker.view.feed.FeedFragment;
 import com.boostcamp.dreampicker.view.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
