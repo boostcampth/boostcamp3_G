@@ -8,6 +8,7 @@ public class Feed {
     private User user;
     private String content;
     private String date;
+    private int voteCount;
 
     // TODO : 마감 조건 확인 이후 작업
     private boolean isEnded;
@@ -16,12 +17,13 @@ public class Feed {
     private List<String> upVodtedUserKeys;
     private List<String> downVotedUserKeys;
 
-    public Feed(String feedId, Image[] images, User user, String content, String date, boolean isEnded) {
+    public Feed(String feedId, Image[] images, User user, String content, String date, int voteCount, boolean isEnded) {
         this.feedId = feedId;
         this.images = images;
         this.user = user;
         this.content = content;
         this.date = date;
+        this.voteCount = voteCount;
         this.isEnded = isEnded;
     }
 
@@ -63,5 +65,13 @@ public class Feed {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
     }
 }
