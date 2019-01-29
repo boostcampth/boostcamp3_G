@@ -1,39 +1,38 @@
 package com.boostcamp.dreampicker.model;
 
 public class Image {
-    private String imageId;
+    private String id;
     // TODO : 이후 URL로 변경 예정
-    private int image;
-    // TODO : 이후 TagGroup 적용
-    private String tag;
+    private int resourceId;
+    private String[] tags;
 
-    public Image(String id, int image, String tag) {
-        this.imageId = id;
-        this.image = image;
-        this.tag = tag;
+    public Image(String id, int resourceId, String[] tags) {
+        this.id = id;
+        this.resourceId = resourceId;
+        this.tags = tags;
     }
 
-    public String getImageId() {
-        return imageId;
+    public String getId() {
+        return id;
     }
 
-    public void setImageId(String imageId) {
-        this.imageId = imageId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public int getImage() {
-        return image;
+    public int getResourceId() {
+        return resourceId;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setResourceId(int resourceId) {
+        this.resourceId = resourceId;
     }
 
-    public String getTag() {
-        return tag;
+    public String[] getTags() {
+        return tags;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setTags(String[] tags) {
+        this.tags = tags;
     }
 }
