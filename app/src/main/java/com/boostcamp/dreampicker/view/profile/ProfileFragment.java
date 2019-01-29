@@ -7,6 +7,7 @@ import android.view.View;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.view.BaseFragment;
+import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,9 +17,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
-    public ProfileFragment() {
+    private final int NUM_OF_TAB_BUTTONS = 2;
 
-    }
+    private ProfilePagerAdapter adapter;
+
+    public ProfileFragment() { }
 
     public static ProfileFragment newInstance(){
 
@@ -39,15 +42,20 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private void initView() {
 
-        binding.viewPagerProfile.setAdapter(new ProfilePagerAdapter(getChildFragmentManager()));
+        // 뷰페이저 생성
+        adapter = new ProfilePagerAdapter(getChildFragmentManager());
+        binding.viewPagerProfile.setAdapter(adapter);
+
+        // 탭 레이아웃 생성
         binding.tabProfile.setupWithViewPager(binding.viewPagerProfile);
-
-        binding.tabProfile.getTabAt(0).setText("진행중인 투표");
-        binding.tabProfile.getTabAt(1).setText("완료된 투표");
-
+        for(int i = 0 ; i < NUM_OF_TAB_BUTTONS ; i++){
+            TabLayout.Tab tab = binding.tabProfile.getTabAt(i);
+            tab.setText(getResources().getStringArray(R.array.profile_tab_names)[i]);
+        }
     }
 
-    class ProfilePagerAdapter extends FragmentPagerAdapter {
+
+    private class ProfilePagerAdapter extends FragmentPagerAdapter {
 
         Fragment[] fragments = new Fragment[2];
 

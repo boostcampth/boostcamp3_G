@@ -9,8 +9,4 @@
     <string name="main_navigation_notification">결과</string>
     <string name="main_navigation_profile">프로필</string>
 
-    <!-- 프로필화면에서 사용 -->
-    <string name="profile_tab_doing">진행중인 투표</string>
-    <string name="profile_tab_done">마감된 투표</string>
-
 </resources>
