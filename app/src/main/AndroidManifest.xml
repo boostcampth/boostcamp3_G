@@ -13,8 +13,7 @@
         <activity android:name=".view.main.SplashActivity"/>
         <activity android:name=".view.main.LogInActivity"/>
         <activity
-            android:name=".view.main.MainActivity"
-            android:label="@string/title_activity_main">
+            android:name=".view.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
