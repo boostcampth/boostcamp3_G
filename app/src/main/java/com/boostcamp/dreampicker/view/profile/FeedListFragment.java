@@ -35,7 +35,7 @@ public class FeedListFragment extends BaseFragment<FragmentFeedListBinding> {
     }
 
     private void initView() {
-        FeedListAdapter adapter = new FeedListAdapter(getContext());
+        FeedListAdapter adapter = new FeedListAdapter();
         // dummy data
         adapter.addItem("");
         adapter.addItem("");
