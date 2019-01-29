@@ -20,7 +20,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     }
 
-    public static ProfileFragment getInstance(){
+    public static ProfileFragment newInstance(){
 
         return new ProfileFragment();
     }
