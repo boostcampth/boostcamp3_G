@@ -1,6 +1,9 @@
 package com.boostcamp.dreampicker.view.feed;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.model.Feed;
+import com.boostcamp.dreampicker.model.Image;
+import com.boostcamp.dreampicker.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

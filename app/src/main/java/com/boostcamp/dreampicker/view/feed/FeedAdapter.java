@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.model.Feed;
 
 import java.util.List;
 
