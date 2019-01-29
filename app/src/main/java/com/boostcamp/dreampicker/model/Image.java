@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.view.feed;
+package com.boostcamp.dreampicker.model;
 
 public class Image {
     private String id;
