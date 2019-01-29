@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.model.source.feed;
+package com.boostcamp.dreampicker.data.source.feed;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.model.Feed;
