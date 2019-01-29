@@ -8,6 +8,7 @@ import android.view.View;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.source.user.UserRepository;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
+import com.boostcamp.dreampicker.utils.ImageUtil;
 import com.boostcamp.dreampicker.view.BaseFragment;
 
 import androidx.annotation.NonNull;
