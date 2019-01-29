@@ -1,10 +1,12 @@
 package com.boostcamp.dreampicker.view.profile;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.data.source.user.UserRepository;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.view.BaseFragment;
 
@@ -13,8 +15,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
+
+    // TODO. ViewModel 로 이동
+    private UserRepository repository = UserRepository.getInstance();
 
     public ProfileFragment() {
 
@@ -35,6 +41,9 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
         super.onViewCreated(view, savedInstanceState);
 
         initView();
+
+        // TODO. ViewModel 로 이동
+        loadData();
     }
 
     private void initView() {
@@ -45,6 +54,13 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
         binding.tabProfile.getTabAt(0).setText("진행중인 투표");
         binding.tabProfile.getTabAt(1).setText("완료된 투표");
 
+    }
+
+    @SuppressLint("CheckResult")
+    private void loadData() {
+        repository.getUserDetail("")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(user -> binding.setUser(user));
     }
 
     class ProfilePagerAdapter extends FragmentPagerAdapter {
