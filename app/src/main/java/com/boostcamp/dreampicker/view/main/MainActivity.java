@@ -1,67 +1,74 @@
 package com.boostcamp.dreampicker.view.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.view.ResultFragment;
-import com.boostcamp.dreampicker.view.SearchFragment;
-import com.boostcamp.dreampicker.view.UpLoadFragment;
+import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
+import com.boostcamp.dreampicker.view.BaseActivity;
 import com.boostcamp.dreampicker.view.feed.FeedFragment;
+import com.boostcamp.dreampicker.view.notification.NotificationFragment;
 import com.boostcamp.dreampicker.view.profile.ProfileFragment;
+import com.boostcamp.dreampicker.view.search.SearchFragment;
+import com.boostcamp.dreampicker.view.upload.UploadActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private FragmentManager fragmentManager = getSupportFragmentManager();
-
-    private FeedFragment feedFragment = new FeedFragment();
-    private SearchFragment searchFragment = new SearchFragment();
-    private UpLoadFragment upLoadFragment = new UpLoadFragment();
-    private ResultFragment resultFragment = new ResultFragment();
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame,feedFragment).commitAllowingStateLoss();
+        initView();
+    }
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(this);
+    private void initView() {
+
+        // 내비게이션 바 생성
+        binding.navigation.setOnNavigationItemSelectedListener(this);
+
+        // 시작 position home 으로 설정
+        binding.navigation.setSelectedItemId(R.id.navigation_home);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment fragment = new FeedFragment();
 
         switch (menuItem.getItemId()) {
-
             case R.id.navigation_home:
-                fragmentTransaction.replace(R.id.frame,feedFragment).commitAllowingStateLoss();
-                return true;
+                fragment = new FeedFragment();
+                break;
             case R.id.navigation_search:
-                fragmentTransaction.replace(R.id.frame,searchFragment).commitAllowingStateLoss();
-                return true;
+                fragment = SearchFragment.newInstance();
+                break;
             case R.id.navigation_upload:
-                fragmentTransaction.replace(R.id.frame,upLoadFragment).commitAllowingStateLoss();
+                Intent intent = new Intent(getApplicationContext(), UploadActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.navigation_notifications:
-                fragmentTransaction.replace(R.id.frame,resultFragment).commitAllowingStateLoss();
-                return true;
+                fragment = NotificationFragment.newInstance();
+                break;
             case R.id.navigation_profile:
-                fragmentTransaction.replace(R.id.frame, ProfileFragment.getInstance())
-                        .commitAllowingStateLoss();
-                return true;
+                fragment = ProfileFragment.newInstance();
+                break;
         }
-        return false;
-    }
 
+        // 프래그먼트 전환
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame, fragment)
+                .commit();
+
+        return true;
+    }
 }

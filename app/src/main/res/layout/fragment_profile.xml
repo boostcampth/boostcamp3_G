@@ -15,7 +15,7 @@
             <include
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                layout="@layout/toolbar_profile"/>
+                layout="@layout/layout_toolbar"/>
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
