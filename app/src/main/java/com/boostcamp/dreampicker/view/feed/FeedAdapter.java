@@ -8,36 +8,41 @@ import com.boostcamp.dreampicker.BR;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ItemFeedBinding;
 import com.boostcamp.dreampicker.model.Feed;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.boostcamp.dreampicker.view.adapter.BaseRecyclerViewAdapter;
+import com.boostcamp.dreampicker.viewmodel.FeedVoteViewModel;
+import com.boostcamp.dreampicker.viewmodel.factory.FeedVoteViewModelFactory;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
-    private List<Feed> feedList = new ArrayList<>();
+public class FeedAdapter extends BaseRecyclerViewAdapter<Feed, FeedAdapter.FeedViewHolder> {
+    private final Fragment fragment; // Item ViewModel을 Fragment에 붙이는 용도
+
+    FeedAdapter(@NonNull Fragment fragment) {
+            this.fragment = fragment;
+    }
+
+    @Override
+    protected void onBindView(@NonNull final FeedViewHolder holder, int position) {
+        final Feed feed = itemList.get(position);
+        FeedVoteViewModelFactory factory = new FeedVoteViewModelFactory(feed);
+
+        FeedVoteViewModel voteViewModel = ViewModelProviders.of(fragment, factory)
+                .get(FeedVoteViewModel.class);
+
+        holder.binding.setVariable(BR.item, feed);
+        holder.binding.setVariable(BR.vote, voteViewModel);
+    }
+
     @NonNull
     @Override
     public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feed, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_feed, parent, false);
         return new FeedViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-        holder.binding.setVariable(BR.item, feedList.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return feedList.size();
-    }
-
-    public void addAll(List<Feed> feedList) {
-        this.feedList = feedList;
-        notifyDataSetChanged();
     }
 
     class FeedViewHolder extends RecyclerView.ViewHolder {

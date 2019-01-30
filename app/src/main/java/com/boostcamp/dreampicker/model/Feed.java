@@ -1,5 +1,6 @@
 package com.boostcamp.dreampicker.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Feed {
@@ -8,18 +9,17 @@ public class Feed {
     private User user;
     private String content;
     private String date;
-    private int voteCount;
 
     // TODO : 마감 조건 확인 이후 작업
     private boolean isEnded;
 
     // TODO : Firestore 연동 이후 작업
-    private List<String> upVotedUserIdList;
-    private List<String> downVotedUserIdList;
+    private List<String> leftVotedUserIdList = new ArrayList<>();
+    private List<String> rightVotedUserIdList = new ArrayList<>();
 
-    public Feed() {
-    }
+    public Feed() { }
 
+    // For Mock Data
     public Feed(String feedId, Image[] images, User user, String content, String date, boolean isEnded) {
         this.feedId = feedId;
         this.images = images;
@@ -28,9 +28,13 @@ public class Feed {
         this.date = date;
         this.isEnded = isEnded;
 
-        // Todo : Firebase 연동 이후 작업
-        // voteCount = upVotedUserIdList.size() + downVotedUserIdList.size();
-        voteCount = 100;
+        leftVotedUserIdList.add("key-1");
+        leftVotedUserIdList.add("key-1");
+        leftVotedUserIdList.add("key-1");
+
+        rightVotedUserIdList.add("key-2");
+        rightVotedUserIdList.add("key-2");
+        rightVotedUserIdList.add("key-2");
     }
 
     public String getId() {
@@ -73,7 +77,35 @@ public class Feed {
         this.date = date;
     }
 
-    public int getVoteCount() {
-        return voteCount;
+    public boolean isEnded() {
+        return isEnded;
+    }
+
+    public void setEnded(boolean ended) {
+        isEnded = ended;
+    }
+
+    public List<String> getLeftVotedUserIdList() {
+        return leftVotedUserIdList;
+    }
+
+    public void setLeftVotedUserIdList(List<String> leftVotedUserIdList) {
+        this.leftVotedUserIdList = leftVotedUserIdList;
+    }
+
+    public List<String> getRightVotedUserIdList() {
+        return rightVotedUserIdList;
+    }
+
+    public void setRightVotedUserIdList(List<String> rightVotedUserIdList) {
+        this.rightVotedUserIdList = rightVotedUserIdList;
+    }
+
+    public int leftVotedCount() {
+        return leftVotedUserIdList.size();
+    }
+
+    public int rightVotedCount() {
+        return rightVotedUserIdList.size();
     }
 }
