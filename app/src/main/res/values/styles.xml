@@ -54,7 +54,7 @@
     <style name="TabLayout" parent="Widget.Design.TabLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/profile_tab_height</item>
-        <item name="android:background">@drawable/line_top</item>
+        <item name="android:background">@drawable/line_vertical</item>
         <item name="tabIndicatorColor">@color/colorPrimary</item>
         <item name="tabIndicatorHeight">1dp</item>
         <item name="tabGravity">fill</item>
