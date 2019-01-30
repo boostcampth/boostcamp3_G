@@ -8,6 +8,7 @@ import android.view.View;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.source.user.UserRepository;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
+import com.boostcamp.dreampicker.utils.ImageUtil;
 import com.boostcamp.dreampicker.view.BaseFragment;
 import com.google.android.material.tabs.TabLayout;
 
@@ -69,7 +70,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(binding::setUser);
     }
-
 
     class ProfilePagerAdapter extends FragmentPagerAdapter {
 
