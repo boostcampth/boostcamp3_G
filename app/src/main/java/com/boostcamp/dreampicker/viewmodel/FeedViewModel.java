@@ -1,8 +1,8 @@
 package com.boostcamp.dreampicker.viewmodel;
 
 import com.boostcamp.dreampicker.model.Feed;
-import com.boostcamp.dreampicker.model.source.feed.FeedDataSource;
-import com.boostcamp.dreampicker.model.source.feed.FeedRepository;
+import com.boostcamp.dreampicker.data.source.feed.FeedDataSource;
+import com.boostcamp.dreampicker.data.source.feed.FeedRepository;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="user"
-            type="com.boostcamp.dreampicker.model.User"/>
+            type="com.boostcamp.dreampicker.model.UserInfo"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -26,23 +26,24 @@
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll">
 
                 <LinearLayout
-                    app:layout_collapseMode="parallax"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/profile_tab_height"
                     android:orientation="vertical"
                     android:background="@color/colorWhite"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    app:layout_collapseMode="parallax">
 
                     <ImageView
-                        style="@style/ImageView"
+                        android:id="@+id/iv_user"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_marginTop="40dp"
-                        android:src="@drawable/profile"/>
+                        circleImage="@{user.userProfileUrl}"/>
 
                     <LinearLayout
                         android:layout_margin="@dimen/space_median"
@@ -85,10 +86,10 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager.widget.ViewPager
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/view_pager_profile"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
