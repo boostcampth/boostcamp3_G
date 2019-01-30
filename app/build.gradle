@@ -58,4 +58,10 @@ dependencies {
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     annotationProcessor 'androidx.annotation:annotation:1.0.1'
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-firestore:15.0.0'
 }
+// Firebase
+apply plugin: 'com.google.gms.google-services'
