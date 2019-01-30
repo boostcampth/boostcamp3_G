@@ -71,7 +71,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     private void loadData() {
         repository.getUserDetail("")
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(user -> binding.setUser(user));
+                .subscribe(binding::setUser);
     }
 
     class ProfilePagerAdapter extends FragmentPagerAdapter {
