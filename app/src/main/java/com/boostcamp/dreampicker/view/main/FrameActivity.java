@@ -15,15 +15,22 @@ import androidx.fragment.app.Fragment;
 
 public class FrameActivity extends BaseActivity<ActivityFrameBinding> {
     private static final String EXTRA_FRAGMENT_ID = "EXTRA_FRAGMENT_ID";
+    private static final String EXTRA_ENTITY_ID = "EXTRA_ENTITY_ID";
     public static final int FRAGMENT_FEED_DETAIL = 0;
     public static final int FRAGMENT_PROFILE = 1;
 
     private int fragmentId;
+    private String entityId;
 
-    public static Intent getIntent(Context context, String fragmentId){
+    public static void startActivity(Context context,
+                                   int fragmentId,
+                                   String entityId){
+
         Intent intent = new Intent(context, FrameActivity.class);
         intent.putExtra(EXTRA_FRAGMENT_ID, fragmentId);
-        return intent;
+        intent.putExtra(EXTRA_ENTITY_ID, entityId);
+
+        context.startActivity(intent);
     }
 
     @Override
@@ -33,6 +40,7 @@ public class FrameActivity extends BaseActivity<ActivityFrameBinding> {
 
     private void getExtra(Intent intent){
         fragmentId = intent.getIntExtra(EXTRA_FRAGMENT_ID, 0);
+        entityId = intent.getStringExtra(EXTRA_ENTITY_ID);
     }
 
     @Override
@@ -59,7 +67,7 @@ public class FrameActivity extends BaseActivity<ActivityFrameBinding> {
         }
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, fragment)
+                .add(R.id.container, fragment)
                 .commit();
     }
 }

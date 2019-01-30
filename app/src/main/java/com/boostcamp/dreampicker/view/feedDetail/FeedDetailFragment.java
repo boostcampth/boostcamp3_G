@@ -19,7 +19,7 @@ public class FeedDetailFragment extends BaseFragment<FragmentFeedDetailBinding> 
 
     public static FeedDetailFragment newInstance(String feedId) {
         FeedDetailFragment fragment = new FeedDetailFragment();
-        Bundle args = fragment.getArguments();
+        Bundle args = new Bundle();
         args.putString(ARGUMENT_FEED_ID, feedId);
         fragment.setArguments(args);
         return fragment;
@@ -33,6 +33,7 @@ public class FeedDetailFragment extends BaseFragment<FragmentFeedDetailBinding> 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Bundle args = getArguments();
         if(args != null){
             feedId = args.getString(ARGUMENT_FEED_ID);

@@ -1,16 +1,13 @@
 package com.boostcamp.dreampicker.view.search;
 
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.source.feed.FeedRepository;
-import com.boostcamp.dreampicker.view.BaseFragment;
 import com.boostcamp.dreampicker.databinding.FragmentSearchBinding;
-import com.boostcamp.dreampicker.view.feedList.FeedListAdapter;
+import com.boostcamp.dreampicker.view.BaseFragment;
 import com.boostcamp.dreampicker.view.feedList.FeedListFragment;
 import com.google.android.material.tabs.TabLayout;
 
@@ -19,9 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class SearchFragment extends BaseFragment<FragmentSearchBinding> {
 
