@@ -13,20 +13,18 @@ import io.reactivex.schedulers.Schedulers;
 
 public class FeedViewModel extends BaseViewModel {
     private FeedDataSource feedRepository;
+    private MutableLiveData<List<Feed>> feeds = new MutableLiveData<>();
 
-    private MutableLiveData<List<Feed>> _feeds;
-    private LiveData<List<Feed>> feeds;
-
-    @Override
-    protected void initViewModel() {
+    public FeedViewModel() {
         feedRepository = FeedRepository.getInstance();
-        _feeds = new MutableLiveData<>();
-        feeds = _feeds;
+        initViewModel();
+    }
 
+    private void initViewModel() {
         addDisposable(feedRepository.getAllFeed()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(_feeds::setValue));
+                .subscribe(feeds::setValue));
     }
 
     public LiveData<List<Feed>> getFeeds() {
