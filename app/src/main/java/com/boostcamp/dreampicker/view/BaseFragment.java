@@ -13,24 +13,18 @@ import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
 public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
-    protected final String TAG = getClass().getSimpleName();
 
     protected B binding;
-    protected Context context;
-
-    protected abstract int getLayoutId();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        context = binding.getRoot().getContext();
 
         return binding.getRoot();
     }
 
-    public void makeToast(String text){
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-    }
+    protected abstract int getLayoutId();
 }

@@ -4,9 +4,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/line_bottom">
+        android:background="@drawable/line_bottom"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btn_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/space_median"
+            style="@style/ImageButton.Median"
+            android:visibility="gone"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/btn_setting"/>
 
         <ImageView
+            android:id="@+id/iv_center"
             style="@style/ImageView"
             android:padding="@dimen/space_x_small"
             android:layout_centerInParent="true"
@@ -15,11 +27,13 @@
             android:src="@drawable/img_logo"/>
 
         <ImageButton
+            android:id="@+id/btn_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/space_median"
             style="@style/ImageButton.Median"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
             android:src="@drawable/btn_setting"/>
 
     </RelativeLayout>
-
 </layout>

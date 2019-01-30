@@ -24,19 +24,16 @@
     <style name="ImageButton.Small" parent="ImageButton">
         <item name="android:layout_width">@dimen/button_small</item>
         <item name="android:layout_height">@dimen/button_small</item>
-        <item name="android:padding">@dimen/space_median</item>
     </style>
 
     <style name="ImageButton.Median" parent="ImageButton">
         <item name="android:layout_width">@dimen/button_median</item>
         <item name="android:layout_height">@dimen/button_median</item>
-        <item name="android:padding">@dimen/space_median</item>
     </style>
 
     <style name="ImageButton.Large" parent="ImageButton">
         <item name="android:layout_width">@dimen/button_large</item>
         <item name="android:layout_height">@dimen/button_large</item>
-        <item name="android:padding">@dimen/space_median</item>
     </style>
 
 </resources>

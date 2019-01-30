@@ -35,7 +35,7 @@ public class FeedListFragment extends BaseFragment<FragmentFeedListBinding> {
     }
 
     private void initView() {
-        FeedListAdapter adapter = new FeedListAdapter(context);
+        FeedListAdapter adapter = new FeedListAdapter();
         // dummy data
         adapter.addItem("");
         adapter.addItem("");
@@ -43,7 +43,7 @@ public class FeedListFragment extends BaseFragment<FragmentFeedListBinding> {
         adapter.addItem("");
         adapter.addItem("");
 
-        binding.recyclerFeedList.setLayoutManager(new GridLayoutManager(context, 2));
+        binding.recyclerFeedList.setLayoutManager(new GridLayoutManager(getContext(), 2));
         binding.recyclerFeedList.setAdapter(adapter);
     }
 }
