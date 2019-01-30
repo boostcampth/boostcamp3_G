@@ -1,5 +1,6 @@
 package com.boostcamp.dreampicker.view.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -18,6 +19,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
+
+    public static void startActivity(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected int getLayoutId() {
@@ -53,8 +59,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 fragment = SearchFragment.newInstance();
                 break;
             case R.id.navigation_upload:
-                Intent intent = new Intent(getApplicationContext(), UploadActivity.class);
-                startActivity(intent);
+                startUploadActivity();
                 return true;
             case R.id.navigation_notifications:
                 fragment = NotificationFragment.newInstance();
@@ -70,5 +75,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 .commit();
 
         return true;
+    }
+
+    private void startUploadActivity() {
+        Intent intent = new Intent(this, UploadActivity.class);
+        startActivity(intent);
     }
 }
