@@ -9,87 +9,87 @@
             type="com.boostcamp.dreampicker.model.UserInfo"/>
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <include
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            app:contentPadding="0dp">
+            android:layout_height="?attr/actionBarSize"
+            layout="@layout/layout_toolbar"/>
 
-            <include
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                layout="@layout/layout_toolbar"/>
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
+            <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll">
+                android:background="@color/colorWhite"
+                app:contentPadding="0dp">
 
-                <LinearLayout
+                <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/profile_tab_height"
-                    android:orientation="vertical"
-                    android:background="@color/colorWhite"
-                    android:gravity="center_horizontal"
-                    app:layout_collapseMode="parallax">
-
-                    <ImageView
-                        android:id="@+id/iv_user"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="40dp"
-                        circleImage="@{user.userProfileUrl}"/>
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <LinearLayout
-                        android:layout_margin="@dimen/space_median"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center">
+                        android:gravity="center_horizontal"
+                        android:layout_marginBottom="@dimen/profile_tab_height"
+                        android:orientation="vertical"
+                        android:background="@color/colorWhite"
+                        app:layout_collapseMode="parallax">
 
-                        <include
-                            bind:count="@{String.valueOf(user.feedCount)}"
-                            bind:title="@{String.valueOf(@string/profile_feed_count)}"
-                            layout="@layout/layout_profile_count"/>
+                        <ImageView
+                            android:id="@+id/iv_user"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="40dp"
+                            circleImage="@{user.userProfileUrl}"/>
 
-                        <include
-                            bind:count="@{String.valueOf(user.followerCount)}"
-                            bind:title="@{String.valueOf(@string/profile_follower_count)}"
-                            layout="@layout/layout_profile_count"/>
+                        <LinearLayout
+                            android:layout_margin="@dimen/space_median"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center">
 
-                        <include
-                            bind:count="@{String.valueOf(user.followingCount)}"
-                            bind:title="@{String.valueOf(@string/profile_following_count)}"
-                            layout="@layout/layout_profile_count"/>
+                            <include
+                                bind:count="@{String.valueOf(user.feedCount)}"
+                                bind:title="@{String.valueOf(@string/profile_feed_count)}"
+                                layout="@layout/layout_profile_count"/>
 
+                            <include
+                                bind:count="@{String.valueOf(user.followerCount)}"
+                                bind:title="@{String.valueOf(@string/profile_follower_count)}"
+                                layout="@layout/layout_profile_count"/>
+
+                            <include
+                                bind:count="@{String.valueOf(user.followingCount)}"
+                                bind:title="@{String.valueOf(@string/profile_following_count)}"
+                                layout="@layout/layout_profile_count"/>
+
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/profile_tab_height"
-                    android:background="@null"
-                    android:layout_gravity="bottom"
-                    app:layout_collapseMode="pin"
-                    app:tabGravity="fill"
-                    app:tabIndicatorHeight="1dp"
-                    app:tabIndicatorColor="@color/colorBlack"
-                    app:tabMode="fixed"/>
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tab_profile"
+                        android:layout_gravity="bottom"
+                        app:layout_collapseMode="pin"
+                        style="@style/TabLayout"/>
 
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager_profile"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 </layout>

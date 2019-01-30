@@ -11,7 +11,7 @@
             android:id="@+id/btn_left"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="@dimen/space_median"
+            android:padding="@dimen/space_small"
             style="@style/ImageButton.Median"
             android:visibility="gone"
             android:layout_alignParentStart="true"
@@ -30,7 +30,7 @@
             android:id="@+id/btn_right"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="@dimen/space_median"
+            android:padding="@dimen/space_small"
             style="@style/ImageButton.Median"
             android:layout_alignParentEnd="true"
             android:src="@drawable/btn_setting"/>
