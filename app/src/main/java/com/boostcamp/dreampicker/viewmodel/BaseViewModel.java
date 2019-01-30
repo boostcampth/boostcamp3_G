@@ -9,7 +9,6 @@ public abstract class BaseViewModel extends ViewModel {
 
     BaseViewModel() {
         compositeDisposable = new CompositeDisposable();
-        initViewModel();
     }
 
     void addDisposable(Disposable disposable) {
@@ -24,6 +23,4 @@ public abstract class BaseViewModel extends ViewModel {
             compositeDisposable.dispose();
         }
     }
-
-    protected abstract void initViewModel();
 }
