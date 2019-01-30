@@ -42,6 +42,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_x_small"
@@ -97,6 +98,29 @@
                     android:orientation="horizontal"
                     app:layout_constraintGuide_begin="56dp" />
 
+                <com.sackcentury.shinebuttonlib.ShineButton
+                    android:id="@+id/btn_finger"
+                    android:clickable="false"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:elevation="5dp"
+                    android:background="@drawable/ic_vote_bg"
+                    app:btn_fill_color="@color/colorWhite"
+                    app:allow_random_color="true"
+                    app:enable_flashing="false"
+                    app:big_shine_color="#66FFFF"
+                    app:click_animation_duration="200"
+                    app:shine_animation_duration="1500"
+                    app:shine_turn_angle="10"
+                    app:small_shine_offset_angle="20"
+                    app:small_shine_color="#CC9999"
+                    app:shine_count="8"
+                    app:siShape="@raw/ic_finger"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content" />
+
                 <!-- 피드 하단 부분 -->
                 <View
                     android:id="@+id/view"
@@ -111,27 +135,31 @@
 
                 <include
                     layout="@layout/layout_feed_photo_tag"
+                    android:id="@+id/container_left"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/feed_photo_image_height"
                     android:layout_marginTop="@dimen/space_x_small"
+                    app:img="@{item.images[0].image}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/view"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
-                    app:img="@{item.images[0].image}"
-                    app:tag="@{item.images[0].tag}"/>
+                    app:tag="@{item.images[0].tag}"
+                    app:voted="@{vote.isVoted}"/>
 
                 <include
                     layout="@layout/layout_feed_photo_tag"
+                    android:id="@+id/container_right"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/feed_photo_image_height"
                     android:layout_marginTop="@dimen/space_x_small"
+                    app:img="@{item.images[1].image}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/view"
                     app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
-                    app:img="@{item.images[1].image}"
-                    app:tag="@{item.images[1].tag}"/>
+                    app:tag="@{item.images[1].tag}"
+                    app:voted="@{vote.isVoted}"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

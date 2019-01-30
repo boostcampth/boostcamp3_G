@@ -58,4 +58,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     annotationProcessor 'androidx.annotation:annotation:1.0.1'
+
+    // ShineButton
+    implementation 'com.sackcentury:shinebutton:0.2.0'
 }

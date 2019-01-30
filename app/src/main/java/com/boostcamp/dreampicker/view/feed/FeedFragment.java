@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
-    private FeedAdapter adapter = new FeedAdapter(this);
+    private FeedAdapter adapter = new FeedAdapter();
     private FeedViewModel model;
 
     @Override
