@@ -11,27 +11,73 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="4dp"
         app:cardUseCompatPadding="true">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/feed_photo_image_height">
 
-            <ImageView
-                android:id="@+id/iv_temp"
-                style="@style/ImageView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <TextView
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/ImageView"
+                    android:scaleType="centerCrop"
+                    app:image="@{feed.images[0].image}"/>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/ImageView"
+                    android:scaleType="centerCrop"
+                    app:image="@{feed.images[1].image}"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@{feed.content}"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/colorBlackTransParent">
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/profile_image_size_median"
+                        android:layout_height="@dimen/profile_image_size_median"
+                        android:layout_margin="@dimen/space_median"
+                        app:circleImage="@{feed.user.profileImageResource}"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_small"
+                        android:textColor="@android:color/white"
+                        android:text="@{feed.user.name}"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/space_median"
+                    android:gravity="bottom"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_s_large"
+                    android:text="@{feed.content}"/>
+
+            </LinearLayout>
+        </FrameLayout>
     </androidx.cardview.widget.CardView>
 
 </layout>
