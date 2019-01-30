@@ -8,7 +8,6 @@ import android.view.View;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.source.user.UserRepository;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
-import com.boostcamp.dreampicker.utils.ImageUtil;
 import com.boostcamp.dreampicker.view.BaseFragment;
 import com.google.android.material.tabs.TabLayout;
 
@@ -22,10 +21,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private final int NUM_OF_TAB_BUTTONS = 2;
+
     // TODO. ViewModel 로 이동
     private UserRepository repository = UserRepository.getInstance();
-
-    public ProfileFragment() {
 
     private ProfilePagerAdapter adapter;
 
@@ -65,8 +63,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
         }
     }
 
-
-    private class ProfilePagerAdapter extends FragmentPagerAdapter {
     @SuppressLint("CheckResult")
     private void loadData() {
         repository.getUserDetail("")
@@ -74,9 +70,10 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
                 .subscribe(binding::setUser);
     }
 
+
     class ProfilePagerAdapter extends FragmentPagerAdapter {
 
-        Fragment[] fragments = new Fragment[2];
+        Fragment[] fragments = new Fragment[NUM_OF_TAB_BUTTONS];
 
         public ProfilePagerAdapter(@NonNull FragmentManager fm) {
             super(fm);
