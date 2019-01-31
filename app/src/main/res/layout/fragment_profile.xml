@@ -48,7 +48,7 @@
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:layout_marginTop="40dp"
-                            circleImage="@{user.userProfileUrl}"/>
+                            app:circleImage="@{user.profileImageUrl}"/>
 
                         <LinearLayout
                             android:layout_margin="@dimen/space_median"
@@ -58,17 +58,17 @@
                             android:gravity="center">
 
                             <include
-                                bind:count="@{String.valueOf(user.feedCount)}"
+                                bind:count="@{String.valueOf(100)}"
                                 bind:title="@{String.valueOf(@string/profile_feed_count)}"
                                 layout="@layout/layout_profile_count"/>
 
                             <include
-                                bind:count="@{String.valueOf(user.followerCount)}"
+                                bind:count="@{String.valueOf(50)}"
                                 bind:title="@{String.valueOf(@string/profile_follower_count)}"
                                 layout="@layout/layout_profile_count"/>
 
                             <include
-                                bind:count="@{String.valueOf(user.followingCount)}"
+                                bind:count="@{String.valueOf(250)}"
                                 bind:title="@{String.valueOf(@string/profile_following_count)}"
                                 layout="@layout/layout_profile_count"/>
 

@@ -1,26 +1,24 @@
 package com.boostcamp.dreampicker.model;
 
 public class User {
-    private String userId;
+    private String id;
     private String name;
-    private int feedCount;
-    private int followerCount;
-    private int followingCount;
+    private String profileImageUrl;
     // TODO : 이후 url로 변경
     private int profileImageResource;
 
     public User(String id, String name, int profileImageResource) {
-        this.userId = id;
+        this.id = id;
         this.name = name;
         this.profileImageResource = profileImageResource;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -31,35 +29,19 @@ public class User {
         this.name = name;
     }
 
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
     public int getProfileImageResource() {
         return profileImageResource;
     }
 
     public void setProfileImageResource(int profileImageResource) {
         this.profileImageResource = profileImageResource;
-    }
-
-    public int getFeedCount() {
-        return feedCount;
-    }
-
-    public void setFeedCount(int feedCount) {
-        this.feedCount = feedCount;
-    }
-
-    public int getFollowerCount() {
-        return followerCount;
-    }
-
-    public void setFollowerCount(int followerCount) {
-        this.followerCount = followerCount;
-    }
-
-    public int getFollowingCount() {
-        return followingCount;
-    }
-
-    public void setFollowingCount(int followingCount) {
-        this.followingCount = followingCount;
     }
 }

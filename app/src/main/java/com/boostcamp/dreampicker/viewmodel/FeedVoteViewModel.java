@@ -12,11 +12,11 @@ public class FeedVoteViewModel {
 
     private final Feed feed;
 
-    private final ObservableInt totalVotedCount = new ObservableInt(0);
-    private final ObservableInt leftVotedCount = new ObservableInt(0);
-    private final ObservableInt rightVotedCount = new ObservableInt(0);
+    private final ObservableInt totalVotedCount = new ObservableInt();
+    private final ObservableInt leftVotedCount = new ObservableInt();
+    private final ObservableInt rightVotedCount = new ObservableInt();
 
-    private final ObservableBoolean isVoted = new ObservableBoolean(false);
+    private final ObservableBoolean isVoted = new ObservableBoolean();
 
     public FeedVoteViewModel(@NonNull Feed feed) {
         this.feed = feed;
@@ -25,8 +25,8 @@ public class FeedVoteViewModel {
     }
 
     private void initViewModel() {
-        leftVotedCount.set(feed.leftVotedCount());
-        rightVotedCount.set(feed.rightVotedCount());
+        leftVotedCount.set(feed.getLeftUserList().size());
+        rightVotedCount.set(feed.getRightUserList().size());
         totalVotedCount.set(leftVotedCount.get() + rightVotedCount.get());
     }
 
