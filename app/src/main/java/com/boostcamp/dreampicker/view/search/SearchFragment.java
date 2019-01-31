@@ -9,6 +9,7 @@ import com.boostcamp.dreampicker.data.source.feed.FeedRepository;
 import com.boostcamp.dreampicker.databinding.FragmentSearchBinding;
 import com.boostcamp.dreampicker.view.BaseFragment;
 import com.boostcamp.dreampicker.view.feedList.FeedListFragment;
+import com.boostcamp.dreampicker.view.userList.UserListFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
@@ -74,8 +75,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> {
 
         public SearchPagerAdapter(@NonNull FragmentManager fm) {
             super(fm);
-            fragments[0] = FeedListFragment.getInstance();
-            fragments[1] = FeedListFragment.getInstance();
+            fragments[0] = UserListFragment.newInstance();
+            fragments[1] = FeedListFragment.newInstance();
         }
 
         @NonNull

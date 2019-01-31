@@ -26,7 +26,8 @@
     <dimen name="text_sub_size">12sp</dimen>
 
     <!-- Profile Image Size -->
-    <dimen name="profile_image_size_median">40dp</dimen>
+    <dimen name="profile_image_size_small">40dp</dimen>
+    <dimen name="profile_image_size_median">60dp</dimen>
     <dimen name="profile_image_size_large">80dp</dimen>
 
     <!-- Feed Image Size -->

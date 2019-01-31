@@ -12,5 +12,5 @@ public interface FeedDataSource {
     Single<List<Feed>> getAllFeed();
 
     // 피드 검색 결과 요청
-    Single<List<Feed>> searchFeed(String searchKey);
+    Single<List<Feed>> searchAllFeed(String searchKey);
 }

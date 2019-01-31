@@ -70,8 +70,8 @@ public class FeedRepository implements FeedDataSource {
     }
 
     @Override
-    public Single<List<Feed>> searchFeed(String searchKey) {
+    public Single<List<Feed>> searchAllFeed(String searchKey) {
 
-        return remoteDataSource.searchFeed(searchKey);
+        return remoteDataSource.searchAllFeed(searchKey);
     }
 }
