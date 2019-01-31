@@ -7,6 +7,9 @@ public class User {
     // TODO : 이후 url로 변경
     private int profileImageResource;
 
+    public User() {
+    }
+
     public User(String id, String name, int profileImageResource) {
         this.id = id;
         this.name = name;

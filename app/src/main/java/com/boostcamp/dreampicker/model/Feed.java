@@ -5,7 +5,8 @@ import java.util.List;
 
 public class Feed {
     private String id;
-    private List<Image> imageList;
+    private Image leftImage;
+    private Image rightImage;
     private User user;
     private String content;
     private String date;
@@ -21,9 +22,10 @@ public class Feed {
     }
 
     // For Mock Data
-    public Feed(String id, List<Image> imageList, User user, String content, String date, boolean isEnded) {
+    public Feed(String id, Image leftImage,Image rightImage, User user, String content, String date, boolean isEnded) {
         this.id = id;
-        this.imageList = imageList;
+        this.leftImage = leftImage;
+        this.rightImage =rightImage;
         this.user = user;
         this.content = content;
         this.date = date;
@@ -46,12 +48,20 @@ public class Feed {
         this.id = feedId;
     }
 
-    public List<Image> getImageList() {
-        return imageList;
+    public Image getLeftImage() {
+        return leftImage;
     }
 
-    public void setImageList(List<Image> imageList) {
-        this.imageList = imageList;
+    public void setLeftImage(Image leftImage) {
+        this.leftImage = leftImage;
+    }
+
+    public Image getRightImage() {
+        return rightImage;
+    }
+
+    public void setRightImage(Image rightImage) {
+        this.rightImage = rightImage;
     }
 
     public User getUser() {

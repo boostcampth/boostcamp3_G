@@ -4,6 +4,8 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.model.Feed;
 import com.boostcamp.dreampicker.model.Image;
 import com.boostcamp.dreampicker.model.User;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,9 +15,11 @@ import io.reactivex.Single;
 
 public class FeedRemoteDataSource implements FeedDataSource {
 
+    private static final String COLLECTION_FEED = "feed";
+
     private static FeedRemoteDataSource feedRemoteDataSource = null;
 
-    private FeedRemoteDataSource() {}
+    private FeedRemoteDataSource() { }
 
     public static FeedRemoteDataSource getInstance() {
         if(feedRemoteDataSource == null){
@@ -30,9 +34,18 @@ public class FeedRemoteDataSource implements FeedDataSource {
 
     @Override
     public Single<List<Feed>> getAllFeed() {
-
-        // TODO. 파이어베이스에서 데이터 로딩하기
-        return null;
+        final List<Feed> feeds = new ArrayList<>();
+        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            feeds.add(document.toObject(Feed.class));
+                            emitter.onSuccess(feeds);
+                        }
+                    } else {
+                        emitter.onError(task.getException());
+                    }
+                }));
     }
 
     @Override
@@ -45,7 +58,8 @@ public class FeedRemoteDataSource implements FeedDataSource {
         User user1 = new User("user-0", "박신혜", R.drawable.profile);
         Feed feed1 = new Feed(
                 "feed-0",
-                Arrays.asList(image1, image2),
+                image1,
+                image2,
                 user1,
                 "내일 소개남이랑 첫 데이트인데 장소 좀 골라주세요~!ㅎㅎ",
                 "2018.01.28",
@@ -58,7 +72,8 @@ public class FeedRemoteDataSource implements FeedDataSource {
 
         Feed feed2 = new Feed(
                 "feed-0",
-                Arrays.asList(image3, image4),
+                image3,
+                image4,
                 user2,
                 "짬뽕, 짜장면",
                 "2019.01.29",

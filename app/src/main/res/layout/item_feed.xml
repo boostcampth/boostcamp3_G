@@ -139,12 +139,12 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/feed_photo_image_height"
                     android:layout_marginTop="@dimen/space_x_small"
-                    app:img="@{item.imageList.get(0).image}"
+                    app:img="@{item.leftImage.image}"
                     app:layout_constraintBottom_toTopOf="@+id/vote_result"
                     app:layout_constraintEnd_toStartOf="@+id/border"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
-                    app:tag="@{item.imageList.get(0).tag}"
+                    app:tag="@{item.leftImage.tag}"
                     app:voted="@{vote.isVoted}" />
 
                 <include
@@ -153,12 +153,12 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/feed_photo_image_height"
                     android:layout_marginTop="@dimen/space_x_small"
-                    app:img="@{item.imageList.get(1).image}"
+                    app:img="@{item.rightImage.image}"
                     app:layout_constraintBottom_toTopOf="@+id/vote_result"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/border"
                     app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
-                    app:tag="@{item.imageList.get(1).tag}"
+                    app:tag="@{item.rightImage.tag}"
                     app:voted="@{vote.isVoted}" />
 
                 <include
