@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "532308683354",
+    "firebase_url": "https://dreampicker-ea17b.firebaseio.com",
+    "project_id": "dreampicker-ea17b",
+    "storage_bucket": "dreampicker-ea17b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532308683354:android:d65fd9661113ba0d",
+        "android_client_info": {
+          "package_name": "com.boostcamp.dreampicker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "532308683354-lcc1quttq2hr9n6ab877gcbe3pvokqr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8BEv7tcP04t9TZ00zv08tfXyuZ0LfYbE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
