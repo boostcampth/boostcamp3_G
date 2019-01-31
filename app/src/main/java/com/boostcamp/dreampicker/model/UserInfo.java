@@ -16,6 +16,21 @@ public class UserInfo {
     private List<String> votedFeedList;
     private List<String> myFeedList;
 
+    public UserInfo() {
+    }
+
+    public UserInfo(String id, String name, String email, String profileImageUrl, int profileImageResource, List<String> fwerList, List<String> fwingList, List<String> votedFeedList, List<String> myFeedList) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.profileImageUrl = profileImageUrl;
+        this.profileImageResource = profileImageResource;
+        this.fwerList = fwerList;
+        this.fwingList = fwingList;
+        this.votedFeedList = votedFeedList;
+        this.myFeedList = myFeedList;
+    }
+
     public String getId() {
         return id;
     }

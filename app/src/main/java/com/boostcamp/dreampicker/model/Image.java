@@ -11,6 +11,9 @@ public class Image {
     private String tag;
     private List<String> tagList;
 
+    public Image() {
+    }
+
     public Image(String id, int image, String tag) {
         this.imageId = id;
         this.image = image;
