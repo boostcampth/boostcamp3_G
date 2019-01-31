@@ -67,7 +67,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     @SuppressLint("CheckResult")
     private void loadData() {
-        repository.getUserDetail("")
+        repository.getUserInfo("")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(binding::setUser,
                         error -> Log.d("", error.getLocalizedMessage()));
