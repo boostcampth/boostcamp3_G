@@ -79,8 +79,8 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
         public ProfilePagerAdapter(@NonNull FragmentManager fm) {
             super(fm);
-            fragments[0] = FeedListFragment.getInstance();
-            fragments[1] = FeedListFragment.getInstance();
+            fragments[0] = FeedListFragment.newInstance();
+            fragments[1] = FeedListFragment.newInstance();
         }
 
         @NonNull
