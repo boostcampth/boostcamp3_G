@@ -31,7 +31,7 @@ public class UserRemoteDataSource implements UserDataSource {
 
         // TODO. 임시 데이터
         List<User> userList = new ArrayList<>();
-        User user = new User("" ,"yeseul", R.drawable.profile);
+        User user = new User("" ,"yeseul","https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",0,0,0); //R.drawable.profile
         userList.add(user);
         userList.add(user);
         userList.add(user);
