@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Feed Image, Tags -->
+
+<layout>
+    <data>
+        <variable name="tag" type="String"/>
+        <variable name="img" type="int"/>
+        <variable name="voted" type="boolean"/>
+    </data>
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <ImageView
+            android:id="@+id/iv_feed_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            app:fade="@{voted}"
+            app:imageResource="@{img}"/>
+
+        <TextView
+            android:id="@+id/tv_feed_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom"
+            android:layout_marginStart="@dimen/space_x_small"
+            android:text="@{tag}"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+    </FrameLayout>
+</layout>

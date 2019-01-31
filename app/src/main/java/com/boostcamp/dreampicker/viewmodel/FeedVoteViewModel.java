@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableInt;
 
-public class FeedVoteViewModel {
+public class FeedVoteViewModel extends BaseViewModel {
     public enum VotePosition {NONE, LEFT, RIGHT}
     private VotePosition position = VotePosition.NONE;
 

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="item"
+            type="com.boostcamp.dreampicker.model.Feed"/>
+        <variable
+            name="vote"
+            type="com.boostcamp.dreampicker.viewmodel.FeedVoteViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            app:cardUseCompatPadding="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- 피드 상단 부분 -->
+                <ImageView
+                    android:id="@+id/iv_user_img"
+                    android:layout_width="@dimen/profile_image_size_median"
+                    android:layout_height="@dimen/profile_image_size_median"
+                    android:layout_marginStart="@dimen/space_x_small"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginBottom="@dimen/space_x_small"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/profile"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_x_small"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:text="@{item.user.name}"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_title_size"
+                    app:layout_constraintStart_toEndOf="@+id/iv_user_img"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_x_small"
+                    android:layout_marginBottom="@dimen/space_x_small"
+                    android:text="@{item.date}"
+                    android:textSize="@dimen/text_sub_size"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
+                    app:layout_constraintStart_toEndOf="@+id/iv_user_img" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:layout_marginBottom="@dimen/space_x_small"
+                    android:drawableStart="@drawable/ic_box"
+                    android:drawablePadding="@dimen/space_x_small"
+                    android:text="@{String.valueOf(vote.totalVotedCount)}"
+                    android:textSize="@dimen/text_title_size"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_feed_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_x_small"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginEnd="@dimen/space_x_small"
+                    android:text="@{item.content}"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_title_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/guideline_feed_top_ver" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_feed_top_ver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="56dp" />
+
+                <com.sackcentury.shinebuttonlib.ShineButton
+                    android:id="@+id/btn_finger"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/ic_vote_bg"
+                    android:clickable="false"
+                    android:elevation="5dp"
+                    app:allow_random_color="true"
+                    app:big_shine_color="#66FFFF"
+                    app:btn_fill_color="@color/colorWhite"
+                    app:click_animation_duration="200"
+                    app:enable_flashing="false"
+                    app:shine_animation_duration="1500"
+                    app:shine_count="8"
+                    app:shine_turn_angle="10"
+                    app:siShape="@raw/ic_finger"
+                    app:small_shine_color="#CC9999"
+                    app:small_shine_offset_angle="20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"/>
+
+                <!-- 피드 하단 부분 -->
+                <View
+                    android:id="@+id/border"
+                    android:layout_width="2dp"
+                    android:layout_height="@dimen/feed_photo_image_height"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintBottom_toTopOf="@+id/vote_result"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content" />
+
+                <include
+                    android:id="@+id/container_left"
+                    layout="@layout/layout_feed_photo_tag"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/feed_photo_image_height"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    app:img="@{item.leftImage.image}"
+                    app:layout_constraintBottom_toTopOf="@+id/vote_result"
+                    app:layout_constraintEnd_toStartOf="@+id/border"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
+                    app:tag="@{item.leftImage.tag}"
+                    app:voted="@{vote.isVoted}" />
+
+                <include
+                    android:id="@+id/container_right"
+                    layout="@layout/layout_feed_photo_tag"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/feed_photo_image_height"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    app:img="@{item.rightImage.image}"
+                    app:layout_constraintBottom_toTopOf="@+id/vote_result"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/border"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
+                    app:tag="@{item.rightImage.tag}"
+                    app:voted="@{vote.isVoted}" />
+
+                <include
+                    android:id="@+id/vote_result"
+                    layout="@layout/layout_vote_result_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    bind:vote="@{vote}"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</layout>

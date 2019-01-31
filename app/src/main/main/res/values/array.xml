@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="profile_tab_names">
+        <item>진행중인 투표</item>
+        <item>마감된 투표</item>
+    </string-array>
+
+    <string-array name="search_tab_names">
+        <item>사용자</item>
+        <item>투표</item>
+    </string-array>
+
+</resources>
