@@ -45,7 +45,8 @@ public class FeedRemoteDataSource implements FeedDataSource {
         User user1 = new User("user-0", "박신혜", R.drawable.profile);
         Feed feed1 = new Feed(
                 "feed-0",
-                Arrays.asList(image1, image2),
+                image1,
+                image2,
                 user1,
                 "내일 소개남이랑 첫 데이트인데 장소 좀 골라주세요~!ㅎㅎ",
                 "2018.01.28",
@@ -58,7 +59,8 @@ public class FeedRemoteDataSource implements FeedDataSource {
 
         Feed feed2 = new Feed(
                 "feed-0",
-                Arrays.asList(image3, image4),
+                image3,
+                image4,
                 user2,
                 "짬뽕, 짜장면",
                 "2019.01.29",
