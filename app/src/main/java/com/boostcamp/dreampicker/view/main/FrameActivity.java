@@ -9,6 +9,7 @@ import com.boostcamp.dreampicker.databinding.ActivityFrameBinding;
 import com.boostcamp.dreampicker.view.BaseActivity;
 import com.boostcamp.dreampicker.view.feedDetail.FeedDetailFragment;
 import com.boostcamp.dreampicker.view.profile.ProfileFragment;
+import com.boostcamp.dreampicker.view.userList.UserListFragment;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,13 +19,14 @@ public class FrameActivity extends BaseActivity<ActivityFrameBinding> {
     private static final String EXTRA_ENTITY_ID = "EXTRA_ENTITY_ID";
     public static final int FRAGMENT_FEED_DETAIL = 0;
     public static final int FRAGMENT_PROFILE = 1;
+    public static final int FRAGMENT_USER_LIST = 2;
 
     private int fragmentId;
     private String entityId;
 
     public static void startActivity(Context context,
-                                   int fragmentId,
-                                   String entityId){
+                                     int fragmentId,
+                                     String entityId){
 
         Intent intent = new Intent(context, FrameActivity.class);
         intent.putExtra(EXTRA_FRAGMENT_ID, fragmentId);
@@ -63,6 +65,9 @@ public class FrameActivity extends BaseActivity<ActivityFrameBinding> {
                 break;
             case FRAGMENT_PROFILE:
                 fragment = ProfileFragment.newInstance();
+                break;
+            case FRAGMENT_USER_LIST:
+                fragment = UserListFragment.newInstance();
                 break;
         }
 

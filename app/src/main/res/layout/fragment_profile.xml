@@ -63,11 +63,13 @@
                                 layout="@layout/layout_profile_count"/>
 
                             <include
+                                android:id="@+id/layout_follower"
                                 bind:count="@{String.valueOf(user.followerCount)}"
                                 bind:title="@{String.valueOf(@string/profile_follower_count)}"
                                 layout="@layout/layout_profile_count"/>
 
                             <include
+                                android:id="@+id/layout_following"
                                 bind:count="@{String.valueOf(user.followingCount)}"
                                 bind:title="@{String.valueOf(@string/profile_following_count)}"
                                 layout="@layout/layout_profile_count"/>
