@@ -8,40 +8,52 @@ import com.boostcamp.dreampicker.BR;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ItemFeedBinding;
 import com.boostcamp.dreampicker.model.Feed;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.boostcamp.dreampicker.view.adapter.BaseRecyclerViewAdapter;
+import com.boostcamp.dreampicker.view.feed.drag.VoteContainerDragListener;
+import com.boostcamp.dreampicker.view.feed.drag.VoteIconTouchListener;
+import com.boostcamp.dreampicker.viewmodel.FeedVoteViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
-    private List<Feed> feedList = new ArrayList<>();
+public class FeedAdapter extends BaseRecyclerViewAdapter<Feed, FeedAdapter.FeedViewHolder> {
+    @Override
+    protected void onBindView(@NonNull final FeedViewHolder holder, int position) {
+        Feed feed = itemList.get(position);
+        ItemFeedBinding binding = holder.binding;
+
+        FeedVoteViewModel voteViewModel = new FeedVoteViewModel(feed);
+
+        binding.setVariable(BR.item, feed);
+        binding.setVariable(BR.vote, voteViewModel);
+
+        // 투표 아이콘 터치 리스너
+        binding.btnFinger.setOnTouchListener(new VoteIconTouchListener());
+        // Todo : 이후 해당 피드에서만 투표 되도록 조정 필요
+        binding.btnFinger.setTag(feed.getId());
+
+        // 투표 FrameLayout의 드래그 리스너
+        VoteContainerDragListener leftListener = new VoteContainerDragListener(feed.getId());
+        leftListener.setOnDropListener(() -> voteViewModel.vote(FeedVoteViewModel.VotePosition.LEFT));
+
+        VoteContainerDragListener rightListener = new VoteContainerDragListener(feed.getId());
+        rightListener.setOnDropListener(() -> voteViewModel.vote(FeedVoteViewModel.VotePosition.RIGHT));
+
+        binding.containerLeft.container.setOnDragListener(leftListener);
+        binding.containerRight.container.setOnDragListener(rightListener);
+    }
+
     @NonNull
     @Override
     public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feed, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_feed, parent, false);
         return new FeedViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-        holder.binding.setVariable(BR.item, feedList.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return feedList.size();
-    }
-
-    public void addAll(List<Feed> feedList) {
-        this.feedList = feedList;
-        notifyDataSetChanged();
-    }
-
     class FeedViewHolder extends RecyclerView.ViewHolder {
-        ItemFeedBinding binding;
+        private ItemFeedBinding binding;
         FeedViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = DataBindingUtil.bind(itemView);

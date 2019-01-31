@@ -1,5 +1,7 @@
 package com.boostcamp.dreampicker.utils;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
@@ -36,4 +38,12 @@ public class ImageUtil {
         GlideApp.with(imageView).load(url).circleCrop().into(imageView);
     }
 
+    @BindingAdapter({"fade"})
+    public static void setFade(ImageView imageView, boolean isFade) {
+        if(isFade) {
+            imageView.setColorFilter(Color.parseColor("#8C8C8C"), PorterDuff.Mode.MULTIPLY);
+        } else {
+            imageView.setColorFilter(null);
+        }
+    }
 }
