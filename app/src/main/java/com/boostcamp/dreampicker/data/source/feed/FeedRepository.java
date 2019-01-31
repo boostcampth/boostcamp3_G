@@ -6,7 +6,6 @@ import com.boostcamp.dreampicker.model.Image;
 import com.boostcamp.dreampicker.model.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -33,8 +32,8 @@ public class FeedRepository implements FeedDataSource {
 
     @Override
     public Single<List<Feed>> getAllFeed() {
-        //FirestoreRepository firestoreRepository = FirestoreRepository.getInstance();
-        //return firestoreRepository.getAllFeed();
+        // Todo : 테스트 후 삭제
+
         List<Feed> feeds = new ArrayList<>();
 
         Image image1 = new Image("image-0-up", R.drawable.image1, "카페");
@@ -43,7 +42,8 @@ public class FeedRepository implements FeedDataSource {
 
         Feed feed1 = new Feed(
                 "feed-0",
-                Arrays.asList(image1, image2),
+                image1,
+                image2,
                 user1,
                 "내일 소개남이랑 첫 데이트인데 장소 좀 골라주세요~!ㅎㅎ",
                 "2018.01.28",
@@ -56,7 +56,8 @@ public class FeedRepository implements FeedDataSource {
 
         Feed feed2 = new Feed(
                 "feed-0",
-                Arrays.asList(image3, image4),
+                image3,
+                image4,
                 user2,
                 "짬뽕, 짜장면",
                 "2019.01.29",
@@ -67,8 +68,12 @@ public class FeedRepository implements FeedDataSource {
         feeds.add(feed2);
         feeds.add(feed1);
 
-        // Todo : 이후 Firestore 연동 필요
         return Single.just(feeds);
+
+        // TODO : 테스팅 끝나면 사용
+        //FirestoreRepository firestoreRepository = FirestoreRepository.getInstance();
+        //return firestoreRepository.getAllFeed();
+
     }
 
     @Override
