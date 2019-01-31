@@ -7,12 +7,24 @@ public class User {
     private int followerCount;
     private int followingCount;
     // TODO : 이후 url로 변경
-    private int profileImageResource;
+    private String profileImageResource;
 
-    public User(String id, String name, int profileImageResource) {
+    public User() {
+    }
+
+    public User(String id,
+                String name,
+                String profileImageResource,
+                int feedCount,
+                int followerCount,
+                int followingCount) {
+
         this.userId = id;
         this.name = name;
         this.profileImageResource = profileImageResource;
+        this.feedCount = feedCount;
+        this.followerCount = followerCount;
+        this.followingCount = followingCount;
     }
 
     public String getUserId() {
@@ -31,13 +43,11 @@ public class User {
         this.name = name;
     }
 
-    public int getProfileImageResource() {
+    public String getProfileImageResource() {
         return profileImageResource;
     }
 
-    public void setProfileImageResource(int profileImageResource) {
-        this.profileImageResource = profileImageResource;
-    }
+    public void setProfileImageResource(String profileImageResource) { this.profileImageResource = profileImageResource; }
 
     public int getFeedCount() {
         return feedCount;

@@ -4,33 +4,41 @@ import java.util.List;
 
 public class Feed {
     private String feedId;
-    private Image[] images;
+    private List<Image> images;
     private User user;
     private String content;
     private String date;
-    private int voteCount;
-
-    // TODO : 마감 조건 확인 이후 작업
     private boolean isEnded;
-
-    // TODO : Firestore 연동 이후 작업
     private List<String> upVotedUserIdList;
     private List<String> downVotedUserIdList;
-
     public Feed() {
     }
 
-    public Feed(String feedId, Image[] images, User user, String content, String date, boolean isEnded) {
+    public Feed(String feedId,
+                List<Image> images,
+                User user,
+                String content,
+                String date,
+                boolean isEnded,
+                List<String> upVotedUserIdList,
+                List<String> downVotedUserIdList) {
+
         this.feedId = feedId;
         this.images = images;
         this.user = user;
         this.content = content;
         this.date = date;
         this.isEnded = isEnded;
+        this.upVotedUserIdList = upVotedUserIdList;
+        this.downVotedUserIdList = downVotedUserIdList;
+    }
 
-        // Todo : Firebase 연동 이후 작업
-        // voteCount = upVotedUserIdList.size() + downVotedUserIdList.size();
-        voteCount = 100;
+    public Feed(User user) {
+        this.user = user;
+    }
+
+    public Feed(List<Image> images) {
+        this.images = images;
     }
 
     public String getId() {
@@ -41,11 +49,11 @@ public class Feed {
         this.feedId = feedId;
     }
 
-    public Image[] getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
-    public void setImages(Image[] images) {
+    public void setImages(List<Image> images) {
         this.images = images;
     }
 
@@ -73,7 +81,29 @@ public class Feed {
         this.date = date;
     }
 
-    public int getVoteCount() {
-        return voteCount;
+    public String getFeedId() { return feedId; }
+
+    public void setFeedId(String feedId) {
+        this.feedId = feedId;
     }
+
+    public boolean isEnded() {
+        return isEnded;
+    }
+
+    public void setEnded(boolean ended) {
+        isEnded = ended;
+    }
+
+    public List<String> getUpVotedUserIdList() {
+        return upVotedUserIdList;
+    }
+
+    public void setUpVotedUserIdList(List<String> upVotedUserIdList) { this.upVotedUserIdList = upVotedUserIdList; }
+
+    public List<String> getDownVotedUserIdList() {
+        return downVotedUserIdList;
+    }
+
+    public void setDownVotedUserIdList(List<String> downVotedUserIdList) { this.downVotedUserIdList = downVotedUserIdList; }
 }
