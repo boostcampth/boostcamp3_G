@@ -36,6 +36,7 @@
     <dimen name="profile_tab_height">40dp</dimen>
     <dimen name="login_logo_size">280dp</dimen>
     <dimen name="splash_logo_size">240dp</dimen>
+    <dimen name="vote_progress_height">10dp</dimen>
 
     <!-- 투표 아이콘 사이즈 -->
     <dimen name="vote_icon_size">56dp</dimen>

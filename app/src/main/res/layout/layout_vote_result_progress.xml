@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="vote"
+            type="com.boostcamp.dreampicker.viewmodel.FeedVoteViewModel"/>
+    </data>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:padding="@dimen/space_x_small"
+        android:visibility="gone"
+        app:slide="@{vote.isVoted}">
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{String.valueOf(vote.leftVotedCount)}"
+            tools:text="100" />
+
+        <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+            android:layout_width="0dp"
+            android:layout_height="@dimen/vote_progress_height"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            app:rcProgressColor="@color/colorAccent"
+            app:rcBackgroundColor="@color/colorGray"
+            app:rcProgress="@{vote.leftVotedCount}"
+            app:rcMax="@{vote.totalVotedCount}"
+            app:rcRadius="5dp"
+            app:rcReverse="true"/>
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/vote_result_title" />
+
+        <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+            android:layout_width="0dp"
+            android:layout_height="@dimen/vote_progress_height"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            app:rcProgressColor="@color/colorAccent"
+            app:rcBackgroundColor="@color/colorGray"
+            app:rcProgress="@{vote.rightVotedCount}"
+            app:rcMax="@{vote.totalVotedCount}"
+            app:rcRadius="5dp"/>
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{String.valueOf(vote.rightVotedCount)}"
+            tools:text="20" />
+
+    </LinearLayout>
+</layout>

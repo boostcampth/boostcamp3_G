@@ -61,4 +61,6 @@ dependencies {
 
     // ShineButton
     implementation 'com.sackcentury:shinebutton:0.2.0'
+    // Android-RoundCorner Progressbar
+    implementation 'com.akexorcist:RoundCornerProgressBar:2.0.3'
 }
