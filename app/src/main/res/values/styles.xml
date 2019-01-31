@@ -36,4 +36,36 @@
         <item name="android:layout_height">@dimen/button_large</item>
     </style>
 
+    <!-- EditText 기본 스타일 -->
+    <style name="EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@null</item>
+        <item name="android:paddingStart">@dimen/space_median</item>
+        <item name="android:paddingEnd">@dimen/space_median</item>
+    </style>
+
+    <style name="EditText.Search" parent="EditText">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:imeOptions">actionSearch</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/text_s_large</item>
+    </style>
+
+    <!-- TabLayout 스타일 -->
+    <style name="TabLayout" parent="Widget.Design.TabLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/profile_tab_height</item>
+        <item name="android:background">@drawable/line_vertical</item>
+        <item name="tabIndicatorColor">@color/colorPrimary</item>
+        <item name="tabIndicatorHeight">1dp</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
+    </style>
+
+    <!-- RoundCorner Progressbar 스타일 -->
+    <style name="RoundCornerProgressbar">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/vote_progress_height</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
 </resources>

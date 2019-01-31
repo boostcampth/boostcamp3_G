@@ -11,36 +11,38 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public class FeedRepository implements FeedDataSource {
-    private static FeedRepository instance;
+public class FeedRemoteDataSource implements FeedDataSource {
 
-    private FeedRemoteDataSource remoteDataSource;
+    private static FeedRemoteDataSource feedRemoteDataSource = null;
 
-    private FeedRepository() {
-        remoteDataSource = FeedRemoteDataSource.getInstance();
-    }
+    private FeedRemoteDataSource() {}
 
-    public static FeedRepository getInstance() {
-        if(instance == null) {
-            synchronized (FeedRepository.class) {
-                if(instance == null) {
-                    instance = new FeedRepository();
+    public static FeedRemoteDataSource getInstance() {
+        if(feedRemoteDataSource == null){
+            synchronized (FeedRemoteDataSource.class){
+                if(feedRemoteDataSource == null){
+                    feedRemoteDataSource = new FeedRemoteDataSource();
                 }
             }
         }
-        return instance;
+        return feedRemoteDataSource;
     }
 
     @Override
     public Single<List<Feed>> getAllFeed() {
-        //FirestoreRepository firestoreRepository = FirestoreRepository.getInstance();
-        //return firestoreRepository.getAllFeed();
-        List<Feed> feeds = new ArrayList<>();
 
+        // TODO. 파이어베이스에서 데이터 로딩하기
+        return null;
+    }
+
+    @Override
+    public Single<List<Feed>> searchFeed(String searchKey) {
+
+        // TODO. 임시 코드 삭제
+        List<Feed> feedList = new ArrayList<>();
         Image image1 = new Image("image-0-up", R.drawable.image1, "카페");
         Image image2 = new Image("image-0-down", R.drawable.image2, "술집");
         User user1 = new User("user-0", "박신혜", R.drawable.profile);
-
         Feed feed1 = new Feed(
                 "feed-0",
                 Arrays.asList(image1, image2),
@@ -63,17 +65,11 @@ public class FeedRepository implements FeedDataSource {
                 false
         );
 
-        feeds.add(feed1);
-        feeds.add(feed2);
-        feeds.add(feed1);
+        feedList.add(feed1);
+        feedList.add(feed2);
+        feedList.add(feed1);
+        feedList.add(feed2);
 
-        // Todo : 이후 Firestore 연동 필요
-        return Single.just(feeds);
-    }
-
-    @Override
-    public Single<List<Feed>> searchFeed(String searchKey) {
-
-        return remoteDataSource.searchFeed(searchKey);
+        return Single.just(feedList);
     }
 }

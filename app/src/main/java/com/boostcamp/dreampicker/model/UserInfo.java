@@ -4,101 +4,87 @@ import java.util.List;
 
 // TODO. count 변수를 따로 둘지. List.size()로 쓸지 결정하기
 public class UserInfo {
-    private String userId;
-    private String userName;
-    private String userProfileUrl;
-    private List<String> fwers;
-    private List<String> fwings;
-    private List<String> votedFeed;
-    private List<String> feeds;
+    private String id;
+    private String name;
+    private String email;
+    private String profileImageUrl;
 
-    private int feedCount;
-    private int followerCount;
-    private int followingCount;
+    // TODO. 삭제
+    private int profileImageResource;
+    private List<String> fwerList;
+    private List<String> fwingList;
+    private List<String> votedFeedList;
+    private List<String> myFeedList;
 
-    public UserInfo() {
+    public String getId() {
+        return id;
     }
 
-    public UserInfo(String userId,
-                    String userName,
-                    String userProfileUrl,
-                    List<String> fwers,
-                    List<String> fwings,
-                    List<String> votedFeed,
-                    List<String> feeds) {
-
-        this.userId = userId;
-        this.userName = userName;
-        this.userProfileUrl = userProfileUrl;
-        this.fwers = fwers;
-        this.fwings = fwings;
-        this.votedFeed = votedFeed;
-        this.feeds = feeds;
+    public void setId(String id) {
+        this.id = id;
     }
 
-
-
-    public String getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getUserProfileUrl() {
-        return userProfileUrl;
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
-    public void setUserProfileUrl(String userProfileUrl) { this.userProfileUrl = userProfileUrl; }
-
-    public List<String> getFwers() { return fwers; }
-
-    public void setFwers(List<String> fwers) { this.fwers = fwers; }
-
-    public List<String> getFwings() { return fwings; }
-
-    public void setFwings(List<String> fwings) { this.fwings = fwings; }
-
-    public List<String> getVotedFeed() { return votedFeed; }
-
-    public void setVotedFeed(List<String> votedFeed) { this.votedFeed = votedFeed; }
-
-    public List<String> getFeeds() { return feeds; }
-
-    public void setFeeds(List<String> feeds) { this.feeds = feeds; }
-
-    public int getFeedCount() {
-        return feedCount;
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
-    public void setFeedCount(int feedCount) {
-        this.feedCount = feedCount;
+    public int getProfileImageResource() {
+        return profileImageResource;
     }
 
-    public int getFollowerCount() {
-        return followerCount;
+    public void setProfileImageResource(int profileImageResource) {
+        this.profileImageResource = profileImageResource;
     }
 
-    public void setFollowerCount(int followerCount) {
-        this.followerCount = followerCount;
+    public List<String> getFwerList() {
+        return fwerList;
     }
 
-    public int getFollowingCount() {
-        return followingCount;
+    public void setFwerList(List<String> fwerList) {
+        this.fwerList = fwerList;
     }
 
-    public void setFollowingCount(int followingCount) {
-        this.followingCount = followingCount;
+    public List<String> getFwingList() {
+        return fwingList;
     }
 
+    public void setFwingList(List<String> fwingList) {
+        this.fwingList = fwingList;
+    }
 
+    public List<String> getVotedFeedList() {
+        return votedFeedList;
+    }
+
+    public void setVotedFeedList(List<String> votedFeedList) {
+        this.votedFeedList = votedFeedList;
+    }
+
+    public List<String> getMyFeedList() {
+        return myFeedList;
+    }
+
+    public void setMyFeedList(List<String> myFeedList) {
+        this.myFeedList = myFeedList;
+    }
 }

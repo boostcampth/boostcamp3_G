@@ -59,6 +59,11 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     annotationProcessor 'androidx.annotation:annotation:1.0.1'
 
+    // ShineButton
+    implementation 'com.sackcentury:shinebutton:0.2.0'
+    // Android-RoundCorner Progressbar
+    implementation 'com.akexorcist:RoundCornerProgressBar:2.0.3'
+
     // Firebase
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-firestore:15.0.0'

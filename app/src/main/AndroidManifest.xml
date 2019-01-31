@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.upload.UploadActivity" />
+        <activity android:name=".view.main.FrameActivity" />
 
     </application>
 

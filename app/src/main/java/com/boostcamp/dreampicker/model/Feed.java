@@ -1,60 +1,57 @@
 package com.boostcamp.dreampicker.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Feed {
-    private String feedId;
-    private List<Image> images;
+    private String id;
+    private List<Image> imageList;
     private User user;
     private String content;
     private String date;
+
+    // TODO : 마감 조건 확인 이후 작업
     private boolean isEnded;
-    private List<String> upVotedUserIdList;
-    private List<String> downVotedUserIdList;
+
+    // TODO : Firestore 연동 이후 작업
+    private List<String> leftUserList = new ArrayList<>();
+    private List<String> rightUserList = new ArrayList<>();
+
     public Feed() {
     }
 
-    public Feed(String feedId,
-                List<Image> images,
-                User user,
-                String content,
-                String date,
-                boolean isEnded,
-                List<String> upVotedUserIdList,
-                List<String> downVotedUserIdList) {
-
-        this.feedId = feedId;
-        this.images = images;
+    // For Mock Data
+    public Feed(String id, List<Image> imageList, User user, String content, String date, boolean isEnded) {
+        this.id = id;
+        this.imageList = imageList;
         this.user = user;
         this.content = content;
         this.date = date;
         this.isEnded = isEnded;
-        this.upVotedUserIdList = upVotedUserIdList;
-        this.downVotedUserIdList = downVotedUserIdList;
-    }
 
-    public Feed(User user) {
-        this.user = user;
-    }
+        leftUserList.add("key-1");
+        leftUserList.add("key-1");
+        leftUserList.add("key-1");
 
-    public Feed(List<Image> images) {
-        this.images = images;
+        rightUserList.add("key-2");
+        rightUserList.add("key-2");
+        rightUserList.add("key-2");
     }
 
     public String getId() {
-        return feedId;
+        return id;
     }
 
     public void setId(String feedId) {
-        this.feedId = feedId;
+        this.id = feedId;
     }
 
-    public List<Image> getImages() {
-        return images;
+    public List<Image> getImageList() {
+        return imageList;
     }
 
-    public void setImages(List<Image> images) {
-        this.images = images;
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
     }
 
     public User getUser() {
@@ -81,12 +78,6 @@ public class Feed {
         this.date = date;
     }
 
-    public String getFeedId() { return feedId; }
-
-    public void setFeedId(String feedId) {
-        this.feedId = feedId;
-    }
-
     public boolean isEnded() {
         return isEnded;
     }
@@ -95,15 +86,19 @@ public class Feed {
         isEnded = ended;
     }
 
-    public List<String> getUpVotedUserIdList() {
-        return upVotedUserIdList;
+    public List<String> getLeftUserList() {
+        return leftUserList;
     }
 
-    public void setUpVotedUserIdList(List<String> upVotedUserIdList) { this.upVotedUserIdList = upVotedUserIdList; }
-
-    public List<String> getDownVotedUserIdList() {
-        return downVotedUserIdList;
+    public void setLeftUserList(List<String> leftUserList) {
+        this.leftUserList = leftUserList;
     }
 
-    public void setDownVotedUserIdList(List<String> downVotedUserIdList) { this.downVotedUserIdList = downVotedUserIdList; }
+    public List<String> getRightUserList() {
+        return rightUserList;
+    }
+
+    public void setRightUserList(List<String> rightUserList) {
+        this.rightUserList = rightUserList;
+    }
 }

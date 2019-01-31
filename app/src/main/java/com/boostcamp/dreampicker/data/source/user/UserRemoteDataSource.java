@@ -45,11 +45,8 @@ public class UserRemoteDataSource implements UserDataSource {
 
         // TODO. 임시 데이터
         UserInfo user = new UserInfo();
-        user.setUserName("yeseul");
-        user.setUserProfileUrl("https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg");
-        user.setFeedCount(110);
-        user.setFollowerCount(314);
-        user.setFollowingCount(207);
+        user.setName("yeseul");
+        user.setProfileImageUrl("https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg");
 
         return Single.just(user);
     }
