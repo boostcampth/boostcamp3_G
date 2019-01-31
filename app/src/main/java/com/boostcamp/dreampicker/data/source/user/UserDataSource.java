@@ -10,8 +10,8 @@ import io.reactivex.Single;
 public interface UserDataSource {
 
     // 유저 검색 리스트 요청
-    Single<List<User>> getUserList(String searchKey);
+    Single<List<User>> searchAllUser(String searchKey);
 
     // 유저 프로필 정보 요청
-    Single<UserInfo> getUserDetail(String userId);
+    Single<UserInfo> getUserInfo(String userId);
 }
