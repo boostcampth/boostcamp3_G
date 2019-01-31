@@ -69,7 +69,7 @@ public class FeedListFragment extends BaseFragment<FragmentFeedListBinding> {
 
     @SuppressLint("CheckResult")
     private void loadData() {
-        repository.searchFeed("")
+        repository.searchAllFeed("")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this.adapter::addItems,
                         error -> Log.d("", error.getLocalizedMessage()));

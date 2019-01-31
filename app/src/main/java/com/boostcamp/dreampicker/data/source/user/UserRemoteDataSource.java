@@ -27,7 +27,7 @@ public class UserRemoteDataSource implements UserDataSource {
     }
 
     @Override
-    public Single<List<User>> getUserList(String searchKey) {
+    public Single<List<User>> searchAllUser(String searchKey) {
 
         // TODO. 임시 데이터
         List<User> userList = new ArrayList<>();
@@ -41,7 +41,7 @@ public class UserRemoteDataSource implements UserDataSource {
     }
 
     @Override
-    public Single<UserInfo> getUserDetail(String userId) {
+    public Single<UserInfo> getUserInfo(String userId) {
 
         // TODO. 임시 데이터
         UserInfo user = new UserInfo();

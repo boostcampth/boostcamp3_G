@@ -29,14 +29,14 @@ public class UserRepository implements UserDataSource {
     }
 
     @Override
-    public Single<List<User>> getUserList(String searchKey) {
+    public Single<List<User>> searchAllUser(String searchKey) {
 
-        return remoteDataSource.getUserList(searchKey);
+        return remoteDataSource.searchAllUser(searchKey);
     }
 
     @Override
-    public Single<UserInfo> getUserDetail(String userId) {
+    public Single<UserInfo> getUserInfo(String userId) {
 
-        return remoteDataSource.getUserDetail(userId);
+        return remoteDataSource.getUserInfo(userId);
     }
 }

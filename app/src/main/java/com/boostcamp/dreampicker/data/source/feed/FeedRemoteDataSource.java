@@ -35,7 +35,7 @@ public class FeedRemoteDataSource implements FeedDataSource {
     }
 
     @Override
-    public Single<List<Feed>> searchFeed(String searchKey) {
+    public Single<List<Feed>> searchAllFeed(String searchKey) {
 
         // TODO. 임시 코드 삭제
         List<Feed> feedList = new ArrayList<>();
