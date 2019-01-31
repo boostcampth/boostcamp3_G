@@ -11,6 +11,7 @@ import com.boostcamp.dreampicker.data.source.user.UserRepository;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.view.BaseFragment;
 import com.boostcamp.dreampicker.view.feedList.FeedListFragment;
+import com.boostcamp.dreampicker.view.main.FrameActivity;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
@@ -63,6 +64,10 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
             TabLayout.Tab tab = binding.tabProfile.getTabAt(i);
             tab.setText(getResources().getStringArray(R.array.profile_tab_names)[i]);
         }
+
+        // TODO. 임시코드
+        binding.layoutFollower.container.setOnClickListener(this::startFrameActivity);
+        binding.layoutFollowing.container.setOnClickListener(this::startFrameActivity);
     }
 
     @SuppressLint("CheckResult")
@@ -71,6 +76,12 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(binding::setUser,
                         error -> Log.d("", error.getLocalizedMessage()));
+    }
+
+    /** 임시입니다.
+     * TODO. ViewModel 로 이동 */
+    private void startFrameActivity(View view){
+        FrameActivity.startActivity(getContext(), FrameActivity.FRAGMENT_USER_LIST, "");
     }
 
     class ProfilePagerAdapter extends FragmentPagerAdapter {
