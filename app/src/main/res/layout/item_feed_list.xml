@@ -31,7 +31,7 @@
                     android:layout_height="match_parent"
                     style="@style/ImageView"
                     android:scaleType="centerCrop"
-                    app:image="@{feed.imageList.get(0).image}"/>
+                    app:image="@{feed.leftImage.image}"/>
 
                 <ImageView
                     android:id="@+id/iv_right"
@@ -40,7 +40,7 @@
                     android:layout_height="match_parent"
                     style="@style/ImageView"
                     android:scaleType="centerCrop"
-                    app:image="@{feed.imageList.get(1).image}"/>
+                    app:image="@{feed.rightImage.image}"/>
             </LinearLayout>
 
             <LinearLayout
