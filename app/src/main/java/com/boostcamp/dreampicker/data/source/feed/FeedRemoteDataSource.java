@@ -4,6 +4,8 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.model.Feed;
 import com.boostcamp.dreampicker.model.Image;
 import com.boostcamp.dreampicker.model.User;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,9 +15,11 @@ import io.reactivex.Single;
 
 public class FeedRemoteDataSource implements FeedDataSource {
 
+    private static final String COLLECTION_FEED = "feed";
+
     private static FeedRemoteDataSource feedRemoteDataSource = null;
 
-    private FeedRemoteDataSource() {}
+    private FeedRemoteDataSource() { }
 
     public static FeedRemoteDataSource getInstance() {
         if(feedRemoteDataSource == null){
@@ -30,9 +34,18 @@ public class FeedRemoteDataSource implements FeedDataSource {
 
     @Override
     public Single<List<Feed>> getAllFeed() {
-
-        // TODO. 파이어베이스에서 데이터 로딩하기
-        return null;
+        final List<Feed> feeds = new ArrayList<>();
+        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            feeds.add(document.toObject(Feed.class));
+                            emitter.onSuccess(feeds);
+                        }
+                    } else {
+                        emitter.onError(task.getException());
+                    }
+                }));
     }
 
     @Override
