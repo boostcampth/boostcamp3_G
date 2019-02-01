@@ -1,9 +1,10 @@
 package com.boostcamp.dreampicker.data.source.user;
 
-import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.model.Feed;
 import com.boostcamp.dreampicker.model.User;
 import com.boostcamp.dreampicker.model.UserInfo;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import io.reactivex.Single;
 
 public class UserRemoteDataSource implements UserDataSource {
 
+    private static final String COLLECTION_USER = "user";
 
     private static UserRemoteDataSource userRemoteDataSource = null;
 
@@ -32,22 +34,26 @@ public class UserRemoteDataSource implements UserDataSource {
     @Override
     public Single<List<User>> searchAllUser(String searchKey) {
 
-        // TODO. 임시 데이터
-        List<User> userList = new ArrayList<>();
-        User user = new User("" ,"yeseul",R.drawable.profile);
-
-        userList.add(user);
-        userList.add(user);
-        userList.add(user);
-        userList.add(user);
-
-        return Single.just(userList);
-
+        final List<User> users = new ArrayList<>();
+        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USER)
+                // TODO : 검색로직 구현후 주석해제
+                //.whereEqualTo("name",searchKey)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            users.add(document.toObject(User.class));
+                            emitter.onSuccess(users);
+                        }
+                    } else {
+                        emitter.onError(task.getException());
+                    }
+                }));
     }
 
     @Override
     public Single<List<Feed>> searchAllFeed(String searchKey, @Nullable Boolean isEnded) {
-        return null;
+       return null;
     }
 
     @Override
