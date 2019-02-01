@@ -65,8 +65,8 @@ dependencies {
     implementation 'com.akexorcist:RoundCornerProgressBar:2.0.3'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-firestore:15.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-firestore:18.0.0'
 }
 // Firebase
 apply plugin: 'com.google.gms.google-services'
