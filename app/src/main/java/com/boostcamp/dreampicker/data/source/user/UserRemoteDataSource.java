@@ -1,15 +1,18 @@
 package com.boostcamp.dreampicker.data.source.user;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.model.Feed;
 import com.boostcamp.dreampicker.model.User;
 import com.boostcamp.dreampicker.model.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import io.reactivex.Single;
 
 public class UserRemoteDataSource implements UserDataSource {
+
 
     private static UserRemoteDataSource userRemoteDataSource = null;
 
@@ -32,12 +35,19 @@ public class UserRemoteDataSource implements UserDataSource {
         // TODO. 임시 데이터
         List<User> userList = new ArrayList<>();
         User user = new User("" ,"yeseul",R.drawable.profile);
+
         userList.add(user);
         userList.add(user);
         userList.add(user);
         userList.add(user);
 
         return Single.just(userList);
+
+    }
+
+    @Override
+    public Single<List<Feed>> searchAllFeed(String searchKey, @Nullable Boolean isEnded) {
+        return null;
     }
 
     @Override

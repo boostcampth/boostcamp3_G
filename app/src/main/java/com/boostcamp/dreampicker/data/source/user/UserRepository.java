@@ -1,10 +1,12 @@
 package com.boostcamp.dreampicker.data.source.user;
 
+import com.boostcamp.dreampicker.model.Feed;
 import com.boostcamp.dreampicker.model.User;
 import com.boostcamp.dreampicker.model.UserInfo;
 
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import io.reactivex.Single;
 
 public class UserRepository implements UserDataSource {
@@ -38,5 +40,10 @@ public class UserRepository implements UserDataSource {
     public Single<UserInfo> getUserInfo(String userId) {
 
         return remoteDataSource.getUserInfo(userId);
+    }
+
+    @Override
+    public Single<List<Feed>> searchAllFeed(String searchKey, @Nullable Boolean isEnded) {
+        return null;
     }
 }
