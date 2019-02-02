@@ -16,19 +16,19 @@ public class FeedRemoteDataSource implements FeedDataSource {
 
     private static final String COLLECTION_FEED = "feed";
 
-    private static FeedRemoteDataSource feedRemoteDataSource = null;
+    private static FeedRemoteDataSource remoteDataSource = null;
 
     private FeedRemoteDataSource() { }
 
     public static FeedRemoteDataSource getInstance() {
-        if(feedRemoteDataSource == null){
+        if(remoteDataSource == null){
             synchronized (FeedRemoteDataSource.class){
-                if(feedRemoteDataSource == null){
-                    feedRemoteDataSource = new FeedRemoteDataSource();
+                if(remoteDataSource == null){
+                    remoteDataSource = new FeedRemoteDataSource();
                 }
             }
         }
-        return feedRemoteDataSource;
+        return remoteDataSource;
     }
 
     @Override
@@ -85,5 +85,27 @@ public class FeedRemoteDataSource implements FeedDataSource {
         feedList.add(feed2);
 
         return Single.just(feedList);
+    }
+
+    @Override
+    public Single<List<Feed>> addMainFeedList(String userId, int pageIndex, int pageUnit) {
+
+        return null;
+    }
+
+    @Override
+    public void updateFeedVote(String feedId, String userId, int voteFlag) {
+
+    }
+
+    @Override
+    public Single<List<Feed>> addSearchFeedList(String searchKey, int pageIndex, int pageUnit) {
+
+        return null;
+    }
+
+    @Override
+    public void toggleFeedState(String feedId, boolean isEnded) {
+
     }
 }

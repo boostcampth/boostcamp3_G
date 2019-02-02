@@ -25,8 +25,8 @@ public class FeedVoteViewModel extends BaseViewModel {
     }
 
     private void initViewModel() {
-        leftVotedCount.set(feed.getLeftUserList().size());
-        rightVotedCount.set(feed.getRightUserList().size());
+        leftVotedCount.set(feed.getLeftCount());
+        rightVotedCount.set(feed.getRightCount());
         totalVotedCount.set(leftVotedCount.get() + rightVotedCount.get());
     }
 

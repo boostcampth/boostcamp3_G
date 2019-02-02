@@ -1,7 +1,6 @@
 package com.boostcamp.dreampicker.data.source.user;
 
 import com.boostcamp.dreampicker.model.User;
-import com.boostcamp.dreampicker.model.UserInfo;
 
 import java.util.List;
 

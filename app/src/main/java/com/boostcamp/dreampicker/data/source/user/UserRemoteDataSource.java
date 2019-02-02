@@ -2,7 +2,7 @@ package com.boostcamp.dreampicker.data.source.user;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.model.User;
-import com.boostcamp.dreampicker.model.UserInfo;
+import com.boostcamp.dreampicker.model.UserDetail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +41,47 @@ public class UserRemoteDataSource implements UserDataSource {
     }
 
     @Override
-    public Single<UserInfo> getUserInfo(String userId) {
+    public Single<UserDetail> getUserInfo(String userId) {
 
         // TODO. 임시 데이터
-        UserInfo user = new UserInfo();
+        UserDetail user = new UserDetail();
         user.setName("yeseul");
         user.setProfileImageUrl("https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg");
 
         return Single.just(user);
+    }
+
+    @Override
+    public Single<UserDetail> getProfileUserDetail(String userId) {
+
+        return null;
+    }
+
+    @Override
+    public Single<List<User>> addProfileFollowingList(String userId, int pageIndex, int pageUnit) {
+
+        return null;
+    }
+
+    @Override
+    public Single<List<User>> addProfileFollowerList(String userId, int pageIndex, int pageUnit) {
+
+        return null;
+    }
+
+    @Override
+    public Single<List<User>> addSearchUserList(String searchKey, int pageIndex, int pageUnit) {
+        List<User> userList = new ArrayList<>();
+
+        for(int i = 0 ; i < pageUnit ; i++) {
+            User user = new User("userId",
+                    "사용자 " + (i+1),
+                    "https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",
+                    R.drawable.profile);
+
+            userList.add(user);
+        }
+
+        return Single.just(userList);
     }
 }

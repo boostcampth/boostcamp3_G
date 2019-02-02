@@ -1,7 +1,7 @@
 package com.boostcamp.dreampicker.data.source.user;
 
 import com.boostcamp.dreampicker.model.User;
-import com.boostcamp.dreampicker.model.UserInfo;
+import com.boostcamp.dreampicker.model.UserDetail;
 
 import java.util.List;
 
@@ -35,8 +35,32 @@ public class UserRepository implements UserDataSource {
     }
 
     @Override
-    public Single<UserInfo> getUserInfo(String userId) {
+    public Single<UserDetail> getUserInfo(String userId) {
 
         return remoteDataSource.getUserInfo(userId);
+    }
+
+    @Override
+    public Single<UserDetail> getProfileUserDetail(String userId) {
+
+        return remoteDataSource.getProfileUserDetail(userId);
+    }
+
+    @Override
+    public Single<List<User>> addProfileFollowingList(String userId, int pageIndex, int pageUnit) {
+
+        return remoteDataSource.addProfileFollowingList(userId, pageIndex, pageUnit);
+    }
+
+    @Override
+    public Single<List<User>> addProfileFollowerList(String userId, int pageIndex, int pageUnit) {
+
+        return remoteDataSource.addProfileFollowerList(userId, pageIndex, pageUnit);
+    }
+
+    @Override
+    public Single<List<User>> addSearchUserList(String searchKey, int pageIndex, int pageUnit) {
+
+        return remoteDataSource.addSearchUserList(searchKey, pageIndex, pageUnit);
     }
 }

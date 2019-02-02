@@ -16,6 +16,13 @@ public class User {
         this.profileImageResource = profileImageResource;
     }
 
+    public User(String id, String name, String profileImageUrl, int profileImageResource) {
+        this.id = id;
+        this.name = name;
+        this.profileImageUrl = profileImageUrl;
+        this.profileImageResource = profileImageResource;
+    }
+
     public String getId() {
         return id;
     }

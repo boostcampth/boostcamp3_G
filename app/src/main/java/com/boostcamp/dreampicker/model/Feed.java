@@ -1,8 +1,5 @@
 package com.boostcamp.dreampicker.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Feed {
     private String id;
     private Image leftImage;
@@ -15,37 +12,39 @@ public class Feed {
     private boolean isEnded;
 
     // TODO : Firestore 연동 이후 작업
-    private List<String> leftUserList = new ArrayList<>();
-    private List<String> rightUserList = new ArrayList<>();
+    private int leftCount;
+    private int rightCount;
 
-    public Feed() {
-    }
+    private int voteFlag;
 
-    // For Mock Data
-    public Feed(String id, Image leftImage,Image rightImage, User user, String content, String date, boolean isEnded) {
+    public Feed() { }
+
+    public Feed(String id,
+                Image leftImage,
+                Image rightImage,
+                User user,
+                String content,
+                String date,
+                boolean isEnded) {
+
         this.id = id;
         this.leftImage = leftImage;
-        this.rightImage =rightImage;
+        this.rightImage = rightImage;
         this.user = user;
         this.content = content;
         this.date = date;
         this.isEnded = isEnded;
-
-        leftUserList.add("key-1");
-        leftUserList.add("key-1");
-        leftUserList.add("key-1");
-
-        rightUserList.add("key-2");
-        rightUserList.add("key-2");
-        rightUserList.add("key-2");
+        this.leftCount = 3;
+        this.rightCount = 4;
+        this.voteFlag = 0;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String feedId) {
-        this.id = feedId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Image getLeftImage() {
@@ -96,19 +95,27 @@ public class Feed {
         isEnded = ended;
     }
 
-    public List<String> getLeftUserList() {
-        return leftUserList;
+    public int getLeftCount() {
+        return leftCount;
     }
 
-    public void setLeftUserList(List<String> leftUserList) {
-        this.leftUserList = leftUserList;
+    public void setLeftCount(int leftCount) {
+        this.leftCount = leftCount;
     }
 
-    public List<String> getRightUserList() {
-        return rightUserList;
+    public int getRightCount() {
+        return rightCount;
     }
 
-    public void setRightUserList(List<String> rightUserList) {
-        this.rightUserList = rightUserList;
+    public void setRightCount(int rightCount) {
+        this.rightCount = rightCount;
+    }
+
+    public int getVoteFlag() {
+        return voteFlag;
+    }
+
+    public void setVoteFlag(int voteFlag) {
+        this.voteFlag = voteFlag;
     }
 }

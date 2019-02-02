@@ -3,7 +3,7 @@ package com.boostcamp.dreampicker.model;
 import java.util.List;
 
 public class Image {
-    private String imageId;
+    private String id;
     private int image;
     // TODO : 이후 URL로 변경 예정
     private String imageUrl;
@@ -15,17 +15,17 @@ public class Image {
     }
 
     public Image(String id, int image, String tag) {
-        this.imageId = id;
+        this.id = id;
         this.image = image;
         this.tag = tag;
     }
 
-    public String getImageId() {
-        return imageId;
+    public String getId() {
+        return id;
     }
 
-    public void setImageId(String imageId) {
-        this.imageId = imageId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getImage() {
