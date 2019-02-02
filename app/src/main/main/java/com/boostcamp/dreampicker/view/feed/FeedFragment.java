@@ -7,7 +7,6 @@ import com.boostcamp.dreampicker.BR;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
 import com.boostcamp.dreampicker.view.BaseFragment;
-import com.boostcamp.dreampicker.viewmodel.FeedViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

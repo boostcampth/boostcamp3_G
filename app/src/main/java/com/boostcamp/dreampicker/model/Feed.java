@@ -118,4 +118,8 @@ public class Feed {
     public void setVoteFlag(int voteFlag) {
         this.voteFlag = voteFlag;
     }
+
+    public int getVoteCount() {
+        return leftCount + rightCount;
+    }
 }

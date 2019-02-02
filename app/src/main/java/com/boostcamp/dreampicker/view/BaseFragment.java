@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 
 public abstract class BaseFragment<B extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
     protected B binding;
-    protected V model;
+    protected V viewModel;
 
     @Nullable
     @Override
@@ -23,13 +23,12 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends BaseView
         super.onCreateView(inflater, container, savedInstanceState);
 
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        model = getViewModel();
-        binding.setVariable(getVariableId(), model);
+        viewModel = getViewModel();
+        binding.setLifecycleOwner(this);
 
         return binding.getRoot();
     }
 
     protected abstract V getViewModel();
     protected abstract int getLayoutId();
-    protected abstract int getVariableId();
 }

@@ -4,53 +4,15 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.model.Feed;
 import com.boostcamp.dreampicker.model.Image;
 import com.boostcamp.dreampicker.model.User;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
 
-public class FeedRemoteDataSource implements FeedDataSource {
-
-    private static final String COLLECTION_FEED = "feed";
-
-    private static FeedRemoteDataSource feedRemoteDataSource = null;
-
-    private FeedRemoteDataSource() { }
-
-    public static FeedRemoteDataSource getInstance() {
-        if(feedRemoteDataSource == null){
-            synchronized (FeedRemoteDataSource.class){
-                if(feedRemoteDataSource == null){
-                    feedRemoteDataSource = new FeedRemoteDataSource();
-                }
-            }
-        }
-        return feedRemoteDataSource;
-    }
-
+public class FeedMockDataSource implements FeedDataSource{
     @Override
     public Single<List<Feed>> getAllFeed() {
-        final List<Feed> feeds = new ArrayList<>();
-        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED).get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            feeds.add(document.toObject(Feed.class));
-                            emitter.onSuccess(feeds);
-                        }
-                    } else {
-                        emitter.onError(task.getException());
-                    }
-                }));
-    }
-
-    @Override
-    public Single<List<Feed>> searchAllFeed(String searchKey) {
-
-        // TODO. 임시 코드 삭제
         List<Feed> feedList = new ArrayList<>();
         Image image1 = new Image("image-0-up", R.drawable.image1, "카페");
         Image image2 = new Image("image-0-down", R.drawable.image2, "술집");
@@ -70,7 +32,7 @@ public class FeedRemoteDataSource implements FeedDataSource {
         User user2 = new User("user-1", "공유", R.drawable.profile2);
 
         Feed feed2 = new Feed(
-                "feed-0",
+                "feed-1",
                 image3,
                 image4,
                 user2,
@@ -85,5 +47,30 @@ public class FeedRemoteDataSource implements FeedDataSource {
         feedList.add(feed2);
 
         return Single.just(feedList);
+    }
+
+    @Override
+    public Single<List<Feed>> searchAllFeed(String searchKey) {
+        return null;
+    }
+
+    @Override
+    public Single<List<Feed>> addMainFeedList(String userId, int pageIndex, int pageUnit) {
+        return null;
+    }
+
+    @Override
+    public void updateFeedVote(String feedId, String userId, int voteFlag) {
+
+    }
+
+    @Override
+    public Single<List<Feed>> addSearchFeedList(String searchKey, int pageIndex, int pageUnit) {
+        return null;
+    }
+
+    @Override
+    public void toggleFeedState(String feedId, boolean isEnded) {
+
     }
 }

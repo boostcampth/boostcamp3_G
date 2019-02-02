@@ -112,9 +112,4 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     protected ProfileViewModel getViewModel() {
         return ViewModelProviders.of(this).get(ProfileViewModel.class);
     }
-
-    @Override
-    protected int getVariableId() {
-        return 0;
-    }
 }

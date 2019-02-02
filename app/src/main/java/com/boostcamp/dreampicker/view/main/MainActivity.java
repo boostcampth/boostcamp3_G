@@ -49,11 +49,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        Fragment fragment = new FeedFragment();
+        Fragment fragment = FeedFragment.newInstance();
 
         switch (menuItem.getItemId()) {
             case R.id.navigation_home:
-                fragment = new FeedFragment();
+                fragment = FeedFragment.newInstance();
                 break;
             case R.id.navigation_search:
                 fragment = SearchFragment.newInstance();

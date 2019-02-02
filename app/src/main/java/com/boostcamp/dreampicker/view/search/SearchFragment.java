@@ -97,9 +97,4 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     protected SearchViewModel getViewModel() {
         return ViewModelProviders.of(this).get(SearchViewModel.class);
     }
-
-    @Override
-    protected int getVariableId() {
-        return 0;
-    }
 }

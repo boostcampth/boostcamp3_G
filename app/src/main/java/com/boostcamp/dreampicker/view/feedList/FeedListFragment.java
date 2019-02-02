@@ -82,9 +82,4 @@ public class FeedListFragment extends BaseFragment<FragmentFeedListBinding, Feed
     protected FeedListViewModel getViewModel() {
         return ViewModelProviders.of(this).get(FeedListViewModel.class);
     }
-
-    @Override
-    protected int getVariableId() {
-        return 0;
-    }
 }

@@ -80,9 +80,4 @@ public class UserListFragment extends BaseFragment<FragmentUserListBinding, User
     protected UserListViewModel getViewModel() {
         return ViewModelProviders.of(this).get(UserListViewModel.class);
     }
-
-    @Override
-    protected int getVariableId() {
-        return 0;
-    }
 }

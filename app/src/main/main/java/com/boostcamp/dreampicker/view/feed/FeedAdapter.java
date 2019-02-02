@@ -11,7 +11,6 @@ import com.boostcamp.dreampicker.model.Feed;
 import com.boostcamp.dreampicker.view.adapter.BaseRecyclerViewAdapter;
 import com.boostcamp.dreampicker.view.feed.drag.VoteContainerDragListener;
 import com.boostcamp.dreampicker.view.feed.drag.VoteIconTouchListener;
-import com.boostcamp.dreampicker.viewmodel.FeedVoteViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
