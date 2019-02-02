@@ -147,7 +147,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        app:imageResource="@{viewModel.getFeedAt(position).leftImage.image}" />
+                        app:imageResource="@{viewModel.getFeedAt(position).imageList.get(0).image}" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -155,7 +155,7 @@
                         android:layout_gravity="start|bottom"
                         android:layout_marginStart="@dimen/space_x_small"
                         android:layout_marginBottom="@dimen/space_x_small"
-                        android:text="@{viewModel.getFeedAt(position).leftImage.tag}"
+                        android:text="@{viewModel.getFeedAt(position).imageList.get(0).tag}"
                         android:textColor="@android:color/white"
                         android:textStyle="bold"
                         tools:layout_editor_absoluteX="8dp" />
@@ -176,7 +176,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        app:imageResource="@{viewModel.getFeedAt(position).rightImage.image}" />
+                        app:imageResource="@{viewModel.getFeedAt(position).imageList.get(1).image}" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -184,7 +184,7 @@
                         android:layout_gravity="start|bottom"
                         android:layout_marginStart="@dimen/space_x_small"
                         android:layout_marginBottom="@dimen/space_x_small"
-                        android:text="@{viewModel.getFeedAt(position).rightImage.tag}"
+                        android:text="@{viewModel.getFeedAt(position).imageList.get(1).tag}"
                         android:textColor="@android:color/white"
                         android:textStyle="bold" />
                 </FrameLayout>
