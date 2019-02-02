@@ -3,7 +3,6 @@ package com.boostcamp.dreampicker.viewmodel;
 import android.view.View;
 
 import com.boostcamp.dreampicker.data.source.feed.FeedDataSource;
-import com.boostcamp.dreampicker.data.source.feed.FeedMockDataSource;
 import com.boostcamp.dreampicker.model.Feed;
 import com.boostcamp.dreampicker.view.feed.drag.VoteContainerDragListener;
 import com.boostcamp.dreampicker.view.feed.drag.VoteIconTouchListener;
@@ -24,22 +23,18 @@ public class FeedViewModel extends BaseViewModel {
     @Retention(RetentionPolicy.SOURCE)
     @interface VoteFlag { }
 
-    private FeedDataSource feedRepository;
+    private final FeedDataSource feedRepository;
 
     private final MutableLiveData<List<Feed>> feeds = new MutableLiveData<>();
 
     public View.OnTouchListener touchListener = new VoteIconTouchListener();
     public View.OnDragListener leftDragListener, rightDragListener;
 
-    public FeedViewModel() {
-        feedRepository = new FeedMockDataSource();
+    public FeedViewModel(FeedDataSource feedRepository) {
+        this.feedRepository = feedRepository;
 
         leftDragListener = new VoteContainerDragListener((id) -> vote(id, LEFT));
         rightDragListener = new VoteContainerDragListener((id) -> vote(id, RIGHT));
-
-        addDisposable(feedRepository.getAllFeed()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(feeds::setValue));
     }
 
     // Todo : Firebase 투표 반영
@@ -101,6 +96,15 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     public LiveData<List<Feed>> getFeeds() {
+        isLoading.set(true);
+
+        addDisposable(feedRepository.getAllFeed()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((feedList) -> {
+                    isLoading.set(false);
+                    feeds.setValue(feedList);
+                }));
+
         return feeds;
     }
 }

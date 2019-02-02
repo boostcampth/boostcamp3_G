@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.data.source.feed.FeedMockDataSource;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
 import com.boostcamp.dreampicker.view.BaseFragment;
 import com.boostcamp.dreampicker.viewmodel.FeedViewModel;
+import com.boostcamp.dreampicker.viewmodel.factory.FeedViewModelFactory;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +33,8 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding, FeedViewMode
 
     @Override
     protected FeedViewModel getViewModel() {
-        return ViewModelProviders.of(this).get(FeedViewModel.class);
+        FeedViewModelFactory factory = new FeedViewModelFactory(new FeedMockDataSource());
+        return ViewModelProviders.of(this, factory).get(FeedViewModel.class);
     }
 
     @Override
