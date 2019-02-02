@@ -8,14 +8,21 @@ import com.boostcamp.dreampicker.model.Feed;
 import com.boostcamp.dreampicker.view.feed.drag.VoteContainerDragListener;
 import com.boostcamp.dreampicker.view.feed.drag.VoteIconTouchListener;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
+import androidx.annotation.IntDef;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class FeedViewModel extends BaseViewModel {
-    private enum VoteFlag {NONE, LEFT, RIGHT}
+    private static final int NONE = 0, LEFT = 1, RIGHT = 2;
+
+    @IntDef({NONE, LEFT, RIGHT})
+    @Retention(RetentionPolicy.SOURCE)
+    @interface VoteFlag { }
 
     private FeedDataSource feedRepository;
 
@@ -24,12 +31,11 @@ public class FeedViewModel extends BaseViewModel {
     public View.OnTouchListener touchListener = new VoteIconTouchListener();
     public View.OnDragListener leftDragListener, rightDragListener;
 
-
     public FeedViewModel() {
         feedRepository = new FeedMockDataSource();
 
-        leftDragListener = new VoteContainerDragListener((id) -> vote(id, VoteFlag.LEFT));
-        rightDragListener = new VoteContainerDragListener((id) -> vote(id, VoteFlag.RIGHT));
+        leftDragListener = new VoteContainerDragListener((id) -> vote(id, LEFT));
+        rightDragListener = new VoteContainerDragListener((id) -> vote(id, RIGHT));
 
         addDisposable(feedRepository.getAllFeed()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -37,19 +43,19 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     // Todo : Firebase 투표 반영
-    private void vote(final String id, final VoteFlag flag) {
+    private void vote(final String id, @VoteFlag final int flag) {
         final List<Feed> feedList = feeds.getValue();
 
         if (feedList != null) {
             final Feed feed = getFeedById(feedList, id);
             if (feed != null) {
-                if(feed.getVoteFlag() != VoteFlag.NONE.ordinal()) { // 투표 업데이트
+                if(feed.getVoteFlag() != NONE) { // 투표 업데이트
                     updateVote(feedList, feed, flag);
                     return;
                 }
-                if (flag == VoteFlag.LEFT) {
+                if (flag == LEFT) {
                     feed.setLeftCount(feed.getLeftCount()+1);
-                } else if (flag == VoteFlag.RIGHT) {
+                } else if (flag == RIGHT) {
                     feed.setRightCount(feed.getRightCount()+1);
                 }
                 applyFeedState(feedList, feed, flag);
@@ -59,12 +65,12 @@ public class FeedViewModel extends BaseViewModel {
         }
     }
 
-    private void updateVote(List<Feed> feedList, Feed feed, VoteFlag flag) {
-        if(feed.getVoteFlag() != flag.ordinal()) {
-            if(flag == VoteFlag.LEFT) { // 왼쪽으로 변경 투표
+    private void updateVote(List<Feed> feedList, Feed feed, @VoteFlag final int flag) {
+        if(feed.getVoteFlag() != flag) {
+            if(flag == LEFT) { // 왼쪽으로 변경 투표
                 feed.setLeftCount(feed.getLeftCount()+1);
                 feed.setRightCount(feed.getRightCount()-1);
-            } else if (flag == VoteFlag.RIGHT) { // 오른쪽으로 변경 투표
+            } else if (flag == RIGHT) { // 오른쪽으로 변경 투표
                 feed.setRightCount(feed.getRightCount()+1);
                 feed.setLeftCount(feed.getLeftCount()-1);
             }
@@ -72,8 +78,8 @@ public class FeedViewModel extends BaseViewModel {
         }
     }
 
-    private void applyFeedState(List<Feed> feedList, Feed feed, VoteFlag flag) {
-        feed.setVoteFlag(flag.ordinal());
+    private void applyFeedState(List<Feed> feedList, Feed feed, @VoteFlag final int flag) {
+        feed.setVoteFlag(flag);
         feedList.set(feedList.indexOf(feed), feed);
         feeds.postValue(feedList);
     }
