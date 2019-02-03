@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 break;
             case R.id.navigation_upload:
                 startActivity(UploadActivity.getLaunchIntent(this));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 return true;
             case R.id.navigation_notifications:
                 fragment = NotificationFragment.newInstance();
