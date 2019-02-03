@@ -63,6 +63,11 @@ public class FeedMockDataSource implements FeedDataSource {
     }
 
     @Override
+    public Single<List<Feed>> addProfileFeedList(String userId, int pageIndex, int pageUnit) {
+        return null;
+    }
+
+    @Override
     public Single<List<Feed>> addSearchFeedList(String searchKey, int pageIndex, int pageUnit) {
         return null;
     }
