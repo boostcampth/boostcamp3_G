@@ -4,7 +4,6 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.model.Feed;
 import com.boostcamp.dreampicker.model.User;
 import com.boostcamp.dreampicker.model.UserDetail;
-import com.boostcamp.dreampicker.model.UserInfo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -65,13 +64,13 @@ public class UserRemoteDataSource implements UserDataSource {
     }
 
     @Override
-    public Single<UserInfo> getProfileUserDetail(String userId) {
+    public Single<UserDetail> getProfileUserDetail(String userId) {
         //유저아이디로 Info찾기
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USERDETAIL)
                 .document(userId)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshot -> {
-                    emitter.onSuccess(queryDocumentSnapshot.toObject(UserInfo.class));
+                    emitter.onSuccess(queryDocumentSnapshot.toObject(UserDetail.class));
                 })
                 .addOnFailureListener(emitter::onError));
     }
@@ -131,11 +130,6 @@ public class UserRemoteDataSource implements UserDataSource {
                 .addOnFailureListener(emitter::onError));
     }
 
-    @Override
-    public Single<UserDetail> getProfileUserDetail(String userId) {
-
-        return null;
-    }
 
 
 
