@@ -41,4 +41,8 @@
 
     <!-- 투표 아이콘 사이즈 -->
     <dimen name="vote_icon_size">56dp</dimen>
+
+    <!-- 업로드 화면 -->
+    <dimen name="upload_image_small">80dp</dimen>
+    <dimen name="upload_image_large_height">200dp</dimen>
 </resources>

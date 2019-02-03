@@ -1,10 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_upload_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-    </LinearLayout>
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_upload_left"
+            android:layout_width="@dimen/upload_image_small"
+            android:layout_height="@dimen/upload_image_small"
+            android:layout_margin="@dimen/space_x_small"
+            android:src="@drawable/ic_photo"
+            android:onClick="onImageLeftClick"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <ScrollView
+            android:id="@+id/sv_upload_left"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/space_x_small"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_upload_left"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <me.gujun.android.taggroup.TagGroup
+                android:id="@+id/tg_upload_tag_left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:atg_inputHint="@string/upload_tag_hint"
+                app:atg_isAppendMode="true" />
+        </ScrollView>
+
+        <!-- 왼쪽, 오른쪽 투표 구분선 -->
+        <View
+            android:id="@+id/guideline1"
+            style="@style/DotBorder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_upload_left" />
+
+        <ImageView
+            android:id="@+id/iv_upload_right"
+            android:layout_width="@dimen/upload_image_small"
+            android:layout_height="@dimen/upload_image_small"
+            android:layout_margin="@dimen/space_x_small"
+            android:src="@drawable/ic_photo"
+            android:onClick="onImageRightClick"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline1" />
+
+
+        <ScrollView
+            android:id="@+id/sv_upload_right"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_upload_right"
+            app:layout_constraintTop_toBottomOf="@+id/guideline1">
+
+            <me.gujun.android.taggroup.TagGroup
+                android:id="@+id/tg_upload_tag_right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_x_small"
+                app:atg_isAppendMode="true"
+                app:atg_inputHint="@string/upload_tag_hint"/>
+        </ScrollView>
+
+
+        <!-- 이미지(태그), 내용 구분선 -->
+        <View
+            android:id="@+id/guideline2"
+            style="@style/DotBorder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_upload_right" />
+
+        <EditText
+            android:id="@+id/et_upload_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/space_x_small"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="@string/upload_et_content_hint"
+            app:layout_constraintTop_toBottomOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
