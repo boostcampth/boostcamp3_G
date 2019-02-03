@@ -6,13 +6,23 @@ import com.boostcamp.dreampicker.data.model.Image;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+import javax.annotation.Nullable;
+
+import androidx.annotation.NonNull;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 
 public class FeedFirebaseService implements FeedDataSource {
 
@@ -35,11 +45,13 @@ public class FeedFirebaseService implements FeedDataSource {
 
     @Override
     public Single<List<Feed>> getAllFeed() {
+        // 필터링 없이 feed 정보 다 가져옴
         final List<Feed> feeds = new ArrayList<>();
-        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED).get()
+        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+                .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             feeds.add(document.toObject(Feed.class));
                             emitter.onSuccess(feeds);
                         }
@@ -52,6 +64,20 @@ public class FeedFirebaseService implements FeedDataSource {
     @Override
     public Single<List<Feed>> searchAllFeed(String searchKey) {
 
+//        final List<Feed> feeds = new ArrayList<>();
+//        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+//                .whereEqualTo("name",searchKey)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+//                            feeds.add(document.toObject(Feed.class));
+//                            emitter.onSuccess(feeds);
+//                        }
+//                    } else {
+//                        emitter.onError(task.getException());
+//                    }
+//                }));
         // TODO. 임시 코드 삭제
         List<Feed> feedList = new ArrayList<>();
         Image image1 = new Image("image-0-up", R.drawable.image1, "카페");
@@ -89,23 +115,114 @@ public class FeedFirebaseService implements FeedDataSource {
 
     @Override
     public Single<List<Feed>> addMainFeedList(String userId, int pageIndex, int pageUnit) {
+        // TODO : 결과 테스트 필요
+        final List<Feed> feeds = new ArrayList<>();
+        return Single.create(emitter -> {
+            Query first = FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+                    // 투표 마감 안된거
+                    .whereEqualTo("isEnded",false)
+                    .orderBy("date")
+                    .limit(pageUnit);
+            first.get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        DocumentSnapshot lastVisible = queryDocumentSnapshots.getDocuments()
+                                .get(queryDocumentSnapshots.size()-1);
 
-        return null;
+                        Query next = FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+                                .orderBy("data")
+                                .startAfter(lastVisible)
+                                .limit(pageUnit);
+
+                        next.addSnapshotListener((queryDocumentSnapshots1, e) -> {
+                            if (e != null) {
+                                emitter.onError(e);
+                            }
+
+                            if (queryDocumentSnapshots1 != null) {
+                                for (DocumentChange document : Objects.requireNonNull(queryDocumentSnapshots1.getDocumentChanges())) {
+                                    feeds.add(document.getDocument().toObject(Feed.class));
+                                    emitter.onSuccess(feeds);
+                                }
+                            } else { // TODO : 결과없을때 처리
+                            }
+
+                        });
+
+//                first.whereEqualTo("isEnded",false)
+//                        .get()
+//                        .addOnCompleteListener(task -> {
+//                            if (task.isSuccessful()) {
+//                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+//                                    feeds.add(document.toObject(Feed.class));
+//                                    emitter.onSuccess(feeds);
+//                                }
+//                            } else {
+//                                emitter.onError(task.getException());
+//                            }
+//                        }));
+                    });
+        });
     }
 
     @Override
     public void updateFeedVote(String feedId, String userId, int voteFlag) {
 
+        FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+                .document(feedId)
+                 //TODO : hashMap 수정 확인
+                .update("votedMap",voteFlag)
+                .addOnSuccessListener(aVoid -> { })
+                .addOnFailureListener(e -> { });
     }
 
     @Override
     public Single<List<Feed>> addSearchFeedList(String searchKey, int pageIndex, int pageUnit) {
+        List<Feed> feeds = new ArrayList<>();
+        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+                // TODO : 글 내용 검색어
+                .whereEqualTo("content",searchKey)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            feeds.add(document.toObject(Feed.class));
+                            emitter.onSuccess(feeds);
+                        }
+                    } else {
+                        emitter.onError(task.getException());
+                    }
+                }));
+    }
 
-        return null;
+    @Override
+    public Single<List<Feed>> addProfileFeedList(String userId, int pageIndex, int pageUnit) {
+        List<Feed> feedKeyList = new ArrayList<>();
+        // TODO: 리턴값확인, 인덱싱
+
+        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+                .whereEqualTo("id", userId)
+                .orderBy("date")
+                .startAt(pageIndex)
+                .limit(pageUnit)
+                .get()
+                .addOnCompleteListener(documentSnapshot -> {
+                    if (documentSnapshot.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(documentSnapshot.getResult())) {
+                            feedKeyList.add(document.toObject(Feed.class));
+                        }
+                        emitter.onSuccess(feedKeyList);
+                    } else {
+                        emitter.onError(documentSnapshot.getException());
+                    }
+                }));
     }
 
     @Override
     public void toggleFeedState(String feedId, boolean isEnded) {
-
+        FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+                .document(feedId)
+                .update("isEnded",isEnded)
+                .addOnSuccessListener(aVoid -> { })
+                .addOnFailureListener(Throwable::printStackTrace);
     }
 }
