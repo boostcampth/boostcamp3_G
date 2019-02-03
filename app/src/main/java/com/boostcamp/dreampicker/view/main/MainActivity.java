@@ -59,7 +59,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 fragment = SearchFragment.newInstance();
                 break;
             case R.id.navigation_upload:
-                UploadActivity.startActivity(this);
+                startActivity(UploadActivity.getLaunchIntent(this));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 return true;
             case R.id.navigation_notifications:
                 fragment = NotificationFragment.newInstance();

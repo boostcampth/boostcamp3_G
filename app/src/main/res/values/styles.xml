@@ -68,4 +68,12 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
+
+    <!-- dotted Border 스타일 -->
+    <style name="DotBorder">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@drawable/dotted</item>
+        <item name="android:layerType">software</item>
+    </style>
 </resources>
