@@ -1,10 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-    </LinearLayout>
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_upload_left"
+            android:layout_width="@dimen/upload_image_small"
+            android:layout_height="@dimen/upload_image_small"
+            android:layout_margin="@dimen/space_x_small"
+            android:src="@drawable/ic_photo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <!-- 이후 Tag group 변경 -->
+        <TextView
+            android:id="@+id/tv_upload_tag_left"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/space_x_small"
+            android:text="Hello World"
+            android:textColor="@color/colorAccent"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_upload_left"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <!-- 왼쪽, 오른쪽 투표 구분선 -->
+        <View
+            android:id="@+id/guideline1"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@drawable/dotted"
+            android:layerType="software"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_upload_left" />
+
+        <ImageView
+            android:id="@+id/iv_upload_right"
+            android:layout_width="@dimen/upload_image_small"
+            android:layout_height="@dimen/upload_image_small"
+            android:layout_margin="@dimen/space_x_small"
+            android:src="@drawable/ic_photo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline1" />
+
+        <!-- 이후 Tag group 변경 -->
+        <TextView
+            android:id="@+id/tv_upload_tag_right"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/space_x_small"
+            android:text="Good Morning"
+            android:textColor="@color/colorAccent"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_upload_right"
+            app:layout_constraintTop_toBottomOf="@+id/guideline1" />
+
+        <!-- 이미지(태그), 내용 구분선 -->
+        <View
+            android:id="@+id/guideline2"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@drawable/dotted"
+            android:layerType="software"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_upload_right" />
+
+        <EditText
+            android:id="@+id/et_upload_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/space_x_small"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="@string/upload_et_content_hint"
+            app:layout_constraintTop_toBottomOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

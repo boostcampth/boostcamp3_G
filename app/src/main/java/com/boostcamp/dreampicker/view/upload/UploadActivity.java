@@ -5,18 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.view.BaseActivity;
-import com.boostcamp.dreampicker.view.main.LogInActivity;
 
 import androidx.annotation.Nullable;
 
-public class UploadActivity extends BaseActivity {
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_upload;
-    }
-
+public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +20,15 @@ public class UploadActivity extends BaseActivity {
 
     private void initView() {
 
-        // TODO. 뷰 그리기
     }
 
-    public static void startActivity(Context context) {
+    public static Intent getLaunchIntent(Context context) {
         Intent intent = new Intent(context, UploadActivity.class);
-        context.startActivity(intent);
+        return intent;
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_upload;
+    }
 }
