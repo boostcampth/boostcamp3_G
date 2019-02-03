@@ -73,6 +73,9 @@ dependencies {
 
     // Ted Permission
     implementation 'gun0912.ted:tedpermission-rx2:2.2.2'
+
+    // Ted Bottom Picker
+    implementation 'gun0912.ted:tedbottompicker:1.2.6'
 }
 // Firebase
 apply plugin: 'com.google.gms.google-services'
