@@ -11,12 +11,14 @@ public class Feed {
     private String content;
     private String date;
 
+
     // TODO : 마감 조건 확인 이후 작업
     private boolean isEnded;
-
+    private int leftCount;
+    private int rightCount;
     // TODO : Firestore 연동 이후 작업
-    private List<String> leftUserList = new ArrayList<>();
-    private List<String> rightUserList = new ArrayList<>();
+//    private List<String> leftUserList = new ArrayList<>();
+//    private List<String> rightUserList = new ArrayList<>();
 
     public Feed() {
     }
@@ -30,14 +32,15 @@ public class Feed {
         this.content = content;
         this.date = date;
         this.isEnded = isEnded;
-
-        leftUserList.add("key-1");
-        leftUserList.add("key-1");
-        leftUserList.add("key-1");
-
-        rightUserList.add("key-2");
-        rightUserList.add("key-2");
-        rightUserList.add("key-2");
+        leftCount = 100;
+        rightCount = 200;
+//        leftUserList.add("key-1");
+//        leftUserList.add("key-1");
+//        leftUserList.add("key-1");
+//
+//        rightUserList.add("key-2");
+//        rightUserList.add("key-2");
+//        rightUserList.add("key-2");
     }
 
     public String getId() {
@@ -96,19 +99,35 @@ public class Feed {
         isEnded = ended;
     }
 
-    public List<String> getLeftUserList() {
-        return leftUserList;
+    public int getLeftCount() {
+        return leftCount;
     }
 
-    public void setLeftUserList(List<String> leftUserList) {
-        this.leftUserList = leftUserList;
+    public void setLeftCount(int leftCount) {
+        this.leftCount = leftCount;
     }
 
-    public List<String> getRightUserList() {
-        return rightUserList;
+    public int getRightCount() {
+        return rightCount;
     }
 
-    public void setRightUserList(List<String> rightUserList) {
-        this.rightUserList = rightUserList;
+    public void setRightCount(int rightCount) {
+        this.rightCount = rightCount;
     }
+
+    //    public List<String> getLeftUserList() {
+//        return leftUserList;
+//    }
+//
+//    public void setLeftUserList(List<String> leftUserList) {
+//        this.leftUserList = leftUserList;
+//    }
+//
+//    public List<String> getRightUserList() {
+//        return rightUserList;
+//    }
+//
+//    public void setRightUserList(List<String> rightUserList) {
+//        this.rightUserList = rightUserList;
+//    }
 }

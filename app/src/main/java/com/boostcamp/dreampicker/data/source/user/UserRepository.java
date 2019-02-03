@@ -39,4 +39,19 @@ public class UserRepository implements UserDataSource {
 
         return remoteDataSource.getUserInfo(userId);
     }
+
+    @Override
+    public Single<UserInfo> getProfileUserDetail(String userId) {
+        return remoteDataSource.getUserInfo(userId);
+    }
+
+    @Override
+    public Single<List<User>> addProfileFollowingList(String userId, int pageIndex, int pageUnit) {
+        return remoteDataSource.addProfileFollowingList(userId,pageIndex,pageIndex);
+    }
+
+    @Override
+    public Single<List<User>> addProfileFollowerList(String userId, int pageIndex, int pageUnit) {
+        return remoteDataSource.addProfileFollowerList(userId,pageIndex,pageUnit);
+    }
 }
