@@ -73,7 +73,31 @@ public class FeedRepository implements FeedDataSource {
 
     @Override
     public Single<List<Feed>> searchAllFeed(String searchKey) {
-
         return remoteDataSource.searchAllFeed(searchKey);
+    }
+
+    @Override
+    public Single<List<Feed>> addMainFeedList(String userId, int pageIndex, int pageUnit) {
+        return remoteDataSource.addMainFeedList( userId,  pageIndex,  pageUnit);
+    }
+
+    @Override
+    public void updateFeedVote(String feedId, String userId, int voteFlag) {
+        remoteDataSource.updateFeedVote(feedId, userId, voteFlag);
+    }
+
+    @Override
+    public Single<List<Feed>> addSearchFeedList(String searchKey, int pageIndex, int pageUnit) {
+        return remoteDataSource.addSearchFeedList(searchKey,pageIndex,pageUnit);
+    }
+
+    @Override
+    public Single<List<Feed>> addProfileFeedList(String userId, int pageIndex, int pageUnit) {
+        return remoteDataSource.addProfileFeedList(userId,pageIndex,pageUnit);
+    }
+
+    @Override
+    public void toggleFeedState(String feedId, boolean isEnded) {
+        remoteDataSource.toggleFeedState(feedId,isEnded);
     }
 }
