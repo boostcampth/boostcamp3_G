@@ -1,9 +1,10 @@
 package com.boostcamp.dreampicker.model;
 
+import java.util.List;
+
 public class Feed {
     private String id;
-    private Image leftImage;
-    private Image rightImage;
+    private List<Image> imageList;
     private User user;
     private String content;
     private String date;
@@ -20,16 +21,14 @@ public class Feed {
     public Feed() { }
 
     public Feed(String id,
-                Image leftImage,
-                Image rightImage,
+                List<Image> imageList,
                 User user,
                 String content,
                 String date,
                 boolean isEnded) {
 
         this.id = id;
-        this.leftImage = leftImage;
-        this.rightImage = rightImage;
+        this.imageList = imageList;
         this.user = user;
         this.content = content;
         this.date = date;
@@ -47,20 +46,12 @@ public class Feed {
         this.id = id;
     }
 
-    public Image getLeftImage() {
-        return leftImage;
+    public List<Image> getImageList() {
+        return imageList;
     }
 
-    public void setLeftImage(Image leftImage) {
-        this.leftImage = leftImage;
-    }
-
-    public Image getRightImage() {
-        return rightImage;
-    }
-
-    public void setRightImage(Image rightImage) {
-        this.rightImage = rightImage;
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
     }
 
     public User getUser() {
@@ -117,5 +108,9 @@ public class Feed {
 
     public void setVoteFlag(int voteFlag) {
         this.voteFlag = voteFlag;
+    }
+
+    public int getVoteCount() {
+        return leftCount + rightCount;
     }
 }

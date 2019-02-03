@@ -55,9 +55,4 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
     protected NotificationViewModel getViewModel() {
         return ViewModelProviders.of(this).get(NotificationViewModel.class);
     }
-
-    @Override
-    protected int getVariableId() {
-        return 0;
-    }
 }

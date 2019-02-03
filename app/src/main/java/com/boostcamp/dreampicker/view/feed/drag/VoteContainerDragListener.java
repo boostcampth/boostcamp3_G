@@ -9,25 +9,21 @@ import android.widget.FrameLayout;
 import com.boostcamp.dreampicker.R;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
-import androidx.annotation.NonNull;
-
 public class VoteContainerDragListener implements View.OnDragListener {
-    private final String feedKey;
-    private OnDropListener onDropListener;
+    private final OnDropListener onDropListener;
 
-    public VoteContainerDragListener(@NonNull String feedKey) {
-        this.feedKey = feedKey;
-    }
-
-    public void setOnDropListener(OnDropListener onDropListener) {
+    public VoteContainerDragListener(OnDropListener onDropListener) {
         this.onDropListener = onDropListener;
     }
 
     public boolean onDrag(View v, DragEvent event) {
-        View view = (View) event.getLocalState();
-        ShineButton button = (ShineButton) view;
-        ViewGroup viewgroup = (ViewGroup) button.getParent();
-        FrameLayout containView = (FrameLayout) v;
+        final View view = (View) event.getLocalState(); // <- 버튼 정보
+        final ShineButton button = (ShineButton) view;
+        final ViewGroup viewgroup = (ViewGroup) button.getParent(); // <- Constraint 레이아웃 정보
+        final FrameLayout container = (FrameLayout) v;
+
+        final String buttonTag = button.getTag().toString();
+        final String containerTag = container.getTag().toString();
 
         // 이벤트 시작
         switch (event.getAction()) {
@@ -45,30 +41,30 @@ public class VoteContainerDragListener implements View.OnDragListener {
 
             // 이미지를 드래그해서 드랍시켰을때
             case DragEvent.ACTION_DROP :
-                if(button.getTag().toString().equals(feedKey)) {
+                if(buttonTag.equals(containerTag)) {
                     int iconSize = v.getResources().getDimensionPixelSize(R.dimen.vote_icon_size);
 
-                    FrameLayout.LayoutParams params =
+                    final FrameLayout.LayoutParams params =
                             new FrameLayout.LayoutParams(iconSize, iconSize, Gravity.CENTER);
 
                     viewgroup.removeView(button);
                     button.setLayoutParams(params);
-                    containView.addView(button);
+                    container.addView(button);
 
-                    if(!button.isChecked()) {
+                    if (!button.isChecked()) {
                         button.performClick();
                     } else {
                         button.performClick();
                         button.performClick();
                     }
 
-                    onDropListener.onDrop();
-                } else {
+                    onDropListener.onDrop(buttonTag);
+                    break;
+                }
+                else {
                     return false;
                 }
-                break;
-
-            case DragEvent.ACTION_DRAG_ENDED :
+            case DragEvent.ACTION_DRAG_ENDED:
                 button.setVisibility(View.VISIBLE);
         }
         return true;

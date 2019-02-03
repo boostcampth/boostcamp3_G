@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="model"
+            name="viewModel"
             type="com.boostcamp.dreampicker.viewmodel.FeedViewModel"/>
     </data>
     <LinearLayout
