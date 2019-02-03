@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/root"
+        android:id="@+id/cl_upload_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -23,6 +23,7 @@
             android:layout_height="@dimen/upload_image_small"
             android:layout_margin="@dimen/space_x_small"
             android:src="@drawable/ic_photo"
+            android:onClick="onImageLeftClick"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
@@ -41,7 +42,7 @@
                 android:id="@+id/tg_upload_tag_left"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:atg_inputHint="추가"
+                app:atg_inputHint="@string/upload_tag_hint"
                 app:atg_isAppendMode="true" />
         </ScrollView>
 
@@ -59,6 +60,7 @@
             android:layout_height="@dimen/upload_image_small"
             android:layout_margin="@dimen/space_x_small"
             android:src="@drawable/ic_photo"
+            android:onClick="onImageRightClick"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guideline1" />
 
@@ -74,10 +76,11 @@
 
             <me.gujun.android.taggroup.TagGroup
                 android:id="@+id/tg_upload_tag_right"
-                app:atg_isAppendMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space_x_small" />
+                android:layout_margin="@dimen/space_x_small"
+                app:atg_isAppendMode="true"
+                app:atg_inputHint="@string/upload_tag_hint"/>
         </ScrollView>
 
 
