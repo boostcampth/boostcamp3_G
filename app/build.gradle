@@ -67,6 +67,9 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-firestore:18.0.0'
+
+    // Tag Group
+    implementation 'me.gujun.android.taggroup:library:1.4@aar'
 }
 // Firebase
 apply plugin: 'com.google.gms.google-services'

@@ -26,27 +26,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        <!-- 이후 Tag group 변경 -->
-        <TextView
-            android:id="@+id/tv_upload_tag_left"
+        <ScrollView
+            android:id="@+id/sv_upload_left"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/space_x_small"
-            android:text="Hello World"
-            android:textColor="@color/colorAccent"
-            android:textSize="18dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_upload_left"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <me.gujun.android.taggroup.TagGroup
+                android:id="@+id/tg_upload_tag_left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:atg_inputHint="추가"
+                app:atg_isAppendMode="true" />
+        </ScrollView>
 
         <!-- 왼쪽, 오른쪽 투표 구분선 -->
         <View
             android:id="@+id/guideline1"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:background="@drawable/dotted"
-            android:layerType="software"
+            style="@style/DotBorder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_upload_left" />
@@ -60,27 +62,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guideline1" />
 
-        <!-- 이후 Tag group 변경 -->
-        <TextView
-            android:id="@+id/tv_upload_tag_right"
+
+        <ScrollView
+            android:id="@+id/sv_upload_right"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/space_x_small"
-            android:text="Good Morning"
-            android:textColor="@color/colorAccent"
-            android:textSize="18dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_upload_right"
-            app:layout_constraintTop_toBottomOf="@+id/guideline1" />
+            app:layout_constraintTop_toBottomOf="@+id/guideline1">
+
+            <me.gujun.android.taggroup.TagGroup
+                android:id="@+id/tg_upload_tag_right"
+                app:atg_isAppendMode="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_x_small" />
+        </ScrollView>
+
 
         <!-- 이미지(태그), 내용 구분선 -->
         <View
             android:id="@+id/guideline2"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:background="@drawable/dotted"
-            android:layerType="software"
+            style="@style/DotBorder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_upload_right" />
