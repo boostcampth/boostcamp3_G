@@ -1,12 +1,16 @@
 package com.boostcamp.dreampicker.view.feed;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ItemFeedBinding;
 import com.boostcamp.dreampicker.model.Feed;
+import com.boostcamp.dreampicker.utils.Util;
 import com.boostcamp.dreampicker.view.adapter.BaseRecyclerViewAdapter;
+import com.boostcamp.dreampicker.view.feed.drag.VoteContainerDragListener;
+import com.boostcamp.dreampicker.view.feed.drag.VoteIconTouchListener;
 import com.boostcamp.dreampicker.viewmodel.FeedViewModel;
 
 import androidx.annotation.NonNull;
@@ -15,14 +19,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FeedAdapter extends BaseRecyclerViewAdapter<Feed, FeedAdapter.FeedViewHolder> {
     private final FeedViewModel viewModel;
+    private View.OnTouchListener touchListener = new VoteIconTouchListener();
+    private View.OnDragListener leftDragListener;
+    private View.OnDragListener rightDragListener;
 
     public FeedAdapter(@NonNull FeedViewModel viewModel) {
         this.viewModel = viewModel;
+        leftDragListener = new VoteContainerDragListener((id) -> viewModel.vote(id, Util.LEFT));
+        rightDragListener = new VoteContainerDragListener((id) -> viewModel.vote(id, Util.RIGHT));
     }
 
     @Override
     protected void onBindView(@NonNull final FeedViewHolder holder, int position) {
         holder.bind(viewModel, position);
+        holder.binding.sbSelector.setOnTouchListener(touchListener);
+        holder.binding.flFeedLeft.setOnDragListener(leftDragListener);
+        holder.binding.flFeedRight.setOnDragListener(rightDragListener);
     }
 
     @NonNull

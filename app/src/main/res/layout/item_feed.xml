@@ -96,6 +96,7 @@
                     app:layout_constraintGuide_begin="56dp" />
 
                 <com.sackcentury.shinebuttonlib.ShineButton
+                    android:id="@+id/sb_selector"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:layout_marginBottom="8dp"
@@ -112,7 +113,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
-                    app:onTouchListener="@{viewModel.touchListener}"
                     app:shine_animation_duration="1500"
                     app:shine_count="8"
                     app:shine_turn_angle="10"
@@ -133,6 +133,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_feed_content" />
 
                 <FrameLayout
+                    android:id="@+id/fl_feed_left"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="@dimen/space_x_small"
@@ -140,8 +141,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/vote_result"
                     app:layout_constraintEnd_toStartOf="@+id/border"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
-                    app:onDragListener="@{viewModel.leftDragListener}">
+                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -162,6 +162,7 @@
                 </FrameLayout>
 
                 <FrameLayout
+                    android:id="@+id/fl_feed_right"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="@dimen/space_x_small"
@@ -169,8 +170,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/vote_result"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/border"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
-                    app:onDragListener="@{viewModel.rightDragListener}">
+                    app:layout_constraintTop_toBottomOf="@+id/tv_feed_content">
 
                     <ImageView
                         android:layout_width="match_parent"
