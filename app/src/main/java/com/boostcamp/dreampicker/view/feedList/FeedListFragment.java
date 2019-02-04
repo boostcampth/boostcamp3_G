@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.view.feedList;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,12 +11,10 @@ import com.boostcamp.dreampicker.data.source.feed.FeedRepository;
 import com.boostcamp.dreampicker.databinding.FragmentFeedListBinding;
 import com.boostcamp.dreampicker.view.BaseFragment;
 import com.boostcamp.dreampicker.view.main.FrameActivity;
-import com.boostcamp.dreampicker.viewmodel.BaseViewModel;
 import com.boostcamp.dreampicker.viewmodel.FeedListViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,9 +64,11 @@ public class FeedListFragment extends BaseFragment<FragmentFeedListBinding, Feed
     /**
      * Frame Activity 에 Feed Detail Fragment 띄우기 */
     private void startFrameActivity(String feedId) {
-        FrameActivity.startActivity(getContext(),
+        Intent intent = FrameActivity.getLaunchIntent(getContext(),
                 FrameActivity.FRAGMENT_FEED_DETAIL,
                 feedId);
+
+        startActivity(intent);
     }
 
     @SuppressLint("CheckResult")

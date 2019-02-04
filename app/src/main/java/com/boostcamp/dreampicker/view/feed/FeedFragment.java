@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 public class FeedFragment extends BaseFragment<FragmentFeedBinding, FeedViewModel> {
+
     public FeedFragment() { }
 
     public static FeedFragment newInstance() {

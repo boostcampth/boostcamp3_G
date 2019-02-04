@@ -2,6 +2,7 @@ package com.boostcamp.dreampicker.view.profile;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -83,7 +84,11 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     /** 임시입니다.
      * TODO. ViewModel 로 이동 */
     private void startFrameActivity(View view){
-        FrameActivity.startActivity(getContext(), FrameActivity.FRAGMENT_USER_LIST, "");
+        Intent intent = FrameActivity.getLaunchIntent(getContext(),
+                FrameActivity.FRAGMENT_USER_LIST,
+                "");
+
+        startActivity(intent);
     }
 
     class ProfilePagerAdapter extends FragmentPagerAdapter {

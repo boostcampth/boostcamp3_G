@@ -10,9 +10,9 @@ import com.boostcamp.dreampicker.view.BaseActivity;
 
 public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
 
-    public static void startActivity(Context context) {
-        Intent intent = new Intent(context, LogInActivity.class);
-        context.startActivity(intent);
+    public static Intent getLaunchIntent(Context context) {
+
+        return new Intent(context, LogInActivity.class);
     }
 
     @Override

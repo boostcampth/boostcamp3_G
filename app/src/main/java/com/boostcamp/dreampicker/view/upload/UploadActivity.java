@@ -38,6 +38,16 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
     private Disposable disposable;
 
+    public static Intent getLaunchIntent(Context context) {
+
+        return new Intent(context, UploadActivity.class);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_upload;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,16 +117,6 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
             rightImageAnimationToggle = !rightImageAnimationToggle;
             return rightImageAnimationToggle ? rightSet : rootSet;
         }
-    }
-
-    public static Intent getLaunchIntent(Context context) {
-        Intent intent = new Intent(context, UploadActivity.class);
-        return intent;
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_upload;
     }
 
     @Override

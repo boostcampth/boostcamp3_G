@@ -20,9 +20,9 @@ import androidx.fragment.app.Fragment;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    public static void startActivity(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        context.startActivity(intent);
+    public static Intent getLaunchIntent(Context context) {
+
+        return new Intent(context, MainActivity.class);
     }
 
     @Override

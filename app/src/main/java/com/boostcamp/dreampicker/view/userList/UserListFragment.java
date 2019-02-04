@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.view.userList;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -73,7 +74,11 @@ public class UserListFragment extends BaseFragment<FragmentUserListBinding, User
     }
 
     private void startFrameActivity(User user) {
-        FrameActivity.startActivity(getContext(), FrameActivity.FRAGMENT_PROFILE, "");
+        Intent intent = FrameActivity.getLaunchIntent(getContext(),
+                FrameActivity.FRAGMENT_PROFILE,
+                "");
+
+        startActivity(intent);
     }
 
     @Override

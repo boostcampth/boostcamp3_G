@@ -24,15 +24,15 @@ public class FrameActivity extends BaseActivity<ActivityFrameBinding> {
     private int fragmentId;
     private String entityId;
 
-    public static void startActivity(Context context,
-                                     int fragmentId,
-                                     String entityId){
+    public static Intent getLaunchIntent(Context context,
+                                       int fragmentId,
+                                       String entityId){
 
         Intent intent = new Intent(context, FrameActivity.class);
         intent.putExtra(EXTRA_FRAGMENT_ID, fragmentId);
         intent.putExtra(EXTRA_ENTITY_ID, entityId);
 
-        context.startActivity(intent);
+        return intent;
     }
 
     @Override
