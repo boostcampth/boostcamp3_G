@@ -9,11 +9,9 @@ import io.reactivex.Single;
 public interface FeedDataSource {
 
     // 메인 피드 요청
-    // TODO. 연동 후 삭제
     Single<List<Feed>> getAllFeed();
 
     // 피드 검색 결과 요청
-    // TODO. 연동 후 삭제
     Single<List<Feed>> searchAllFeed(String searchKey);
 
     // [메인 피드] 내가 투표 안하고, 마감 안된 투표 최신순으로 페이징

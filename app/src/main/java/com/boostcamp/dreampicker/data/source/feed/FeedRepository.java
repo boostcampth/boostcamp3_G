@@ -73,7 +73,6 @@ public class FeedRepository implements FeedDataSource {
 
     @Override
     public Single<List<Feed>> searchAllFeed(String searchKey) {
-
         return remoteDataSource.searchAllFeed(searchKey);
     }
 
