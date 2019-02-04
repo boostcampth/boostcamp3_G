@@ -34,28 +34,10 @@ public class UserRepository implements UserDataSource {
     /** MOCK DATA 테스트용
      *  Firestore 연동 후 isTesting = false */
     private final boolean isTesting = true;
-    private UserDataSource mockDataSource;
+    private final UserDataSource mockDataSource;
 
     @NonNull
-    private UserDataSource firebaseService;
-
-    @Override
-    public Single<List<User>> searchAllUser(String searchKey) {
-        if(isTesting){
-            return mockDataSource.searchAllUser(searchKey);
-        }
-
-        return firebaseService.searchAllUser(searchKey);
-    }
-
-    @Override
-    public Single<UserDetail> getUserInfo(String userId) {
-        if(isTesting){
-            return mockDataSource.getUserInfo(userId);
-        }
-
-        return firebaseService.getUserInfo(userId);
-    }
+    private final UserDataSource firebaseService;
 
     @Override
     public Single<UserDetail> getProfileUserDetail(String userId) {

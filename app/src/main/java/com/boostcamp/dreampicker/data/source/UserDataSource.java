@@ -9,14 +9,6 @@ import io.reactivex.Single;
 
 public interface UserDataSource {
 
-    // 유저 검색 리스트 요청
-    // 연동 후 삭제
-    Single<List<User>> searchAllUser(String searchKey);
-
-    // 유저 프로필 정보 요청
-    // 연동 후 삭제
-    Single<UserDetail> getUserInfo(String userId);
-
     // [프로필] 해당 유저의 프로필 정보
     Single<UserDetail> getProfileUserDetail(String userId);
 

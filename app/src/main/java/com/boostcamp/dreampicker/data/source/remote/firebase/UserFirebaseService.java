@@ -28,18 +28,6 @@ public class UserFirebaseService implements UserDataSource {
     }
 
     @Override
-    public Single<List<User>> searchAllUser(String searchKey) {
-
-        return null;
-    }
-
-    @Override
-    public Single<UserDetail> getUserInfo(String userId) {
-
-        return null;
-    }
-
-    @Override
     public Single<UserDetail> getProfileUserDetail(String userId) {
 
         return null;

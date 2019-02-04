@@ -27,32 +27,6 @@ public class UserMockDataSource implements UserDataSource {
     }
 
     @Override
-    public Single<List<User>> searchAllUser(String searchKey) {
-
-        List<User> userList = new ArrayList<>();
-        User user = new User("" ,"yeseul", R.drawable.profile);
-        userList.add(user);
-        userList.add(user);
-        userList.add(user);
-        userList.add(user);
-
-        return Single.just(userList);
-    }
-
-    @Override
-    public Single<UserDetail> getUserInfo(String userId) {
-        return Single.just(new UserDetail(
-                userId,
-                userId,
-                userId,
-                userId,
-                R.drawable.profile,
-                101,
-                207,
-                314));
-    }
-
-    @Override
     public Single<UserDetail> getProfileUserDetail(String userId) {
         return Single.just(new UserDetail(
                 userId,
