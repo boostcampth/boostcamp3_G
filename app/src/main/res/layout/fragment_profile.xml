@@ -6,7 +6,7 @@
     <data>
         <variable
             name="user"
-            type="com.boostcamp.dreampicker.model.UserDetail"/>
+            type="com.boostcamp.dreampicker.data.model.UserDetail"/>
     </data>
 
     <LinearLayout
