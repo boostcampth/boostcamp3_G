@@ -18,8 +18,6 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
     public NotificationFragment() {}
 
     public static NotificationFragment newInstance(){
-
-        // TODO. 필요한 argument 세팅
         return new NotificationFragment();
     }
 

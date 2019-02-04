@@ -14,6 +14,7 @@ import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 import com.boostcamp.dreampicker.databinding.FragmentUserListBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 import com.boostcamp.dreampicker.presentation.main.FrameActivity;
+import com.boostcamp.dreampicker.presentation.user.profile.ProfileViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +33,6 @@ public class UserListFragment extends BaseFragment<FragmentUserListBinding, User
     public UserListFragment() {}
 
     public static UserListFragment newInstance(){
-
         return new UserListFragment();
     }
 

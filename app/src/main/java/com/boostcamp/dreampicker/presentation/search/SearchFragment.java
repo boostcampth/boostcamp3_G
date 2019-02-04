@@ -32,8 +32,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     public SearchFragment() {}
 
     public static SearchFragment newInstance(){
-
-        // TODO. 필요한 argument 세팅
         return new SearchFragment();
     }
 

@@ -30,7 +30,6 @@ public class FeedListFragment extends BaseFragment<FragmentFeedListBinding, Feed
     public FeedListFragment(){}
 
     public static FeedListFragment newInstance() {
-
         return new FeedListFragment();
     }
 
