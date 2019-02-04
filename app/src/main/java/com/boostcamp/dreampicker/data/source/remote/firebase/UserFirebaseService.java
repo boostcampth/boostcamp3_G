@@ -1,25 +1,17 @@
 package com.boostcamp.dreampicker.data.source.remote.firebase;
 
-import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
-import com.boostcamp.dreampicker.model.Feed;
-import com.boostcamp.dreampicker.model.User;
-import com.boostcamp.dreampicker.model.UserDetail;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
 import io.reactivex.Single;
 
 public class UserFirebaseService implements UserDataSource {

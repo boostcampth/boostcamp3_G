@@ -64,6 +64,11 @@ public class FeedRepository implements FeedDataSource {
     }
 
     @Override
+    public Single<List<Feed>> addProfileFeedList(String userId, int pageIndex, int pageUnit) {
+        return firebaseService.addProfileFeedList(userId,pageIndex,pageUnit);
+    }
+
+    @Override
     public void toggleFeedState(String feedId, boolean isEnded) {
 
         firebaseService.toggleFeedState(feedId, isEnded);

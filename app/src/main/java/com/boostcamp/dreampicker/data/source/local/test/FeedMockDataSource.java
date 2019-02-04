@@ -1,18 +1,11 @@
 package com.boostcamp.dreampicker.data.source.local.test;
 
-import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.model.Feed;
-import com.boostcamp.dreampicker.model.Image;
-import com.boostcamp.dreampicker.model.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.boostcamp.dreampicker.data.model.Feed;
-import com.boostcamp.dreampicker.data.model.Image;
-import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
