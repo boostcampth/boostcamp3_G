@@ -79,7 +79,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     }
 
 
-    class ProfilePagerAdapter extends FragmentPagerAdapter {
+    private class ProfilePagerAdapter extends FragmentPagerAdapter {
 
         Fragment[] fragments = new Fragment[NUM_OF_TAB_BUTTONS];
 
