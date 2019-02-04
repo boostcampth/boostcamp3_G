@@ -1,10 +1,12 @@
 package com.boostcamp.dreampicker.presentation.listener;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.view.MotionEvent;
 import android.view.View;
 
+@SuppressLint("ClickableViewAccessibility")
 public class VoteIconTouchListener implements View.OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {

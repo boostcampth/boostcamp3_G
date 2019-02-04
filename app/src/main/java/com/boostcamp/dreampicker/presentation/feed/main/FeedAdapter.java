@@ -5,59 +5,65 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.databinding.ItemFeedBinding;
 import com.boostcamp.dreampicker.data.model.Feed;
-import com.boostcamp.dreampicker.utils.Constant;
+import com.boostcamp.dreampicker.databinding.ItemFeedBinding;
 import com.boostcamp.dreampicker.presentation.BaseRecyclerViewAdapter;
-import com.boostcamp.dreampicker.presentation.listener.VoteContainerDragListener;
+import com.boostcamp.dreampicker.presentation.listener.VoteDragListener;
 import com.boostcamp.dreampicker.presentation.listener.VoteIconTouchListener;
+import com.boostcamp.dreampicker.utils.Constant;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class FeedAdapter extends BaseRecyclerViewAdapter<Feed, FeedAdapter.FeedViewHolder> {
-    private final FeedViewModel viewModel;
-    private View.OnTouchListener touchListener = new VoteIconTouchListener();
-    private View.OnDragListener leftDragListener;
-    private View.OnDragListener rightDragListener;
 
-    public FeedAdapter(@NonNull FeedViewModel viewModel) {
-        this.viewModel = viewModel;
-        leftDragListener = new VoteContainerDragListener((id) -> viewModel.vote(id, Constant.LEFT));
-        rightDragListener = new VoteContainerDragListener((id) -> viewModel.vote(id, Constant.RIGHT));
+    interface OnVoteListener {
+        void onVote(@NonNull VoteResult result);
     }
+
+    private OnVoteListener onVoteListener = null;
 
     @Override
     protected void onBindView(@NonNull final FeedViewHolder holder, int position) {
-        holder.bind(viewModel, position);
-        holder.binding.sbSelector.setOnTouchListener(touchListener);
-        holder.binding.flFeedLeft.setOnDragListener(leftDragListener);
-        holder.binding.flFeedRight.setOnDragListener(rightDragListener);
+        holder.binding.setFeed(getItem(holder.getAdapterPosition()));
+
+        holder.binding.sbSelector.setOnTouchListener(new VoteIconTouchListener());
+
+        holder.binding.flFeedLeft.setOnDragListener(new VoteDragListener(
+                () -> {
+                    if(onVoteListener != null) {
+                        onVoteListener.onVote(
+                                new VoteResult(getItem(holder.getAdapterPosition()), Constant.LEFT));
+                    }
+                }));
+
+        holder.binding.flFeedRight.setOnDragListener(new VoteDragListener(
+                () -> {
+                    if(onVoteListener != null) {
+                        onVoteListener.onVote(
+                                new VoteResult(getItem(holder.getAdapterPosition()), Constant.RIGHT));
+                    }
+                }));
     }
 
     @NonNull
     @Override
     public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final ItemFeedBinding binding =
-                DataBindingUtil.inflate(inflater, R.layout.item_feed, parent, false);
+        return new FeedViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_feed, parent, false));
+    }
 
-        return new FeedViewHolder(binding);
+    public void setOnVoteListener(@NonNull OnVoteListener onVoteListener) {
+        this.onVoteListener = onVoteListener;
     }
 
     class FeedViewHolder extends RecyclerView.ViewHolder {
-        private final ItemFeedBinding binding;
+        private ItemFeedBinding binding;
 
-        FeedViewHolder(@NonNull ItemFeedBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-
-        void bind(@NonNull FeedViewModel viewModel, int position) {
-            binding.setViewModel(viewModel);
-            binding.setPosition(position);
-            binding.executePendingBindings();
+        public FeedViewHolder(@NonNull View itemView) {
+            super(itemView);
+            binding = DataBindingUtil.bind(itemView);
         }
     }
 }

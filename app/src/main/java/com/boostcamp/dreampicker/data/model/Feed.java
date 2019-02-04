@@ -20,6 +20,18 @@ public class Feed {
 
     public Feed() { }
 
+    public Feed(Feed feed) {
+        this.id = feed.id;
+        this.imageList = feed.imageList;
+        this.user = feed.user;
+        this.content = feed.content;
+        this.date = feed.date;
+        this.isEnded = feed.isEnded;
+        this.leftCount = feed.leftCount;
+        this.rightCount = feed.rightCount;
+        this.voteFlag = feed.voteFlag;
+    }
+
     public Feed(String id,
                 List<Image> imageList,
                 User user,

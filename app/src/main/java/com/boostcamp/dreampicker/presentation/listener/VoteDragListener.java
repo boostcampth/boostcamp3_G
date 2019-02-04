@@ -9,12 +9,19 @@ import android.widget.FrameLayout;
 import com.boostcamp.dreampicker.R;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
-public class VoteContainerDragListener implements View.OnDragListener {
-    private final OnDropListener onDropListener;
+import androidx.annotation.NonNull;
 
-    public VoteContainerDragListener(OnDropListener onDropListener) {
-        this.onDropListener = onDropListener;
+public class VoteDragListener implements View.OnDragListener {
+    public interface DropCallback {
+        void onDrop();
     }
+
+    private final DropCallback dropCallback;
+
+    public VoteDragListener(@NonNull DropCallback dropCallback) {
+        this.dropCallback = dropCallback;
+    }
+
 
     public boolean onDrag(View v, DragEvent event) {
         final View view = (View) event.getLocalState(); // <- 버튼 정보
@@ -58,7 +65,7 @@ public class VoteContainerDragListener implements View.OnDragListener {
                         button.performClick();
                     }
 
-                    onDropListener.onDrop(buttonTag);
+                    dropCallback.onDrop();
                     break;
                 }
                 else {
