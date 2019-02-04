@@ -66,7 +66,7 @@ public class UserListFragment extends BaseFragment<FragmentUserListBinding, User
 
     @SuppressLint("CheckResult")
     private void loadData() {
-        repository.searchAllUser("")
+        repository.addSearchUserList("", 1, 15)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this.adapter::addItems,
                         error -> Log.d("", error.getLocalizedMessage()));
