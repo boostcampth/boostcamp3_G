@@ -1,10 +1,9 @@
-package com.boostcamp.dreampicker.presentation.feed.feedMain;
+package com.boostcamp.dreampicker.presentation.feed.main;
 
 import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.source.local.test.FeedMockDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;

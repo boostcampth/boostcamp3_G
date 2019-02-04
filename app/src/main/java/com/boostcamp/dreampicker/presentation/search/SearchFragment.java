@@ -9,8 +9,8 @@ import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.databinding.FragmentSearchBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
-import com.boostcamp.dreampicker.presentation.feed.feedList.FeedListFragment;
-import com.boostcamp.dreampicker.presentation.user.userList.UserListFragment;
+import com.boostcamp.dreampicker.presentation.feed.list.FeedListFragment;
+import com.boostcamp.dreampicker.presentation.user.list.UserListFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;

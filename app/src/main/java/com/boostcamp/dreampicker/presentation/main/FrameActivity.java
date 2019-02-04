@@ -7,9 +7,9 @@ import android.os.Bundle;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityFrameBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
-import com.boostcamp.dreampicker.presentation.feed.feedDetail.FeedDetailFragment;
+import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailFragment;
 import com.boostcamp.dreampicker.presentation.user.profile.ProfileFragment;
-import com.boostcamp.dreampicker.presentation.user.userList.UserListFragment;
+import com.boostcamp.dreampicker.presentation.user.list.UserListFragment;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.user.userList;
+package com.boostcamp.dreampicker.presentation.user.list;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,13 +8,11 @@ import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.User;
-import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
 import com.boostcamp.dreampicker.data.source.remote.firebase.UserFirebaseService;
 import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 import com.boostcamp.dreampicker.databinding.FragmentUserListBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 import com.boostcamp.dreampicker.presentation.main.FrameActivity;
-import com.boostcamp.dreampicker.presentation.user.profile.ProfileViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
