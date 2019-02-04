@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.user.userList;
+package com.boostcamp.dreampicker.presentation.user.list;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.User;
-import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
 import com.boostcamp.dreampicker.data.source.remote.firebase.UserFirebaseService;
 import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 import com.boostcamp.dreampicker.databinding.FragmentUserListBinding;
@@ -32,7 +31,6 @@ public class UserListFragment extends BaseFragment<FragmentUserListBinding, User
     public UserListFragment() {}
 
     public static UserListFragment newInstance(){
-
         return new UserListFragment();
     }
 
@@ -68,7 +66,7 @@ public class UserListFragment extends BaseFragment<FragmentUserListBinding, User
 
     @SuppressLint("CheckResult")
     private void loadData() {
-        repository.searchAllUser("")
+        repository.addSearchUserList("", 1, 15)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this.adapter::addItems,
                         error -> Log.d("", error.getLocalizedMessage()));

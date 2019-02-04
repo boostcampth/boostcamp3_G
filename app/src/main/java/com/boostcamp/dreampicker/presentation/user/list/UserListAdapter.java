@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.user.userList;
+package com.boostcamp.dreampicker.presentation.user.list;
 
 import android.view.LayoutInflater;
 import android.view.View;

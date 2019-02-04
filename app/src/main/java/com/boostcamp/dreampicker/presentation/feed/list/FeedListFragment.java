@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.feed.feedList;
+package com.boostcamp.dreampicker.presentation.feed.list;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -30,7 +30,6 @@ public class FeedListFragment extends BaseFragment<FragmentFeedListBinding, Feed
     public FeedListFragment(){}
 
     public static FeedListFragment newInstance() {
-
         return new FeedListFragment();
     }
 

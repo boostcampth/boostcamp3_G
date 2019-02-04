@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.feed.feedMain;
+package com.boostcamp.dreampicker.presentation.feed.main;
 
 import android.view.LayoutInflater;
 import android.view.View;
