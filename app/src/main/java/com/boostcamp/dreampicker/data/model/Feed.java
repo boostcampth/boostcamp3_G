@@ -1,5 +1,6 @@
 package com.boostcamp.dreampicker.data.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Feed {
@@ -11,7 +12,6 @@ public class Feed {
 
     // TODO : 마감 조건 확인 이후 작업
     private boolean isEnded;
-
     // TODO : Firestore 연동 이후 작업
     private int leftCount;
     private int rightCount;
