@@ -1,0 +1,203 @@
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- 피드 상단 부분 -->
+    <ImageView
+        android:id="@+id/iv_user_img"
+        android:layout_width="@dimen/profile_image_size_small"
+        android:layout_height="@dimen/profile_image_size_small"
+        android:layout_marginStart="@dimen/space_x_small"
+        android:layout_marginTop="@dimen/space_x_small"
+        android:layout_marginBottom="@dimen/space_x_small"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_feed_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_x_small"
+        android:layout_marginTop="@dimen/space_x_small"
+        app:layout_constraintStart_toEndOf="@+id/iv_user_img"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_feed_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_x_small"
+        android:layout_marginBottom="@dimen/space_x_small"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
+        app:layout_constraintStart_toEndOf="@+id/iv_user_img" />
+
+    <TextView
+        android:id="@+id/tv_feed_vote_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_x_small"
+        android:layout_marginEnd="@dimen/space_median"
+        android:layout_marginBottom="@dimen/space_x_small"
+        android:drawableStart="@drawable/ic_box"
+        android:drawablePadding="@dimen/space_x_small"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_feed_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_x_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline_feed_top_ver" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_feed_top_ver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="56dp" />
+
+    <com.sackcentury.shinebuttonlib.ShineButton
+        android:id="@+id/sb_selector"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/ic_vote_bg"
+        android:clickable="false"
+        android:elevation="5dp"
+        app:allow_random_color="true"
+        app:big_shine_color="#66FFFF"
+        app:btn_fill_color="@color/colorWhite"
+        app:click_animation_duration="200"
+        app:enable_flashing="false"
+        app:layout_constraintBottom_toTopOf="@+id/vote_result"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/border"
+        app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
+        app:shine_animation_duration="1500"
+        app:shine_count="8"
+        app:shine_turn_angle="10"
+        app:siShape="@raw/ic_finger"
+        app:small_shine_color="#CC9999"
+        app:small_shine_offset_angle="20" />
+
+    <!-- 피드 하단 부분 -->
+    <View
+        android:id="@+id/border"
+        android:layout_width="2dp"
+        android:layout_height="@dimen/feed_photo_image_height"
+        android:layout_marginTop="@dimen/space_x_small"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/vote_result"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_feed_content" />
+
+    <FrameLayout
+        android:id="@+id/fl_feed_left"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/space_x_small"
+        app:layout_constraintBottom_toTopOf="@+id/vote_result"
+        app:layout_constraintEnd_toStartOf="@+id/border"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_feed_content">
+
+        <ImageView
+            android:id="@+id/iv_feed_image_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tv_feed_tag_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom"
+            android:layout_marginStart="@dimen/space_x_small"
+            android:layout_marginBottom="@dimen/space_x_small"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_feed_right"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/space_x_small"
+        app:layout_constraintBottom_toTopOf="@+id/vote_result"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/border"
+        app:layout_constraintTop_toBottomOf="@+id/tv_feed_content">
+
+        <ImageView
+            android:id="@+id/iv_feed_image_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tv_feed_tag_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom"
+            android:layout_marginStart="@dimen/space_x_small"
+            android:layout_marginBottom="@dimen/space_x_small" />
+    </FrameLayout>
+
+    <!-- 피드 결과 -->
+    <LinearLayout
+        android:id="@+id/vote_result"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:padding="@dimen/space_x_small"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tv_vote_count_left"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center" />
+
+        <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+            android:id="@+id/pb_vote_count_left"
+            style="@style/RoundCornerProgressbar"
+            app:rcBackgroundColor="@color/colorGray"
+            app:rcRadius="5dp"
+            app:rcReverse="true"/>
+
+        <TextView
+            android:id="@+id/tv_feed_vote_des"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/vote_result_title" />
+
+        <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+            android:id="@+id/pb_vote_count_right"
+            style="@style/RoundCornerProgressbar"
+            app:rcBackgroundColor="@color/colorGray"
+            app:rcRadius="5dp"/>
+
+        <TextView
+            android:id="@+id/tv_vote_count_right"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

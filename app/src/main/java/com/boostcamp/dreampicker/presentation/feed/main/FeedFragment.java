@@ -8,6 +8,8 @@ import com.boostcamp.dreampicker.data.source.local.test.FeedMockDataSource;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,7 +28,8 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding, FeedViewMode
         initViewModel();
         initRecyclerView();
 
-        viewModel.getFeedList().observe(this, adapter::updateItems);
+        viewModel.getFeedList().observe(this,
+                (feed) -> adapter.submitList(new ArrayList<>(feed)));
     }
 
     private void initViewModel() {
@@ -34,8 +37,8 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding, FeedViewMode
     }
 
     private void initRecyclerView() {
-        adapter = new FeedAdapter();
-        adapter.setOnVoteListener(viewModel::vote);
+        adapter = new FeedAdapter(viewModel::vote);
+        binding.rvFeed.setItemAnimator(null);
         binding.rvFeed.setAdapter(adapter);
     }
 

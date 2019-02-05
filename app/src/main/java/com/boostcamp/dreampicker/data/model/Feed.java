@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.data.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Feed {
     private String id;
@@ -124,5 +125,22 @@ public class Feed {
 
     public int getVoteCount() {
         return leftCount + rightCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final Feed feed = (Feed) o;
+        return voteFlag == feed.voteFlag;
+    }
+
+    public int hashCode() {
+        return Objects.hash(voteFlag);
     }
 }

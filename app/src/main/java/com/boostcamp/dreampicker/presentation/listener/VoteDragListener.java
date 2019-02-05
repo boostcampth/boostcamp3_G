@@ -1,12 +1,8 @@
 package com.boostcamp.dreampicker.presentation.listener;
 
 import android.view.DragEvent;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
-import com.boostcamp.dreampicker.R;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
 import androidx.annotation.NonNull;
@@ -22,15 +18,10 @@ public class VoteDragListener implements View.OnDragListener {
         this.dropCallback = dropCallback;
     }
 
-
     public boolean onDrag(View v, DragEvent event) {
-        final View view = (View) event.getLocalState(); // <- 버튼 정보
-        final ShineButton button = (ShineButton) view;
-        final ViewGroup viewgroup = (ViewGroup) button.getParent(); // <- Constraint 레이아웃 정보
-        final FrameLayout container = (FrameLayout) v;
-
+        final ShineButton button = (ShineButton) event.getLocalState();
         final String buttonTag = button.getTag().toString();
-        final String containerTag = container.getTag().toString();
+        final String containerTag = v.getTag().toString();
 
         // 이벤트 시작
         switch (event.getAction()) {
@@ -49,26 +40,9 @@ public class VoteDragListener implements View.OnDragListener {
             // 이미지를 드래그해서 드랍시켰을때
             case DragEvent.ACTION_DROP :
                 if(buttonTag.equals(containerTag)) {
-                    int iconSize = v.getResources().getDimensionPixelSize(R.dimen.vote_icon_size);
-
-                    final FrameLayout.LayoutParams params =
-                            new FrameLayout.LayoutParams(iconSize, iconSize, Gravity.CENTER);
-
-                    viewgroup.removeView(button);
-                    button.setLayoutParams(params);
-                    container.addView(button);
-
-                    if (!button.isChecked()) {
-                        button.performClick();
-                    } else {
-                        button.performClick();
-                        button.performClick();
-                    }
-
                     dropCallback.onDrop();
                     break;
-                }
-                else {
+                } else {
                     return false;
                 }
             case DragEvent.ACTION_DRAG_ENDED:

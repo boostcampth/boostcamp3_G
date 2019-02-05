@@ -20,6 +20,7 @@
             app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -39,6 +40,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_feed_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_x_small"
@@ -50,6 +52,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_feed_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_x_small"
@@ -60,6 +63,7 @@
                     app:layout_constraintStart_toEndOf="@+id/iv_user_img" />
 
                 <TextView
+                    android:id="@+id/tv_feed_vote_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_x_small"
@@ -141,12 +145,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_feed_content">
 
                     <ImageView
+                        android:id="@+id/iv_feed_image_left"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
                         app:imageResource="@{feed.imageList.get(0).image}" />
 
                     <TextView
+                        android:id="@+id/tv_feed_tag_left"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|bottom"
@@ -170,12 +176,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_feed_content">
 
                     <ImageView
+                        android:id="@+id/iv_feed_image_right"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
                         app:imageResource="@{feed.imageList.get(1).image}" />
 
                     <TextView
+                        android:id="@+id/tv_feed_tag_right"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|bottom"
@@ -193,18 +201,20 @@
                     android:layout_height="40dp"
                     android:orientation="horizontal"
                     android:padding="@dimen/space_x_small"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
                     <TextView
+                        android:id="@+id/tv_vote_count_left"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@{String.valueOf(feed.leftCount)}" />
 
                     <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                        android:id="@+id/pb_vote_count_left"
                         style="@style/RoundCornerProgressbar"
                         app:rcProgressColor="@color/colorAccent"
                         app:rcBackgroundColor="@color/colorGray"
@@ -214,6 +224,7 @@
                         app:rcReverse="true"/>
 
                     <TextView
+                        android:id="@+id/tv_feed_vote_des"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -222,6 +233,7 @@
                         android:text="@string/vote_result_title" />
 
                     <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                        android:id="@+id/pb_vote_count_right"
                         style="@style/RoundCornerProgressbar"
                         app:rcProgressColor="@color/colorAccent"
                         app:rcBackgroundColor="@color/colorGray"
@@ -230,6 +242,7 @@
                         app:rcRadius="5dp"/>
 
                     <TextView
+                        android:id="@+id/tv_vote_count_right"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"

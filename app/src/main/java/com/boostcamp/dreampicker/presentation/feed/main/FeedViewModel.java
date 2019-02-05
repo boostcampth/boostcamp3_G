@@ -16,7 +16,7 @@ public class FeedViewModel extends BaseViewModel {
     private final FeedDataSource feedRepository;
     private final MutableLiveData<List<Feed>> feedList = new MutableLiveData<>();
 
-    public FeedViewModel(@NonNull FeedDataSource feedRepository) {
+    FeedViewModel(@NonNull FeedDataSource feedRepository) {
         this.feedRepository = feedRepository;
         loadFeedList();
     }
@@ -35,6 +35,8 @@ public class FeedViewModel extends BaseViewModel {
                     newFeed.setRightCount(newFeed.getRightCount() + 1);
                     newFeed.setLeftCount(newFeed.getLeftCount() - 1);
                 }
+                newFeed.setVoteFlag(flag);
+                updateVote(newFeed);
             }
         } else {
             if (flag == Constant.LEFT) {
@@ -42,9 +44,9 @@ public class FeedViewModel extends BaseViewModel {
             } else if (flag == Constant.RIGHT) {
                 newFeed.setRightCount(newFeed.getRightCount() + 1);
             }
+            newFeed.setVoteFlag(flag);
+            updateVote(newFeed);
         }
-        newFeed.setVoteFlag(flag);
-        updateVote(newFeed);
     }
 
     private void updateVote(@NonNull Feed feed) {
@@ -62,14 +64,9 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     private void loadFeedList() {
-        isLoading.set(true);
-
         addDisposable(feedRepository.getAllFeed()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((feedList) -> {
-                    isLoading.set(false);
-                    this.feedList.setValue(feedList);
-                }));
+                .subscribe(this.feedList::setValue));
     }
 
     public LiveData<List<Feed>> getFeedList() {
