@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.boostcamp.dreampicker.presentation.feed.feedMain.FeedViewModel"/>
+            type="com.boostcamp.dreampicker.presentation.feed.main.FeedViewModel"/>
         <variable
             name="position"
             type="int"/>

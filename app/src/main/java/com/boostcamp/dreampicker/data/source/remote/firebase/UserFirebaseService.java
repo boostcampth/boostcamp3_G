@@ -150,6 +150,7 @@ public class UserFirebaseService implements UserDataSource {
 
     @Override
     public Single<List<User>> addSearchUserList(String searchKey, int pageIndex, int pageUnit) {
+
         // TODO :테스트 필요
         List<User> userList = new ArrayList<>();
 
@@ -184,5 +185,6 @@ public class UserFirebaseService implements UserDataSource {
                     emitter.onSuccess(userList);
                 })
                 .addOnFailureListener(emitter::onError));
+
     }
 }

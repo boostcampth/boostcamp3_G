@@ -65,6 +65,7 @@ public class FeedFirebaseService implements FeedDataSource {
                         emitter.onError(task.getException());
                     }
                 }));
+
     }
 
     @Override

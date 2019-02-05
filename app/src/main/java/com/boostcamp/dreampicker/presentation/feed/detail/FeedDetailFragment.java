@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.feed.feedDetail;
+package com.boostcamp.dreampicker.presentation.feed.detail;
 
 import android.os.Bundle;
 import android.view.View;

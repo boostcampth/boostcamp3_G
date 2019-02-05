@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.user.userList;
+package com.boostcamp.dreampicker.presentation.user.list;
 
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
