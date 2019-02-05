@@ -23,18 +23,25 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding, FeedViewMode
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        final FeedAdapter adapter = new FeedAdapter(viewModel);
+        initViewModel();
+        initRecyclerView();
+    }
 
+    private void initViewModel() {
         binding.setViewModel(viewModel);
-        binding.rvFeed.setAdapter(adapter);
+    }
 
-        viewModel.getFeeds().observe(this, adapter::updateItems);
+    private void initRecyclerView() {
+        final FeedAdapter adapter = new FeedAdapter(viewModel::vote);
+        binding.rvFeed.setItemAnimator(null);
+        binding.rvFeed.setAdapter(adapter);
     }
 
     @Override
     protected FeedViewModel getViewModel() {
-        FeedViewModelFactory factory = new FeedViewModelFactory(
+        final FeedViewModelFactory factory = new FeedViewModelFactory(
                 FeedRepository.getInstance(FeedFirebaseService.getInstance()));
+
         return ViewModelProviders.of(this, factory).get(FeedViewModel.class);
     }
 

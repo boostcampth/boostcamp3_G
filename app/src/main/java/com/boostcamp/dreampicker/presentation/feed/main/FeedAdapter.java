@@ -1,63 +1,74 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.databinding.ItemFeedBinding;
 import com.boostcamp.dreampicker.data.model.Feed;
-import com.boostcamp.dreampicker.utils.Constant;
-import com.boostcamp.dreampicker.presentation.BaseRecyclerViewAdapter;
-import com.boostcamp.dreampicker.presentation.listener.VoteContainerDragListener;
+import com.boostcamp.dreampicker.presentation.listener.VoteDragListener;
 import com.boostcamp.dreampicker.presentation.listener.VoteIconTouchListener;
+import com.boostcamp.dreampicker.utils.Constant;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 
-public class FeedAdapter extends BaseRecyclerViewAdapter<Feed, FeedAdapter.FeedViewHolder> {
-    private final FeedViewModel viewModel;
-    private View.OnTouchListener touchListener = new VoteIconTouchListener();
-    private View.OnDragListener leftDragListener;
-    private View.OnDragListener rightDragListener;
+public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
+    private Context context;
 
-    public FeedAdapter(@NonNull FeedViewModel viewModel) {
-        this.viewModel = viewModel;
-        leftDragListener = new VoteContainerDragListener((id) -> viewModel.vote(id, Constant.LEFT));
-        rightDragListener = new VoteContainerDragListener((id) -> viewModel.vote(id, Constant.RIGHT));
+    FeedAdapter(@NonNull OnVoteListener onVoteListener) {
+        super(DIFF_CALLBACK);
+        this.onVoteListener = onVoteListener;
     }
 
+    interface OnVoteListener {
+        void onVote(VoteResult result);
+    }
+
+    @NonNull
+    private final OnVoteListener onVoteListener;
+    private View.OnTouchListener voteTouchListener = new VoteIconTouchListener();
+
     @Override
-    protected void onBindView(@NonNull final FeedViewHolder holder, int position) {
-        holder.bind(viewModel, position);
-        holder.binding.sbSelector.setOnTouchListener(touchListener);
-        holder.binding.flFeedLeft.setOnDragListener(leftDragListener);
-        holder.binding.flFeedRight.setOnDragListener(rightDragListener);
+    public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
+        final Feed feed = getItem(position);
+        holder.bindTo(feed);
+
+        if(feed.getVoteFlag() != Constant.NONE) {
+            holder.startVoteAnimation(context, feed.getVoteFlag());
+        }
+
+        holder.getBinding().sbSelector.setOnTouchListener(voteTouchListener);
+
+        holder.getBinding().flFeedLeft.setOnDragListener(new VoteDragListener(
+                () -> onVoteListener.onVote(
+                        new VoteResult(getItem(holder.getAdapterPosition()), Constant.LEFT))));
+
+        holder.getBinding().flFeedRight.setOnDragListener(new VoteDragListener(
+                () -> onVoteListener.onVote(
+                        new VoteResult(getItem(holder.getAdapterPosition()), Constant.RIGHT))));
     }
 
     @NonNull
     @Override
     public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final ItemFeedBinding binding =
-                DataBindingUtil.inflate(inflater, R.layout.item_feed, parent, false);
-
-        return new FeedViewHolder(binding);
+        this.context = parent.getContext();
+        return new FeedViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_feed, parent, false));
     }
 
-    class FeedViewHolder extends RecyclerView.ViewHolder {
-        private final ItemFeedBinding binding;
+    private static final DiffUtil.ItemCallback<Feed> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Feed>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull Feed oldItem, @NonNull Feed newItem) {
+                    return oldItem.getId().equals(newItem.getId());
+                }
 
-        FeedViewHolder(@NonNull ItemFeedBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-
-        void bind(@NonNull FeedViewModel viewModel, int position) {
-            binding.setViewModel(viewModel);
-            binding.setPosition(position);
-            binding.executePendingBindings();
-        }
-    }
+                @Override
+                public boolean areContentsTheSame(@NonNull Feed oldItem, @NonNull Feed newItem) {
+                    return oldItem.equals(newItem);
+                }
+            };
 }
