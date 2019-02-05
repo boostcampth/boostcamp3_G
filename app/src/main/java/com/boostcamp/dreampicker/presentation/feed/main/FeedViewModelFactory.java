@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 public class FeedViewModelFactory implements ViewModelProvider.Factory {
     private final FeedDataSource feedRepository;
 
-    public FeedViewModelFactory(FeedDataSource feedRepository) {
+    FeedViewModelFactory(FeedDataSource feedRepository) {
         this.feedRepository = feedRepository;
     }
 
@@ -17,6 +17,7 @@ public class FeedViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if(modelClass.isAssignableFrom(FeedViewModel.class)) {
+            //noinspection unchecked
             return (T) new FeedViewModel(feedRepository);
         } else {
             throw new IllegalArgumentException("ViewModel Not Found");

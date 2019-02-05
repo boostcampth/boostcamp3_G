@@ -9,7 +9,7 @@ public class VoteResult {
     private final Feed feed;
     private final int flag;
 
-    public VoteResult(@NonNull Feed feed, @Constant.VoteFlag int flag) {
+    VoteResult(@NonNull Feed feed, @Constant.VoteFlag int flag) {
         this.feed = feed;
         this.flag = flag;
     }
