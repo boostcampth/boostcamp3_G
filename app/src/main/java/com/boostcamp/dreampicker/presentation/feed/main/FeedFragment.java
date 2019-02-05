@@ -4,7 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.source.local.test.FeedMockDataSource;
+import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
+import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
@@ -38,7 +39,9 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding, FeedViewMode
 
     @Override
     protected FeedViewModel getViewModel() {
-        final FeedViewModelFactory factory = new FeedViewModelFactory(FeedMockDataSource.getInstance());
+        final FeedViewModelFactory factory = new FeedViewModelFactory(
+                FeedRepository.getInstance(FeedFirebaseService.getInstance()));
+
         return ViewModelProviders.of(this, factory).get(FeedViewModel.class);
     }
 
