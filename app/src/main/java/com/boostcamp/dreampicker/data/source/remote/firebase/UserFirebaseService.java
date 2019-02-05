@@ -54,7 +54,7 @@ public class UserFirebaseService implements UserDataSource {
                     } else {
                         emitter.onError(task.getException());
                     }
-                }));
+                }).addOnFailureListener(emitter::onError));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class UserFirebaseService implements UserDataSource {
                     }else{
                         emitter.onError(task.getException());
                     }
-                }));
+                }).addOnFailureListener(emitter::onError));
     }
 
     @Override
@@ -87,15 +87,16 @@ public class UserFirebaseService implements UserDataSource {
                 .whereEqualTo("id",userId)
                 .get()
                 .addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    followerList.add(document.toObject(User.class));
-                }
-                emitter.onSuccess(followerList);
-            }else{
-                emitter.onError(task.getException());
-            }
-        }));
+                    if(task.isSuccessful()){
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            followerList.add(document.toObject(User.class));
+                        }
+                        emitter.onSuccess(followerList);
+                    }else{
+                        emitter.onError(task.getException());
+                    }
+                })
+                .addOnFailureListener(emitter::onError));
     }
 
 

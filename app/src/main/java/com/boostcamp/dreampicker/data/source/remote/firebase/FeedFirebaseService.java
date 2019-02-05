@@ -89,8 +89,8 @@ public class FeedFirebaseService implements FeedDataSource {
                             } else {
                                 emitter.onError(task.getException());
                             }
-                    });
-
+                    })
+                   .addOnFailureListener(emitter::onError);
         });
     }
 
@@ -119,7 +119,8 @@ public class FeedFirebaseService implements FeedDataSource {
                     } else {
                         emitter.onError(task.getException());
                     }
-                }));
+                })
+                .addOnFailureListener(emitter::onError));
     }
 
     @Override
@@ -141,7 +142,8 @@ public class FeedFirebaseService implements FeedDataSource {
                     } else {
                         emitter.onError(documentSnapshot.getException());
                     }
-                }));
+                })
+                .addOnFailureListener(emitter::onError));
     }
 
     @Override
