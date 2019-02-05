@@ -4,11 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="viewModel"
-            type="com.boostcamp.dreampicker.presentation.feed.main.FeedViewModel"/>
-        <variable
-            name="position"
-            type="int"/>
+            name="feed"
+            type="com.boostcamp.dreampicker.data.model.Feed"/>
     </data>
 
     <LinearLayout
@@ -23,6 +20,7 @@
             app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -36,33 +34,36 @@
                     android:layout_marginBottom="@dimen/space_x_small"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:imageResource="@{viewModel.getFeedAt(position).user.profileImageResource}"
+                    app:imageResource="@{feed.user.profileImageResource}"
                     app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_feed_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_x_small"
                     android:layout_marginTop="@dimen/space_x_small"
-                    android:text="@{viewModel.getFeedAt(position).user.name}"
+                    android:text="@{feed.user.name}"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_title_size"
                     app:layout_constraintStart_toEndOf="@+id/iv_user_img"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_feed_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_x_small"
                     android:layout_marginBottom="@dimen/space_x_small"
-                    android:text="@{viewModel.getFeedAt(position).date}"
+                    android:text="@{feed.date}"
                     android:textSize="@dimen/text_sub_size"
                     app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
                     app:layout_constraintStart_toEndOf="@+id/iv_user_img" />
 
                 <TextView
+                    android:id="@+id/tv_feed_vote_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_x_small"
@@ -70,7 +71,7 @@
                     android:layout_marginBottom="@dimen/space_x_small"
                     android:drawableStart="@drawable/ic_box"
                     android:drawablePadding="@dimen/space_x_small"
-                    android:text="@{String.valueOf(viewModel.getFeedAt(position).voteCount)}"
+                    android:text="@{String.valueOf(feed.voteCount)}"
                     android:textSize="@dimen/text_title_size"
                     app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +81,7 @@
                     android:id="@+id/tv_feed_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.getFeedAt(position).content}"
+                    android:text="@{feed.content}"
                     android:textColor="@android:color/black"
                     android:layout_margin="@dimen/space_x_small"
                     android:textSize="@dimen/text_title_size"
@@ -103,7 +104,7 @@
                     android:background="@drawable/ic_vote_bg"
                     android:clickable="false"
                     android:elevation="5dp"
-                    android:tag="@{viewModel.getFeedAt(position).id}"
+                    android:tag="@{feed.id}"
                     app:allow_random_color="true"
                     app:big_shine_color="#66FFFF"
                     app:btn_fill_color="@color/colorWhite"
@@ -137,25 +138,27 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="@dimen/space_x_small"
-                    android:tag="@{viewModel.getFeedAt(position).id}"
+                    android:tag="@{feed.id}"
                     app:layout_constraintBottom_toTopOf="@+id/vote_result"
                     app:layout_constraintEnd_toStartOf="@+id/border"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_feed_content">
 
                     <ImageView
+                        android:id="@+id/iv_feed_image_left"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        app:imageResource="@{viewModel.getFeedAt(position).imageList.get(0).image}" />
+                        app:imageResource="@{feed.imageList.get(0).image}" />
 
                     <TextView
+                        android:id="@+id/tv_feed_tag_left"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|bottom"
                         android:layout_marginStart="@dimen/space_x_small"
                         android:layout_marginBottom="@dimen/space_x_small"
-                        android:text="@{viewModel.getFeedAt(position).imageList.get(0).tag}"
+                        android:text="@{feed.imageList.get(0).tag}"
                         android:textColor="@android:color/white"
                         android:textStyle="bold"
                         tools:layout_editor_absoluteX="8dp" />
@@ -166,25 +169,27 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="@dimen/space_x_small"
-                    android:tag="@{viewModel.getFeedAt(position).id}"
+                    android:tag="@{feed.id}"
                     app:layout_constraintBottom_toTopOf="@+id/vote_result"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/border"
                     app:layout_constraintTop_toBottomOf="@+id/tv_feed_content">
 
                     <ImageView
+                        android:id="@+id/iv_feed_image_right"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        app:imageResource="@{viewModel.getFeedAt(position).imageList.get(1).image}" />
+                        app:imageResource="@{feed.imageList.get(1).image}" />
 
                     <TextView
+                        android:id="@+id/tv_feed_tag_right"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|bottom"
                         android:layout_marginStart="@dimen/space_x_small"
                         android:layout_marginBottom="@dimen/space_x_small"
-                        android:text="@{viewModel.getFeedAt(position).imageList.get(1).tag}"
+                        android:text="@{feed.imageList.get(1).tag}"
                         android:textColor="@android:color/white"
                         android:textStyle="bold" />
                 </FrameLayout>
@@ -196,27 +201,30 @@
                     android:layout_height="40dp"
                     android:orientation="horizontal"
                     android:padding="@dimen/space_x_small"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
                     <TextView
+                        android:id="@+id/tv_vote_count_left"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@{String.valueOf(viewModel.getFeedAt(position).leftCount)}" />
+                        android:text="@{String.valueOf(feed.leftCount)}" />
 
                     <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                        android:id="@+id/pb_vote_count_left"
                         style="@style/RoundCornerProgressbar"
                         app:rcProgressColor="@color/colorAccent"
                         app:rcBackgroundColor="@color/colorGray"
-                        app:rcProgress="@{viewModel.getFeedAt(position).leftCount}"
-                        app:rcMax="@{viewModel.getFeedAt(position).voteCount}"
+                        app:rcProgress="@{feed.leftCount}"
+                        app:rcMax="@{feed.voteCount}"
                         app:rcRadius="5dp"
                         app:rcReverse="true"/>
 
                     <TextView
+                        android:id="@+id/tv_feed_vote_des"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -225,18 +233,20 @@
                         android:text="@string/vote_result_title" />
 
                     <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                        android:id="@+id/pb_vote_count_right"
                         style="@style/RoundCornerProgressbar"
                         app:rcProgressColor="@color/colorAccent"
                         app:rcBackgroundColor="@color/colorGray"
-                        app:rcProgress="@{viewModel.getFeedAt(position).rightCount}"
-                        app:rcMax="@{viewModel.getFeedAt(position).voteCount}"
+                        app:rcProgress="@{feed.rightCount}"
+                        app:rcMax="@{feed.voteCount}"
                         app:rcRadius="5dp"/>
 
                     <TextView
+                        android:id="@+id/tv_vote_count_right"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@{String.valueOf(viewModel.getFeedAt(position).rightCount)}" />
+                        android:text="@{String.valueOf(feed.rightCount)}" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
