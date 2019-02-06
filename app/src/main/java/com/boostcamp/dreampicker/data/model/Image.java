@@ -34,6 +34,13 @@ public class Image {
         this.tagList = tagList;
     }
 
+    // Test
+    public Image(String id, int image, List<String> tagList) {
+        this.id = id;
+        this.image = image;
+        this.tagList = tagList;
+    }
+
     public String getId() {
         return id;
     }

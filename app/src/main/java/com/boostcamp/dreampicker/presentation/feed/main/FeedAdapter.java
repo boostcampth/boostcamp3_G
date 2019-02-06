@@ -42,11 +42,11 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
 
         holder.getBinding().sbSelector.setOnTouchListener(voteTouchListener);
 
-        holder.getBinding().flFeedLeft.setOnDragListener(new VoteDragListener(
+        holder.getBinding().ivFeedImageLeft.setOnDragListener(new VoteDragListener(
                 () -> onVoteListener.onVote(
                         new VoteResult(getItem(holder.getAdapterPosition()), Constant.LEFT))));
 
-        holder.getBinding().flFeedRight.setOnDragListener(new VoteDragListener(
+        holder.getBinding().ivFeedImageRight.setOnDragListener(new VoteDragListener(
                 () -> onVoteListener.onVote(
                         new VoteResult(getItem(holder.getAdapterPosition()), Constant.RIGHT))));
     }

@@ -1,5 +1,7 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
+import android.util.Log;
+
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
@@ -18,7 +20,6 @@ public class FeedViewModel extends BaseViewModel {
 
     FeedViewModel(@NonNull FeedDataSource feedRepository) {
         this.feedRepository = feedRepository;
-        loadFeedList();
     }
 
     // Todo : Firebase 투표 반영
@@ -63,7 +64,8 @@ public class FeedViewModel extends BaseViewModel {
         this.feedList.postValue(feedList);
     }
 
-    private void loadFeedList() {
+    void loadFeedList() {
+        Log.d("Melon", "loadFeedList() 호출");
         addDisposable(feedRepository.getAllFeed()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this.feedList::setValue));
