@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.user.profile;
+package com.boostcamp.dreampicker.presentation.profile;
 
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.repository.UserRepository;
