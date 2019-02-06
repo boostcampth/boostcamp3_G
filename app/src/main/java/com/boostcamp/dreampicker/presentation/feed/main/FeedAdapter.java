@@ -18,17 +18,25 @@ import androidx.recyclerview.widget.ListAdapter;
 public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     private Context context;
 
-    FeedAdapter(@NonNull OnVoteListener onVoteListener) {
+    FeedAdapter(@NonNull OnVoteListener onVoteListener, @NonNull OnItemClickListener onItemClickListener) {
         super(DIFF_CALLBACK);
         this.onVoteListener = onVoteListener;
+        this.onItemClickListener = onItemClickListener;
     }
 
     interface OnVoteListener {
         void onVote(VoteResult result);
     }
 
+    interface OnItemClickListener {
+        void onItemClick(@NonNull String feedId);
+    }
+
     @NonNull
     private final OnVoteListener onVoteListener;
+    @NonNull
+    private final OnItemClickListener onItemClickListener;
+
     private View.OnTouchListener voteTouchListener = new VoteIconTouchListener();
 
     @Override
@@ -39,6 +47,9 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
         if(feed.getVoteFlag() != Constant.NONE) {
             holder.startVoteAnimation(context, feed.getVoteFlag());
         }
+
+        holder.itemView.setOnClickListener((v) ->
+                onItemClickListener.onItemClick(getItem((holder.getAdapterPosition())).getId()));
 
         holder.getBinding().sbSelector.setOnTouchListener(voteTouchListener);
 

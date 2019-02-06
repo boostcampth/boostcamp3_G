@@ -1,5 +1,7 @@
 package com.boostcamp.dreampicker.presentation.feed.detail;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +20,8 @@ import androidx.viewpager.widget.ViewPager;
 public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> {
     private static final String TOOLBAR_BG_COLOR = "#99000000";
     private static final int NUM_PAGES = 2;
+
+    private static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
 
     private boolean isShowTag = true;
 
@@ -104,5 +108,11 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         public int getCount() {
             return NUM_PAGES;
         }
+    }
+
+    public static Intent getLaunchIntent(@NonNull Context context, @NonNull String feedId) {
+        final Intent intent = new Intent(context, FeedDetailActivity.class);
+        intent.putExtra(EXTRA_FEED_ID, feedId);
+        return intent;
     }
 }
