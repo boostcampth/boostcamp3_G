@@ -24,13 +24,17 @@ import me.gujun.android.taggroup.TagGroup;
 public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private static final String CAMERA = Manifest.permission.CAMERA;
     private static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
     private static final String PERMISSION_DENIED_MESSAGE = "권한이 없습니다.";
+    private static final String UPLOAD_DENIED_MESAGE = "투표를 등록할 수 없습니다.";
+    private static final String UPLOAD_GRANTED_MESSAGE = "투표 등록 완료";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViewModel();
         initViews();
+        subscribeValidate();
     }
 
     private void initViewModel() {
@@ -50,7 +54,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         final ImageButton btnUpload = binding.toolbar.btnRight;
 
         btnClose.setImageResource(R.drawable.btn_toolbar_close);
-        btnUpload.setImageResource(R.drawable.btn_toolbar_check);
+        btnUpload.setImageResource(R.drawable.btn_toolbar_finger);
 
         btnClose.setOnClickListener((v) -> finish());
         btnUpload.setOnClickListener((v) -> binding.getViewModel().upload());
@@ -97,10 +101,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
                     @Override
                     public void onPermissionDenied(List<String> deniedPermissions) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                PERMISSION_DENIED_MESSAGE,
-                                Toast.LENGTH_SHORT).show();
+                        showToast(PERMISSION_DENIED_MESSAGE);
                     }
                 })
                 .setPermissions(CAMERA, WRITE_EXTERNAL_STORAGE)
@@ -116,11 +117,25 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
                 .show(getSupportFragmentManager());
     }
 
+    private void subscribeValidate() {
+        binding.getViewModel().getValidate().observe(this, v -> {
+            if(v) {
+                showToast(UPLOAD_GRANTED_MESSAGE);
+                finish();
+            } else {
+                showToast(UPLOAD_DENIED_MESAGE);
+            }
+        });
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_upload;
     }
-
 
     public static Intent getLaunchIntent(Context context) {
         return new Intent(context, UploadActivity.class);

@@ -96,6 +96,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/iv_upload_right" />
 
             <EditText
+                android:id="@+id/et_upload_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_x_small"
