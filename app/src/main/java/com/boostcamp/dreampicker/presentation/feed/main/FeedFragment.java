@@ -14,7 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-public class FeedFragment extends BaseFragment<FragmentFeedBinding, FeedViewModel> {
+public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
+    private FeedViewModel viewModel;
 
     public FeedFragment() { }
 
@@ -29,6 +30,9 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding, FeedViewMode
     }
 
     private void initViewModel() {
+        final FeedViewModelFactory factory = new FeedViewModelFactory(
+                FeedRepository.getInstance(FeedFirebaseService.getInstance()));
+        viewModel = ViewModelProviders.of(this, factory).get(FeedViewModel.class);
         binding.setViewModel(viewModel);
     }
 
@@ -43,16 +47,13 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding, FeedViewMode
     }
 
     @Override
-    protected FeedViewModel getViewModel() {
-        final FeedViewModelFactory factory = new FeedViewModelFactory(
-                FeedRepository.getInstance(FeedFirebaseService.getInstance()));
-
-        return ViewModelProviders.of(this, factory).get(FeedViewModel.class);
-    }
-
-    @Override
     protected int getLayoutId() {
         return R.layout.fragment_feed;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewModel.loadFeedList();
+    }
 }

@@ -13,7 +13,7 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentNotificationBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
-public class NotificationFragment extends BaseFragment<FragmentNotificationBinding, NotificationViewModel> {
+public class NotificationFragment extends BaseFragment<FragmentNotificationBinding> {
 
     public NotificationFragment() {}
 
@@ -43,10 +43,5 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
     private void initView() {
 
         // TODO. 뷰 그리기
-    }
-
-    @Override
-    protected NotificationViewModel getViewModel() {
-        return ViewModelProviders.of(this).get(NotificationViewModel.class);
     }
 }

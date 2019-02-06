@@ -30,12 +30,14 @@
     <dimen name="profile_image_size_median">60dp</dimen>
     <dimen name="profile_image_size_large">80dp</dimen>
 
-    <!-- Feed Image Size -->
+    <!-- Feed Main -->
     <dimen name="feed_photo_image_height">200dp</dimen>
+    <dimen name="feed_tag_group_height">20dp</dimen>
 
     <!-- 특정 화면에서 쓰이는 dimen -->
     <dimen name="profile_tab_height">40dp</dimen>
     <dimen name="login_logo_size">280dp</dimen>
+    <dimen name="login_button_width">280dp</dimen>
     <dimen name="splash_logo_size">240dp</dimen>
     <dimen name="vote_progress_height">10dp</dimen>
 

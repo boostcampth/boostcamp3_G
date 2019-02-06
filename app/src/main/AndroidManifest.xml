@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.boostcamp.dreampicker">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:allowBackup="true"
@@ -15,20 +15,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".presentation.main.SplashActivity" />
-        <activity android:name=".presentation.main.LogInActivity" />
-        <activity android:name=".presentation.main.MainActivity">
+
+        <activity android:name=".presentation.main.SplashActivity"/>
+        <activity android:name=".presentation.main.LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".presentation.upload.UploadActivity"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".presentation.main.MainActivity">
+
+        </activity>
         <activity android:name=".presentation.feed.detail.FeedDetailActivity"/>
-        <activity android:name=".presentation.main.FrameActivity" />
+        <activity android:name=".presentation.upload.UploadActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
     </application>
 
 </manifest>

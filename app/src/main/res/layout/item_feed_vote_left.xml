@@ -36,15 +36,13 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
         app:layout_constraintStart_toEndOf="@+id/iv_user_img" />
 
-    <TextView
+    <CheckBox
         android:id="@+id/tv_feed_vote_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_x_small"
         android:layout_marginEnd="@dimen/space_median"
         android:layout_marginBottom="@dimen/space_x_small"
-        android:drawableStart="@drawable/ic_box"
-        android:drawablePadding="@dimen/space_x_small"
         app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -69,6 +67,7 @@
         android:id="@+id/sb_selector"
         android:layout_width="56dp"
         android:layout_height="56dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/ic_vote_bg"
         android:clickable="false"
         android:elevation="5dp"
@@ -78,8 +77,8 @@
         app:click_animation_duration="200"
         app:enable_flashing="false"
         app:layout_constraintBottom_toTopOf="@+id/vote_result"
-        app:layout_constraintEnd_toStartOf="@+id/border"
-        app:layout_constraintStart_toStartOf="@+id/fl_feed_left"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_feed_image_ho"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_feed_content"
         app:shine_animation_duration="1500"
         app:shine_count="8"
@@ -89,68 +88,54 @@
         app:small_shine_offset_angle="20" />
 
     <!-- 피드 하단 부분 -->
-    <View
-        android:id="@+id/border"
-        android:layout_width="2dp"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_feed_image_ho"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <ImageView
+        android:id="@+id/iv_feed_image_left"
+        android:layout_width="0dp"
         android:layout_height="@dimen/feed_photo_image_height"
+        android:scaleType="fitXY"
         android:layout_marginTop="@dimen/space_x_small"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintBottom_toTopOf="@+id/vote_result"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/vote_result"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_feed_image_ho"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_feed_content" />
+        app:layout_constraintTop_toBottomOf="@id/tv_feed_content"/>
 
-    <FrameLayout
-        android:id="@+id/fl_feed_left"
+    <me.gujun.android.taggroup.TagGroup
+        android:id="@+id/tv_feed_tag_left"
+        style="@style/TagGroup.Small"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/space_x_small"
-        app:layout_constraintBottom_toTopOf="@+id/vote_result"
-        app:layout_constraintEnd_toStartOf="@+id/border"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_feed_content">
+        android:layout_height="@dimen/feed_tag_group_height"
+        android:layout_margin="@dimen/space_x_small"
+        app:layout_constraintBottom_toBottomOf="@id/iv_feed_image_left"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_feed_image_ho"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_feed_image_left"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY" />
-
-        <TextView
-            android:id="@+id/tv_feed_tag_left"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|bottom"
-            android:layout_marginStart="@dimen/space_x_small"
-            android:layout_marginBottom="@dimen/space_x_small"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/fl_feed_right"
+    <ImageView
+        android:id="@+id/iv_feed_image_right"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/feed_photo_image_height"
+        android:scaleType="fitXY"
         android:layout_marginTop="@dimen/space_x_small"
-        app:layout_constraintBottom_toTopOf="@+id/vote_result"
+        app:layout_constraintBottom_toTopOf="@id/vote_result"
+        app:layout_constraintStart_toEndOf="@+id/guideline_feed_image_ho"
+        app:layout_constraintTop_toBottomOf="@id/tv_feed_content"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <me.gujun.android.taggroup.TagGroup
+        android:id="@+id/tv_feed_tag_right"
+        style="@style/TagGroup.Small"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/feed_tag_group_height"
+        android:layout_margin="@dimen/space_x_small"
+        app:layout_constraintStart_toEndOf="@id/guideline_feed_image_ho"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/border"
-        app:layout_constraintTop_toBottomOf="@+id/tv_feed_content">
-
-        <ImageView
-            android:id="@+id/iv_feed_image_right"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY" />
-
-        <TextView
-            android:id="@+id/tv_feed_tag_right"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|bottom"
-            android:layout_marginStart="@dimen/space_x_small"
-            android:layout_marginBottom="@dimen/space_x_small" />
-    </FrameLayout>
+        app:layout_constraintBottom_toTopOf="@id/vote_result"/>
 
     <!-- 피드 결과 -->
     <LinearLayout
