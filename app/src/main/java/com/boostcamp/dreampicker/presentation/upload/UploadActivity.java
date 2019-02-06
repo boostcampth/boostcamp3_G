@@ -3,44 +3,133 @@ package com.boostcamp.dreampicker.presentation.upload;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.transition.TransitionManager;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
-import com.boostcamp.dreampicker.utils.Constant;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
-import com.tedpark.tedpermission.rx2.TedRx2Permission;
+import com.boostcamp.dreampicker.utils.Constant;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import java.util.List;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.lifecycle.ViewModelProviders;
 import gun0912.tedbottompicker.TedBottomPicker;
-import io.reactivex.disposables.Disposable;
+import me.gujun.android.taggroup.TagGroup;
 
 public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private static final String CAMERA = Manifest.permission.CAMERA;
     private static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-    private boolean leftImageAnimationToggle = false;
-    private boolean rightImageAnimationToggle = false;
+    private static final String PERMISSION_DENIED_MESSAGE = "권한이 없습니다.";
+    private static final String UPLOAD_DENIED_MESAGE = "투표를 등록할 수 없습니다.";
+    private static final String UPLOAD_GRANTED_MESSAGE = "투표 등록 완료";
 
-    private ConstraintLayout rootLayout;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initViewModel();
+        initViews();
+        subscribeValidate();
+    }
 
-    private ConstraintSet rootSet = new ConstraintSet();
-    private ConstraintSet leftSet = new ConstraintSet();
-    private ConstraintSet rightSet = new ConstraintSet();
+    private void initViewModel() {
+        final UploadViewModel viewModel = ViewModelProviders.of(this).get(UploadViewModel.class);
+        binding.setViewModel(viewModel);
+        binding.setLifecycleOwner(this);
+    }
 
-    private ImageView leftImage, rightImage;
+    private void initViews() {
+        initToolbar();
+        initImageViews();
+        initTagGroup();
+    }
 
-    private Disposable disposable;
+    private void initToolbar() {
+        final ImageButton btnClose = binding.toolbar.btnLeft;
+        final ImageButton btnUpload = binding.toolbar.btnRight;
 
-    public static Intent getLaunchIntent(Context context) {
+        btnClose.setImageResource(R.drawable.btn_toolbar_close);
+        btnUpload.setImageResource(R.drawable.btn_toolbar_finger);
 
-        return new Intent(context, UploadActivity.class);
+        btnClose.setOnClickListener((v) -> finish());
+        btnUpload.setOnClickListener((v) -> binding.getViewModel().upload());
+    }
+
+    private void initImageViews() {
+        binding.ivUploadLeft.setOnClickListener((v) -> onImageClick(Constant.LEFT));
+        binding.ivUploadRight.setOnClickListener((v) -> onImageClick(Constant.RIGHT));
+    }
+
+    private void initTagGroup() {
+        binding.tgUploadTagLeft.setOnTagChangeListener(new TagGroup.OnTagChangeListener() {
+            @Override
+            public void onAppend(TagGroup tagGroup, String tag) {
+                binding.getViewModel().setTag(tag, Constant.LEFT);
+            }
+
+            @Override
+            public void onDelete(TagGroup tagGroup, String tag) {
+                binding.getViewModel().deleteTag(tag, Constant.LEFT);
+            }
+        });
+
+        binding.tgUploadTagRight.setOnTagChangeListener(new TagGroup.OnTagChangeListener() {
+            @Override
+            public void onAppend(TagGroup tagGroup, String tag) {
+                binding.getViewModel().setTag(tag, Constant.RIGHT);
+            }
+
+            @Override
+            public void onDelete(TagGroup tagGroup, String tag) {
+                binding.getViewModel().deleteTag(tag, Constant.RIGHT);
+            }
+        });
+    }
+
+    public void onImageClick(@Constant.VoteFlag int flag) {
+        TedPermission.with(this)
+                .setPermissionListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        showBottomPicker(flag);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(List<String> deniedPermissions) {
+                        showToast(PERMISSION_DENIED_MESSAGE);
+                    }
+                })
+                .setPermissions(CAMERA, WRITE_EXTERNAL_STORAGE)
+                .check();
+    }
+
+    public void showBottomPicker(@Constant.VoteFlag int flag) {
+        new TedBottomPicker.Builder(this)
+                .setOnImageSelectedListener(uri -> binding.getViewModel().setImage(uri, flag))
+                .setPeekHeight(800)
+                .showTitle(true)
+                .create()
+                .show(getSupportFragmentManager());
+    }
+
+    private void subscribeValidate() {
+        binding.getViewModel().getValidate().observe(this, v -> {
+            if(v) {
+                showToast(UPLOAD_GRANTED_MESSAGE);
+                finish();
+            } else {
+                showToast(UPLOAD_DENIED_MESAGE);
+            }
+        });
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -48,82 +137,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         return R.layout.activity_upload;
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        initView();
-    }
-
-    private void initView() {
-        rootLayout = findViewById(R.id.cl_upload_root);
-        rootSet.clone(rootLayout);
-        leftSet.clone(this, R.layout.activity_upload_detail_left);
-        rightSet.clone(this, R.layout.activity_upload_detail_right);
-
-        leftImage = findViewById(R.id.iv_upload_left);
-        rightImage = findViewById(R.id.iv_upload_right);
-
-        leftImage.setOnClickListener((v) -> onImageClick(Constant.LEFT));
-        rightImage.setOnClickListener((v) -> onImageClick(Constant.RIGHT));
-    }
-
-    public void onImageClick(@Constant.VoteFlag int flag) {
-        disposable = TedRx2Permission.with(this)
-                .setPermissions(CAMERA, WRITE_EXTERNAL_STORAGE)
-                .request()
-                .subscribe(result -> {
-                    if (result.isGranted()) {
-                        showBottomPicker(flag);
-                    } else {
-                        Toast.makeText(this, "권한이 없습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    public void showBottomPicker(@Constant.VoteFlag int flag) {
-        if (leftImageAnimationToggle || rightImageAnimationToggle) {
-            applyLayoutAnimation(flag);
-        } else {
-            new TedBottomPicker.Builder(this)
-                    .setOnImageSelectedListener(uri -> applyImage(uri, flag))
-                    .setPeekHeight(800)
-                    .showTitle(true)
-                    .create()
-                    .show(getSupportFragmentManager());
-        }
-    }
-
-    private void applyImage(Uri uri, @Constant.VoteFlag int flag) {
-        if(flag == Constant.LEFT) {
-            leftImage.setImageURI(uri);
-        } else {
-            rightImage.setImageURI(uri);
-        }
-        applyLayoutAnimation(flag);
-    }
-
-    private void applyLayoutAnimation(@Constant.VoteFlag int flag) {
-        TransitionManager.beginDelayedTransition(rootLayout);
-        ConstraintSet set = getCurrentSet(flag);
-        set.applyTo(rootLayout);
-    }
-
-    private ConstraintSet getCurrentSet(@Constant.VoteFlag int flag) {
-        if (flag == Constant.LEFT) {
-            leftImageAnimationToggle = !leftImageAnimationToggle;
-            return leftImageAnimationToggle ? leftSet : rootSet;
-        } else {
-            rightImageAnimationToggle = !rightImageAnimationToggle;
-            return rightImageAnimationToggle ? rightSet : rootSet;
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(!disposable.isDisposed()) {
-            disposable.dispose();
-        }
+    public static Intent getLaunchIntent(Context context) {
+        return new Intent(context, UploadActivity.class);
     }
 }

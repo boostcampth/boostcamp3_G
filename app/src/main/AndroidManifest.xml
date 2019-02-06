@@ -27,8 +27,10 @@
         <activity android:name=".presentation.main.MainActivity">
 
         </activity>
-        <activity android:name=".presentation.upload.UploadActivity" >
-        </activity>
+
+        <activity android:name=".presentation.upload.UploadActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
         <activity android:name=".presentation.main.FrameActivity" />
 
     </application>

@@ -1,9 +1,9 @@
 package com.boostcamp.dreampicker.data.source.local.test;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.Image;
 import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 
 import java.util.ArrayList;
@@ -133,6 +133,11 @@ public class FeedMockDataSource implements FeedDataSource {
     @Override
     public void updateFeedVote(String feedId, String userId, int voteFlag) {
 
+    }
+
+    @Override
+    public Single<List<Feed>> addProfileFeedList(String userId, int pageIndex, int pageUnit) {
+        return null;
     }
 
     @Override
