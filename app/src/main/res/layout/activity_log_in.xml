@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -11,8 +12,18 @@
             android:id="@+id/iv_login_logo"
             android:layout_width="@dimen/login_logo_size"
             android:layout_height="@dimen/login_logo_size"
-            android:src="@drawable/img_logo"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="?attr/actionBarSize"
-            android:layout_centerHorizontal="true"/>
+            android:src="@drawable/img_logo" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btn_sign_in"
+            android:layout_width="@dimen/login_button_width"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_login_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:padding="@dimen/space_x_small" />
+
     </RelativeLayout>
 </layout>
