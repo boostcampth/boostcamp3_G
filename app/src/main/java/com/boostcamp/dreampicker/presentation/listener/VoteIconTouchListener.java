@@ -12,7 +12,7 @@ public class VoteIconTouchListener implements View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             // 태그 생성
-            final ClipData.Item item = new ClipData.Item((CharSequence) v.getTag());
+            final ClipData.Item item = new ClipData.Item("");
             final String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
             final ClipData data = new ClipData(v.getTag().toString(), mimeTypes, item);
 
