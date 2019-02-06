@@ -10,7 +10,7 @@ import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
 import com.boostcamp.dreampicker.presentation.notification.NotificationFragment;
-import com.boostcamp.dreampicker.presentation.user.profile.ProfileFragment;
+import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.search.SearchFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
