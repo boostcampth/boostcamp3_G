@@ -2,6 +2,7 @@ package com.boostcamp.dreampicker.presentation.feed.detail;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
@@ -12,10 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> {
     private static final String TOOLBAR_BG_COLOR = "#99000000";
     private static final int NUM_PAGES = 2;
+
+    private boolean isShowTag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,8 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     private void initViews() {
         initToolbar();
         initViewPager();
+
+        binding.tgFeedDetailTag.setTags("Assb", "SDS", "QQQQ","AASSDAS");
     }
 
     private void initToolbar() {
@@ -38,7 +44,40 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
     private void initViewPager() {
         final PagerAdapter pagerAdapter =  new FeedDetailPagerAdapter(getSupportFragmentManager());
+        binding.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0) {
+                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_checked_white_8dp);
+                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_unchecked_white_8dp);
+                } else {
+                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_unchecked_white_8dp);
+                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_checked_white_8dp);
+                }
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         binding.pager.setAdapter(pagerAdapter);
+    }
+
+    public void onTagToggleButtonClick(View view) {
+        if(isShowTag) {
+            binding.tgFeedDetailTag.setVisibility(View.GONE);
+            binding.tvDetailTagToggle.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_keyboard_arrow_up_white, 0, 0, 0);
+        } else {
+            binding.tgFeedDetailTag.setVisibility(View.VISIBLE);
+            binding.tvDetailTagToggle.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_keyboard_arrow_down_white, 0, 0, 0);
+        }
+        isShowTag = !isShowTag;
     }
 
     @Override
