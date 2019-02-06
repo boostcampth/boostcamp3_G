@@ -4,12 +4,9 @@ import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.local.test.UserMockDataSource;
-import com.boostcamp.dreampicker.data.source.remote.firebase.UserFirebaseService;
-
-import java.util.List;
+import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import io.reactivex.Single;
 
 public class UserRepository implements UserDataSource {
@@ -21,9 +18,9 @@ public class UserRepository implements UserDataSource {
     }
 
     public static UserRepository getInstance(@NonNull final UserDataSource firebaseService) {
-        if(INSTANCE == null){
+        if (INSTANCE == null) {
             synchronized (UserRepository.class) {
-                if(INSTANCE == null) {
+                if (INSTANCE == null) {
                     INSTANCE = new UserRepository(firebaseService);
                 }
             }
@@ -31,8 +28,10 @@ public class UserRepository implements UserDataSource {
         return INSTANCE;
     }
 
-    /** MOCK DATA 테스트용
-     *  Firestore 연동 후 isTesting = false */
+    /**
+     * MOCK DATA 테스트용
+     * Firestore 연동 후 isTesting = false
+     */
     private final boolean isTesting = true;
     private final UserDataSource mockDataSource;
 
@@ -40,8 +39,9 @@ public class UserRepository implements UserDataSource {
     private final UserDataSource firebaseService;
 
     @Override
-    public Single<UserDetail> getProfileUserDetail(String userId) {
-        if(isTesting){
+    @NonNull
+    public Single<UserDetail> getProfileUserDetail(@NonNull String userId) {
+        if (isTesting) {
             return mockDataSource.getProfileUserDetail(userId);
         }
 
@@ -49,29 +49,38 @@ public class UserRepository implements UserDataSource {
     }
 
     @Override
-    public Single<List<User>> addProfileFollowingList(String userId, int pageIndex, int pageUnit) {
-        if(isTesting){
-            return mockDataSource.addProfileFollowingList(userId, pageIndex, pageUnit);
+    @NonNull
+    public Single<PagedListResponse<User>> addProfileFollowingList(@NonNull String userId,
+                                                                   int start,
+                                                                   int display) {
+        if (isTesting) {
+            return mockDataSource.addProfileFollowingList(userId, start, display);
         }
 
-        return firebaseService.addProfileFollowingList(userId, pageIndex, pageUnit);
+        return firebaseService.addProfileFollowingList(userId, start, display);
     }
 
     @Override
-    public Single<List<User>> addProfileFollowerList(String userId, int pageIndex, int pageUnit) {
-        if(isTesting){
-            return mockDataSource.addProfileFollowerList(userId, pageIndex, pageUnit);
+    @NonNull
+    public Single<PagedListResponse<User>> addProfileFollowerList(@NonNull String userId,
+                                                                  int start,
+                                                                  int display) {
+        if (isTesting) {
+            return mockDataSource.addProfileFollowerList(userId, start, display);
         }
 
-        return firebaseService.addProfileFollowerList(userId, pageIndex, pageUnit);
+        return firebaseService.addProfileFollowerList(userId, start, display);
     }
 
     @Override
-    public Single<List<User>> addSearchUserList(String searchKey, int pageIndex, int pageUnit) {
-        if(isTesting){
-            return mockDataSource.addSearchUserList(searchKey, pageIndex, pageUnit);
+    @NonNull
+    public Single<PagedListResponse<User>> addSearchUserList(@NonNull String searchKey,
+                                                             int start,
+                                                             int display) {
+        if (isTesting) {
+            return mockDataSource.addSearchUserList(searchKey, start, display);
         }
 
-        return firebaseService.addSearchUserList(searchKey, pageIndex, pageUnit);
+        return firebaseService.addSearchUserList(searchKey, start, display);
     }
 }

@@ -3,13 +3,11 @@ package com.boostcamp.dreampicker.data.source.remote.firebase;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +23,12 @@ public class UserFirebaseService implements UserDataSource {
 
     private static volatile UserFirebaseService INSTANCE;
 
-    private UserFirebaseService(){}
+    private UserFirebaseService() { }
 
     public static UserFirebaseService getInstance() {
-        if(INSTANCE == null){
+        if (INSTANCE == null) {
             synchronized (UserFirebaseService.class) {
-                if(INSTANCE == null) {
+                if (INSTANCE == null) {
                     INSTANCE = new UserFirebaseService();
                 }
             }
@@ -38,13 +36,13 @@ public class UserFirebaseService implements UserDataSource {
         return INSTANCE;
     }
 
-
-
     @Override
-    public Single<UserDetail> getProfileUserDetail(String userId) {
+    @NonNull
+    public Single<UserDetail> getProfileUserDetail(@NonNull String userId) {
+
         // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USERDETAIL)
-                .whereEqualTo("id",userId)
+                .whereEqualTo("id", userId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -58,51 +56,58 @@ public class UserFirebaseService implements UserDataSource {
     }
 
     @Override
-    public Single<List<User>> addProfileFollowingList(String userId, int pageIndex, int pageUnit) {
+    @NonNull
+    public Single<PagedListResponse<User>> addProfileFollowingList(@NonNull String userId,
+                                                                   int start,
+                                                                   int display) {
         final List<User> followingList = new ArrayList<>();
         // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USERDETAIL)
-                .whereEqualTo("id",userId)
+                .whereEqualTo("id", userId)
                 .orderBy("date")
-                .startAt(pageIndex)
-                .limit(pageUnit)
+                .startAt(start)
+                .limit(display)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             followingList.add(document.toObject(User.class));
                         }
-                        emitter.onSuccess(followingList);
-                    }else{
+                        emitter.onSuccess(new PagedListResponse<>(start, display, followingList));
+                    } else {
                         emitter.onError(task.getException());
                     }
                 }).addOnFailureListener(emitter::onError));
     }
 
     @Override
-    public Single<List<User>> addProfileFollowerList(String userId, int pageIndex, int pageUnit) {
+    @NonNull
+    public Single<PagedListResponse<User>> addProfileFollowerList(@NonNull String userId,
+                                                                  int start,
+                                                                  int display) {
         final List<User> followerList = new ArrayList<>();
         // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USERDETAIL)
-                .whereEqualTo("id",userId)
+                .whereEqualTo("id", userId)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             followerList.add(document.toObject(User.class));
                         }
-                        emitter.onSuccess(followerList);
-                    }else{
+                        emitter.onSuccess(new PagedListResponse<>(start, display, followerList));
+                    } else {
                         emitter.onError(task.getException());
                     }
                 })
                 .addOnFailureListener(emitter::onError));
     }
 
-
     @Override
-    public Single<List<User>> addSearchUserList(String searchKey, int pageIndex, int pageUnit) {
-
+    @NonNull
+    public Single<PagedListResponse<User>> addSearchUserList(@NonNull String searchKey,
+                                                             int start,
+                                                             int display) {
         // TODO :테스트 필요
         List<User> userList = new ArrayList<>();
 
@@ -116,25 +121,25 @@ public class UserFirebaseService implements UserDataSource {
 //        }
 // return Single.just(userList);
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USER)
-                .whereEqualTo("name",searchKey)
+                .whereEqualTo("name", searchKey)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshot -> {
                     DocumentSnapshot lastVisible = queryDocumentSnapshot.getDocuments()
-                            .get(queryDocumentSnapshot.size() -1);
+                            .get(queryDocumentSnapshot.size() - 1);
                     Query next = FirebaseFirestore.getInstance().collection(COLLECTION_USER)
                             .orderBy("name")
-                            .limit(pageUnit)
+                            .limit(display)
                             .startAt(lastVisible);
                     next.get()
-                           .addOnSuccessListener(task -> {
-                               for (DocumentSnapshot document : Objects.requireNonNull(task.getDocuments())) {
-                                   userList.add(document.toObject(User.class));
-                               }
-                               emitter.onSuccess(userList);
+                            .addOnSuccessListener(task -> {
+                                for (DocumentSnapshot document : Objects.requireNonNull(task.getDocuments())) {
+                                    userList.add(document.toObject(User.class));
+                                }
+                                emitter.onSuccess(new PagedListResponse<>(start, display, userList));
 
-                           })
-                           .addOnFailureListener(emitter::onError);
-                    emitter.onSuccess(userList);
+                            })
+                            .addOnFailureListener(emitter::onError);
+                    emitter.onSuccess(new PagedListResponse<>(start, display, userList));
                 })
                 .addOnFailureListener(emitter::onError));
 
