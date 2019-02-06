@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class UserMockDataSource implements UserDataSource {
@@ -33,13 +34,13 @@ public class UserMockDataSource implements UserDataSource {
     public Single<UserDetail> getProfileUserDetail(@NonNull String userId) {
         return Single.just(new UserDetail(
                 userId,
-                userId,
-                userId,
-                userId,
-                R.drawable.profile,
+                "yeseul",
+                "sdc01194@gmail.com",
+                "https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",
                 101,
                 207,
-                314));
+                314,
+                false));
     }
 
     @Override
@@ -79,5 +80,13 @@ public class UserMockDataSource implements UserDataSource {
             userList.add(user);
         }
         return Single.just(new PagedListResponse<>(start, display, userList));
+    }
+
+    @Override
+    @NonNull
+    public Completable toggleUserFollow(@NonNull String userId,
+                                        @NonNull String myUserId) {
+
+        return Completable.create(emitter -> {});
     }
 }
