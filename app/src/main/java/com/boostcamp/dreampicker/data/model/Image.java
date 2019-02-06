@@ -1,9 +1,15 @@
 package com.boostcamp.dreampicker.data.model;
 
+import android.net.Uri;
+
 import java.util.List;
 
 public class Image {
     private String id;
+
+    // Todo 이후 변경 예정
+    private Uri uri;
+
     private int image;
     // TODO : 이후 URL로 변경 예정
     private String imageUrl;
@@ -12,6 +18,7 @@ public class Image {
     private List<String> tagList;
 
     public Image() {
+
     }
 
     public Image(String id, int image, String tag) {
@@ -20,12 +27,32 @@ public class Image {
         this.tag = tag;
     }
 
+    public Image(String id, Uri uri, String tag) {
+        this.id = id;
+        this.uri = uri;
+        this.tag = tag;
+    }
+
+    public Image(String id, Uri uri, List<String> tagList) {
+        this.id = id;
+        this.uri = uri;
+        this.tagList = tagList;
+    }
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Uri getUri() {
+        return uri;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
     }
 
     public int getImage() {
@@ -59,4 +86,6 @@ public class Image {
     public void setTagList(List<String> tagList) {
         this.tagList = tagList;
     }
+
+
 }

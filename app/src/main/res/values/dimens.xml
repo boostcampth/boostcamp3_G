@@ -43,6 +43,5 @@
     <dimen name="vote_icon_size">56dp</dimen>
 
     <!-- 업로드 화면 -->
-    <dimen name="upload_image_small">120dp</dimen>
-    <dimen name="upload_image_large_height">300dp</dimen>
+    <dimen name="upload_image_size">120dp</dimen>
 </resources>
