@@ -2,6 +2,7 @@ package com.boostcamp.dreampicker.data.model;
 
 import android.net.Uri;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Image {
@@ -18,18 +19,12 @@ public class Image {
     private List<String> tagList;
 
     public Image() {
-
+        this.tagList = new ArrayList<>();
     }
 
     public Image(String id, int image, String tag) {
         this.id = id;
         this.image = image;
-        this.tag = tag;
-    }
-
-    public Image(String id, Uri uri, String tag) {
-        this.id = id;
-        this.uri = uri;
         this.tag = tag;
     }
 

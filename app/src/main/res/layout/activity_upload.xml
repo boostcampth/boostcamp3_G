@@ -46,7 +46,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:atg_inputHint="@string/upload_tag_hint"
-                    app:atg_isAppendMode="true" />
+                    app:atg_isAppendMode="true"
+                    app:tagItems="@{viewModel.imageList.get(0).tagList}"/>
+
             </ScrollView>
 
             <!-- 왼쪽, 오른쪽 투표 구분선 -->
@@ -79,7 +81,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/space_x_small"
                     app:atg_inputHint="@string/upload_tag_hint"
-                    app:atg_isAppendMode="true" />
+                    app:atg_isAppendMode="true"
+                    app:tagItems="@{viewModel.imageList.get(1).tagList}"/>
             </ScrollView>
 
 
@@ -93,6 +96,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/iv_upload_right" />
 
             <EditText
+                android:id="@+id/et_upload_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_x_small"

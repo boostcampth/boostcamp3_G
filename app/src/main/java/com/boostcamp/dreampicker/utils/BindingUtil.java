@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+import me.gujun.android.taggroup.TagGroup;
 
 public class BindingUtil {
     @SuppressWarnings("unchecked")
@@ -21,6 +22,11 @@ public class BindingUtil {
         if (adapter != null) {
             adapter.submitList(items == null ? null : new ArrayList<>(items));
         }
+    }
+
+    @BindingAdapter({"tagItems"})
+    public static void setTagItems(@NonNull TagGroup tagGroup, @NonNull final List<String> items) {
+        tagGroup.setTags(items);
     }
 
     @BindingAdapter({"rcProgress"})
