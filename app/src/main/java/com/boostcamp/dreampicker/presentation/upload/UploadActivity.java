@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
@@ -18,6 +19,7 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import gun0912.tedbottompicker.TedBottomPicker;
+import me.gujun.android.taggroup.TagGroup;
 
 public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private static final String CAMERA = Manifest.permission.CAMERA;
@@ -28,7 +30,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViewModel();
-        initView();
+        initViews();
     }
 
     private void initViewModel() {
@@ -37,13 +39,52 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         binding.setLifecycleOwner(this);
     }
 
-    private void initView() {
+    private void initViews() {
+        initToolbar();
         initImageViews();
+        initTagGroup();
+    }
+
+    private void initToolbar() {
+        final ImageButton btnClose = binding.toolbar.btnLeft;
+        final ImageButton btnUpload = binding.toolbar.btnRight;
+
+        btnClose.setImageResource(R.drawable.btn_toolbar_close);
+        btnUpload.setImageResource(R.drawable.btn_toolbar_check);
+
+        btnClose.setOnClickListener((v) -> finish());
+        btnUpload.setOnClickListener((v) -> binding.getViewModel().upload());
     }
 
     private void initImageViews() {
         binding.ivUploadLeft.setOnClickListener((v) -> onImageClick(Constant.LEFT));
         binding.ivUploadRight.setOnClickListener((v) -> onImageClick(Constant.RIGHT));
+    }
+
+    private void initTagGroup() {
+        binding.tgUploadTagLeft.setOnTagChangeListener(new TagGroup.OnTagChangeListener() {
+            @Override
+            public void onAppend(TagGroup tagGroup, String tag) {
+                binding.getViewModel().setTag(tag, Constant.LEFT);
+            }
+
+            @Override
+            public void onDelete(TagGroup tagGroup, String tag) {
+                binding.getViewModel().deleteTag(tag, Constant.LEFT);
+            }
+        });
+
+        binding.tgUploadTagRight.setOnTagChangeListener(new TagGroup.OnTagChangeListener() {
+            @Override
+            public void onAppend(TagGroup tagGroup, String tag) {
+                binding.getViewModel().setTag(tag, Constant.RIGHT);
+            }
+
+            @Override
+            public void onDelete(TagGroup tagGroup, String tag) {
+                binding.getViewModel().deleteTag(tag, Constant.RIGHT);
+            }
+        });
     }
 
     public void onImageClick(@Constant.VoteFlag int flag) {
