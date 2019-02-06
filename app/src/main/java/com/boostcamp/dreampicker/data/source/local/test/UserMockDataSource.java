@@ -4,21 +4,23 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
+import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import io.reactivex.Single;
 
 public class UserMockDataSource implements UserDataSource {
     private static volatile UserMockDataSource INSTANCE;
 
-    private UserMockDataSource() {}
+    private UserMockDataSource() { }
 
-    public static UserMockDataSource getInstance(){
-        if(INSTANCE == null){
-            synchronized (UserMockDataSource.class){
-                if(INSTANCE == null){
+    public static UserMockDataSource getInstance() {
+        if (INSTANCE == null) {
+            synchronized (UserMockDataSource.class) {
+                if (INSTANCE == null) {
                     INSTANCE = new UserMockDataSource();
                 }
             }
@@ -27,7 +29,8 @@ public class UserMockDataSource implements UserDataSource {
     }
 
     @Override
-    public Single<UserDetail> getProfileUserDetail(String userId) {
+    @NonNull
+    public Single<UserDetail> getProfileUserDetail(@NonNull String userId) {
         return Single.just(new UserDetail(
                 userId,
                 userId,
@@ -40,41 +43,41 @@ public class UserMockDataSource implements UserDataSource {
     }
 
     @Override
-    public Single<List<User>> addProfileFollowingList(String userId, int pageIndex, int pageUnit) {
-
+    @NonNull
+    public Single<PagedListResponse<User>> addProfileFollowingList(@NonNull String userId,
+                                                                   int start,
+                                                                   int display) {
         List<User> userList = new ArrayList<>();
-        User user = new User("" ,"yeseul", R.drawable.profile);
-        userList.add(user);
-        userList.add(user);
-        userList.add(user);
-        userList.add(user);
-
-        return Single.just(userList);
+        for (int i = 0; i < display; i++) {
+            User user = new User("", "yeseul", R.drawable.profile);
+            userList.add(user);
+        }
+        return Single.just(new PagedListResponse<>(start, display, userList));
     }
 
     @Override
-    public Single<List<User>> addProfileFollowerList(String userId, int pageIndex, int pageUnit) {
-
+    @NonNull
+    public Single<PagedListResponse<User>> addProfileFollowerList(@NonNull String userId,
+                                                                  int start,
+                                                                  int display) {
         List<User> userList = new ArrayList<>();
-        User user = new User("" ,"yeseul", R.drawable.profile);
-        userList.add(user);
-        userList.add(user);
-        userList.add(user);
-        userList.add(user);
-
-        return Single.just(userList);
+        for (int i = 0; i < display; i++) {
+            User user = new User("", "yeseul", R.drawable.profile);
+            userList.add(user);
+        }
+        return Single.just(new PagedListResponse<>(start, display, userList));
     }
 
     @Override
-    public Single<List<User>> addSearchUserList(String searchKey, int pageIndex, int pageUnit) {
-
+    @NonNull
+    public Single<PagedListResponse<User>> addSearchUserList(@NonNull String searchKey,
+                                                             int start,
+                                                             int display) {
         List<User> userList = new ArrayList<>();
-        User user = new User("" ,"yeseul", R.drawable.profile);
-        userList.add(user);
-        userList.add(user);
-        userList.add(user);
-        userList.add(user);
-
-        return Single.just(userList);
+        for (int i = 0; i < display; i++) {
+            User user = new User("", "yeseul", R.drawable.profile);
+            userList.add(user);
+        }
+        return Single.just(new PagedListResponse<>(start, display, userList));
     }
 }
