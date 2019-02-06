@@ -13,6 +13,8 @@
     <string name="profile_feed_count">포스팅</string>
     <string name="profile_follower_count">팔로워</string>
     <string name="profile_following_count">팔로잉</string>
+    <string name="profile_follow">팔로우하기</string>
+    <string name="profile_follow_cancel">팔로우취소</string>
     <string name="profile_tab_doing">진행중인 투표</string>
     <string name="profile_tab_done">왼료된 투표</string>
 
@@ -26,4 +28,5 @@
     <!-- 업로드 화면에서 사용 -->
     <string name="upload_et_content_hint">무슨 일이 일어나고 있나요?</string>
     <string name="upload_tag_hint">추가</string>
+
 </resources>

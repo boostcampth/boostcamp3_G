@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#47B985</color>
     <color name="colorPrimaryDark">#47B985</color>
+    <color name="colorPrimaryTrans">#8047B985</color>
     <color name="colorAccent">#FD8B44</color>
     <color name="colorBlack">#000000</color>
     <color name="colorBlackTransParent">#4D000000</color>
