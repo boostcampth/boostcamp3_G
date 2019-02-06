@@ -19,7 +19,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 
-public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchViewModel> {
+public class SearchFragment extends BaseFragment<FragmentSearchBinding> {
 
     private final int NUM_OF_TAB_BUTTONS = 2;
 
@@ -88,10 +88,5 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         public int getCount() {
             return fragments.length;
         }
-    }
-
-    @Override
-    protected SearchViewModel getViewModel() {
-        return ViewModelProviders.of(this).get(SearchViewModel.class);
     }
 }

@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-public class FeedDetailFragment extends BaseFragment<FragmentFeedDetailBinding, FeedDetailViewModel> {
+public class FeedDetailFragment extends BaseFragment<FragmentFeedDetailBinding> {
     private static final String ARGUMENT_FEED_ID = "ARGUMENT_FEED_ID";
 
     private String feedId;
@@ -51,10 +51,5 @@ public class FeedDetailFragment extends BaseFragment<FragmentFeedDetailBinding, 
     private void initView() {
 
         // TODO. 뷰 그리기
-    }
-
-    @Override
-    protected FeedDetailViewModel getViewModel() {
-        return ViewModelProviders.of(this).get(FeedDetailViewModel.class);
     }
 }

@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-public class ProfileFragment extends BaseFragment<FragmentProfileBinding, ProfileViewModel> {
+public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private final int NUM_OF_TAB_BUTTONS = 2;
 
@@ -29,17 +29,16 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     }
 
     @Override
-    protected ProfileViewModel getViewModel() {
-        ProfileViewModel.Factory factory = new ProfileViewModel.Factory(
-                UserRepository.getInstance(UserFirebaseService.getInstance()));
-        return ViewModelProviders.of(this, factory).get(ProfileViewModel.class);
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        initViewModel();
         initView();
+    }
+
+    private void initViewModel() {
+        ProfileViewModel.Factory factory = new ProfileViewModel.Factory(
+                UserRepository.getInstance(UserFirebaseService.getInstance()));
+        ProfileViewModel viewModel = ViewModelProviders.of(this, factory).get(ProfileViewModel.class);
     }
 
     private void initView() {
