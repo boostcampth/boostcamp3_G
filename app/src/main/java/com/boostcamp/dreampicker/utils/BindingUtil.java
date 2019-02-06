@@ -3,6 +3,7 @@ package com.boostcamp.dreampicker.utils;
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -26,7 +27,10 @@ public class BindingUtil {
 
     @BindingAdapter({"tagItems"})
     public static void setTagItems(@NonNull TagGroup tagGroup, @NonNull final List<String> items) {
-        tagGroup.setTags(items);
+        final List<String> tagItems = Arrays.asList(tagGroup.getTags());
+        if(!tagItems.containsAll(items)) {
+            tagGroup.setTags(items);
+        }
     }
 
     @BindingAdapter({"rcProgress"})
