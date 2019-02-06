@@ -78,6 +78,7 @@ dependencies {
     implementation 'gun0912.ted:tedbottompicker:1.2.6'
 
     // Google Login
+    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
 }
