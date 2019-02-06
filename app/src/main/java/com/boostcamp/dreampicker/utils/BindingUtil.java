@@ -1,5 +1,7 @@
 package com.boostcamp.dreampicker.utils;
 
+import android.widget.CheckBox;
+
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import java.util.ArrayList;
@@ -30,6 +32,13 @@ public class BindingUtil {
         final List<String> tagItems = Arrays.asList(tagGroup.getTags());
         if(!tagItems.containsAll(items)) {
             tagGroup.setTags(items);
+        }
+    }
+
+    @BindingAdapter({"vote"})
+    public static void doVote(@NonNull CheckBox checkBox, @Constant.VoteFlag int flag) {
+        if(!checkBox.isChecked() && flag != Constant.NONE) {
+            checkBox.performClick();
         }
     }
 

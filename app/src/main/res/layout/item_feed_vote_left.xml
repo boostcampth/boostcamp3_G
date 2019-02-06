@@ -36,15 +36,13 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
         app:layout_constraintStart_toEndOf="@+id/iv_user_img" />
 
-    <TextView
+    <CheckBox
         android:id="@+id/tv_feed_vote_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_x_small"
         android:layout_marginEnd="@dimen/space_median"
         android:layout_marginBottom="@dimen/space_x_small"
-        android:drawableStart="@drawable/ic_box"
-        android:drawablePadding="@dimen/space_x_small"
         app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
