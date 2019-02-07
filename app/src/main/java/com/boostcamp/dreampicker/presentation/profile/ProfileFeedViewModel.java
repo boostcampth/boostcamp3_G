@@ -37,7 +37,7 @@ public class ProfileFeedViewModel extends BaseViewModel {
                 .build();
 
         this.feedPagedList = new LivePagedListBuilder<>(
-                new ProfileFeedPagedDataSource.Factory(repository, compositeDisposable, userId), config)
+                new ProfileFeedPagedDataSource.Factory(repository, userId), config)
                 .build();
     }
 

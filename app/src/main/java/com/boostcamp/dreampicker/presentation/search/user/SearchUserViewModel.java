@@ -37,7 +37,7 @@ public class SearchUserViewModel extends BaseViewModel {
 
     public void loadSearchUser(@NonNull String searchKey) {
         this.userPagedList = new LivePagedListBuilder<>(
-                new SearchUserPagedDataSource.Factory(repository, compositeDisposable, searchKey),
+                new SearchUserPagedDataSource.Factory(repository, searchKey),
                 config).build();
     }
 

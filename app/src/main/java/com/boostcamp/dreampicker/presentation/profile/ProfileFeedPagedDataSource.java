@@ -3,6 +3,7 @@ package com.boostcamp.dreampicker.presentation.profile;
 import android.annotation.SuppressLint;
 
 import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 
 import androidx.annotation.NonNull;
@@ -15,17 +16,13 @@ import io.reactivex.disposables.CompositeDisposable;
 public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Feed> {
 
     @NonNull
-    private CompositeDisposable disposable;
-    @NonNull
     private FeedRepository repository;
     @NonNull
     private String userId;
 
     private ProfileFeedPagedDataSource(@NonNull FeedRepository repository,
-                                       @NonNull CompositeDisposable disposable,
                                        @NonNull String userId) {
         this.repository = repository;
-        this.disposable = disposable;
         this.userId = userId;
     }
 
@@ -37,15 +34,14 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
     public void loadInitial(@NonNull LoadInitialParams<Integer> params,
                             @NonNull LoadInitialCallback<Integer, Feed> callback) {
 
-        disposable.add(repository.addProfileFeedList(userId, 1, params.requestedLoadSize)
+        PagedListResponse<Feed> response = repository.addProfileFeedList(userId, 1, params.requestedLoadSize)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response ->
-                        callback.onResult(response.getItemList(),
-                                response.getDisplay(),
-                                response.getStart() + response.getDisplay()),
-                        error -> { }
-                )
-        );
+                .doOnError(error -> {})
+                .blockingGet();
+
+        callback.onResult(response.getItemList(),
+                response.getDisplay(),
+                response.getStart() + response.getDisplay());
     }
 
     @SuppressLint("CheckResult")
@@ -64,31 +60,26 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
     public void loadAfter(@NonNull LoadParams<Integer> params,
                           @NonNull LoadCallback<Integer, Feed> callback) {
 
-        disposable.add(repository.addProfileFeedList(userId, params.key, params.requestedLoadSize)
+        PagedListResponse<Feed> response = repository.addProfileFeedList(userId, params.key, params.requestedLoadSize)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response ->
-                                callback.onResult(response.getItemList(),
-                                        params.key + response.getDisplay()),
-                        error -> { }
-                )
-        );
+                .doOnError(error -> {})
+                .blockingGet();
+
+        callback.onResult(response.getItemList(),
+                params.key + response.getDisplay());
     }
 
 
     public static class Factory extends DataSource.Factory<Integer, Feed> {
 
         @NonNull
-        private CompositeDisposable disposable;
-        @NonNull
         private final FeedRepository repository;
         @NonNull
         private final String userId;
 
         public Factory(@NonNull FeedRepository repository,
-                       @NonNull CompositeDisposable disposable,
                        @NonNull String userId) {
             this.repository = repository;
-            this.disposable = disposable;
             this.userId = userId;
         }
 
@@ -99,7 +90,7 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
         @NonNull
         @Override
         public DataSource<Integer, Feed> create() {
-            ProfileFeedPagedDataSource source = new ProfileFeedPagedDataSource(repository, disposable, userId);
+            ProfileFeedPagedDataSource source = new ProfileFeedPagedDataSource(repository, userId);
             liveData.postValue(source);
             return source;
         }

@@ -43,7 +43,7 @@ public class SearchFeedViewModel extends BaseViewModel {
 
     public void loadSearchFeed(@NonNull String searchKey) {
         this.feedPagedList = new LivePagedListBuilder<>(
-                new SearchFeedPagedDataSource.Factory(repository, compositeDisposable, searchKey),
+                new SearchFeedPagedDataSource.Factory(repository, searchKey),
                 config
         ).build();
     }
