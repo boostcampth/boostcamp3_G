@@ -7,9 +7,11 @@ import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
@@ -35,15 +37,21 @@ public class UserMockDataSource implements UserDataSource {
     @Override
     @NonNull
     public Single<UserDetail> getProfileUserDetail(@NonNull String userId) {
-        return Single.just(new UserDetail(
-                userId,
-                "yeseul",
-                "sdc01194@gmail.com",
-                "https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",
-                101,
-                207,
-                314,
-                false));
+
+        return Single.create(emitter ->
+                FirebaseFirestore.getInstance().collection("user")
+                        .whereEqualTo("id", userId)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                    emitter.onSuccess(document.toObject(UserDetail.class));
+                                }
+                            } else {
+                                emitter.onError(task.getException());
+                            }
+                        })
+                        .addOnFailureListener(emitter::onError));
     }
 
     @Override
