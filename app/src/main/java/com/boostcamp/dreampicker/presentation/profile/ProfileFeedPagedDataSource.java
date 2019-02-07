@@ -28,9 +28,6 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
         this.userId = userId;
     }
 
-    /**
-     * 첫 페이지 로딩요청
-     */
     @SuppressLint("CheckResult")
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params,
@@ -57,10 +54,6 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
         // ignore
     }
 
-    /**
-     * 첫 번째 페이지 제외 그 다음 페이지부터 로딩요청
-     * TODO. 마지막 페이지 limit 처리 필요함
-     */
     @SuppressLint("CheckResult")
     @Override
     public void loadAfter(@NonNull LoadParams<Integer> params,

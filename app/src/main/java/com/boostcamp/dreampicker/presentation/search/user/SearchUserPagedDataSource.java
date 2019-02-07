@@ -17,6 +17,8 @@ public class SearchUserPagedDataSource extends PageKeyedDataSource<Integer, User
     @NonNull
     private String searchKey;
 
+    private boolean isPageEnd = false;
+
     private SearchUserPagedDataSource(@NonNull UserRepository repository,
                                       @NonNull String searchKey) {
         this.repository = repository;
@@ -35,6 +37,10 @@ public class SearchUserPagedDataSource extends PageKeyedDataSource<Integer, User
         callback.onResult(response.getItemList(),
                 response.getDisplay(),
                 response.getStart() + response.getDisplay());
+
+        if(response.getDisplay() < params.requestedLoadSize){
+            isPageEnd = true;
+        }
     }
 
     @Override
@@ -47,13 +53,20 @@ public class SearchUserPagedDataSource extends PageKeyedDataSource<Integer, User
     public void loadAfter(@NonNull LoadParams<Integer> params,
                           @NonNull LoadCallback<Integer, User> callback) {
 
-        PagedListResponse<User> response = repository.addSearchUserList(searchKey, params.key, params.requestedLoadSize)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(error -> {})
-                .blockingGet();
+        if(!isPageEnd) {
+            PagedListResponse<User> response = repository.addSearchUserList(searchKey, params.key, params.requestedLoadSize)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError(error -> {
+                    })
+                    .blockingGet();
 
-        callback.onResult(response.getItemList(),
-                params.key + response.getDisplay());
+            callback.onResult(response.getItemList(),
+                    params.key + response.getDisplay());
+
+            if(response.getDisplay() < params.requestedLoadSize){
+                isPageEnd = true;
+            }
+        }
     }
 
 
