@@ -119,13 +119,13 @@ public class FeedRepository implements FeedDataSource {
     }
 
     @Override
-    public void upLoadFeed(Feed feed,String url) {
+    @NonNull
+    public Completable upLoadFeed(@NonNull Feed feed) {
         if(isTesting){
-            mockDataSource.upLoadFeed(feed,url);
-            return;
+            return mockDataSource.upLoadFeed(feed);
         }
 
-        firebaseService.upLoadFeed(feed,url);
+        return firebaseService.upLoadFeed(feed);
 
     }
 }

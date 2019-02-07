@@ -36,4 +36,6 @@ public interface UserDataSource {
     @NonNull
     Completable toggleUserFollow(@NonNull String userId,
                                  @NonNull String myUserId);
+    @NonNull
+    Single<User> getMyProfile();
 }

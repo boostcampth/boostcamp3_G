@@ -47,5 +47,6 @@ public interface FeedDataSource {
                                 boolean isEnded);
 
     // [업로드]
-    void upLoadFeed(Feed feed,String url);
+    @NonNull
+    Completable upLoadFeed(@NonNull Feed feed);
 }

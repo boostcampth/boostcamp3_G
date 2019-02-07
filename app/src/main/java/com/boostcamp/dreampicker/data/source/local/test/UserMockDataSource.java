@@ -12,6 +12,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 public class UserMockDataSource implements UserDataSource {
     private static volatile UserMockDataSource INSTANCE;
@@ -88,5 +89,16 @@ public class UserMockDataSource implements UserDataSource {
                                         @NonNull String myUserId) {
 
         return Completable.create(emitter -> {});
+    }
+
+    @NonNull
+    @Override
+    public Single<User> getMyProfile() {
+        User user = new User("yoon",
+                "라이언",
+                "http://monthly.chosun.com/up_fd/Mdaily/2017-09/bimg_thumb/2017042000056_0.jpg",
+                R.drawable.profile);
+
+        return Single.just(user).subscribeOn(Schedulers.io());
     }
 }
