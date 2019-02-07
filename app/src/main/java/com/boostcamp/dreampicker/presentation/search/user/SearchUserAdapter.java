@@ -39,7 +39,7 @@ public class SearchUserAdapter extends BasePagedListAdapter<User, SearchUserAdap
 
         ItemSearchUserBinding binding;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = DataBindingUtil.bind(itemView);
         }

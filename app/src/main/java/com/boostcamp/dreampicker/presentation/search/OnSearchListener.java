@@ -1,8 +1,8 @@
 package com.boostcamp.dreampicker.presentation.search;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 public interface OnSearchListener {
-    void onSearch(@Nullable String searchKey);
+    void onSearch(@NonNull String searchKey);
 }
 

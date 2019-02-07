@@ -2,7 +2,6 @@ package com.boostcamp.dreampicker.presentation.search.user;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.User;
@@ -18,7 +17,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class SearchUserFragment extends BaseFragment<FragmentSearchUserBinding> implements OnSearchListener {
 
-    public SearchUserFragment() { }
+    public SearchUserFragment() {
+    }
 
     public static SearchUserFragment newInstance() {
         return new SearchUserFragment();
@@ -30,8 +30,8 @@ public class SearchUserFragment extends BaseFragment<FragmentSearchUserBinding> 
     }
 
     @Override
-    public void onSearch(@Nullable String searchKey) {
-        // TODO. 리스트 초기화, searchKey 로 검색 재요청
+    public void onSearch(@NonNull String searchKey) {
+        binding.getVm().loadSearchUser(searchKey);
     }
 
     @Override
