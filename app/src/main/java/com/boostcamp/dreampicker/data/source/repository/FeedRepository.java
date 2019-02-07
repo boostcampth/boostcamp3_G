@@ -100,4 +100,15 @@ public class FeedRepository implements FeedDataSource {
 
         firebaseService.toggleFeedState(feedId, isEnded);
     }
+
+    @Override
+    public void upLoadFeed(Feed feed,String url) {
+        if(isTesting){
+            mockDataSource.upLoadFeed(feed,url);
+            return;
+        }
+
+        firebaseService.upLoadFeed(feed,url);
+
+    }
 }

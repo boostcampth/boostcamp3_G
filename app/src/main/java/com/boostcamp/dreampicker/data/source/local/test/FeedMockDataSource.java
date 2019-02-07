@@ -178,4 +178,9 @@ public class FeedMockDataSource implements FeedDataSource {
     public void toggleFeedState(String feedId, boolean isEnded) {
 
     }
+
+    @Override
+    public void upLoadFeed(Feed feed,String url) {
+
+    }
 }

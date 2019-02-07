@@ -28,4 +28,7 @@ public interface FeedDataSource {
 
     // [피드공통] 해당 투표 종료/재시작 토글
     void toggleFeedState(String feedId, boolean isEnded);
+
+    // [업로드]
+    void upLoadFeed(Feed feed,String url);
 }

@@ -1,14 +1,30 @@
 package com.boostcamp.dreampicker.data.source.remote.firebase;
 
+import android.net.Uri;
+
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import io.reactivex.Single;
 
 public class FeedFirebaseService implements FeedDataSource {
@@ -152,6 +168,39 @@ public class FeedFirebaseService implements FeedDataSource {
         FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
                 .document(feedId)
                 .update("isEnded",isEnded)
+                .addOnFailureListener(Throwable::printStackTrace);
+    }
+
+    @Override
+    public void upLoadFeed(Feed feed,String url) {
+        // TODO : 스토리지에 업로드
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReference();
+        Uri file = Uri.fromFile(new File(feed.getImageList().get(0).getImageUrl()));
+        StorageReference feedImages = storageRef.child(feed.getImageList().get(0).getImageUrl());
+
+        UploadTask uploadTask = feedImages.putFile(file);
+        uploadTask.addOnSuccessListener(taskSnapshot -> feed.getImageList().get(0).setImageUrl(feedImages.getPath()))
+                .addOnProgressListener(taskSnapshot -> {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                }).addOnPausedListener(taskSnapshot -> {
+            Uri sessionUri = taskSnapshot.getUploadSessionUri();
+            boolean mSaved = false;
+            if (sessionUri != null && !mSaved) {
+                mSaved = true;
+                // A persisted session has begun with the server.
+                // Save this to persistent storage in case the process dies.
+            }
+                    System.out.println("Upload is paused");
+        })
+                .addOnFailureListener(Throwable::printStackTrace);
+
+
+        //업로드
+        FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+                .add(feed)
+                .addOnSuccessListener(documentReference -> {})
                 .addOnFailureListener(Throwable::printStackTrace);
     }
 }
