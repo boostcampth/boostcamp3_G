@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.search.feed;
+package com.boostcamp.dreampicker.data.paging.datasource;
 
 import android.annotation.SuppressLint;
 
@@ -12,7 +12,7 @@ import androidx.paging.DataSource;
 import androidx.paging.PageKeyedDataSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class SearchFeedPagedDataSource extends PageKeyedDataSource<Integer, Feed> {
+public class ProfileFeedDataSource extends PageKeyedDataSource<Integer, Feed> {
 
     @NonNull
     private FeedRepository repository;
@@ -21,8 +21,8 @@ public class SearchFeedPagedDataSource extends PageKeyedDataSource<Integer, Feed
 
     private boolean isPageEnd = false;
 
-    private SearchFeedPagedDataSource(@NonNull FeedRepository repository,
-                                      @NonNull String userId) {
+    private ProfileFeedDataSource(@NonNull FeedRepository repository,
+                                  @NonNull String userId) {
         this.repository = repository;
         this.userId = userId;
     }
@@ -58,11 +58,10 @@ public class SearchFeedPagedDataSource extends PageKeyedDataSource<Integer, Feed
     public void loadAfter(@NonNull LoadParams<Integer> params,
                           @NonNull LoadCallback<Integer, Feed> callback) {
 
-        if(!isPageEnd) {
+        if(!isPageEnd){
             PagedListResponse<Feed> response = repository.addProfileFeedList(userId, params.key, params.requestedLoadSize)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnError(error -> {
-                    })
+                    .doOnError(error -> {})
                     .blockingGet();
 
             callback.onResult(response.getItemList(),
@@ -89,13 +88,13 @@ public class SearchFeedPagedDataSource extends PageKeyedDataSource<Integer, Feed
         }
 
         // TODO. liveData.postValue() 왜 필요한지 알아보기
-        private MutableLiveData<SearchFeedPagedDataSource> liveData =
+        private MutableLiveData<ProfileFeedDataSource> liveData =
                 new MutableLiveData<>();
 
         @NonNull
         @Override
         public DataSource<Integer, Feed> create() {
-            SearchFeedPagedDataSource source = new SearchFeedPagedDataSource(repository, userId);
+            ProfileFeedDataSource source = new ProfileFeedDataSource(repository, userId);
             liveData.postValue(source);
             return source;
         }

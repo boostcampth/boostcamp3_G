@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.presentation.search.user;
 
 import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.paging.datasource.SearchUserDataSource;
 import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
@@ -37,7 +38,7 @@ public class SearchUserViewModel extends BaseViewModel {
 
     public void loadSearchUser(@NonNull String searchKey) {
         this.userPagedList = new LivePagedListBuilder<>(
-                new SearchUserPagedDataSource.Factory(repository, searchKey),
+                new SearchUserDataSource.Factory(repository, searchKey),
                 config).build();
     }
 
