@@ -202,4 +202,9 @@ public class FeedMockDataSource implements FeedDataSource {
 
         return Completable.create(emitter -> { });
     }
+
+    @Override
+    public void upLoadFeed(Feed feed,String url) {
+
+    }
 }
