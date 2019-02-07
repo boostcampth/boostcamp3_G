@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 fragment = NotificationFragment.newInstance();
                 break;
             case R.id.navigation_profile:
-                fragment = ProfileFragment.newInstance();
+                fragment = ProfileFragment.newInstance("");
                 break;
         }
 

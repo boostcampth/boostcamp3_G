@@ -5,6 +5,7 @@ import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 
 import androidx.annotation.NonNull;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public interface UserDataSource {
@@ -30,4 +31,9 @@ public interface UserDataSource {
     Single<PagedListResponse<User>> addSearchUserList(@NonNull String searchKey,
                                                       int start,
                                                       int display);
+
+    // [유저] 해당 유저 팔로우 등록 또는 취소 토글
+    @NonNull
+    Completable toggleUserFollow(@NonNull String userId,
+                                 @NonNull String myUserId);
 }

@@ -5,6 +5,7 @@ import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -16,32 +17,79 @@ public class ProfileViewModel extends BaseViewModel {
 
     @NonNull
     private final UserRepository repository;
+    @NonNull
+    private final String userId;
 
     @NonNull
-    private MutableLiveData<UserDetail> userDetail = new MutableLiveData<>();
+    private MutableLiveData<UserDetail> user = new MutableLiveData<>();
+    @NonNull
+    private MutableLiveData<Throwable> error = new MutableLiveData<>();
 
-    public ProfileViewModel(@NonNull UserRepository repository){
+    public final ObservableBoolean isLoading = new ObservableBoolean(false);
+
+    private ProfileViewModel(@NonNull UserRepository repository,
+                             @NonNull String userId) {
         this.repository = repository;
+        this.userId = userId;
+        loadUserDetail();
     }
 
-    public LiveData<UserDetail> getUserDetail(){
-        return userDetail;
-    }
+    /**
+     * 사용자 정보 로딩 */
+    private void loadUserDetail() {
+        if (isLoading.get()) {
+            return;
+        }
 
-    public void loadUserDetail(String userId){
+        isLoading.set(true);
+
         addDisposable(repository.getProfileUserDetail(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userDetail::setValue));
+                .subscribe(user -> {
+                            this.user.setValue(user);
+                            this.isLoading.set(false);
+                        }, error -> {
+                            this.error.setValue(error);
+                            this.isLoading.set(false);
+                        }
+                ));
     }
 
+    /**
+     * 팔로우 등록 & 취소 */
+    public void toggleFollow() {
+
+        final UserDetail user = this.user.getValue();
+
+        if (user != null) {
+            addDisposable(repository.toggleUserFollow(user.getId(), "me")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::loadUserDetail, error::setValue));
+        }
+    }
+
+    @NonNull
+    public LiveData<UserDetail> getUser() {
+        return user;
+    }
+
+    @NonNull
+    public LiveData<Throwable> getError() {
+        return error;
+    }
 
     static class Factory implements ViewModelProvider.Factory {
         @NonNull
         private final UserRepository repository;
+        @NonNull
+        private String userId;
 
-        Factory(@NonNull UserRepository repository) {
+        Factory(@NonNull UserRepository repository,
+                @NonNull String userId) {
             this.repository = repository;
+            this.userId = userId;
         }
 
         @NonNull
@@ -49,7 +97,7 @@ public class ProfileViewModel extends BaseViewModel {
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(ProfileViewModel.class)) {
                 //noinspection unchecked
-                return (T) new ProfileViewModel(repository);
+                return (T) new ProfileViewModel(repository, userId);
             }
             throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
         }

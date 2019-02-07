@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.presentation.listener;
 
-public interface OnItemClickListener {
+public interface OnItemClickListener<T> {
 
-    void onItemClick(int position);
+    void onItemClick(T item);
 }

@@ -5,93 +5,134 @@
 
     <data>
         <variable
-            name="user"
-            type="com.boostcamp.dreampicker.data.model.UserDetail"/>
+            name="vm"
+            type="com.boostcamp.dreampicker.presentation.profile.ProfileViewModel" />
+        <variable
+            name="feedVm"
+            type="com.boostcamp.dreampicker.presentation.profile.ProfileFeedViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:layoutDescription="@xml/collapsing_user_profile">
 
         <include
-            android:layout_width="match_parent"
+            android:id="@+id/layout_toolbar"
+            layout="@layout/layout_toolbar"
+            android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
-            layout="@layout/layout_toolbar"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_user_image"
+            android:layout_width="@dimen/profile_image_size_large"
+            android:layout_height="@dimen/profile_image_size_large"
+            android:layout_margin="@dimen/space_median"
+            app:circleImage="@{vm.getUser.profileImageUrl}"
+            app:layout_constraintBottom_toTopOf="@id/guideline_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar" />
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                app:contentPadding="0dp">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_begin="180dp"
+            app:layout_constraintStart_toStartOf="parent" />
 
-                <com.google.android.material.appbar.CollapsingToolbarLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+        <include
+            android:id="@+id/layout_feed"
+            layout="@layout/layout_profile_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
+            app:layout_constraintEnd_toStartOf="@id/layout_follower"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline_count"
+            bind:count="@{String.valueOf(vm.getUser.feedCount)}"
+            bind:title="@{String.valueOf(@string/profile_feed_count)}" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/profile_tab_height"
-                        android:orientation="vertical"
-                        android:background="@color/colorWhite"
-                        app:layout_collapseMode="parallax">
+        <include
+            android:id="@+id/layout_follower"
+            layout="@layout/layout_profile_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
+            app:layout_constraintEnd_toStartOf="@id/layout_following"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/layout_feed"
+            app:layout_constraintTop_toBottomOf="@id/guideline_count"
+            bind:count="@{String.valueOf(vm.getUser.followerCount)}"
+            bind:title="@{String.valueOf(@string/profile_follower_count)}" />
 
-                        <ImageView
-                            android:id="@+id/iv_user"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_marginTop="40dp"
-                            app:circleImage="@{user.profileImageUrl}"/>
+        <include
+            android:id="@+id/layout_following"
+            layout="@layout/layout_profile_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/layout_follower"
+            app:layout_constraintTop_toBottomOf="@id/guideline_count"
+            bind:count="@{String.valueOf(vm.getUser.followingCount)}"
+            bind:title="@{String.valueOf(@string/profile_following_count)}" />
 
-                        <LinearLayout
-                            android:layout_margin="@dimen/space_median"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_count_bottom"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_begin="220dp"
+            app:layout_constraintStart_toStartOf="parent" />
 
-                            <include
-                                bind:count="@{String.valueOf(100)}"
-                                bind:title="@{String.valueOf(@string/profile_feed_count)}"
-                                layout="@layout/layout_profile_count"/>
+        <Button
+            android:id="@+id/btn_follow"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@{vm.getUser.isFollow ? @drawable/line_border_round_trans : @drawable/line_border_round}"
+            android:gravity="center"
+            android:text="@{vm.getUser.isFollow ? @string/profile_follow_cancel : @string/profile_follow}"
+            android:textColor="@{vm.getUser.isFollow ? @color/colorWhite : @color/colorWhite}"
+            android:textSize="@dimen/text_median"
+            android:onClick="@{__ -> vm.toggleFollow()}"
+            app:layout_constraintBottom_toTopOf="@id/tab_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline_count_bottom" />
 
-                            <include
-                                android:id="@+id/layout_follower"
-                                bind:count="@{String.valueOf(50)}"
-                                bind:title="@{String.valueOf(@string/profile_follower_count)}"
-                                layout="@layout/layout_profile_count"/>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_profile"
+            style="@style/TabLayout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/profile_tab_height"
+            app:layout_constraintBottom_toTopOf="@id/recycler_profile_feed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_follow" />
 
-                            <include
-                                android:id="@+id/layout_following"
-                                bind:count="@{String.valueOf(250)}"
-                                bind:title="@{String.valueOf(@string/profile_following_count)}"
-                                layout="@layout/layout_profile_count"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_profile_feed"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tab_profile" />
 
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tab_profile"
-                        android:layout_gravity="bottom"
-                        app:layout_collapseMode="pin"
-                        style="@style/TabLayout"/>
-
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/vp_profile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

@@ -74,8 +74,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> {
 
         public SearchPagerAdapter(@NonNull FragmentManager fm) {
             super(fm);
-            fragments[0] = ProfileFragment.newInstance();
-            fragments[1] = ProfileFragment.newInstance();
+            fragments[0] = ProfileFragment.newInstance("");
+            fragments[1] = ProfileFragment.newInstance("");
         }
 
         @NonNull

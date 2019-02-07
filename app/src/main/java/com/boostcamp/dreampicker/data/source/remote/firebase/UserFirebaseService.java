@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class UserFirebaseService implements UserDataSource {
@@ -142,6 +143,12 @@ public class UserFirebaseService implements UserDataSource {
                     emitter.onSuccess(new PagedListResponse<>(start, display, userList));
                 })
                 .addOnFailureListener(emitter::onError));
-
     }
+
+    @NonNull
+    public Completable toggleUserFollow(@NonNull String userId,
+                                        @NonNull String myUserId) {
+        return Completable.create(emitter -> {});
+    }
+
 }

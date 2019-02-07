@@ -7,6 +7,7 @@ import com.boostcamp.dreampicker.data.source.local.test.UserMockDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 
 import androidx.annotation.NonNull;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class UserRepository implements UserDataSource {
@@ -82,5 +83,16 @@ public class UserRepository implements UserDataSource {
         }
 
         return firebaseService.addSearchUserList(searchKey, start, display);
+    }
+
+    @Override
+    @NonNull
+    public Completable toggleUserFollow(@NonNull String userId,
+                                        @NonNull String myUserId) {
+        if(isTesting){
+            return mockDataSource.toggleUserFollow(userId, myUserId);
+        }
+
+        return firebaseService.toggleUserFollow(userId, myUserId);
     }
 }
