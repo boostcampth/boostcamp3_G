@@ -128,4 +128,15 @@ public class FeedRepository implements FeedDataSource {
         return firebaseService.upLoadFeed(feed);
 
     }
+
+    @Override
+    public void upLoadFeed(Feed feed,String url) {
+        if(isTesting){
+            mockDataSource.upLoadFeed(feed,url);
+            return;
+        }
+
+        firebaseService.upLoadFeed(feed,url);
+
+    }
 }
