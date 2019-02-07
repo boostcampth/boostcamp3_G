@@ -45,4 +45,7 @@ public interface FeedDataSource {
     @NonNull
     Completable toggleFeedState(@NonNull String feedId,
                                 boolean isEnded);
+
+    // [업로드]
+    void upLoadFeed(Feed feed,String url);
 }
