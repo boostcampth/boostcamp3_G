@@ -95,4 +95,14 @@ public class UserRepository implements UserDataSource {
 
         return firebaseService.toggleUserFollow(userId, myUserId);
     }
+
+    @NonNull
+    @Override
+    public Single<User> getMyProfile() {
+        if (isTesting) {
+            return mockDataSource.getMyProfile();
+        }
+
+        return firebaseService.getMyProfile();
+    }
 }

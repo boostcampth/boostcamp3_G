@@ -73,6 +73,7 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-firestore:18.0.0'
+    implementation 'com.google.firebase:firebase-storage:16.0.5'
 
     // Tag Group
     implementation 'me.gujun.android.taggroup:library:1.4@aar'

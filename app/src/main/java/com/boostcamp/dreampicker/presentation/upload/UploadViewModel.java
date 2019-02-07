@@ -7,8 +7,8 @@ import android.text.TextUtils;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.Image;
 import com.boostcamp.dreampicker.data.model.User;
-import com.boostcamp.dreampicker.data.source.MyProfileDataSource;
-import com.boostcamp.dreampicker.data.source.UploadDataSource;
+import com.boostcamp.dreampicker.data.source.FeedDataSource;
+import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 import com.boostcamp.dreampicker.utils.Constant;
 import com.boostcamp.dreampicker.utils.IdCreator;
@@ -31,16 +31,15 @@ public class UploadViewModel extends BaseViewModel {
 
     private MutableLiveData<Boolean> validate = new MutableLiveData<>();
 
-    private final UploadDataSource uploadDataSource;
-    private final MyProfileDataSource myProfileDataSource;
+    private final FeedDataSource feedDataSource;
+    private final UserDataSource userDataSource;
 
-    UploadViewModel(UploadDataSource uploadDataSource, MyProfileDataSource myProfileDataSource) {
-        this.uploadDataSource = uploadDataSource;
-        this.myProfileDataSource = myProfileDataSource;
+    UploadViewModel(FeedDataSource feedDataSource, UserDataSource userDataSource) {
+        this.feedDataSource = feedDataSource;
+        this.userDataSource = userDataSource;
 
         imageList.setValue(Arrays.asList(new Image(), new Image()));
     }
-
     void setImage(@NonNull Uri uri, @Constant.VoteFlag int flag) {
         final List<Image> imageList = this.imageList.getValue();
         if (imageList != null) {
@@ -76,10 +75,10 @@ public class UploadViewModel extends BaseViewModel {
                 !TextUtils.isEmpty(imageList.get(1).getId()) &&
                 !TextUtils.isEmpty(content.get())) {
 
-            addDisposable(myProfileDataSource.getMyProfile()
+            addDisposable(userDataSource.getMyProfile()
                     .flatMapCompletable(user -> {
                         final Feed feed = createFeed(user, imageList);
-                        return uploadDataSource.upload(feed);
+                        return feedDataSource.upLoadFeed(feed);
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(

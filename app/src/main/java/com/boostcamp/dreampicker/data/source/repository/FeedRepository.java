@@ -117,4 +117,16 @@ public class FeedRepository implements FeedDataSource {
 
         return firebaseService.toggleFeedState(feedId, isEnded);
     }
+
+    @Override
+    @NonNull
+    public Completable upLoadFeed(@NonNull Feed feed) {
+        if(isTesting){
+            return mockDataSource.upLoadFeed(feed);
+        }
+
+        return firebaseService.upLoadFeed(feed);
+
+    }
+
 }

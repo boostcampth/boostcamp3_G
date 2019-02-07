@@ -1,22 +1,32 @@
 package com.boostcamp.dreampicker.data.source.local.test;
 
+import android.net.Uri;
+
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.Image;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 public class FeedMockDataSource implements FeedDataSource {
+    private static final String COLLECTION_FEED = "feed";
     private static volatile FeedMockDataSource INSTANCE;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private FeedMockDataSource() { }
 
@@ -202,4 +212,50 @@ public class FeedMockDataSource implements FeedDataSource {
 
         return Completable.create(emitter -> { });
     }
+
+    @NonNull
+    @Override
+    public Completable upLoadFeed(@NonNull Feed feed) {
+        return Completable.create(emitter -> {
+
+            for (int i=0;i<2;i++) {
+                uploadImageStorage(feed,feed.getImageList().get(i).getUri());
+                feed.getImageList().get(i).setUri(null);
+            }
+
+            FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+                    .document(feed.getId())
+                    .set(feed)
+                    .addOnSuccessListener(documentReference -> {})
+                    .addOnFailureListener(Throwable::printStackTrace);
+
+            emitter.onComplete();
+        }).subscribeOn(Schedulers.io());
+    }
+
+    private void uploadImageStorage(@NonNull Feed feed, Uri uri){
+
+        //임시경로
+        StorageReference feedImages = storage.getReference()
+                .child("feedImage/"+feed.getId()+"/"+uri.getLastPathSegment());
+
+        feedImages.putFile(uri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // TODO : 구조 수정필요
+                    HashMap<String,String> tmp = new HashMap<>();
+                    tmp.put("leftImagePath",uri.getPath());
+
+                    FirebaseFirestore.getInstance()
+                            .collection(COLLECTION_FEED)
+                            .document(feed.getId())
+                            .set(tmp, SetOptions.merge()); })
+                .addOnProgressListener(taskSnapshot -> {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                }).addOnPausedListener(taskSnapshot -> { })
+                .addOnFailureListener(Throwable::printStackTrace);
+
+
+    }
+
+
 }

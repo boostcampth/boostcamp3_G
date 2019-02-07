@@ -1,5 +1,6 @@
 package com.boostcamp.dreampicker.data.source.remote.firebase;
 
+import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
@@ -16,6 +17,7 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 public class UserFirebaseService implements UserDataSource {
 
@@ -149,6 +151,23 @@ public class UserFirebaseService implements UserDataSource {
     public Completable toggleUserFollow(@NonNull String userId,
                                         @NonNull String myUserId) {
         return Completable.create(emitter -> {});
+    }
+    @NonNull
+    @Override
+    public Single<User> getMyProfile() {
+        //TODO : 유저정보 저장소 확인
+//        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USER)
+//                .document()
+//                .get()
+//                .addOnSuccessListener(documentSnapshot -> { })
+//                .addOnFailureListener(emitter::onError));
+        // TODO : 임시데이터 삭제
+        User user = new User("yoon",
+                "라이언",
+                "http://monthly.chosun.com/up_fd/Mdaily/2017-09/bimg_thumb/2017042000056_0.jpg",
+                R.drawable.profile);
+
+        return Single.just(user).subscribeOn(Schedulers.io());
     }
 
 }
