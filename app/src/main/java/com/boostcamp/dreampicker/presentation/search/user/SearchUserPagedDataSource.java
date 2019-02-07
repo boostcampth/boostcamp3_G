@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.presentation.search.user;
 
 import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 
 import androidx.annotation.NonNull;
@@ -8,22 +9,17 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 import androidx.paging.PageKeyedDataSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 
 public class SearchUserPagedDataSource extends PageKeyedDataSource<Integer, User> {
 
     @NonNull
     private UserRepository repository;
     @NonNull
-    private CompositeDisposable disposable;
-    @NonNull
     private String searchKey;
 
     private SearchUserPagedDataSource(@NonNull UserRepository repository,
-                                      @NonNull CompositeDisposable disposable,
                                       @NonNull String searchKey) {
         this.repository = repository;
-        this.disposable = disposable;
         this.searchKey = searchKey;
     }
 
@@ -31,14 +27,14 @@ public class SearchUserPagedDataSource extends PageKeyedDataSource<Integer, User
     public void loadInitial(@NonNull LoadInitialParams<Integer> params,
                             @NonNull LoadInitialCallback<Integer, User> callback) {
 
-        disposable.add(repository.addSearchUserList(searchKey, 1, params.requestedLoadSize)
+        PagedListResponse<User> response = repository.addSearchUserList(searchKey, 1, params.requestedLoadSize)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> callback.onResult(response.getItemList(),
-                        response.getDisplay(),
-                        response.getStart() + response.getDisplay()),
-                        error -> { }
-                )
-        );
+                .doOnError(error -> {})
+                .blockingGet();
+
+        callback.onResult(response.getItemList(),
+                response.getDisplay(),
+                response.getStart() + response.getDisplay());
     }
 
     @Override
@@ -51,14 +47,13 @@ public class SearchUserPagedDataSource extends PageKeyedDataSource<Integer, User
     public void loadAfter(@NonNull LoadParams<Integer> params,
                           @NonNull LoadCallback<Integer, User> callback) {
 
-        disposable.add(repository.addSearchUserList(searchKey, params.key, params.requestedLoadSize)
+        PagedListResponse<User> response = repository.addSearchUserList(searchKey, params.key, params.requestedLoadSize)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response ->
-                                callback.onResult(response.getItemList(),
-                                        params.key + response.getDisplay()),
-                        error -> { }
-                )
-        );
+                .doOnError(error -> {})
+                .blockingGet();
+
+        callback.onResult(response.getItemList(),
+                params.key + response.getDisplay());
     }
 
 
@@ -67,15 +62,11 @@ public class SearchUserPagedDataSource extends PageKeyedDataSource<Integer, User
         @NonNull
         private UserRepository repository;
         @NonNull
-        private CompositeDisposable disposable;
-        @NonNull
         private String searchKey;
 
         public Factory(@NonNull UserRepository repository,
-                       @NonNull CompositeDisposable disposable,
                        @NonNull String searchKey) {
             this.repository = repository;
-            this.disposable = disposable;
             this.searchKey = searchKey;
         }
 
@@ -87,7 +78,7 @@ public class SearchUserPagedDataSource extends PageKeyedDataSource<Integer, User
         @Override
         public DataSource<Integer, User> create() {
             SearchUserPagedDataSource source =
-                    new SearchUserPagedDataSource(repository, disposable, searchKey);
+                    new SearchUserPagedDataSource(repository, searchKey);
             liveData.postValue(source);
             return source;
         }
