@@ -4,6 +4,7 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
+import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,11 +22,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UserFirebaseService implements UserDataSource {
 
-    private static final String COLLECTION_USERDETAIL = "userDetail";
-    private static final String COLLECTION_USER = "user";
+    private final String COLLECTION_USERDETAIL = "userDetail";
+    private final String COLLECTION_USER = "user";
+    private final String FIELD_USER_ID = "id";
 
     private static volatile UserFirebaseService INSTANCE;
-
     private UserFirebaseService() { }
 
     public static UserFirebaseService getInstance() {
@@ -45,7 +46,7 @@ public class UserFirebaseService implements UserDataSource {
 
         // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USERDETAIL)
-                .whereEqualTo("id", userId)
+                .whereEqualTo(FIELD_USER_ID, userId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -152,6 +153,7 @@ public class UserFirebaseService implements UserDataSource {
                                         @NonNull String myUserId) {
         return Completable.create(emitter -> {});
     }
+
     @NonNull
     @Override
     public Single<User> getMyProfile() {
@@ -170,4 +172,16 @@ public class UserFirebaseService implements UserDataSource {
         return Single.just(user).subscribeOn(Schedulers.io());
     }
 
+    @NonNull
+    @Override
+    public Completable insertNewUser(@NonNull InsertUserRequest request) {
+        return Completable.create(emitter ->
+                FirebaseFirestore.getInstance()
+                        .collection(COLLECTION_USER)
+                        .document(request.getId())
+                        .set(request)
+                        .addOnSuccessListener(__ -> emitter.onComplete())
+                        .addOnFailureListener(emitter::onError)
+        ).subscribeOn(Schedulers.io());
+    }
 }

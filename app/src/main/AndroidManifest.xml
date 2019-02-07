@@ -24,9 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.main.MainActivity">
-
-        </activity>
+        <activity android:name=".presentation.main.MainActivity"/>
         <activity android:name=".presentation.feed.detail.FeedDetailActivity"/>
         <activity android:name=".presentation.upload.UploadActivity"
             android:windowSoftInputMode="stateAlwaysHidden"/>

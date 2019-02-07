@@ -19,19 +19,20 @@
 
         <include
             android:id="@+id/layout_toolbar"
-            layout="@layout/layout_toolbar"
+            layout="@layout/layout_toolbar_profile"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            bind:userName="@{vm.user.name}"/>
 
         <ImageView
             android:id="@+id/iv_user_image"
             android:layout_width="@dimen/profile_image_size_large"
             android:layout_height="@dimen/profile_image_size_large"
             android:layout_margin="@dimen/space_median"
-            app:circleImage="@{vm.getUser.profileImageUrl}"
+            app:circleImage="@{vm.user.profileImageUrl}"
             app:layout_constraintBottom_toTopOf="@id/guideline_count"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +58,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline_count"
-            bind:count="@{String.valueOf(vm.getUser.feedCount)}"
+            bind:count="@{String.valueOf(vm.user.feedCount)}"
             bind:title="@{String.valueOf(@string/profile_feed_count)}" />
 
         <include
@@ -72,7 +73,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@id/layout_feed"
             app:layout_constraintTop_toBottomOf="@id/guideline_count"
-            bind:count="@{String.valueOf(vm.getUser.followerCount)}"
+            bind:count="@{String.valueOf(vm.user.followerCount)}"
             bind:title="@{String.valueOf(@string/profile_follower_count)}" />
 
         <include
@@ -85,7 +86,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@id/layout_follower"
             app:layout_constraintTop_toBottomOf="@id/guideline_count"
-            bind:count="@{String.valueOf(vm.getUser.followingCount)}"
+            bind:count="@{String.valueOf(vm.user.followingCount)}"
             bind:title="@{String.valueOf(@string/profile_following_count)}" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -103,10 +104,10 @@
             android:layout_height="40dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@{vm.getUser.isFollow ? @drawable/line_border_round_trans : @drawable/line_border_round}"
+            android:background="@{vm.user.isFollow ? @drawable/line_border_round_trans : @drawable/line_border_round}"
             android:gravity="center"
-            android:text="@{vm.getUser.isFollow ? @string/profile_follow_cancel : @string/profile_follow}"
-            android:textColor="@{vm.getUser.isFollow ? @color/colorWhite : @color/colorWhite}"
+            android:text="@{vm.user.isFollow ? @string/profile_follow_cancel : @string/profile_follow}"
+            android:textColor="@{vm.user.isFollow ? @color/colorWhite : @color/colorWhite}"
             android:textSize="@dimen/text_median"
             android:onClick="@{__ -> vm.toggleFollow()}"
             app:layout_constraintBottom_toTopOf="@id/tab_profile"

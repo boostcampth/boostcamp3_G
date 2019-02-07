@@ -4,6 +4,7 @@ import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.local.test.UserMockDataSource;
+import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 
 import androidx.annotation.NonNull;
@@ -104,5 +105,14 @@ public class UserRepository implements UserDataSource {
         }
 
         return firebaseService.getMyProfile();
+    }
+
+    @NonNull
+    @Override
+    public Completable insertNewUser(@NonNull InsertUserRequest request) {
+        if(isTesting){
+            return mockDataSource.insertNewUser(request);
+        }
+        return firebaseService.insertNewUser(request);
     }
 }

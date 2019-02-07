@@ -16,6 +16,9 @@ public class UserDetail {
     private List<User> followingList;
     private List<Feed> feedList;
 
+    public UserDetail() {
+    }
+
     public UserDetail(String id,
                       String name,
                       String email,
