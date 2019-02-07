@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.data.source.local.test;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
@@ -8,7 +9,10 @@ import com.boostcamp.dreampicker.data.model.Image;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -17,10 +21,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.internal.operators.observable.ObservableFlatMapSingle;
+import io.reactivex.internal.operators.single.SingleFlatMap;
 import io.reactivex.schedulers.Schedulers;
 
 public class FeedMockDataSource implements FeedDataSource {
@@ -185,24 +193,28 @@ public class FeedMockDataSource implements FeedDataSource {
     public Single<PagedListResponse<Feed>> addProfileFeedList(@NonNull String userId,
                                                               int start,
                                                               int display) {
-        List<Feed> feedList = new ArrayList<>();
-        for (int i = 0; i < display; i++) {
-            Image image1 = new Image("image-0-up", R.drawable.image1, "카페");
-            Image image2 = new Image("image-0-down", R.drawable.image2, "술집");
-            User user1 = new User("user-0", "박신혜", R.drawable.profile);
-            Feed feed = new Feed(
-                    "feed-0",
-                    Arrays.asList(image1, image2),
-                    user1,
-                    "내일 소개남이랑 첫 데이트인데 장소 좀 골라주세요~!ㅎㅎ",
-                    "2018.01.28",
-                    false
-            );
-
-            feedList.add(feed);
-        }
-
-        return Single.just(new PagedListResponse<>(start, display, feedList));
+        return Single.create(emitter ->
+                FirebaseFirestore.getInstance()
+                        .collection(COLLECTION_FEED)
+                        .whereEqualTo(FieldPath.of("user", "id"), userId)
+                        .orderBy("date")
+                        .startAt(start)
+                        .limit(display)
+                        .get()
+                        .addOnCompleteListener(documentSnapshot -> {
+                            if (documentSnapshot.isSuccessful()) {
+                                // 결과 리스트
+                                final QuerySnapshot result = Objects.requireNonNull(documentSnapshot.getResult());
+                                List<Feed> feedList = new ArrayList<>();
+                                for (QueryDocumentSnapshot document : result) {
+                                    feedList.add(document.toObject(Feed.class));
+                                }
+                                emitter.onSuccess(new PagedListResponse<>(start, result.size(), feedList));
+                            } else {
+                                emitter.onError(documentSnapshot.getException());
+                            }
+                        })
+                        .addOnFailureListener(emitter::onError));
     }
 
     @Override
@@ -237,18 +249,19 @@ public class FeedMockDataSource implements FeedDataSource {
 
         //임시경로
         StorageReference feedImages = storage.getReference()
-                .child("feedImage/"+feed.getId()+"/"+uri.getLastPathSegment());
+                .child("feedImage/" + feed.getId() + "/" + uri.getLastPathSegment());
 
         feedImages.putFile(uri)
                 .addOnSuccessListener(taskSnapshot -> {
                     // TODO : 구조 수정필요
-                    HashMap<String,String> tmp = new HashMap<>();
-                    tmp.put("leftImagePath",uri.getPath());
+                    HashMap<String, String> tmp = new HashMap<>();
+                    tmp.put("leftImagePath", uri.getPath());
 
                     FirebaseFirestore.getInstance()
                             .collection(COLLECTION_FEED)
                             .document(feed.getId())
-                            .set(tmp, SetOptions.merge()); })
+                            .set(tmp, SetOptions.merge());
+                })
                 .addOnProgressListener(taskSnapshot -> {
                     double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 }).addOnPausedListener(taskSnapshot -> { })

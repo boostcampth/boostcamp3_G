@@ -20,6 +20,8 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
     @NonNull
     private String userId;
 
+    private boolean isPageEnd = false;
+
     private ProfileFeedPagedDataSource(@NonNull FeedRepository repository,
                                        @NonNull String userId) {
         this.repository = repository;
@@ -42,6 +44,10 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
         callback.onResult(response.getItemList(),
                 response.getDisplay(),
                 response.getStart() + response.getDisplay());
+
+        if(response.getDisplay() < params.requestedLoadSize){
+            isPageEnd = true;
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -60,13 +66,19 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
     public void loadAfter(@NonNull LoadParams<Integer> params,
                           @NonNull LoadCallback<Integer, Feed> callback) {
 
-        PagedListResponse<Feed> response = repository.addProfileFeedList(userId, params.key, params.requestedLoadSize)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(error -> {})
-                .blockingGet();
+        if(!isPageEnd){
+            PagedListResponse<Feed> response = repository.addProfileFeedList(userId, params.key, params.requestedLoadSize)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError(error -> {})
+                    .blockingGet();
 
-        callback.onResult(response.getItemList(),
-                params.key + response.getDisplay());
+            callback.onResult(response.getItemList(),
+                    params.key + response.getDisplay());
+
+            if(response.getDisplay() < params.requestedLoadSize){
+                isPageEnd = true;
+            }
+        }
     }
 
 
