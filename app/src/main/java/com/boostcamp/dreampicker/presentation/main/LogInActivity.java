@@ -27,6 +27,7 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding>{
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
+    private boolean isTest = true;
 
     public static Intent getLaunchIntent(Context context) { return new Intent(context, LogInActivity.class); }
 
@@ -37,15 +38,19 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding>{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        mAuth = FirebaseAuth.getInstance();
-        initView();
+        if(isTest) {
+            startMainActivity();
+        } else {
 
+            GoogleSignInOptions gso = new GoogleSignInOptions
+                    .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+            mAuth = FirebaseAuth.getInstance();
+            initView();
+        }
     }
 
     private void initView() {

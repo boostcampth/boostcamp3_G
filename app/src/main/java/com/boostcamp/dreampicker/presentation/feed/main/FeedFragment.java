@@ -8,6 +8,7 @@ import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
+import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,9 +37,13 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void initRecyclerView() {
-        final FeedAdapter adapter = new FeedAdapter(viewModel::vote);
+        final FeedAdapter adapter = new FeedAdapter(viewModel::vote, this::startFeedDetailActivity);
         binding.rvFeed.setItemAnimator(null);
         binding.rvFeed.setAdapter(adapter);
+    }
+
+    private void startFeedDetailActivity(@NonNull String feedId) {
+        startActivity(FeedDetailActivity.getLaunchIntent(getContext(), feedId));
     }
 
     @Override
