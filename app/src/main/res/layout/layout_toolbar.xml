@@ -2,9 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
+        android:id="@+id/rl_toolbar_background"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/line_bottom"
+        android:elevation="5dp"
         android:gravity="center_vertical">
 
         <ImageButton
