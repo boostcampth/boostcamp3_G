@@ -50,7 +50,11 @@ public class UserMockDataSource implements UserDataSource {
                                                                    int display) {
         List<User> userList = new ArrayList<>();
         for (int i = 0; i < display; i++) {
-            User user = new User("", "yeseul", R.drawable.profile);
+            User user = new User(
+                    userId,
+                    "yeseul",
+                    "https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",
+                    R.drawable.profile);
             userList.add(user);
         }
         return Single.just(new PagedListResponse<>(start, display, userList));
@@ -63,7 +67,11 @@ public class UserMockDataSource implements UserDataSource {
                                                                   int display) {
         List<User> userList = new ArrayList<>();
         for (int i = 0; i < display; i++) {
-            User user = new User("", "yeseul", R.drawable.profile);
+            User user = new User(
+                    userId,
+                    "yeseul",
+                    "https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",
+                    R.drawable.profile);
             userList.add(user);
         }
         return Single.just(new PagedListResponse<>(start, display, userList));
@@ -76,7 +84,11 @@ public class UserMockDataSource implements UserDataSource {
                                                              int display) {
         List<User> userList = new ArrayList<>();
         for (int i = 0; i < display; i++) {
-            User user = new User("", "yeseul", R.drawable.profile);
+            User user = new User(
+                    "",
+                    "yeseul",
+                    "https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",
+                    R.drawable.profile);
             userList.add(user);
         }
         return Single.just(new PagedListResponse<>(start, display, userList));
