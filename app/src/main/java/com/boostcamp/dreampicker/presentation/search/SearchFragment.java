@@ -99,6 +99,10 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> {
 
         public SearchPagerAdapter(@NonNull FragmentManager fm) {
             super(fm);
+            fragments[0] = SearchUserFragment.newInstance();
+            fragments[1] = SearchFeedFragment.newInstance();
+            onSearchListeners.add((OnSearchListener) fragments[0]);
+            onSearchListeners.add((OnSearchListener) fragments[1]);
         }
 
         @NonNull
