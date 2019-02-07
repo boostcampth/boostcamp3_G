@@ -7,13 +7,16 @@
         android:orientation="horizontal">
 
         <EditText
+            android:id="@+id/et_search"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:hint="@string/search_text_hint"
+            android:imeOptions="actionSearch"
             style="@style/EditText.Search"/>
 
         <ImageButton
+            android:id="@+id/btn_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="@dimen/space_small"

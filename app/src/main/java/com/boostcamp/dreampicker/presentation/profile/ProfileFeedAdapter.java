@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ProfileFeedAdapter extends BasePagedListAdapter<Feed, ProfileFeedAdapter.ViewHolder> {
 
-    ProfileFeedAdapter(@Nullable OnItemClickListener<Feed> onItemClickListener) {
+    public ProfileFeedAdapter(@Nullable OnItemClickListener<Feed> onItemClickListener) {
         super(DIFF_CALLBACK, onItemClickListener);
     }
 
