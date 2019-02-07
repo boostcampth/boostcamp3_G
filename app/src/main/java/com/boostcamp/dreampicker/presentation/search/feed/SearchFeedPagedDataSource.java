@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.profile;
+package com.boostcamp.dreampicker.presentation.search.feed;
 
 import android.annotation.SuppressLint;
 
@@ -12,7 +12,7 @@ import androidx.paging.PageKeyedDataSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Feed> {
+public class SearchFeedPagedDataSource extends PageKeyedDataSource<Integer, Feed> {
 
     @NonNull
     private CompositeDisposable disposable;
@@ -21,9 +21,9 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
     @NonNull
     private String userId;
 
-    private ProfileFeedPagedDataSource(@NonNull FeedRepository repository,
-                                       @NonNull CompositeDisposable disposable,
-                                       @NonNull String userId) {
+    private SearchFeedPagedDataSource(@NonNull FeedRepository repository,
+                                      @NonNull CompositeDisposable disposable,
+                                      @NonNull String userId) {
         this.repository = repository;
         this.disposable = disposable;
         this.userId = userId;
@@ -40,10 +40,11 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
         disposable.add(repository.addProfileFeedList(userId, 1, params.requestedLoadSize)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->
-                        callback.onResult(response.getItemList(),
-                                response.getDisplay(),
-                                response.getStart() + response.getDisplay()),
-                        error -> { }
+                                callback.onResult(response.getItemList(),
+                                        response.getDisplay(),
+                                        response.getStart() + response.getDisplay()),
+                        error -> {
+                        }
                 )
         );
     }
@@ -69,7 +70,8 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
                 .subscribe(response ->
                                 callback.onResult(response.getItemList(),
                                         params.key + response.getDisplay()),
-                        error -> { }
+                        error -> {
+                        }
                 )
         );
     }
@@ -93,13 +95,13 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
         }
 
         // TODO. liveData.postValue() 왜 필요한지 알아보기
-        private MutableLiveData<ProfileFeedPagedDataSource> liveData =
+        private MutableLiveData<SearchFeedPagedDataSource> liveData =
                 new MutableLiveData<>();
 
         @NonNull
         @Override
         public DataSource<Integer, Feed> create() {
-            ProfileFeedPagedDataSource source = new ProfileFeedPagedDataSource(repository, disposable, userId);
+            SearchFeedPagedDataSource source = new SearchFeedPagedDataSource(repository, disposable, userId);
             liveData.postValue(source);
             return source;
         }

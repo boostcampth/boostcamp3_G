@@ -29,11 +29,11 @@ public class PagedListResponse<T> {
         this.display = display;
     }
 
-    public List<T> getFeedList() {
+    public List<T> getItemList() {
         return feedList;
     }
 
-    public void setFeedList(List<T> feedList) {
+    public void setItemList(List<T> feedList) {
         this.feedList = feedList;
     }
 }

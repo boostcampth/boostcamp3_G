@@ -13,6 +13,7 @@ import com.boostcamp.dreampicker.presentation.notification.NotificationFragment;
 import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.search.SearchFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
+import com.boostcamp.dreampicker.utils.FirebaseManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -66,7 +67,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 fragment = NotificationFragment.newInstance();
                 break;
             case R.id.navigation_profile:
-                fragment = ProfileFragment.newInstance("");
+                fragment = ProfileFragment.newInstance(FirebaseManager.getCurrentUserId());
                 break;
         }
 
