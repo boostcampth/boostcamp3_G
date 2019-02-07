@@ -2,7 +2,6 @@ package com.boostcamp.dreampicker.presentation.profile;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
@@ -21,10 +20,9 @@ import androidx.lifecycle.ViewModelProviders;
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     private static final String ARGUMENT_USER_ID = "ARGUMENT_USER_ID";
 
-    public ProfileFragment() {
-    }
+    public ProfileFragment() { }
 
-    public static ProfileFragment newInstance(@NonNull String userId) {
+    public static ProfileFragment newInstance(@Nullable String userId) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARGUMENT_USER_ID, userId);
@@ -43,6 +41,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // TODO. userId=null 인 경우 예외처리
         if (savedInstanceState != null) {
             userId = savedInstanceState.getString(ARGUMENT_USER_ID);
         } else {
@@ -62,7 +61,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private void initViewModel() {
         // 프로필 정보 담고있는 뷰모델
-        ProfileViewModel viewModel = ViewModelProviders.of(this,
+        final ProfileViewModel viewModel = ViewModelProviders.of(this,
                 new ProfileViewModel.Factory(
                         UserRepository.getInstance(UserFirebaseService.getInstance()),
                         userId
@@ -71,7 +70,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
         binding.getVm().getError().observe(this, Throwable::printStackTrace);
 
         // 피드 목록 담고있는 뷰모델
-        ProfileFeedViewModel feedViewModel = ViewModelProviders.of(this,
+        final ProfileFeedViewModel feedViewModel = ViewModelProviders.of(this,
                 new ProfileFeedViewModel.Factory(
                         FeedRepository.getInstance(FeedFirebaseService.getInstance()),
                         userId
@@ -100,8 +99,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     private void initRecyclerView() {
         ProfileFeedAdapter adapter = new ProfileFeedAdapter(this::startFeedDetailActivity);
         binding.recyclerProfileFeed.setAdapter(adapter);
-
-        binding.getFeedVm().feedPagedList.observe(this, adapter::submitList);
     }
 
     private void initCountingView() {
@@ -114,6 +111,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     }
 
     private void startFeedDetailActivity(Feed feed) {
-        Toast.makeText(getContext(), "item Clicked: " + feed.getId(), Toast.LENGTH_SHORT).show();
+        // TODO. 피드 상세 페이지 띄우기
     }
 }

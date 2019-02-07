@@ -128,11 +128,12 @@
             android:id="@+id/recycler_profile_feed"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tab_profile" />
+            app:layout_constraintTop_toBottomOf="@id/tab_profile"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:pagedItems="@{feedVm.feedPagedList}"/>
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
