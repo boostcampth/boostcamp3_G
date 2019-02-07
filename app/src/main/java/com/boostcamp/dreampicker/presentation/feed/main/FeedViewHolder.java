@@ -3,6 +3,9 @@ package com.boostcamp.dreampicker.presentation.feed.main;
 import android.content.Context;
 import android.transition.TransitionManager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
@@ -11,6 +14,7 @@ import com.boostcamp.dreampicker.utils.Constant;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,23 +36,29 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
     }
 
     void startVoteAnimation(Context context, @Constant.VoteFlag int flag) {
+        final int size = context.getResources().getDimensionPixelSize(R.dimen.vote_icon_size);
+
         final ShineButton button = binding.sbSelector;
-        final ConstraintSet set = new ConstraintSet();
+        button.showAnim();
 
-        TransitionManager.beginDelayedTransition(binding.root);
+        button.startAnimation(new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                final ConstraintLayout.LayoutParams params =
+                        new ConstraintLayout.LayoutParams(size, size);
 
-        if(flag == Constant.LEFT) {
-            set.clone(context, R.layout.item_feed_vote_left);
-        } else if(flag == Constant.RIGHT) {
-            set.clone(context, R.layout.item_feed_vote_right);
-        }
-        set.applyTo(binding.root);
+                params.topToBottom = R.id.tv_feed_content;
+                params.bottomToTop = R.id.vote_result;
 
-        if (!button.isChecked()) {
-            button.performClick();
-        } else {
-            button.performClick();
-            button.performClick();
-        }
+                if(flag == Constant.LEFT) {
+                    params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+                    params.endToStart = R.id.guideline_feed_image_ho;
+                } else if(flag == Constant.RIGHT) {
+                    params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+                    params.startToEnd = R.id.guideline_feed_image_ho;
+                }
+                button.setLayoutParams(params);
+            }
+        });
     }
 }
