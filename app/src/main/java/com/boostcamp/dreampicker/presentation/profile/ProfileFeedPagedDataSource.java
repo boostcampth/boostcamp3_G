@@ -40,9 +40,11 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
         disposable.add(repository.addProfileFeedList(userId, 1, params.requestedLoadSize)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->
-                        callback.onResult(response.getFeedList(),
+                        callback.onResult(response.getItemList(),
                                 response.getDisplay(),
-                                response.getStart() + response.getDisplay()))
+                                response.getStart() + response.getDisplay()),
+                        error -> { }
+                )
         );
     }
 
@@ -65,8 +67,10 @@ public class ProfileFeedPagedDataSource extends PageKeyedDataSource<Integer, Fee
         disposable.add(repository.addProfileFeedList(userId, params.key, params.requestedLoadSize)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->
-                        callback.onResult(response.getFeedList(),
-                                params.key + response.getDisplay()))
+                                callback.onResult(response.getItemList(),
+                                        params.key + response.getDisplay()),
+                        error -> { }
+                )
         );
     }
 
