@@ -4,7 +4,9 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
+import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,5 +114,18 @@ public class UserMockDataSource implements UserDataSource {
                 R.drawable.profile);
 
         return Single.just(user).subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Completable insertNewUser(@NonNull InsertUserRequest request) {
+        return Completable.create(emitter ->
+                FirebaseFirestore.getInstance()
+                        .collection("user")
+                        .document(request.getId())
+                        .set(request)
+                        .addOnSuccessListener(__ -> emitter.onComplete())
+                        .addOnFailureListener(emitter::onError)
+        ).subscribeOn(Schedulers.io());
     }
 }

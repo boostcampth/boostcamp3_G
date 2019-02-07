@@ -2,6 +2,7 @@ package com.boostcamp.dreampicker.data.source;
 
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.model.UserDetail;
+import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 
 import androidx.annotation.NonNull;
@@ -38,4 +39,7 @@ public interface UserDataSource {
                                  @NonNull String myUserId);
     @NonNull
     Single<User> getMyProfile();
+
+    @NonNull
+    Completable insertNewUser(@NonNull InsertUserRequest request);
 }
