@@ -10,6 +10,10 @@ import android.widget.Toast;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.source.local.test.ProfileMockDataSource;
 import com.boostcamp.dreampicker.data.source.local.test.UploadMockDataSource;
+import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
+import com.boostcamp.dreampicker.data.source.remote.firebase.UserFirebaseService;
+import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
+import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.utils.Constant;
@@ -40,8 +44,14 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     }
 
     private void initViewModel() {
-        /*final UploadViewModel viewModel = ViewModelProviders.of(this).get(UploadViewModel.class);*/
-        final UploadViewModel viewModel = new UploadViewModel(new UploadMockDataSource(), new ProfileMockDataSource());
+        final UploadViewModel viewModel = ViewModelProviders.of(this,
+                new UploadViewModelFactory(
+                        FeedRepository.getInstance(FeedFirebaseService.getInstance()),
+                        UserRepository.getInstance(UserFirebaseService.getInstance())))
+                .get(UploadViewModel.class);
+
+        // final UploadViewModel viewModel = new UploadViewModel(new UploadMockDataSource(), new ProfileMockDataSource());
+
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
     }
