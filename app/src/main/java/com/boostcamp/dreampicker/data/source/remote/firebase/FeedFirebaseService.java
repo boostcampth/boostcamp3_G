@@ -55,46 +55,6 @@ public class FeedFirebaseService implements FeedDataSource {
         return INSTANCE;
     }
 
-    @Override
-    public Single<List<Feed>> getAllFeed() {
-        // TODO : 삭제
-        final List<Feed> feeds = new ArrayList<>();
-        return Single
-                .create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-
-                                    Feed feed = document.toObject(Feed.class);
-                                    feeds.add(feed);
-                                }
-                                emitter.onSuccess(feeds);
-                            } else {
-                                emitter.onError(task.getException());
-                            }
-                        }));
-    }
-
-    @Override
-    public Single<List<Feed>> searchAllFeed(String searchKey) {
-        // TODO : 삭제
-        final List<Feed> feeds = new ArrayList<>();
-        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
-                .whereEqualTo(FIELD_USER_NAME, searchKey)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            feeds.add(document.toObject(Feed.class));
-                            emitter.onSuccess(feeds);
-                        }
-                    } else {
-                        emitter.onError(task.getException());
-                    }
-                }));
-
-    }
 
     @Override
     @NonNull

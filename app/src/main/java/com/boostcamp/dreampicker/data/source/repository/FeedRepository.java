@@ -41,25 +41,6 @@ public class FeedRepository implements FeedDataSource {
     private final FeedDataSource firebaseService;
 
     @Override
-    public Single<List<Feed>> getAllFeed() {
-        if (isTesting) {
-            return mockDataSource.getAllFeed();
-        }
-
-        return firebaseService.getAllFeed();
-
-    }
-
-    @Override
-    public Single<List<Feed>> searchAllFeed(String searchKey) {
-        if (isTesting) {
-            return mockDataSource.searchAllFeed(searchKey);
-        }
-
-        return firebaseService.searchAllFeed(searchKey);
-    }
-
-    @Override
     @NonNull
     public Single<PagedListResponse<Feed>> addMainFeedList(int start, int display) {
         if (isTesting) {
@@ -117,7 +98,7 @@ public class FeedRepository implements FeedDataSource {
     @Override
     @NonNull
     public Completable upLoadFeed(@NonNull Feed feed) {
-        if(false){
+        if(isTesting){
             return mockDataSource.upLoadFeed(feed);
         }
 
