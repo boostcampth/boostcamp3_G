@@ -5,15 +5,15 @@ import android.net.Uri;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
+import com.boostcamp.dreampicker.utils.FirebaseManager;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,7 +31,13 @@ public class FeedFirebaseService implements FeedDataSource {
     private final String FIELD_USER_NAME = "name";
     private final String FIELD_USER_ISENDED = "isEnded";
     private final String FIELD_USER_USER = "user";
+    private final String FIELD_FEED_IMAGEMAP = "imageMap";
+    private final String FIELD_FEED_IMAGEMAP_IMAGEURL = "imageUrl";
 
+    private final String FEED_IMAGE_POSITION_LEFT = "left";
+    private final String FEED_IMAGE_POSITION_RIGHT = "right";
+
+    private final String STORAGE_FEED_IMAGE_PATH = "feedImage";
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -94,11 +100,10 @@ public class FeedFirebaseService implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<List<Feed>> addMainFeedList(@NonNull String userId,
-                                              int pageIndex,
-                                              int pageUnit) {
+    public Single<PagedListResponse<Feed>> addMainFeedList(
+            int pageIndex,
+            int pageUnit) {
         // TODO : 결과 테스트 필요 DONE
-        final List<Feed> feeds = new ArrayList<>();
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
                 .whereEqualTo(FIELD_USER_ISENDED, false)
                 .startAt(pageIndex)
@@ -107,10 +112,12 @@ public class FeedFirebaseService implements FeedDataSource {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        final QuerySnapshot result = Objects.requireNonNull(task.getResult());
+                        List<Feed> feedList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            feeds.add(document.toObject(Feed.class));
+                            feedList.add(document.toObject(Feed.class));
                         }
-                        emitter.onSuccess(feeds);
+                        emitter.onSuccess(new PagedListResponse<>(pageIndex, result.size(), feedList));
                     } else {
                         emitter.onError(task.getException());
                     }
@@ -121,14 +128,13 @@ public class FeedFirebaseService implements FeedDataSource {
     @Override
     @NonNull
     public Completable updateFeedVote(@NonNull String feedId,
-                                      @NonNull String userId,
                                       int voteFlag) {
 
         return Completable.create(emitter -> {
             // TODO : 테스트
             FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
                     .document(feedId)
-                    .update("votedUserMap." + userId, voteFlag)
+                    .update("votedUserMap." + FirebaseManager.getCurrentUserId(), voteFlag)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             emitter.onComplete();
@@ -151,14 +157,14 @@ public class FeedFirebaseService implements FeedDataSource {
 
                 .get()
                 .addOnCompleteListener(task -> {
-                    final QuerySnapshot result = Objects.requireNonNull(task.getResult());
                     if (task.isSuccessful()) {
-                        List<Feed> feeds = new ArrayList<>();
+                        final QuerySnapshot result = Objects.requireNonNull(task.getResult());
+                        List<Feed> feedList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             Feed feed = document.toObject(Feed.class);
-                            if (feed.getContent().contains(searchKey)) feeds.add(feed);
+                            if (feed.getContent().contains(searchKey)) feedList.add(feed);
                         }
-                        emitter.onSuccess(new PagedListResponse<>(start, result.size(), feeds));
+                        emitter.onSuccess(new PagedListResponse<>(start, result.size(), feedList));
                     } else {
                         emitter.onError(task.getException());
                     }
@@ -222,43 +228,32 @@ public class FeedFirebaseService implements FeedDataSource {
     public Completable upLoadFeed(@NonNull Feed feed) {
         return Completable.create(emitter -> {
 
-            uploadImageStorage(feed, feed.getImageMap().get("left").getUri());
-            uploadImageStorage(feed, feed.getImageMap().get("right").getUri());
-//
-//            feed.getImageList().get(i).setUri(null);
-//            for (int i = 0; i < 2; i++) {
-//                uploadImageStorage(feed, feed.getImageList().get(i).getUri());
-//                feed.getImageList().get(i).setUri(null);
-//            }
+            uploadImageStorage(feed, Objects.requireNonNull(feed.getImageMap().get(FEED_IMAGE_POSITION_LEFT)).getUri(), FEED_IMAGE_POSITION_LEFT);
+            uploadImageStorage(feed, Objects.requireNonNull(feed.getImageMap().get(FEED_IMAGE_POSITION_RIGHT)).getUri(), FEED_IMAGE_POSITION_RIGHT);
 
+            Objects.requireNonNull(feed.getImageMap().get(FEED_IMAGE_POSITION_LEFT)).setUri(null);
+            Objects.requireNonNull(feed.getImageMap().get(FEED_IMAGE_POSITION_RIGHT)).setUri(null);
             FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
                     .document(feed.getId())
                     .set(feed)
-                    .addOnSuccessListener(documentReference -> {
-                    })
+                    .addOnSuccessListener(documentReference -> emitter.onComplete())
                     .addOnFailureListener(Throwable::printStackTrace);
 
-            emitter.onComplete();
+
         }).subscribeOn(Schedulers.io());
     }
 
-    private void uploadImageStorage(@NonNull Feed feed, Uri uri) {
+    private void uploadImageStorage(@NonNull Feed feed, Uri uri, String position) {
 
-        //임시경로
         StorageReference feedImages = storage.getReference()
-                .child("feedImage/" + feed.getId() + "/" + uri.getLastPathSegment());
+                .child(STORAGE_FEED_IMAGE_PATH + "/" + feed.getId() + "/" + uri.getLastPathSegment());
 
         feedImages.putFile(uri)
-                .addOnSuccessListener(taskSnapshot -> {
-                    // TODO : 구조 수정필요
-                    HashMap<String, String> tmp = new HashMap<>();
-                    tmp.put("leftImagePath", Objects.requireNonNull(taskSnapshot.getUploadSessionUri()).getPath());
-
-                    FirebaseFirestore.getInstance()
-                            .collection(COLLECTION_FEED)
-                            .document(feed.getId())
-                            .set(tmp, SetOptions.merge());
-                })
+                .addOnSuccessListener(taskSnapshot -> FirebaseFirestore.getInstance()
+                        .collection(COLLECTION_FEED)
+                        .document(feed.getId())
+                        .update(FIELD_FEED_IMAGEMAP + "." + position + "." + FIELD_FEED_IMAGEMAP_IMAGEURL,
+                                Objects.requireNonNull(taskSnapshot.getUploadSessionUri()).getPath()))
                 .addOnProgressListener(taskSnapshot -> {
                     double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 }).addOnPausedListener(taskSnapshot -> {
