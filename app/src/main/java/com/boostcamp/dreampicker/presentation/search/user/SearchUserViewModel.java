@@ -32,10 +32,6 @@ public class SearchUserViewModel extends BaseViewModel {
     private MutableLiveData<String> searchKey = new MutableLiveData<>();
 
     private SearchUserViewModel(@NonNull UserRepository repository) {
-        // TODO. SearchUserRepository 주입받기
-        // 기존에 쓰던 repository 와 페이징을 위한 repository 가 분리되어있음
-        // 합치려면 기존 repository 가 DataSource를 구현하면 안됨
-        // -> firebaseService와 반환형이 다름. LiveData를 뱉어야됨..
         this.repository = new SearchUserRepository(repository);
         this.searchKey.setValue("");
 
