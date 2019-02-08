@@ -3,6 +3,7 @@ package com.boostcamp.dreampicker.presentation.listener;
 import android.view.DragEvent;
 import android.view.View;
 
+import com.boostcamp.dreampicker.R;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
 import androidx.annotation.NonNull;
@@ -20,8 +21,15 @@ public class VoteDragListener implements View.OnDragListener {
 
     public boolean onDrag(View v, DragEvent event) {
         final ShineButton button = (ShineButton) event.getLocalState();
-        final String buttonTag = button.getTag().toString();
-        final String containerTag = v.getTag().toString();
+        final String buttonTag = button.getTag(R.id.sb_selector).toString();
+
+        String containerTag = "";
+
+        if(v.getTag(R.id.iv_feed_image_left) != null) {
+            containerTag = v.getTag(R.id.iv_feed_image_left).toString();
+        } else if(v.getTag(R.id.iv_feed_image_right) != null) {
+            containerTag = v.getTag(R.id.iv_feed_image_right).toString();
+        }
 
         // 이벤트 시작
         switch (event.getAction()) {

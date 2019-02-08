@@ -3,21 +3,20 @@ package com.boostcamp.dreampicker.data.model;
 import java.util.List;
 
 public class UserDetail {
-    private String id;
-    private String name;
-    private String email;
-    private String profileImageUrl;
-    private int feedCount;
-    private int followerCount;
-    private int followingCount;
-    private boolean isFollow;
+    private String id; // 유저 아이디
+    private String name; // 유저 이름
+    private String email; // 유저 이메일
+    private String profileImageUrl; // 유저 프로필 url
+    private int feedCount; // 올린 피드 수
+    private int followerCount; // 팔로워 수
+    private int followingCount; // 팔로잉 수
+    private boolean isFollow; // 내가 이 사람을 팔로우 했는지 여부
 
-    private List<User> followerList;
-    private List<User> followingList;
-    private List<Feed> feedList;
+    private List<User> followerList; // 해당 유저의 팔로워 리스트
+    private List<User> followingList; // 해당 유저의 팔로잉 리스트
+    private List<Feed> feedList; // 해당 유저의 피드 리스트
 
-    public UserDetail() {
-    }
+    public UserDetail() { }
 
     public UserDetail(String id,
                       String name,

@@ -6,6 +6,8 @@ import android.content.ClipDescription;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.boostcamp.dreampicker.R;
+
 @SuppressLint("ClickableViewAccessibility")
 public class VoteIconTouchListener implements View.OnTouchListener {
     @Override
@@ -14,7 +16,7 @@ public class VoteIconTouchListener implements View.OnTouchListener {
             // 태그 생성
             final ClipData.Item item = new ClipData.Item("");
             final String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
-            final ClipData data = new ClipData(v.getTag().toString(), mimeTypes, item);
+            final ClipData data = new ClipData(v.getTag(R.id.sb_selector).toString(), mimeTypes, item);
 
             v.startDrag(data, // data to be dragged
                     new View.DragShadowBuilder(v), // drag shadow
