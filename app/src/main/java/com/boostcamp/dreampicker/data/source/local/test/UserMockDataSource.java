@@ -6,8 +6,10 @@ import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UserMockDataSource implements UserDataSource {
     private static volatile UserMockDataSource INSTANCE;
+    private String COLLECTION_USER = "user";
 
     private UserMockDataSource() { }
 
@@ -93,16 +96,28 @@ public class UserMockDataSource implements UserDataSource {
     public Single<PagedListResponse<User>> addSearchUserList(@NonNull String searchKey,
                                                              int start,
                                                              int display) {
-        List<User> userList = new ArrayList<>();
-        for (int i = 0; i < display; i++) {
-            User user = new User(
-                    "",
-                    "yeseul",
-                    "https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",
-                    R.drawable.profile);
-            userList.add(user);
-        }
-        return Single.just(new PagedListResponse<>(start, display, userList));
+        return Single.create(emitter ->
+                FirebaseFirestore.getInstance()
+                        .collection(COLLECTION_USER)
+                        .whereEqualTo(FieldPath.of("name"), searchKey)
+                        .orderBy("id")
+                        .startAt(start)
+                        .limit(display)
+                        .get()
+                        .addOnCompleteListener(documentSnapshot -> {
+                            if (documentSnapshot.isSuccessful()) {
+                                // 결과 리스트
+                                final QuerySnapshot result = Objects.requireNonNull(documentSnapshot.getResult());
+                                List<User> userList = new ArrayList<>();
+                                for (QueryDocumentSnapshot document : result) {
+                                    userList.add(document.toObject(User.class));
+                                }
+                                emitter.onSuccess(new PagedListResponse<>(start, result.size(), userList));
+                            } else {
+                                emitter.onError(documentSnapshot.getException());
+                            }
+                        })
+                        .addOnFailureListener(emitter::onError));
     }
 
     @Override
