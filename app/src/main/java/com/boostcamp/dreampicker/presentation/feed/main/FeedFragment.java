@@ -64,9 +64,4 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         return R.layout.fragment_feed;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        binding.getViewModel().loadFeedList();
-    }
 }

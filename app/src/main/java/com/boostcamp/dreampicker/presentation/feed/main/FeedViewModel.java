@@ -17,6 +17,7 @@ public class FeedViewModel extends BaseViewModel {
     @NonNull
     private final FeedRepository repository;
 
+    @NonNull
     private MutableLiveData<List<Feed>> feedList = new MutableLiveData<>();
 
     @NonNull
@@ -24,6 +25,7 @@ public class FeedViewModel extends BaseViewModel {
 
     FeedViewModel(@NonNull FeedRepository repository) {
         this.repository = repository;
+        loadFeedList();
     }
 
     void vote(@NonNull final VoteResult result) {
@@ -41,16 +43,16 @@ public class FeedViewModel extends BaseViewModel {
         }
     }
 
-    @NonNull
-    public LiveData<List<Feed>> getFeedList() {
-        return feedList;
-    }
-
     void loadFeedList() {
         addDisposable(repository.addMainFeedList(1, 10)
                 .map(PagedListResponse::getItemList)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> feedList.postValue(list), error::setValue));
+    }
+
+    @NonNull
+    public LiveData<List<Feed>> getFeedList() {
+        return feedList;
     }
 
     @NonNull

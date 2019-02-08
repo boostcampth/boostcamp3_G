@@ -1,14 +1,13 @@
 package com.boostcamp.dreampicker.data.model;
 
 public class User {
-    private String id;
-    private String name;
-    private String profileImageUrl;
+    private String id; // 유저 아이디
+    private String name; // 유저 이름
+    private String profileImageUrl; // 유저 프로필 사진 url
     // TODO : 이후 url로 변경
-    private int profileImageResource;
+    private int profileImageResource; // 유저 임시 사진?
 
-    public User() {
-    }
+    public User() { }
 
     public User(String id, String name, int profileImageResource) {
         this.id = id;

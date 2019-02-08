@@ -26,6 +26,9 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
 
     void bindTo(@NonNull Feed feed) {
         binding.setFeed(feed);
+        binding.ivFeedImageLeft.setTag(R.id.iv_feed_image_left, feed.getId());
+        binding.ivFeedImageRight.setTag(R.id.iv_feed_image_right, feed.getId());
+        binding.sbSelector.setTag(R.id.sb_selector, feed.getId());
     }
 
     public ItemFeedBinding getBinding() {

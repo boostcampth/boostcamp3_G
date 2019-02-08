@@ -104,7 +104,6 @@
                     android:background="@drawable/ic_vote_bg"
                     android:clickable="false"
                     android:elevation="5dp"
-                    android:tag="@{feed.id}"
                     app:allow_random_color="true"
                     app:btn_color="@color/colorWhite"
                     app:big_shine_color="#66FFFF"
@@ -135,9 +134,8 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/feed_photo_image_height"
                     android:scaleType="fitXY"
-                    android:tag="@{feed.id}"
                     android:layout_marginTop="@dimen/space_x_small"
-                    app:imageResource='@{feed.imageMap["left"].image}'
+                    app:image='@{feed.imageMap["left"].imageUrl}'
                     app:layout_constraintBottom_toTopOf="@id/vote_result"
                     app:layout_constraintEnd_toStartOf="@+id/guideline_feed_image_ho"
                     app:layout_constraintStart_toStartOf="parent"
@@ -159,9 +157,8 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/feed_photo_image_height"
                     android:scaleType="fitXY"
-                    android:tag="@{feed.id}"
                     android:layout_marginTop="@dimen/space_x_small"
-                    app:imageResource='@{feed.imageMap["right"].image}'
+                    app:image='@{feed.imageMap["right"].imageUrl}'
                     app:layout_constraintBottom_toTopOf="@id/vote_result"
                     app:layout_constraintStart_toEndOf="@+id/guideline_feed_image_ho"
                     app:layout_constraintTop_toBottomOf="@id/tv_feed_content"
