@@ -5,8 +5,10 @@ import android.net.Uri;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -46,14 +48,17 @@ public class FeedFirebaseService implements FeedDataSource {
     public Single<List<Feed>> getAllFeed() {
         // TODO : 삭제
         final List<Feed> feeds = new ArrayList<>();
-        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+        return Single
+                .create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            feeds.add(document.toObject(Feed.class));
-                            emitter.onSuccess(feeds);
+
+                            Feed feed = document.toObject(Feed.class);
+                            feeds.add(feed);
                         }
+                        emitter.onSuccess(feeds);
                     } else {
                         emitter.onError(task.getException());
                     }
@@ -82,37 +87,35 @@ public class FeedFirebaseService implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<Feed>> addMainFeedList(int start, int display) {
-        final String userId = "OOOO";
-
+    public Single<List<Feed>> addMainFeedList(@NonNull String userId,
+                                              int pageIndex,
+                                              int pageUnit) {
         // TODO : 결과 테스트 필요 DONE
         final List<Feed> feeds = new ArrayList<>();
-        return Single.create(emitter -> {
-            FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
-                    // 투표 마감 안된거
-                    .whereEqualTo("isEnded", false)
-                    .startAt(start)
-                    .limit(display)
-                    .orderBy("date")
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                feeds.add(document.toObject(Feed.class));
-                            }
-                            emitter.onSuccess(new PagedListResponse<>(start, display, feeds));
-                        } else {
-                            emitter.onError(task.getException());
+        return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
+                .whereEqualTo("isEnded", false)
+                .startAt(pageIndex)
+                .limit(pageUnit)
+                .orderBy("date")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            feeds.add(document.toObject(Feed.class));
                         }
-                    })
-                    .addOnFailureListener(emitter::onError);
-        });
+                        emitter.onSuccess(feeds);
+                    } else {
+                        emitter.onError(task.getException());
+                    }
+                })
+                .addOnFailureListener(emitter::onError));
     }
 
     @Override
     @NonNull
-    public Completable updateFeedVote(@NonNull String feedId, int voteFlag) {
-        final String userId = "OOOO";
+    public Completable updateFeedVote(@NonNull String feedId,
+                                      @NonNull String userId,
+                                      int voteFlag) {
 
         return Completable.create(emitter -> {
             // TODO : 테스트
@@ -159,20 +162,22 @@ public class FeedFirebaseService implements FeedDataSource {
     public Single<PagedListResponse<Feed>> addProfileFeedList(@NonNull String userId,
                                                               int start,
                                                               int display) {
-        List<Feed> feedKeyList = new ArrayList<>();
+
         // TODO: 테스트
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
-                .whereEqualTo("id", userId)
+                .whereEqualTo(FieldPath.of("user","id"), userId)
                 .orderBy("date")
                 .startAt(start)
                 .limit(display)
                 .get()
                 .addOnCompleteListener(documentSnapshot -> {
                     if (documentSnapshot.isSuccessful()) {
+                        final QuerySnapshot result = Objects.requireNonNull(documentSnapshot.getResult());
+                        List<Feed> feedKeyList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(documentSnapshot.getResult())) {
                             feedKeyList.add(document.toObject(Feed.class));
                         }
-                        emitter.onSuccess(new PagedListResponse<>(start, display, feedKeyList));
+                        emitter.onSuccess(new PagedListResponse<>(start, result.size(), feedKeyList));
                     } else {
                         emitter.onError(documentSnapshot.getException());
                     }
@@ -231,7 +236,7 @@ public class FeedFirebaseService implements FeedDataSource {
                 .addOnSuccessListener(taskSnapshot -> {
                     // TODO : 구조 수정필요
                     HashMap<String,String> tmp = new HashMap<>();
-                    tmp.put("leftImagePath",uri.getPath());
+                    tmp.put("leftImagePath", Objects.requireNonNull(taskSnapshot.getUploadSessionUri()).getPath());
 
                     FirebaseFirestore.getInstance()
                             .collection(COLLECTION_FEED)
