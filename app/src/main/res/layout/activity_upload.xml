@@ -33,7 +33,7 @@
                 <ImageView
                     android:id="@+id/iv_upload_left"
                     style="@style/ImageView.UploadImage"
-                    app:image="@{viewModel.imageList.get(0).uri}"
+                    app:image='@{viewModel.imageMap["left"].uri}'
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
@@ -50,7 +50,7 @@
                         android:layout_height="wrap_content"
                         app:atg_inputHint="@string/upload_tag_hint"
                         app:atg_isAppendMode="true"
-                        app:tagItems="@{viewModel.imageList.get(0).tagList}"/>
+                        app:tagItems='@{viewModel.imageMap["left"].tagList}'/>
 
                 </ScrollView>
 
@@ -66,7 +66,7 @@
                 <ImageView
                     android:id="@+id/iv_upload_right"
                     style="@style/ImageView.UploadImage"
-                    app:image="@{viewModel.imageList.get(1).uri}"
+                    app:image='@{viewModel.imageMap["right"].uri}'
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/guideline1" />
 
@@ -85,7 +85,7 @@
                         android:layout_margin="@dimen/space_x_small"
                         app:atg_inputHint="@string/upload_tag_hint"
                         app:atg_isAppendMode="true"
-                        app:tagItems="@{viewModel.imageList.get(1).tagList}"/>
+                        app:tagItems='@{viewModel.imageMap["right"].tagList}'/>
                 </ScrollView>
 
 

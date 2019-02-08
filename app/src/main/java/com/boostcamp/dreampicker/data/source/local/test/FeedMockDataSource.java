@@ -1,8 +1,5 @@
 package com.boostcamp.dreampicker.data.source.local.test;
 
-import android.net.Uri;
-import android.util.Log;
-
 import android.util.Log;
 
 import com.boostcamp.dreampicker.R;
@@ -17,24 +14,19 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.CompletableEmitter;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
-import io.reactivex.internal.operators.observable.ObservableFlatMapSingle;
-import io.reactivex.internal.operators.single.SingleFlatMap;
-import io.reactivex.schedulers.Schedulers;
 
 public class FeedMockDataSource implements FeedDataSource {
     private static final String COLLECTION_FEED = "feed";
@@ -65,10 +57,13 @@ public class FeedMockDataSource implements FeedDataSource {
 
         Image image1 = new Image("image-0-up", R.drawable.image1, Arrays.asList("1번", "2번", "3번"));
         Image image2 = new Image("image-0-down", R.drawable.image2, Arrays.asList("1213112312", "2", "3", "4", "5", "6", "7"));
+        Map<String, Image> imageMap = new HashMap<>();
+        imageMap.put("left", image1);
+        imageMap.put("right", image2);
         User user1 = new User("user-0", "박신혜", R.drawable.profile);
         Feed feed1 = new Feed(
                 IdCreator.createFeedId(),
-                Arrays.asList(image1, image2),
+                imageMap,
                 user1,
                 "내일 소개남이랑 첫 데이트인데 장소 좀 골라주세요~!ㅎㅎ",
                 "2018.01.28",
@@ -78,10 +73,13 @@ public class FeedMockDataSource implements FeedDataSource {
         Image image3 = new Image("image-1-up", R.drawable.jajang, Arrays.asList("짬뽕", "굿"));
         Image image4 = new Image("image-1-down", R.drawable.jambong, Arrays.asList("이것도짬뽕ㅎㅎ", "ㅋㅋㅋ"));
         User user2 = new User("user-1", "공유", R.drawable.profile2);
+        Map<String, Image> imageMap2 = new HashMap<>();
+        imageMap2.put("left", image3);
+        imageMap2.put("right", image4);
 
         Feed feed2 = new Feed(
                 IdCreator.createFeedId(),
-                Arrays.asList(image3, image4),
+                imageMap2,
                 user2,
                 "짬뽕, 짜장면",
                 "2019.01.29",
@@ -157,10 +155,14 @@ public class FeedMockDataSource implements FeedDataSource {
         for (int i = 0; i < display; i++) {
             Image image1 = new Image("image-0-up", R.drawable.image1, "카페");
             Image image2 = new Image("image-0-down", R.drawable.image2, "술집");
+            Map<String, Image> imageMap = new HashMap<>();
+            imageMap.put("left", image1);
+            imageMap.put("right", image2);
+
             User user1 = new User("user-0", "박신혜", R.drawable.profile);
             Feed feed = new Feed(
                     "feed-0",
-                    Arrays.asList(image1, image2),
+                    imageMap,
                     user1,
                     "내일 소개남이랑 첫 데이트인데 장소 좀 골라주세요~!ㅎㅎ",
                     "2018.01.28",
@@ -213,46 +215,7 @@ public class FeedMockDataSource implements FeedDataSource {
     @NonNull
     @Override
     public Completable upLoadFeed(@NonNull Feed feed) {
-        return Completable.create(emitter -> {
-
-            for (int i=0;i<2;i++) {
-                uploadImageStorage(feed,feed.getImageList().get(i).getUri());
-                feed.getImageList().get(i).setUri(null);
-            }
-
-            FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
-                    .document(feed.getId())
-                    .set(feed)
-                    .addOnSuccessListener(documentReference -> {})
-                    .addOnFailureListener(Throwable::printStackTrace);
-
-            emitter.onComplete();
-        }).subscribeOn(Schedulers.io());
-    }
-
-    private void uploadImageStorage(@NonNull Feed feed, Uri uri){
-
-        //임시경로
-        StorageReference feedImages = storage.getReference()
-                .child("feedImage/" + feed.getId() + "/" + uri.getLastPathSegment());
-
-        feedImages.putFile(uri)
-                .addOnSuccessListener(taskSnapshot -> {
-                    // TODO : 구조 수정필요
-                    HashMap<String, String> tmp = new HashMap<>();
-                    tmp.put("leftImagePath", uri.getPath());
-
-                    FirebaseFirestore.getInstance()
-                            .collection(COLLECTION_FEED)
-                            .document(feed.getId())
-                            .set(tmp, SetOptions.merge());
-                })
-                .addOnProgressListener(taskSnapshot -> {
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                }).addOnPausedListener(taskSnapshot -> { })
-                .addOnFailureListener(Throwable::printStackTrace);
-
-
+        return Completable.create(CompletableEmitter::onComplete);
     }
 
     private class MaxPageException extends Exception {

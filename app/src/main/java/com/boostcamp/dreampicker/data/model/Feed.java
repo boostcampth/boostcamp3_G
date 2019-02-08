@@ -1,12 +1,11 @@
 package com.boostcamp.dreampicker.data.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Feed {
     private String id;
-    private List<Image> imageList;
+    private Map<String, Image> imageMap;
     private User user;
     private String content;
     private String date;
@@ -23,7 +22,7 @@ public class Feed {
 
     public Feed(Feed feed) {
         this.id = feed.id;
-        this.imageList = feed.imageList;
+        this.imageMap = feed.imageMap;
         this.user = feed.user;
         this.content = feed.content;
         this.date = feed.date;
@@ -34,14 +33,14 @@ public class Feed {
     }
 
     public Feed(String id,
-                List<Image> imageList,
+                Map<String, Image> imageMap,
                 User user,
                 String content,
                 String date,
                 boolean isEnded) {
 
         this.id = id;
-        this.imageList = imageList;
+        this.imageMap = imageMap;
         this.user = user;
         this.content = content;
         this.date = date;
@@ -59,12 +58,12 @@ public class Feed {
         this.id = id;
     }
 
-    public List<Image> getImageList() {
-        return imageList;
+    public Map<String, Image> getImageMap() {
+        return imageMap;
     }
 
-    public void setImageList(List<Image> imageList) {
-        this.imageList = imageList;
+    public void setImageMap(Map<String, Image> imageMap) {
+        this.imageMap = imageMap;
     }
 
     public User getUser() {

@@ -16,7 +16,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,7 +34,7 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private boolean isTest = true;
+    private boolean isTest = false;
 
     public static Intent getLaunchIntent(Context context) {
         return new Intent(context, LogInActivity.class);

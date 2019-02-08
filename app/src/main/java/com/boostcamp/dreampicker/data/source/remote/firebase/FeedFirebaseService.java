@@ -5,27 +5,12 @@ import android.net.Uri;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnPausedListener;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -221,10 +206,10 @@ public class FeedFirebaseService implements FeedDataSource {
     public Completable upLoadFeed(@NonNull Feed feed) {
         return Completable.create(emitter -> {
 
-            for (int i=0;i<2;i++) {
-                uploadImageStorage(feed,feed.getImageList().get(i).getUri());
-                feed.getImageList().get(i).setUri(null);
-            }
+            uploadImageStorage(feed, feed.getImageMap().get("left").getUri());
+            uploadImageStorage(feed, feed.getImageMap().get("right").getUri());
+//
+//            feed.getImageList().get(i).setUri(null);
 
             FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
                     .document(feed.getId())
