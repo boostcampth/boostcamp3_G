@@ -2,44 +2,53 @@ package com.boostcamp.dreampicker.presentation.search.user;
 
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.paging.datasource.SearchUserDataSource;
+import com.boostcamp.dreampicker.data.paging.repository.SearchUserRepository;
+import com.boostcamp.dreampicker.data.paging.repository.response.PagingSource;
 import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
 public class SearchUserViewModel extends BaseViewModel {
-    private final int PAGE_SIZE = 20;
 
     @NonNull
-    private UserRepository repository;
+    private SearchUserRepository repository;
+
+    @NonNull
+    private LiveData<PagingSource<User, SearchUserDataSource>> pagingSource;
 
     @NonNull
     public LiveData<PagedList<User>> userPagedList;
     @NonNull
     private MutableLiveData<Throwable> error = new MutableLiveData<>();
 
-    private final PagedList.Config config = new PagedList.Config.Builder()
-            .setInitialLoadSizeHint(PAGE_SIZE)
-            .setPageSize(PAGE_SIZE)
-            .setPrefetchDistance(2) // 아래서 2번째 아이템이 보일 때 로딩시작
-            .setEnablePlaceholders(false) // 전체 사이즈 알고있는 경우(Countable List)에만 유효함
-            .build();
+    @NonNull
+    private MutableLiveData<String> searchKey = new MutableLiveData<>();
 
     private SearchUserViewModel(@NonNull UserRepository repository) {
-        this.repository = repository;
-        loadSearchUser("");
+        // TODO. SearchUserRepository 주입받기
+        // 기존에 쓰던 repository 와 페이징을 위한 repository 가 분리되어있음
+        // 합치려면 기존 repository 가 DataSource를 구현하면 안됨
+        // -> firebaseService와 반환형이 다름. LiveData를 뱉어야됨..
+        this.repository = new SearchUserRepository(repository);
+        this.searchKey.setValue("");
+
+        // searchKey 바뀔때마다 repository.addSearchUserList(searchKey) 요청
+        // 새로운 pagedList, dataSource 만들어져 pagingSource 에 반환
+        this.pagingSource = Transformations.map(searchKey, this.repository::addSearchUserList);
+
+        // pagingSource 가 바뀌면 pagedList를 받아와서 observer에게 전송
+        this.userPagedList = Transformations.switchMap(pagingSource, PagingSource::getPagedList);
     }
 
     public void loadSearchUser(@NonNull String searchKey) {
-        this.userPagedList = new LivePagedListBuilder<>(
-                new SearchUserDataSource.Factory(repository, searchKey),
-                config).build();
+        this.searchKey.setValue(searchKey);
     }
 
     @NonNull

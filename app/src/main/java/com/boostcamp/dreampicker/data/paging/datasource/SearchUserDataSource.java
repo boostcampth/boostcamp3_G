@@ -84,7 +84,7 @@ public class SearchUserDataSource extends PageKeyedDataSource<Integer, User> {
         }
 
         @NonNull
-        private MutableLiveData<SearchUserDataSource> liveData =
+        public MutableLiveData<SearchUserDataSource> sourceLiveData =
                 new MutableLiveData<>();
 
         @NonNull
@@ -92,7 +92,7 @@ public class SearchUserDataSource extends PageKeyedDataSource<Integer, User> {
         public DataSource<Integer, User> create() {
             SearchUserDataSource source =
                     new SearchUserDataSource(repository, searchKey);
-            liveData.postValue(source);
+            sourceLiveData.postValue(source);
             return source;
         }
     }
