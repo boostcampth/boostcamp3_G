@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
+import com.boostcamp.dreampicker.utils.Constant;
 import com.boostcamp.dreampicker.utils.FirebaseManager;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,18 +27,15 @@ public class FeedFirebaseService implements FeedDataSource {
 
     private static final String COLLECTION_FEED = "feed";
 
-    private final String FIELD_USER_ID = "id";
-    private final String FIELD_USER_DATE = "date";
-    private final String FIELD_USER_NAME = "name";
-    private final String FIELD_USER_ISENDED = "isEnded";
-    private final String FIELD_USER_USER = "user";
-    private final String FIELD_FEED_IMAGEMAP = "imageMap";
-    private final String FIELD_FEED_IMAGEMAP_IMAGEURL = "imageUrl";
+    private static final String FIELD_USER_ID = "id";
+    private static final String FIELD_USER_DATE = "date";
+    private static final String FIELD_USER_NAME = "name";
+    private static final String FIELD_USER_ISENDED = "isEnded";
+    private static final String FIELD_USER_USER = "user";
+    private static final String FIELD_FEED_IMAGEMAP = "imageMap";
+    private static final String FIELD_FEED_IMAGEMAP_IMAGEURL = "imageUrl";
 
-    private final String FEED_IMAGE_POSITION_LEFT = "left";
-    private final String FEED_IMAGE_POSITION_RIGHT = "right";
-
-    private final String STORAGE_FEED_IMAGE_PATH = "feedImage";
+    private static final String STORAGE_FEED_IMAGE_PATH = "feedImage";
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -228,17 +226,16 @@ public class FeedFirebaseService implements FeedDataSource {
     public Completable upLoadFeed(@NonNull Feed feed) {
         return Completable.create(emitter -> {
 
-            uploadImageStorage(feed, Objects.requireNonNull(feed.getImageMap().get(FEED_IMAGE_POSITION_LEFT)).getUri(), FEED_IMAGE_POSITION_LEFT);
-            uploadImageStorage(feed, Objects.requireNonNull(feed.getImageMap().get(FEED_IMAGE_POSITION_RIGHT)).getUri(), FEED_IMAGE_POSITION_RIGHT);
+            uploadImageStorage(feed, Objects.requireNonNull(feed.getImageMap().get(Constant.IMAGE_LEFT)).getUri(), Constant.IMAGE_LEFT);
+            uploadImageStorage(feed, Objects.requireNonNull(feed.getImageMap().get(Constant.IMAGE_RIGHT)).getUri(), Constant.IMAGE_RIGHT);
+            Objects.requireNonNull(feed.getImageMap().get(Constant.IMAGE_LEFT)).setUri(null);
+            Objects.requireNonNull(feed.getImageMap().get(Constant.IMAGE_RIGHT)).setUri(null);
 
-            Objects.requireNonNull(feed.getImageMap().get(FEED_IMAGE_POSITION_LEFT)).setUri(null);
-            Objects.requireNonNull(feed.getImageMap().get(FEED_IMAGE_POSITION_RIGHT)).setUri(null);
             FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
                     .document(feed.getId())
                     .set(feed)
                     .addOnSuccessListener(documentReference -> emitter.onComplete())
                     .addOnFailureListener(Throwable::printStackTrace);
-
 
         }).subscribeOn(Schedulers.io());
     }
