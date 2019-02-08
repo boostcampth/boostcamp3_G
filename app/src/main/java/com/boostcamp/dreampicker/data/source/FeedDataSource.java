@@ -12,13 +12,7 @@ import io.reactivex.Single;
 
 public interface FeedDataSource {
 
-    // 메인 피드 요청
-    Single<List<Feed>> getAllFeed();
-
-    // 피드 검색 결과 요청
-    Single<List<Feed>> searchAllFeed(String searchKey);
-
-    // [메인 피드] 내가 투표 안하고, 마감 안된 투표 최신순으로 페이징
+     // [메인 피드] 내가 투표 안하고, 마감 안된 투표 최신순으로 페이징
     @NonNull
     Single<PagedListResponse<Feed>> addMainFeedList(int start, int display);
 

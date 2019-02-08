@@ -104,16 +104,6 @@ public class FeedMockDataSource implements FeedDataSource {
     }
 
     @Override
-    public Single<List<Feed>> getAllFeed() {
-        return Single.just(feedList);
-    }
-
-    @Override
-    public Single<List<Feed>> searchAllFeed(String searchKey) {
-        return Single.just(feedList);
-    }
-
-    @Override
     @NonNull
     public Single<PagedListResponse<Feed>> addMainFeedList(int start, int display) {
         return Single.create(emitter -> {
