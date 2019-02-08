@@ -79,7 +79,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> {
     /**
      * TODO. 같은 검색어 요청시 예외처리 */
     private void onSearch(@Nullable final String searchKey) {
-        if(!TextUtils.isEmpty(searchKey)) {
+        if(searchKey != null && !TextUtils.isEmpty(searchKey)) {
             for (OnSearchListener listener : onSearchListeners) {
                 listener.onSearch(searchKey);
             }
