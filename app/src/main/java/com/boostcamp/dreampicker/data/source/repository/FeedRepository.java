@@ -61,26 +61,22 @@ public class FeedRepository implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<List<Feed>> addMainFeedList(@NonNull String userId,
-                                              int pageIndex,
-                                              int pageUnit) {
+    public Single<PagedListResponse<Feed>> addMainFeedList(int start, int display) {
         if (isTesting) {
-            return mockDataSource.addMainFeedList(userId, pageIndex, pageUnit);
+            return mockDataSource.addMainFeedList(start, display);
         }
 
-        return firebaseService.addMainFeedList(userId, pageIndex, pageUnit);
+        return firebaseService.addMainFeedList(start, display);
     }
 
     @Override
     @NonNull
-    public Completable updateFeedVote(@NonNull String feedId,
-                                      @NonNull String userId,
-                                      int voteFlag) {
+    public Completable updateFeedVote(@NonNull String feedId, int voteFlag) {
         if (isTesting) {
-            return mockDataSource.updateFeedVote(feedId, userId, voteFlag);
+            return mockDataSource.updateFeedVote(feedId, voteFlag);
         }
 
-        return firebaseService.updateFeedVote(feedId, userId, voteFlag);
+        return firebaseService.updateFeedVote(feedId, voteFlag);
     }
 
     @Override

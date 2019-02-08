@@ -1,6 +1,8 @@
 package com.boostcamp.dreampicker.utils;
 
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
@@ -63,5 +65,14 @@ public class BindingUtil {
     @BindingAdapter({"rcMax"})
     public static void setRcMax(RoundCornerProgressBar progressBar, int value) {
         progressBar.setMax(value);
+    }
+
+    @BindingAdapter({"visible"})
+    public static void setVisibility(LinearLayout layout, int flag) {
+        if(flag != 0) {
+            layout.setVisibility(View.VISIBLE);
+        } else {
+            layout.setVisibility(View.GONE);
+        }
     }
 }

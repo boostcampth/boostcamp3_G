@@ -97,17 +97,17 @@ public class FeedFirebaseService implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<List<Feed>> addMainFeedList(@NonNull String userId,
-                                              int pageIndex,
-                                              int pageUnit) {
+    public Single<PagedListResponse<Feed>> addMainFeedList(int start, int display) {
+        final String userId = "OOOO";
+
         // TODO : 결과 테스트 필요 DONE
         final List<Feed> feeds = new ArrayList<>();
         return Single.create(emitter -> {
             FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
                     // 투표 마감 안된거
                     .whereEqualTo("isEnded", false)
-                    .startAt(pageIndex)
-                    .limit(pageUnit)
+                    .startAt(start)
+                    .limit(display)
                     .orderBy("date")
                     .get()
                     .addOnCompleteListener(task -> {
@@ -115,7 +115,7 @@ public class FeedFirebaseService implements FeedDataSource {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                 feeds.add(document.toObject(Feed.class));
                             }
-                            emitter.onSuccess(feeds);
+                            emitter.onSuccess(new PagedListResponse<>(start, display, feeds));
                         } else {
                             emitter.onError(task.getException());
                         }
@@ -126,9 +126,8 @@ public class FeedFirebaseService implements FeedDataSource {
 
     @Override
     @NonNull
-    public Completable updateFeedVote(@NonNull String feedId,
-                                      @NonNull String userId,
-                                      int voteFlag) {
+    public Completable updateFeedVote(@NonNull String feedId, int voteFlag) {
+        final String userId = "OOOO";
 
         return Completable.create(emitter -> {
             // TODO : 테스트

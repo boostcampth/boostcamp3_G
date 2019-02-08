@@ -2,6 +2,7 @@ package com.boostcamp.dreampicker.data.source;
 
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
+import com.boostcamp.dreampicker.utils.Constant;
 
 import java.util.List;
 
@@ -19,15 +20,11 @@ public interface FeedDataSource {
 
     // [메인 피드] 내가 투표 안하고, 마감 안된 투표 최신순으로 페이징
     @NonNull
-    Single<List<Feed>> addMainFeedList(@NonNull String userId,
-                                       int pageIndex,
-                                       int pageUnit);
+    Single<PagedListResponse<Feed>> addMainFeedList(int start, int display);
 
     // [피드공통] 투표하기 / 투표변경 / 투표취소
     @NonNull
-    Completable updateFeedVote(@NonNull String feedId,
-                               @NonNull String userId,
-                               int voteFlag);
+    Completable updateFeedVote(@NonNull String feedId, @Constant.VoteFlag int voteFlag);
 
     // [검색] 검색 결과 피드 리스트 페이징
     @NonNull

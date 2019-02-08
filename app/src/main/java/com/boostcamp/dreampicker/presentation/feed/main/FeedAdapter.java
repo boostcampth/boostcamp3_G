@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.presentation.listener.OnItemClickListener;
 import com.boostcamp.dreampicker.presentation.listener.VoteDragListener;
 import com.boostcamp.dreampicker.presentation.listener.VoteIconTouchListener;
 import com.boostcamp.dreampicker.utils.Constant;
@@ -18,7 +19,8 @@ import androidx.recyclerview.widget.ListAdapter;
 public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     private Context context;
 
-    FeedAdapter(@NonNull OnVoteListener onVoteListener, @NonNull OnItemClickListener onItemClickListener) {
+    FeedAdapter(@NonNull OnVoteListener onVoteListener,
+                @NonNull OnItemClickListener<Feed> onItemClickListener) {
         super(DIFF_CALLBACK);
         this.onVoteListener = onVoteListener;
         this.onItemClickListener = onItemClickListener;
@@ -28,14 +30,10 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
         void onVote(VoteResult result);
     }
 
-    interface OnItemClickListener {
-        void onItemClick(@NonNull String feedId);
-    }
-
     @NonNull
     private final OnVoteListener onVoteListener;
     @NonNull
-    private final OnItemClickListener onItemClickListener;
+    private final OnItemClickListener<Feed> onItemClickListener;
 
     private View.OnTouchListener voteTouchListener = new VoteIconTouchListener();
 
@@ -49,7 +47,7 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
         }
 
         holder.itemView.setOnClickListener((v) ->
-                onItemClickListener.onItemClick(getItem((holder.getAdapterPosition())).getId()));
+                onItemClickListener.onItemClick(getItem((holder.getAdapterPosition()))));
 
         holder.getBinding().sbSelector.setOnTouchListener(voteTouchListener);
 

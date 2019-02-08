@@ -1,9 +1,11 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
@@ -27,23 +29,34 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initViewModel();
         initRecyclerView();
+        subscribeError();
     }
 
     private void initViewModel() {
         final FeedViewModelFactory factory = new FeedViewModelFactory(
                 FeedRepository.getInstance(FeedFirebaseService.getInstance()));
+
         viewModel = ViewModelProviders.of(this, factory).get(FeedViewModel.class);
         binding.setViewModel(viewModel);
     }
 
     private void initRecyclerView() {
+        //final FeedAdapter adapter = new FeedAdapter(viewModel::vote, this::startFeedDetailActivity);
         final FeedAdapter adapter = new FeedAdapter(viewModel::vote, this::startFeedDetailActivity);
         binding.rvFeed.setItemAnimator(null);
         binding.rvFeed.setAdapter(adapter);
     }
 
-    private void startFeedDetailActivity(@NonNull String feedId) {
-        startActivity(FeedDetailActivity.getLaunchIntent(getContext(), feedId));
+    private void startFeedDetailActivity(@NonNull Feed feed) {
+        if(getContext() != null) {
+            startActivity(FeedDetailActivity.getLaunchIntent(getContext(), feed.getId()));
+        }
+    }
+
+    private void subscribeError() {
+        binding.getViewModel()
+                .getError()
+                .observe(this, e -> Log.d("Melon", e.toString()));
     }
 
     @Override
@@ -54,6 +67,6 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.loadFeedList();
+        binding.getViewModel().loadFeedList();
     }
 }

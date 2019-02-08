@@ -1,9 +1,7 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
 import android.content.Context;
-import android.transition.TransitionManager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
@@ -15,7 +13,6 @@ import com.sackcentury.shinebuttonlib.ShineButton;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 

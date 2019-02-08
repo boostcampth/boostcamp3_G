@@ -35,7 +35,7 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private boolean isTest = false;
+    private boolean isTest = true;
 
     public static Intent getLaunchIntent(Context context) {
         return new Intent(context, LogInActivity.class);
@@ -49,9 +49,14 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUpGoogleSignIn();
-        firebaseAuth = FirebaseAuth.getInstance();
-        initView();
+
+        if(isTest) {
+            startMainActivity();
+        } else {
+            setUpGoogleSignIn();
+            firebaseAuth = FirebaseAuth.getInstance();
+            initView();
+        }
     }
 
     private void setUpGoogleSignIn() {
