@@ -6,26 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Image {
-    private String id;
-
-    // Todo 이후 변경 예정
-    private Uri uri;
-
-    private int image;
-    // TODO : 이후 URL로 변경 예정
-    private String imageUrl;
-    // TODO : 이후 TagGroup 적용
-    private String tag;
-    private List<String> tagList;
+    private String id; // 이미지 아이디
+    private Uri uri; // 업로드 할때 들어가는 uri
+    private int image; // 임시 데이터
+    private String imageUrl; // 파이어베이스로부터 받아오는 경로
+    private List<String> tagList; // 태그 리스트
 
     public Image() {
         this.tagList = new ArrayList<>();
     }
 
-    public Image(String id, int image, String tag) {
+    public Image(String id, String imageUrl, List<String> tagList) {
         this.id = id;
-        this.image = image;
-        this.tag = tag;
+        this.imageUrl = imageUrl;
+        this.tagList = tagList;
     }
 
     public Image(String id, Uri uri, List<String> tagList) {
@@ -34,7 +28,6 @@ public class Image {
         this.tagList = tagList;
     }
 
-    // Test
     public Image(String id, int image, List<String> tagList) {
         this.id = id;
         this.image = image;
@@ -71,14 +64,6 @@ public class Image {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
     }
 
     public List<String> getTagList() {

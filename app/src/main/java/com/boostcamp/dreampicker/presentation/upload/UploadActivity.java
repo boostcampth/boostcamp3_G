@@ -9,9 +9,7 @@ import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
-import com.boostcamp.dreampicker.data.source.remote.firebase.UserFirebaseService;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
-import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.utils.Constant;

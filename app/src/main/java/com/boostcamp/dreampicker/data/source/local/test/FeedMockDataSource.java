@@ -55,11 +55,17 @@ public class FeedMockDataSource implements FeedDataSource {
     private List<Feed> createMockFeedData() {
         final List<Feed> feedList = new ArrayList<>();
 
-        Image image1 = new Image("image-0-up", R.drawable.image1, Arrays.asList("1번", "2번", "3번"));
-        Image image2 = new Image("image-0-down", R.drawable.image2, Arrays.asList("1213112312", "2", "3", "4", "5", "6", "7"));
+        Image image1 = new Image("image-0-up",
+                "http://monthly.chosun.com/up_fd/Mdaily/2017-09/bimg_thumb/2017042000056_0.jpg",
+                Arrays.asList("1번", "2번", "3번"));
+        Image image2 = new Image("image-0-down",
+                "https://post-phinf.pstatic.net/MjAxNzA2MjhfODQg/MDAxNDk4NjU2MzgyNzcx.TVy7np7EVlKjuntLKN_qdwrGB8lGBdfMwkX6p3WV6rQg.6oHbF6lWH0iINgljB7CF3jSeYX342hsdl8fekB8yawsg.PNG/9.PNG?type=w1200",
+                Arrays.asList("1213112312", "2"));
+
         Map<String, Image> imageMap = new HashMap<>();
         imageMap.put("left", image1);
         imageMap.put("right", image2);
+
         User user1 = new User("user-0", "박신혜", R.drawable.profile);
         Feed feed1 = new Feed(
                 IdCreator.createFeedId(),
@@ -70,8 +76,13 @@ public class FeedMockDataSource implements FeedDataSource {
                 false
         );
 
-        Image image3 = new Image("image-1-up", R.drawable.jajang, Arrays.asList("짬뽕", "굿"));
-        Image image4 = new Image("image-1-down", R.drawable.jambong, Arrays.asList("이것도짬뽕ㅎㅎ", "ㅋㅋㅋ"));
+        Image image3 = new Image("image-1-up",
+                "https://t1.daumcdn.net/friends/prod/category/M201_theme_flying11.png",
+                Arrays.asList("짬뽕", "굿"));
+        Image image4 = new Image("image-1-down",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkH0BPwI8ZSms_dTXMMrc9lU8OaO6oo729MzRe6HmjH7nUFDTn",
+                Arrays.asList("이것도짬뽕ㅎㅎ", "ㅋㅋㅋ"));
+
         User user2 = new User("user-1", "공유", R.drawable.profile2);
         Map<String, Image> imageMap2 = new HashMap<>();
         imageMap2.put("left", image3);
@@ -153,8 +164,8 @@ public class FeedMockDataSource implements FeedDataSource {
                                                              int display) {
         List<Feed> feedList = new ArrayList<>();
         for (int i = 0; i < display; i++) {
-            Image image1 = new Image("image-0-up", R.drawable.image1, "카페");
-            Image image2 = new Image("image-0-down", R.drawable.image2, "술집");
+            Image image1 = new Image("image-0-up", R.drawable.image1, Arrays.asList("술집", "카페"));
+            Image image2 = new Image("image-0-down", R.drawable.image2, Arrays.asList("집구석", "방구석"));
             Map<String, Image> imageMap = new HashMap<>();
             imageMap.put("left", image1);
             imageMap.put("right", image2);

@@ -4,19 +4,18 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Feed {
-    private String id;
-    private Map<String, Image> imageMap;
-    private User user;
-    private String content;
-    private String date;
+    private String id; // 피드 아이디
+    private Map<String, Image> imageMap; // 피드 이미지 리스트
+    private User user; // 업로더
+    private String content; // 본문
+    private String date; // 업로드 일자
 
-    // TODO : 마감 조건 확인 이후 작업
+    private int leftCount; // L 투표 수
+    private int rightCount; // R 투표 수
+    private int voteFlag; // 투표 합
+
+    // Todo : 아직 미정
     private boolean isEnded;
-    // TODO : Firestore 연동 이후 작업
-    private int leftCount;
-    private int rightCount;
-
-    private int voteFlag;
 
     public Feed() { }
 
@@ -47,7 +46,6 @@ public class Feed {
         this.isEnded = isEnded;
         this.leftCount = 3;
         this.rightCount = 4;
-        this.voteFlag = 0;
     }
 
     public String getId() {
