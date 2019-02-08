@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.search.feed;
+package com.boostcamp.dreampicker.data.paging.datasource;
 
 import android.annotation.SuppressLint;
 
@@ -12,22 +12,21 @@ import androidx.paging.DataSource;
 import androidx.paging.PageKeyedDataSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class SearchFeedPagedDataSource extends PageKeyedDataSource<Integer, Feed> {
+public class ProfileFeedDataSource extends PageKeyedDataSource<Integer, Feed> {
 
     @NonNull
     private FeedRepository repository;
     @NonNull
     private String userId;
 
-    private SearchFeedPagedDataSource(@NonNull FeedRepository repository,
-                                      @NonNull String userId) {
+    private boolean isPageEnd = false;
+
+    private ProfileFeedDataSource(@NonNull FeedRepository repository,
+                                  @NonNull String userId) {
         this.repository = repository;
         this.userId = userId;
     }
 
-    /**
-     * 첫 페이지 로딩요청
-     */
     @SuppressLint("CheckResult")
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params,
@@ -41,6 +40,10 @@ public class SearchFeedPagedDataSource extends PageKeyedDataSource<Integer, Feed
         callback.onResult(response.getItemList(),
                 response.getDisplay(),
                 response.getStart() + response.getDisplay());
+
+        if(response.getDisplay() < params.requestedLoadSize){
+            isPageEnd = true;
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -50,22 +53,24 @@ public class SearchFeedPagedDataSource extends PageKeyedDataSource<Integer, Feed
         // ignore
     }
 
-    /**
-     * 첫 번째 페이지 제외 그 다음 페이지부터 로딩요청
-     * TODO. 마지막 페이지 limit 처리 필요함
-     */
     @SuppressLint("CheckResult")
     @Override
     public void loadAfter(@NonNull LoadParams<Integer> params,
                           @NonNull LoadCallback<Integer, Feed> callback) {
 
-        PagedListResponse<Feed> response = repository.addProfileFeedList(userId, params.key, params.requestedLoadSize)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(error -> {})
-                .blockingGet();
+        if(!isPageEnd){
+            PagedListResponse<Feed> response = repository.addProfileFeedList(userId, params.key, params.requestedLoadSize)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError(error -> {})
+                    .blockingGet();
 
-        callback.onResult(response.getItemList(),
-                params.key + response.getDisplay());
+            callback.onResult(response.getItemList(),
+                    params.key + response.getDisplay());
+
+            if(response.getDisplay() < params.requestedLoadSize){
+                isPageEnd = true;
+            }
+        }
     }
 
 
@@ -83,13 +88,13 @@ public class SearchFeedPagedDataSource extends PageKeyedDataSource<Integer, Feed
         }
 
         // TODO. liveData.postValue() 왜 필요한지 알아보기
-        private MutableLiveData<SearchFeedPagedDataSource> liveData =
+        private MutableLiveData<ProfileFeedDataSource> liveData =
                 new MutableLiveData<>();
 
         @NonNull
         @Override
         public DataSource<Integer, Feed> create() {
-            SearchFeedPagedDataSource source = new SearchFeedPagedDataSource(repository, userId);
+            ProfileFeedDataSource source = new ProfileFeedDataSource(repository, userId);
             liveData.postValue(source);
             return source;
         }

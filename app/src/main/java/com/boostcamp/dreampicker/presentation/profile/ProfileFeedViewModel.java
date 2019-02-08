@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.presentation.profile;
 
 import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.paging.datasource.ProfileFeedDataSource;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
@@ -37,7 +38,7 @@ public class ProfileFeedViewModel extends BaseViewModel {
                 .build();
 
         this.feedPagedList = new LivePagedListBuilder<>(
-                new ProfileFeedPagedDataSource.Factory(repository, userId), config)
+                new ProfileFeedDataSource.Factory(repository, userId), config)
                 .build();
     }
 

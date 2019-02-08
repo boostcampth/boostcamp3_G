@@ -3,6 +3,7 @@ package com.boostcamp.dreampicker.presentation.search;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -75,11 +76,15 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> {
         });
     }
 
+    /**
+     * TODO. 같은 검색어 요청시 예외처리 */
     private void onSearch(@Nullable final String searchKey) {
-        for (OnSearchListener listener : onSearchListeners) {
-            listener.onSearch(searchKey);
+        if(!TextUtils.isEmpty(searchKey)) {
+            for (OnSearchListener listener : onSearchListeners) {
+                listener.onSearch(searchKey);
+            }
+            closeKeyboard();
         }
-        closeKeyboard();
     }
 
     private void closeKeyboard(){
@@ -97,7 +102,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> {
 
         Fragment[] fragments = new Fragment[NUM_OF_TAB_BUTTONS];
 
-        public SearchPagerAdapter(@NonNull FragmentManager fm) {
+        SearchPagerAdapter(@NonNull FragmentManager fm) {
             super(fm);
             fragments[0] = SearchUserFragment.newInstance();
             fragments[1] = SearchFeedFragment.newInstance();

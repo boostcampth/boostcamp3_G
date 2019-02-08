@@ -31,8 +31,8 @@ public class SearchFeedFragment extends BaseFragment<FragmentSearchFeedBinding> 
     }
 
     @Override
-    public void onSearch(@Nullable String searchKey) {
-        // TODO. 리스트 초기화, searchKey 로 검색 재요청
+    public void onSearch(@NonNull String searchKey) {
+        binding.getVm().loadSearchFeed(searchKey);
     }
 
     @Override

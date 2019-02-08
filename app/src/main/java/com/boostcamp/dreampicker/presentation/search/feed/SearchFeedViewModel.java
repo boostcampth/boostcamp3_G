@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.presentation.search.feed;
 
 import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.paging.datasource.SearchFeedDataSource;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
@@ -43,7 +44,7 @@ public class SearchFeedViewModel extends BaseViewModel {
 
     public void loadSearchFeed(@NonNull String searchKey) {
         this.feedPagedList = new LivePagedListBuilder<>(
-                new SearchFeedPagedDataSource.Factory(repository, searchKey),
+                new SearchFeedDataSource.Factory(repository, searchKey),
                 config
         ).build();
     }
