@@ -17,14 +17,14 @@ public class SearchFeedDataSource extends PageKeyedDataSource<Integer, Feed> {
     @NonNull
     private FeedRepository repository;
     @NonNull
-    private String userId;
+    private String searchKey;
 
     private boolean isPageEnd = false;
 
     private SearchFeedDataSource(@NonNull FeedRepository repository,
-                                 @NonNull String userId) {
+                                 @NonNull String searchKey) {
         this.repository = repository;
-        this.userId = userId;
+        this.searchKey = searchKey;
     }
 
     @SuppressLint("CheckResult")
@@ -32,16 +32,18 @@ public class SearchFeedDataSource extends PageKeyedDataSource<Integer, Feed> {
     public void loadInitial(@NonNull LoadInitialParams<Integer> params,
                             @NonNull LoadInitialCallback<Integer, Feed> callback) {
 
-        PagedListResponse<Feed> response = repository.addProfileFeedList(userId, 1, params.requestedLoadSize)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(error -> {})
-                .blockingGet();
+        PagedListResponse<Feed> response =
+                repository.addSearchFeedList(searchKey, 1, params.requestedLoadSize)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError(error -> {
+                        })
+                        .blockingGet();
 
         callback.onResult(response.getItemList(),
                 response.getDisplay(),
                 response.getStart() + response.getDisplay());
 
-        if(response.getDisplay() < params.requestedLoadSize){
+        if (response.getDisplay() < params.requestedLoadSize) {
             isPageEnd = true;
         }
     }
@@ -58,17 +60,18 @@ public class SearchFeedDataSource extends PageKeyedDataSource<Integer, Feed> {
     public void loadAfter(@NonNull LoadParams<Integer> params,
                           @NonNull LoadCallback<Integer, Feed> callback) {
 
-        if(!isPageEnd) {
-            PagedListResponse<Feed> response = repository.addProfileFeedList(userId, params.key, params.requestedLoadSize)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnError(error -> {
-                    })
-                    .blockingGet();
+        if (!isPageEnd) {
+            PagedListResponse<Feed> response =
+                    repository.addProfileFeedList(searchKey, params.key, params.requestedLoadSize)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnError(error -> {
+                            })
+                            .blockingGet();
 
             callback.onResult(response.getItemList(),
                     params.key + response.getDisplay());
 
-            if(response.getDisplay() < params.requestedLoadSize){
+            if (response.getDisplay() < params.requestedLoadSize) {
                 isPageEnd = true;
             }
         }
@@ -80,23 +83,22 @@ public class SearchFeedDataSource extends PageKeyedDataSource<Integer, Feed> {
         @NonNull
         private final FeedRepository repository;
         @NonNull
-        private final String userId;
+        private final String searchKey;
 
         public Factory(@NonNull FeedRepository repository,
-                       @NonNull String userId) {
+                       @NonNull String searchKey) {
             this.repository = repository;
-            this.userId = userId;
+            this.searchKey = searchKey;
         }
 
-        // TODO. liveData.postValue() 왜 필요한지 알아보기
-        private MutableLiveData<SearchFeedDataSource> liveData =
+        public MutableLiveData<SearchFeedDataSource> sourceLiveData =
                 new MutableLiveData<>();
 
         @NonNull
         @Override
         public DataSource<Integer, Feed> create() {
-            SearchFeedDataSource source = new SearchFeedDataSource(repository, userId);
-            liveData.postValue(source);
+            SearchFeedDataSource source = new SearchFeedDataSource(repository, searchKey);
+            sourceLiveData.postValue(source);
             return source;
         }
     }

@@ -164,10 +164,10 @@ public class FeedMockDataSource implements FeedDataSource {
                             if (task.isSuccessful()) {
                                 final QuerySnapshot result = Objects.requireNonNull(task.getResult());
                                 List<Feed> feedList = new ArrayList<>();
-                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                    Feed feed = document.toObject(Feed.class);
-                                    if (feed.getContent().contains(searchKey)) feedList.add(feed);
+                                for (QueryDocumentSnapshot document : result) {
+                                    feedList.add(document.toObject(Feed.class));
                                 }
+                                Log.d("degkjdfsnk", feedList.toString());
                                 emitter.onSuccess(new PagedListResponse<>(start, result.size(), feedList));
                             } else {
                                 emitter.onError(task.getException());
