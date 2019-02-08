@@ -30,7 +30,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
     private static final String PERMISSION_DENIED_MESSAGE = "권한이 없습니다.";
-    private static final String UPLOAD_DENIED_MESAGE = "투표를 등록할 수 없습니다.";
+    private static final String UPLOAD_DENIED_MESSAGE = "투표를 등록할 수 없습니다.";
     private static final String UPLOAD_GRANTED_MESSAGE = "투표 등록 완료";
 
     @Override
@@ -44,8 +44,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private void initViewModel() {
         final UploadViewModel viewModel = ViewModelProviders.of(this,
                 new UploadViewModelFactory(
-                        FeedRepository.getInstance(FeedFirebaseService.getInstance()),
-                        UserRepository.getInstance(UserFirebaseService.getInstance())))
+                        FeedRepository.getInstance(FeedFirebaseService.getInstance())))
                 .get(UploadViewModel.class);
 
         binding.setViewModel(viewModel);
@@ -70,37 +69,37 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     }
 
     private void initImageViews() {
-        binding.ivUploadLeft.setOnClickListener((v) -> onImageClick(Constant.LEFT));
-        binding.ivUploadRight.setOnClickListener((v) -> onImageClick(Constant.RIGHT));
+        binding.ivUploadLeft.setOnClickListener((v) -> onImageClick(Constant.IMAGE_LEFT));
+        binding.ivUploadRight.setOnClickListener((v) -> onImageClick(Constant.IMAGE_RIGHT));
     }
 
     private void initTagGroup() {
         binding.tgUploadTagLeft.setOnTagChangeListener(new TagGroup.OnTagChangeListener() {
             @Override
             public void onAppend(TagGroup tagGroup, String tag) {
-                binding.getViewModel().setTag(tag, Constant.LEFT);
+                binding.getViewModel().setTag(tag, Constant.IMAGE_LEFT);
             }
 
             @Override
             public void onDelete(TagGroup tagGroup, String tag) {
-                binding.getViewModel().deleteTag(tag, Constant.LEFT);
+                binding.getViewModel().deleteTag(tag, Constant.IMAGE_LEFT);
             }
         });
 
         binding.tgUploadTagRight.setOnTagChangeListener(new TagGroup.OnTagChangeListener() {
             @Override
             public void onAppend(TagGroup tagGroup, String tag) {
-                binding.getViewModel().setTag(tag, Constant.RIGHT);
+                binding.getViewModel().setTag(tag, Constant.IMAGE_RIGHT);
             }
 
             @Override
             public void onDelete(TagGroup tagGroup, String tag) {
-                binding.getViewModel().deleteTag(tag, Constant.RIGHT);
+                binding.getViewModel().deleteTag(tag, Constant.IMAGE_RIGHT);
             }
         });
     }
 
-    public void onImageClick(@Constant.VoteFlag int flag) {
+    public void onImageClick(@Constant.ImageFlag String flag) {
         TedPermission.with(this)
                 .setPermissionListener(new PermissionListener() {
                     @Override
@@ -117,7 +116,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
                 .check();
     }
 
-    public void showBottomPicker(@Constant.VoteFlag int flag) {
+    public void showBottomPicker(@Constant.ImageFlag String flag) {
         new TedBottomPicker.Builder(this)
                 .setOnImageSelectedListener(uri -> binding.getViewModel().setImage(uri, flag))
                 .setPeekHeight(800)
@@ -132,7 +131,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
                 showToast(UPLOAD_GRANTED_MESSAGE);
                 finish();
             } else {
-                showToast(UPLOAD_DENIED_MESAGE);
+                showToast(UPLOAD_DENIED_MESSAGE);
             }
         });
     }
