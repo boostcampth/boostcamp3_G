@@ -15,9 +15,9 @@ public class Feed {
     @NonNull
     private final Date date; // 업로드 일자
     @NonNull
-    private final Image imageA; // 1번 이미지 정보
+    private final VoteSelectionItem itemA; // 1번 이미지 정보
     @NonNull
-    private final Image imageB; // 2번 이미지 정보
+    private final VoteSelectionItem itemB; // 2번 이미지 정보
     @Nullable
     private String selectionId; // 본인 투표 위치
 
@@ -25,15 +25,15 @@ public class Feed {
                 @NonNull User user,
                 @NonNull String content,
                 @NonNull Date date,
-                @NonNull Image imageA,
-                @NonNull Image imageB,
+                @NonNull VoteSelectionItem itemA,
+                @NonNull VoteSelectionItem itemB,
                 @Nullable String selectionId) {
         this.id = id;
         this.user = user;
         this.content = content;
         this.date = date;
-        this.imageA = imageA;
-        this.imageB = imageB;
+        this.itemA = itemA;
+        this.itemB = itemB;
         this.selectionId = selectionId;
     }
 
@@ -58,13 +58,13 @@ public class Feed {
     }
 
     @NonNull
-    public Image getImageA() {
-        return imageA;
+    public VoteSelectionItem getItemA() {
+        return itemA;
     }
 
     @NonNull
-    public Image getImageB() {
-        return imageB;
+    public VoteSelectionItem getItemB() {
+        return itemB;
     }
 
     @Nullable
