@@ -5,19 +5,13 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class UploadFeedItem {
+public class FeedUploadRequest {
 
     @NonNull
-    private String id; // Feed 구분할 ID
-
-    @NonNull
-    private User user; // 업로더 정보
+    private String userId; // 업로더 정보
 
     @NonNull
     private String content; // 작성글
-
-    @NonNull
-    private String date; // 업로드 날짜
 
     @NonNull
     private String imageUrlA; // 1번 이미지 URL
@@ -31,18 +25,14 @@ public class UploadFeedItem {
     @Nullable
     private List<String> tagListB; // 2번 이미지 태그 리스트
 
-    public UploadFeedItem(@NonNull String id,
-                          @NonNull User user,
-                          @NonNull String content,
-                          @NonNull String date,
-                          @NonNull String imageUrlA,
-                          @NonNull String imageUrlB,
-                          @Nullable List<String> tagListA,
-                          @Nullable List<String> tagListB) {
-        this.id = id;
-        this.user = user;
+    public FeedUploadRequest(@NonNull String userId,
+                             @NonNull String content,
+                             @NonNull String imageUrlA,
+                             @NonNull String imageUrlB,
+                             @Nullable List<String> tagListA,
+                             @Nullable List<String> tagListB) {
+        this.userId = userId;
         this.content = content;
-        this.date = date;
         this.imageUrlA = imageUrlA;
         this.imageUrlB = imageUrlB;
         this.tagListA = tagListA;
@@ -50,23 +40,13 @@ public class UploadFeedItem {
     }
 
     @NonNull
-    public String getId() {
-        return id;
-    }
-
-    @NonNull
-    public User getUser() {
-        return user;
+    public String getUser() {
+        return userId;
     }
 
     @NonNull
     public String getContent() {
         return content;
-    }
-
-    @NonNull
-    public String getDate() {
-        return date;
     }
 
     @NonNull
