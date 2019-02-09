@@ -1,7 +1,7 @@
 package com.boostcamp.dreampicker.data.source.repository;
 
 import com.boostcamp.dreampicker.data.model.User;
-import com.boostcamp.dreampicker.data.model.UserDetail;
+import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.local.test.UserMockDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
@@ -42,7 +42,7 @@ public class UserRepository implements UserDataSource {
 
     @Override
     @NonNull
-    public Single<UserDetail> getProfileUserDetail(@NonNull String userId) {
+    public Single<LegacyUserDetail> getProfileUserDetail(@NonNull String userId) {
         if (isTesting) {
             return mockDataSource.getProfileUserDetail(userId);
         }
