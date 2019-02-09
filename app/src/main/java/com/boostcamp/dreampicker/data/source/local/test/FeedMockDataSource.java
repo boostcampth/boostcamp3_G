@@ -5,6 +5,7 @@ import android.util.Log;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.model.LegacyImage;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
@@ -66,7 +67,7 @@ public class FeedMockDataSource implements FeedDataSource {
         imageMap.put("left", image1);
         imageMap.put("right", image2);
 
-        User user1 = new User("user-0", "박신혜", R.drawable.profile);
+        LegacyUser user1 = new LegacyUser("user-0", "박신혜", R.drawable.profile);
         LegacyFeed feed1 = new LegacyFeed(
                 IdCreator.createFeedId(),
                 imageMap,
@@ -83,7 +84,7 @@ public class FeedMockDataSource implements FeedDataSource {
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkH0BPwI8ZSms_dTXMMrc9lU8OaO6oo729MzRe6HmjH7nUFDTn",
                 Arrays.asList("이것도짬뽕ㅎㅎ", "ㅋㅋㅋ"));
 
-        User user2 = new User("user-1", "공유", R.drawable.profile2);
+        LegacyUser user2 = new LegacyUser("user-1", "공유", R.drawable.profile2);
         Map<String, LegacyImage> imageMap2 = new HashMap<>();
         imageMap2.put("left", image3);
         imageMap2.put("right", image4);

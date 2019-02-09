@@ -6,7 +6,7 @@ import java.util.Objects;
 public class LegacyFeed {
     private String id; // 피드 아이디
     private Map<String, LegacyImage> imageMap; // 피드 이미지 리스트
-    private User user; // 업로더
+    private LegacyUser user; // 업로더
     private String content; // 본문
     private String date; // 업로드 일자
 
@@ -33,7 +33,7 @@ public class LegacyFeed {
 
     public LegacyFeed(String id,
                       Map<String, LegacyImage> imageMap,
-                      User user,
+                      LegacyUser user,
                       String content,
                       String date,
                       boolean isEnded) {
@@ -64,13 +64,9 @@ public class LegacyFeed {
         this.imageMap = imageMap;
     }
 
-    public User getUser() {
-        return user;
-    }
+    public LegacyUser getUser() { return user; }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public void setUser(LegacyUser user) { this.user = user; }
 
     public String getContent() {
         return content;

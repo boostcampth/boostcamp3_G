@@ -104,7 +104,7 @@ public class UploadViewModel extends BaseViewModel {
     private LegacyFeed createFeed(@NonNull final Map<String, LegacyImage> imageMap) {
         final LegacyFeed feed = new LegacyFeed();
         feed.setId(IdCreator.createFeedId());
-        feed.setUser(FirebaseManager.getCurrentUser());
+        //feed.setUser(FirebaseManager.getCurrentUser());
         feed.setContent(content.get());
         feed.setImageMap(imageMap);
         feed.setDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
