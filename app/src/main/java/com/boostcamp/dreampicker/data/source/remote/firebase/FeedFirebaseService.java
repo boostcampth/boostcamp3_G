@@ -2,7 +2,7 @@ package com.boostcamp.dreampicker.data.source.remote.firebase;
 
 import android.net.Uri;
 
-import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.FeedPrevious;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.boostcamp.dreampicker.utils.Constant;
@@ -58,7 +58,7 @@ public class FeedFirebaseService implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<Feed>> addMainFeedList(
+    public Single<PagedListResponse<FeedPrevious>> addMainFeedList(
             int pageIndex,
             int pageUnit) {
         // TODO : 결과 테스트 필요 DONE
@@ -71,9 +71,9 @@ public class FeedFirebaseService implements FeedDataSource {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         final QuerySnapshot result = Objects.requireNonNull(task.getResult());
-                        List<Feed> feedList = new ArrayList<>();
+                        List<FeedPrevious> feedList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            feedList.add(document.toObject(Feed.class));
+                            feedList.add(document.toObject(FeedPrevious.class));
                         }
                         emitter.onSuccess(new PagedListResponse<>(pageIndex, result.size(), feedList));
                     } else {
@@ -106,9 +106,9 @@ public class FeedFirebaseService implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<Feed>> addSearchFeedList(@NonNull String searchKey,
-                                                             int start,
-                                                             int display) {
+    public Single<PagedListResponse<FeedPrevious>> addSearchFeedList(@NonNull String searchKey,
+                                                                     int start,
+                                                                     int display) {
 
         // TODO : 테스트
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
@@ -117,9 +117,9 @@ public class FeedFirebaseService implements FeedDataSource {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         final QuerySnapshot result = Objects.requireNonNull(task.getResult());
-                        List<Feed> feedList = new ArrayList<>();
+                        List<FeedPrevious> feedList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            Feed feed = document.toObject(Feed.class);
+                            FeedPrevious feed = document.toObject(FeedPrevious.class);
                             if (feed.getContent().contains(searchKey)) feedList.add(feed);
                         }
                         emitter.onSuccess(new PagedListResponse<>(start, result.size(), feedList));
@@ -132,9 +132,9 @@ public class FeedFirebaseService implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<Feed>> addProfileFeedList(@NonNull String userId,
-                                                              int start,
-                                                              int display) {
+    public Single<PagedListResponse<FeedPrevious>> addProfileFeedList(@NonNull String userId,
+                                                                      int start,
+                                                                      int display) {
 
         return Single.create(emitter ->
                 FirebaseFirestore.getInstance()
@@ -148,9 +148,9 @@ public class FeedFirebaseService implements FeedDataSource {
                             if (task.isSuccessful()) {
                                 // 결과 리스트
                                 final QuerySnapshot result = Objects.requireNonNull(task.getResult());
-                                List<Feed> feedList = new ArrayList<>();
+                                List<FeedPrevious> feedList = new ArrayList<>();
                                 for (QueryDocumentSnapshot document : result) {
-                                    feedList.add(document.toObject(Feed.class));
+                                    feedList.add(document.toObject(FeedPrevious.class));
                                 }
                                 emitter.onSuccess(new PagedListResponse<>(start, result.size(), feedList));
                             } else {
@@ -183,7 +183,7 @@ public class FeedFirebaseService implements FeedDataSource {
 
     @NonNull
     @Override
-    public Completable upLoadFeed(@NonNull Feed feed) {
+    public Completable upLoadFeed(@NonNull FeedPrevious feed) {
         return Completable.create(emitter -> {
 
             uploadImageStorage(feed, Objects.requireNonNull(feed.getImageMap().get(Constant.IMAGE_LEFT)).getUri(), Constant.IMAGE_LEFT);
@@ -200,7 +200,7 @@ public class FeedFirebaseService implements FeedDataSource {
         }).subscribeOn(Schedulers.io());
     }
 
-    private void uploadImageStorage(@NonNull Feed feed, Uri uri, String position) {
+    private void uploadImageStorage(@NonNull FeedPrevious feed, Uri uri, String position) {
 
         StorageReference feedImages = storage.getReference()
                 .child(STORAGE_FEED_IMAGE_PATH + "/" + feed.getId() + "/" + uri.getLastPathSegment());

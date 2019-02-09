@@ -1,143 +1,108 @@
 package com.boostcamp.dreampicker.data.model;
 
-import java.util.Map;
-import java.util.Objects;
+import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class Feed {
-    private String id; // 피드 아이디
-    private Map<String, Image> imageMap; // 피드 이미지 리스트
-    private User user; // 업로더
-    private String content; // 본문
-    private String date; // 업로드 일자
+    @NonNull
+    private final String id; // 피드 ID : 해당 피드를 구별할 수 있는 키로 사용됩니다.
+    @NonNull
+    private final String imageUrlA; // 1번 이미지 URL
+    @NonNull
+    private final String imageUrlB; // 2번 이미지 URL
+    @Nullable
+    private final List<String> tagListA; // 1번 이미지 태그 리스트
+    @Nullable
+    private final List<String> tagListB; // 2번 이미지 태그 리스트
+    @NonNull
+    private final User user; // 작성자 정보
+    @NonNull
+    private final String content; // 본문
+    @NonNull
+    private final String date; // 업로드 일자
 
-    private int leftCount; // L 투표 수
-    private int rightCount; // R 투표 수
-    private int voteFlag; // 투표 합
+    private final int countA; // 1번 투표 수
+    private final int countB; // 2번 투표 수
 
-    // Todo : 아직 미정
-    private boolean isEnded;
+    // [0] : 미투표 || [1] : 1번 투표 || [2] : 2번 투표
+    private final int selection; // 본인 투표 위치
 
-    public Feed() { }
-
-    public Feed(Feed feed) {
-        this.id = feed.id;
-        this.imageMap = feed.imageMap;
-        this.user = feed.user;
-        this.content = feed.content;
-        this.date = feed.date;
-        this.isEnded = feed.isEnded;
-        this.leftCount = feed.leftCount;
-        this.rightCount = feed.rightCount;
-        this.voteFlag = feed.voteFlag;
-    }
-
-    public Feed(String id,
-                Map<String, Image> imageMap,
-                User user,
-                String content,
-                String date,
-                boolean isEnded) {
+    public Feed(@NonNull String id,
+                @NonNull String imageUrlA,
+                @NonNull String imageUrlB,
+                @Nullable List<String> tagListA,
+                @Nullable List<String> tagListB,
+                @NonNull User user,
+                @NonNull String content,
+                @NonNull String date,
+                int countA,
+                int countB,
+                int selection) {
 
         this.id = id;
-        this.imageMap = imageMap;
+        this.imageUrlA = imageUrlA;
+        this.imageUrlB = imageUrlB;
+        this.tagListA = tagListA;
+        this.tagListB = tagListB;
         this.user = user;
         this.content = content;
         this.date = date;
-        this.isEnded = isEnded;
-        this.leftCount = 3;
-        this.rightCount = 4;
+        this.countA = countA;
+        this.countB = countB;
+        this.selection = selection;
     }
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @NonNull
+    public String getImageUrlA() {
+        return imageUrlA;
     }
 
-    public Map<String, Image> getImageMap() {
-        return imageMap;
+    @NonNull
+    public String getImageUrlB() {
+        return imageUrlB;
     }
 
-    public void setImageMap(Map<String, Image> imageMap) {
-        this.imageMap = imageMap;
+    @Nullable
+    public List<String> getTagListA() {
+        return tagListA;
     }
 
+    @Nullable
+    public List<String> getTagListB() {
+        return tagListB;
+    }
+
+    @NonNull
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
+    @NonNull
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
+    @NonNull
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public int getCountA() {
+        return countA;
     }
 
-    public boolean isEnded() {
-        return isEnded;
+    public int getCountB() {
+        return countB;
     }
 
-    public void setEnded(boolean ended) {
-        isEnded = ended;
-    }
-
-    public int getLeftCount() {
-        return leftCount;
-    }
-
-    public void setLeftCount(int leftCount) {
-        this.leftCount = leftCount;
-    }
-
-    public int getRightCount() {
-        return rightCount;
-    }
-
-    public void setRightCount(int rightCount) {
-        this.rightCount = rightCount;
-    }
-
-    public int getVoteFlag() {
-        return voteFlag;
-    }
-
-    public void setVoteFlag(int voteFlag) {
-        this.voteFlag = voteFlag;
-    }
-
-    public int getVoteCount() {
-        return leftCount + rightCount;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final Feed feed = (Feed) o;
-        return voteFlag == feed.voteFlag;
-    }
-
-    public int hashCode() {
-        return Objects.hash(voteFlag);
+    public int getSelection() {
+        return selection;
     }
 }

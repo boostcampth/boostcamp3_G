@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.boostcamp.dreampicker.data.model.Feed"/>
+            type="com.boostcamp.dreampicker.data.model.FeedPrevious"/>
     </data>
 
     <androidx.cardview.widget.CardView

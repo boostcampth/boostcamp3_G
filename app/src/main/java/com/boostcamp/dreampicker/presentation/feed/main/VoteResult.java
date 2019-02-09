@@ -1,21 +1,21 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
-import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.FeedPrevious;
 import com.boostcamp.dreampicker.utils.Constant;
 
 import androidx.annotation.NonNull;
 
 public class VoteResult {
-    private final Feed feed;
+    private final FeedPrevious feed;
     private final int flag;
 
-    VoteResult(@NonNull Feed feed, @Constant.VoteFlag int flag) {
+    VoteResult(@NonNull FeedPrevious feed, @Constant.VoteFlag int flag) {
         this.feed = feed;
         this.flag = flag;
     }
 
     @NonNull
-    public Feed getFeed() {
+    public FeedPrevious getFeed() {
         return feed;
     }
 

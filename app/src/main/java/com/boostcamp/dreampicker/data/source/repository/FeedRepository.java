@@ -1,11 +1,9 @@
 package com.boostcamp.dreampicker.data.source.repository;
 
-import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.FeedPrevious;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.local.test.FeedMockDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
@@ -42,7 +40,7 @@ public class FeedRepository implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<Feed>> addMainFeedList(int start, int display) {
+    public Single<PagedListResponse<FeedPrevious>> addMainFeedList(int start, int display) {
         if (isTesting) {
             return mockDataSource.addMainFeedList(start, display);
         }
@@ -62,9 +60,9 @@ public class FeedRepository implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<Feed>> addSearchFeedList(@NonNull String searchKey,
-                                                             int start,
-                                                             int display) {
+    public Single<PagedListResponse<FeedPrevious>> addSearchFeedList(@NonNull String searchKey,
+                                                                     int start,
+                                                                     int display) {
         if (isTesting) {
             return mockDataSource.addSearchFeedList(searchKey, start, display);
         }
@@ -74,9 +72,9 @@ public class FeedRepository implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<Feed>> addProfileFeedList(@NonNull String userId,
-                                                              int start,
-                                                              int display) {
+    public Single<PagedListResponse<FeedPrevious>> addProfileFeedList(@NonNull String userId,
+                                                                      int start,
+                                                                      int display) {
         if (isTesting) {
             return mockDataSource.addProfileFeedList(userId, start, display);
         }
@@ -97,7 +95,7 @@ public class FeedRepository implements FeedDataSource {
 
     @Override
     @NonNull
-    public Completable upLoadFeed(@NonNull Feed feed) {
+    public Completable upLoadFeed(@NonNull FeedPrevious feed) {
         if(isTesting){
             return mockDataSource.upLoadFeed(feed);
         }

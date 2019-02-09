@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.FeedPrevious;
 import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.databinding.FragmentSearchFeedBinding;
@@ -58,7 +58,7 @@ public class SearchFeedFragment extends BaseFragment<FragmentSearchFeedBinding> 
         binding.recyclerSearchFeed.setAdapter(adapter);
     }
 
-    private void startFeedDetailActivity(Feed feed) {
+    private void startFeedDetailActivity(FeedPrevious feed) {
         // TODO. 유저 프로필 화면 띄우기
     }
 

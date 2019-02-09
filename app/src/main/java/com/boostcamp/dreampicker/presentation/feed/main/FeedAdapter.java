@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.FeedPrevious;
 import com.boostcamp.dreampicker.presentation.listener.OnItemClickListener;
 import com.boostcamp.dreampicker.presentation.listener.VoteDragListener;
 import com.boostcamp.dreampicker.presentation.listener.VoteIconTouchListener;
@@ -16,11 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
-public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
+public class FeedAdapter extends ListAdapter<FeedPrevious, FeedViewHolder> {
     private Context context;
 
     FeedAdapter(@NonNull OnVoteListener onVoteListener,
-                @NonNull OnItemClickListener<Feed> onItemClickListener) {
+                @NonNull OnItemClickListener<FeedPrevious> onItemClickListener) {
         super(DIFF_CALLBACK);
         this.onVoteListener = onVoteListener;
         this.onItemClickListener = onItemClickListener;
@@ -33,13 +33,13 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     @NonNull
     private final OnVoteListener onVoteListener;
     @NonNull
-    private final OnItemClickListener<Feed> onItemClickListener;
+    private final OnItemClickListener<FeedPrevious> onItemClickListener;
 
     private View.OnTouchListener voteTouchListener = new VoteIconTouchListener();
 
     @Override
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-        final Feed feed = getItem(position);
+        final FeedPrevious feed = getItem(position);
         holder.bindTo(feed);
 
         if(feed.getVoteFlag() != Constant.NONE) {
@@ -68,15 +68,15 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
                 .inflate(R.layout.item_feed, parent, false));
     }
 
-    private static final DiffUtil.ItemCallback<Feed> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<Feed>() {
+    private static final DiffUtil.ItemCallback<FeedPrevious> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<FeedPrevious>() {
                 @Override
-                public boolean areItemsTheSame(@NonNull Feed oldItem, @NonNull Feed newItem) {
+                public boolean areItemsTheSame(@NonNull FeedPrevious oldItem, @NonNull FeedPrevious newItem) {
                     return oldItem.getId().equals(newItem.getId());
                 }
 
                 @Override
-                public boolean areContentsTheSame(@NonNull Feed oldItem, @NonNull Feed newItem) {
+                public boolean areContentsTheSame(@NonNull FeedPrevious oldItem, @NonNull FeedPrevious newItem) {
                     return oldItem.equals(newItem);
                 }
             };

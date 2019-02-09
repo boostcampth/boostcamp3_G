@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.FeedPrevious;
 import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
@@ -47,7 +47,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         binding.rvFeed.setAdapter(adapter);
     }
 
-    private void startFeedDetailActivity(@NonNull Feed feed) {
+    private void startFeedDetailActivity(@NonNull FeedPrevious feed) {
         if(getContext() != null) {
             startActivity(FeedDetailActivity.getLaunchIntent(getContext(), feed.getId()));
         }
