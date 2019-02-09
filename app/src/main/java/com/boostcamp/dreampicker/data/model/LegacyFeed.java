@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class LegacyFeed {
     private String id; // 피드 아이디
-    private Map<String, Image> imageMap; // 피드 이미지 리스트
+    private Map<String, LegacyImage> imageMap; // 피드 이미지 리스트
     private User user; // 업로더
     private String content; // 본문
     private String date; // 업로드 일자
@@ -32,7 +32,7 @@ public class LegacyFeed {
     }
 
     public LegacyFeed(String id,
-                      Map<String, Image> imageMap,
+                      Map<String, LegacyImage> imageMap,
                       User user,
                       String content,
                       String date,
@@ -56,11 +56,11 @@ public class LegacyFeed {
         this.id = id;
     }
 
-    public Map<String, Image> getImageMap() {
+    public Map<String, LegacyImage> getImageMap() {
         return imageMap;
     }
 
-    public void setImageMap(Map<String, Image> imageMap) {
+    public void setImageMap(Map<String, LegacyImage> imageMap) {
         this.imageMap = imageMap;
     }
 

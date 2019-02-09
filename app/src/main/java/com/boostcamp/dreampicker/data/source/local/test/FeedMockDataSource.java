@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.LegacyFeed;
-import com.boostcamp.dreampicker.data.model.Image;
+import com.boostcamp.dreampicker.data.model.LegacyImage;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
@@ -55,14 +55,14 @@ public class FeedMockDataSource implements FeedDataSource {
     private List<LegacyFeed> createMockFeedData() {
         final List<LegacyFeed> feedList = new ArrayList<>();
 
-        Image image1 = new Image("image-0-up",
+        LegacyImage image1 = new LegacyImage("image-0-up",
                 "http://monthly.chosun.com/up_fd/Mdaily/2017-09/bimg_thumb/2017042000056_0.jpg",
                 Arrays.asList("1번", "2번", "3번"));
-        Image image2 = new Image("image-0-down",
+        LegacyImage image2 = new LegacyImage("image-0-down",
                 "https://post-phinf.pstatic.net/MjAxNzA2MjhfODQg/MDAxNDk4NjU2MzgyNzcx.TVy7np7EVlKjuntLKN_qdwrGB8lGBdfMwkX6p3WV6rQg.6oHbF6lWH0iINgljB7CF3jSeYX342hsdl8fekB8yawsg.PNG/9.PNG?type=w1200",
                 Arrays.asList("1213112312", "2"));
 
-        Map<String, Image> imageMap = new HashMap<>();
+        Map<String, LegacyImage> imageMap = new HashMap<>();
         imageMap.put("left", image1);
         imageMap.put("right", image2);
 
@@ -76,15 +76,15 @@ public class FeedMockDataSource implements FeedDataSource {
                 false
         );
 
-        Image image3 = new Image("image-1-up",
+        LegacyImage image3 = new LegacyImage("image-1-up",
                 "https://t1.daumcdn.net/friends/prod/category/M201_theme_flying11.png",
                 Arrays.asList("짬뽕", "굿"));
-        Image image4 = new Image("image-1-down",
+        LegacyImage image4 = new LegacyImage("image-1-down",
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkH0BPwI8ZSms_dTXMMrc9lU8OaO6oo729MzRe6HmjH7nUFDTn",
                 Arrays.asList("이것도짬뽕ㅎㅎ", "ㅋㅋㅋ"));
 
         User user2 = new User("user-1", "공유", R.drawable.profile2);
-        Map<String, Image> imageMap2 = new HashMap<>();
+        Map<String, LegacyImage> imageMap2 = new HashMap<>();
         imageMap2.put("left", image3);
         imageMap2.put("right", image4);
 
