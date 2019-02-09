@@ -2,7 +2,7 @@ package com.boostcamp.dreampicker.data.source.local.test;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.User;
-import com.boostcamp.dreampicker.data.model.UserDetail;
+import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
@@ -39,7 +39,7 @@ public class UserMockDataSource implements UserDataSource {
 
     @Override
     @NonNull
-    public Single<UserDetail> getProfileUserDetail(@NonNull String userId) {
+    public Single<LegacyUserDetail> getProfileUserDetail(@NonNull String userId) {
 
         return Single.create(emitter ->
                 FirebaseFirestore.getInstance().collection("user")
@@ -48,7 +48,7 @@ public class UserMockDataSource implements UserDataSource {
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                    emitter.onSuccess(document.toObject(UserDetail.class));
+                                    emitter.onSuccess(document.toObject(LegacyUserDetail.class));
                                 }
                             } else {
                                 emitter.onError(task.getException());
