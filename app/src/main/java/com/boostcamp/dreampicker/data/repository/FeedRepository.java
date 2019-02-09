@@ -18,5 +18,5 @@ public interface FeedRepository {
      * @return 피드 리스트 stream
      */
     @NonNull
-    Single<List<ProfileFeed>> getProfileFeed(@NonNull final String userId, final int startAt, final int pageSize);
+    Single<List<ProfileFeed>> getProfileFeedList(@NonNull final String userId, final int startAt, final int pageSize);
 }
