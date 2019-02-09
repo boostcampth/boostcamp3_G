@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.data.source;
 
-import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
 import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
@@ -17,28 +17,28 @@ public interface UserDataSource {
 
     // [프로필] 해당 유저가 팔로잉한 유저 리스트 페이징
     @NonNull
-    Single<PagedListResponse<User>> addProfileFollowingList(@NonNull String userId,
-                                                            int start,
-                                                            int display);
+    Single<PagedListResponse<LegacyUser>> addProfileFollowingList(@NonNull String userId,
+                                                                  int start,
+                                                                  int display);
 
     // [프로필] 해당 유저를 팔로잉한 유저 리스트 페이징
     @NonNull
-    Single<PagedListResponse<User>> addProfileFollowerList(@NonNull String userId,
-                                                           int start,
-                                                           int display);
+    Single<PagedListResponse<LegacyUser>> addProfileFollowerList(@NonNull String userId,
+                                                                 int start,
+                                                                 int display);
 
     // [검색] searchKey 기준 유저 검색 결과 리스트 페이징
     @NonNull
-    Single<PagedListResponse<User>> addSearchUserList(@NonNull String searchKey,
-                                                      int start,
-                                                      int display);
+    Single<PagedListResponse<LegacyUser>> addSearchUserList(@NonNull String searchKey,
+                                                            int start,
+                                                            int display);
 
     // [유저] 해당 유저 팔로우 등록 또는 취소 토글
     @NonNull
     Completable toggleUserFollow(@NonNull String userId,
                                  @NonNull String myUserId);
     @NonNull
-    Single<User> getMyProfile();
+    Single<LegacyUser> getMyProfile();
 
     @NonNull
     Completable insertNewUser(@NonNull InsertUserRequest request);

@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.databinding.ItemSearchUserBinding;
 import com.boostcamp.dreampicker.presentation.BasePagedListAdapter;
 import com.boostcamp.dreampicker.presentation.listener.OnItemClickListener;
@@ -16,15 +16,15 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SearchUserAdapter extends BasePagedListAdapter<User, SearchUserAdapter.ViewHolder> {
+public class SearchUserAdapter extends BasePagedListAdapter<LegacyUser, SearchUserAdapter.ViewHolder> {
 
-    public SearchUserAdapter(@Nullable OnItemClickListener<User> onItemClickListener) {
+    public SearchUserAdapter(@Nullable OnItemClickListener<LegacyUser> onItemClickListener) {
         super(DIFF_CALLBACK, onItemClickListener);
     }
 
     @Override
     protected void onBindView(ViewHolder holder, int position) {
-        final User user = getItem(position);
+        final LegacyUser user = getItem(position);
         holder.bindTo(user);
     }
 
@@ -44,20 +44,20 @@ public class SearchUserAdapter extends BasePagedListAdapter<User, SearchUserAdap
             binding = DataBindingUtil.bind(itemView);
         }
 
-        void bindTo(User user) {
+        void bindTo(LegacyUser user) {
             binding.setUser(user);
         }
     }
 
-    private static final DiffUtil.ItemCallback<User> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<User>() {
+    private static final DiffUtil.ItemCallback<LegacyUser> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<LegacyUser>() {
                 @Override
-                public boolean areItemsTheSame(@NonNull User oldItem, @NonNull User newItem) {
+                public boolean areItemsTheSame(@NonNull LegacyUser oldItem, @NonNull LegacyUser newItem) {
                     return oldItem.getId().equals(newItem.getId());
                 }
 
                 @Override
-                public boolean areContentsTheSame(@NonNull User oldItem, @NonNull User newItem) {
+                public boolean areContentsTheSame(@NonNull LegacyUser oldItem, @NonNull LegacyUser newItem) {
                     return oldItem.equals(newItem);
                 }
             };

@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.data.paging.datasource;
 
-import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 
@@ -10,7 +10,7 @@ import androidx.paging.DataSource;
 import androidx.paging.PageKeyedDataSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class SearchUserDataSource extends PageKeyedDataSource<Integer, User> {
+public class SearchUserDataSource extends PageKeyedDataSource<Integer, LegacyUser> {
 
     @NonNull
     private UserRepository repository;
@@ -27,9 +27,9 @@ public class SearchUserDataSource extends PageKeyedDataSource<Integer, User> {
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params,
-                            @NonNull LoadInitialCallback<Integer, User> callback) {
+                            @NonNull LoadInitialCallback<Integer, LegacyUser> callback) {
 
-        PagedListResponse<User> response = repository.addSearchUserList(searchKey, 1, params.requestedLoadSize)
+        PagedListResponse<LegacyUser> response = repository.addSearchUserList(searchKey, 1, params.requestedLoadSize)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(error -> {})
                 .blockingGet();
@@ -45,16 +45,16 @@ public class SearchUserDataSource extends PageKeyedDataSource<Integer, User> {
 
     @Override
     public void loadBefore(@NonNull LoadParams<Integer> params,
-                           @NonNull LoadCallback<Integer, User> callback) {
+                           @NonNull LoadCallback<Integer, LegacyUser> callback) {
         // ignore
     }
 
     @Override
     public void loadAfter(@NonNull LoadParams<Integer> params,
-                          @NonNull LoadCallback<Integer, User> callback) {
+                          @NonNull LoadCallback<Integer, LegacyUser> callback) {
 
         if(!isPageEnd) {
-            PagedListResponse<User> response = repository.addSearchUserList(searchKey, params.key, params.requestedLoadSize)
+            PagedListResponse<LegacyUser> response = repository.addSearchUserList(searchKey, params.key, params.requestedLoadSize)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnError(error -> {
                     })
@@ -70,7 +70,7 @@ public class SearchUserDataSource extends PageKeyedDataSource<Integer, User> {
     }
 
 
-    public static class Factory extends DataSource.Factory<Integer, User> {
+    public static class Factory extends DataSource.Factory<Integer, LegacyUser> {
 
         @NonNull
         private UserRepository repository;
@@ -89,7 +89,7 @@ public class SearchUserDataSource extends PageKeyedDataSource<Integer, User> {
 
         @NonNull
         @Override
-        public DataSource<Integer, User> create() {
+        public DataSource<Integer, LegacyUser> create() {
             SearchUserDataSource source =
                     new SearchUserDataSource(repository, searchKey);
             sourceLiveData.postValue(source);

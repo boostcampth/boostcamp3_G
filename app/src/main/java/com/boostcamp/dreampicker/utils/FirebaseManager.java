@@ -2,8 +2,7 @@ package com.boostcamp.dreampicker.utils;
 
 import android.net.Uri;
 
-import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -18,19 +17,18 @@ public class FirebaseManager {
     }
 
     @Nullable
-    public static User getCurrentUser() {
+    public static LegacyUser getCurrentUser() {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if(firebaseUser == null) {
             return null;
         } else {
-            final User user = new User();
+            final LegacyUser user = new LegacyUser();
             user.setId(firebaseUser.getUid());
             user.setName(firebaseUser.getDisplayName());
             final Uri uri = firebaseUser.getPhotoUrl();
             if(uri != null) {
                 user.setProfileImageUrl(firebaseUser.getPhotoUrl().toString());
             }
-            user.setProfileImageResource(R.drawable.profile);
             return user;
         }
     }

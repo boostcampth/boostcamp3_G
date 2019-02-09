@@ -1,7 +1,7 @@
 package com.boostcamp.dreampicker.data.source.local.test;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
@@ -59,43 +59,43 @@ public class UserMockDataSource implements UserDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<User>> addProfileFollowingList(@NonNull String userId,
+    public Single<PagedListResponse<LegacyUser>> addProfileFollowingList(@NonNull String userId,
+                                                                         int start,
+                                                                         int display) {
+        List<LegacyUser> userList = new ArrayList<>();
+        for (int i = 0; i < display; i++) {
+            LegacyUser user = new LegacyUser(
+                    userId,
+                    "yeseul",
+                    "https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",
+                    R.drawable.profile);
+            userList.add(user);
+        }
+        return Single.just(new PagedListResponse<>(start, display, userList));
+    }
+
+    @Override
+    @NonNull
+    public Single<PagedListResponse<LegacyUser>> addProfileFollowerList(@NonNull String userId,
+                                                                        int start,
+                                                                        int display) {
+        List<LegacyUser> userList = new ArrayList<>();
+        for (int i = 0; i < display; i++) {
+            LegacyUser user = new LegacyUser(
+                    userId,
+                    "yeseul",
+                    "https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",
+                    R.drawable.profile);
+            userList.add(user);
+        }
+        return Single.just(new PagedListResponse<>(start, display, userList));
+    }
+
+    @Override
+    @NonNull
+    public Single<PagedListResponse<LegacyUser>> addSearchUserList(@NonNull String searchKey,
                                                                    int start,
                                                                    int display) {
-        List<User> userList = new ArrayList<>();
-        for (int i = 0; i < display; i++) {
-            User user = new User(
-                    userId,
-                    "yeseul",
-                    "https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",
-                    R.drawable.profile);
-            userList.add(user);
-        }
-        return Single.just(new PagedListResponse<>(start, display, userList));
-    }
-
-    @Override
-    @NonNull
-    public Single<PagedListResponse<User>> addProfileFollowerList(@NonNull String userId,
-                                                                  int start,
-                                                                  int display) {
-        List<User> userList = new ArrayList<>();
-        for (int i = 0; i < display; i++) {
-            User user = new User(
-                    userId,
-                    "yeseul",
-                    "https://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg",
-                    R.drawable.profile);
-            userList.add(user);
-        }
-        return Single.just(new PagedListResponse<>(start, display, userList));
-    }
-
-    @Override
-    @NonNull
-    public Single<PagedListResponse<User>> addSearchUserList(@NonNull String searchKey,
-                                                             int start,
-                                                             int display) {
         return Single.create(emitter ->
                 FirebaseFirestore.getInstance()
                         .collection(COLLECTION_USER)
@@ -108,9 +108,9 @@ public class UserMockDataSource implements UserDataSource {
                             if (documentSnapshot.isSuccessful()) {
                                 // 결과 리스트
                                 final QuerySnapshot result = Objects.requireNonNull(documentSnapshot.getResult());
-                                List<User> userList = new ArrayList<>();
+                                List<LegacyUser> userList = new ArrayList<>();
                                 for (QueryDocumentSnapshot document : result) {
-                                    userList.add(document.toObject(User.class));
+                                    userList.add(document.toObject(LegacyUser.class));
                                 }
                                 emitter.onSuccess(new PagedListResponse<>(start, result.size(), userList));
                             } else {
@@ -130,8 +130,8 @@ public class UserMockDataSource implements UserDataSource {
 
     @NonNull
     @Override
-    public Single<User> getMyProfile() {
-        User user = new User("yoon",
+    public Single<LegacyUser> getMyProfile() {
+        LegacyUser user = new LegacyUser("yoon",
                 "라이언",
                 "http://monthly.chosun.com/up_fd/Mdaily/2017-09/bimg_thumb/2017042000056_0.jpg",
                 R.drawable.profile);
