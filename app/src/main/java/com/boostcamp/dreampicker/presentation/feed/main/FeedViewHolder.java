@@ -6,7 +6,7 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.FeedPrevious;
+import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.databinding.ItemFeedBinding;
 import com.boostcamp.dreampicker.utils.Constant;
 import com.sackcentury.shinebuttonlib.ShineButton;
@@ -24,7 +24,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         binding = DataBindingUtil.bind(itemView);
     }
 
-    void bindTo(@NonNull FeedPrevious feed) {
+    void bindTo(@NonNull LegacyFeed feed) {
         binding.setFeed(feed);
         binding.ivFeedImageLeft.setTag(R.id.iv_feed_image_left, feed.getId());
         binding.ivFeedImageRight.setTag(R.id.iv_feed_image_right, feed.getId());

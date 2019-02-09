@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.data.paging.repository;
 
-import com.boostcamp.dreampicker.data.model.FeedPrevious;
+import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.paging.datasource.SearchFeedDataSource;
 import com.boostcamp.dreampicker.data.paging.repository.response.PagingSource;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
@@ -19,7 +19,7 @@ public class SearchFeedRepository {
         this.repository = repository;
     }
 
-    public PagingSource<FeedPrevious, SearchFeedDataSource> addSearchFeedList(@NonNull String searchKey) {
+    public PagingSource<LegacyFeed, SearchFeedDataSource> addSearchFeedList(@NonNull String searchKey) {
 
         // 데이터 소스 팩토리 생성
         SearchFeedDataSource.Factory factory =
@@ -35,7 +35,7 @@ public class SearchFeedRepository {
                 .build();
 
         // PagedList LiveData 생성
-        LiveData<PagedList<FeedPrevious>> userPagedList =
+        LiveData<PagedList<LegacyFeed>> userPagedList =
                 new LivePagedListBuilder<>(factory, config).build();
 
         return new PagingSource<>(

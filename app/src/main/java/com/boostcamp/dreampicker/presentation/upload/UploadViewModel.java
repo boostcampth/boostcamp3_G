@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.boostcamp.dreampicker.data.model.FeedPrevious;
+import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.model.Image;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
@@ -101,8 +101,8 @@ public class UploadViewModel extends BaseViewModel {
 
     @NonNull
     @SuppressLint("SimpleDateFormat")
-    private FeedPrevious createFeed(@NonNull final Map<String, Image> imageMap) {
-        final FeedPrevious feed = new FeedPrevious();
+    private LegacyFeed createFeed(@NonNull final Map<String, Image> imageMap) {
+        final LegacyFeed feed = new LegacyFeed();
         feed.setId(IdCreator.createFeedId());
         feed.setUser(FirebaseManager.getCurrentUser());
         feed.setContent(content.get());

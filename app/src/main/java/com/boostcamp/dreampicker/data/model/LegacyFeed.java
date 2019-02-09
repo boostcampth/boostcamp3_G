@@ -3,7 +3,7 @@ package com.boostcamp.dreampicker.data.model;
 import java.util.Map;
 import java.util.Objects;
 
-public class FeedPrevious {
+public class LegacyFeed {
     private String id; // 피드 아이디
     private Map<String, Image> imageMap; // 피드 이미지 리스트
     private User user; // 업로더
@@ -17,9 +17,9 @@ public class FeedPrevious {
     // Todo : 아직 미정
     private boolean isEnded;
 
-    public FeedPrevious() { }
+    public LegacyFeed() { }
 
-    public FeedPrevious(FeedPrevious feed) {
+    public LegacyFeed(LegacyFeed feed) {
         this.id = feed.id;
         this.imageMap = feed.imageMap;
         this.user = feed.user;
@@ -31,12 +31,12 @@ public class FeedPrevious {
         this.voteFlag = feed.voteFlag;
     }
 
-    public FeedPrevious(String id,
-                        Map<String, Image> imageMap,
-                        User user,
-                        String content,
-                        String date,
-                        boolean isEnded) {
+    public LegacyFeed(String id,
+                      Map<String, Image> imageMap,
+                      User user,
+                      String content,
+                      String date,
+                      boolean isEnded) {
 
         this.id = id;
         this.imageMap = imageMap;
@@ -133,7 +133,7 @@ public class FeedPrevious {
             return false;
         }
 
-        final FeedPrevious feed = (FeedPrevious) o;
+        final LegacyFeed feed = (LegacyFeed) o;
         return voteFlag == feed.voteFlag;
     }
 

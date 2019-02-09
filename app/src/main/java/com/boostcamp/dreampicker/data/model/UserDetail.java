@@ -14,7 +14,7 @@ public class UserDetail {
 
     private List<User> followerList; // 해당 유저의 팔로워 리스트
     private List<User> followingList; // 해당 유저의 팔로잉 리스트
-    private List<FeedPrevious> feedList; // 해당 유저의 피드 리스트
+    private List<LegacyFeed> feedList; // 해당 유저의 피드 리스트
 
     public UserDetail() { }
 
@@ -116,11 +116,11 @@ public class UserDetail {
         this.followingList = followingList;
     }
 
-    public List<FeedPrevious> getFeedList() {
+    public List<LegacyFeed> getFeedList() {
         return feedList;
     }
 
-    public void setFeedList(List<FeedPrevious> feedList) {
+    public void setFeedList(List<LegacyFeed> feedList) {
         this.feedList = feedList;
     }
 }

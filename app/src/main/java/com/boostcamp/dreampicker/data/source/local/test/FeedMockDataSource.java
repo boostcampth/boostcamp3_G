@@ -3,7 +3,7 @@ package com.boostcamp.dreampicker.data.source.local.test;
 import android.util.Log;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.FeedPrevious;
+import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.model.Image;
 import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
@@ -33,7 +33,7 @@ public class FeedMockDataSource implements FeedDataSource {
     private static volatile FeedMockDataSource INSTANCE;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
 
-    private List<FeedPrevious> feedList = new ArrayList<>();
+    private List<LegacyFeed> feedList = new ArrayList<>();
 
     private FeedMockDataSource() {
         feedList.addAll(createMockFeedData());
@@ -52,8 +52,8 @@ public class FeedMockDataSource implements FeedDataSource {
         return INSTANCE;
     }
 
-    private List<FeedPrevious> createMockFeedData() {
-        final List<FeedPrevious> feedList = new ArrayList<>();
+    private List<LegacyFeed> createMockFeedData() {
+        final List<LegacyFeed> feedList = new ArrayList<>();
 
         Image image1 = new Image("image-0-up",
                 "http://monthly.chosun.com/up_fd/Mdaily/2017-09/bimg_thumb/2017042000056_0.jpg",
@@ -67,7 +67,7 @@ public class FeedMockDataSource implements FeedDataSource {
         imageMap.put("right", image2);
 
         User user1 = new User("user-0", "박신혜", R.drawable.profile);
-        FeedPrevious feed1 = new FeedPrevious(
+        LegacyFeed feed1 = new LegacyFeed(
                 IdCreator.createFeedId(),
                 imageMap,
                 user1,
@@ -88,7 +88,7 @@ public class FeedMockDataSource implements FeedDataSource {
         imageMap2.put("left", image3);
         imageMap2.put("right", image4);
 
-        FeedPrevious feed2 = new FeedPrevious(
+        LegacyFeed feed2 = new LegacyFeed(
                 IdCreator.createFeedId(),
                 imageMap2,
                 user2,
@@ -105,7 +105,7 @@ public class FeedMockDataSource implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<FeedPrevious>> addMainFeedList(int start, int display) {
+    public Single<PagedListResponse<LegacyFeed>> addMainFeedList(int start, int display) {
         return Single.create(emitter -> {
             if (max < 1) {
                 emitter.onSuccess(new PagedListResponse<>(start, display, feedList));
@@ -119,9 +119,9 @@ public class FeedMockDataSource implements FeedDataSource {
     @NonNull
     public Completable updateFeedVote(@NonNull String feedId, @Constant.Selection int voteFlag) {
         for (int i = 0; i < feedList.size(); i++) {
-            final FeedPrevious feed = feedList.get(i);
+            final LegacyFeed feed = feedList.get(i);
             if (feed.getId().equals(feedId)) {
-                final FeedPrevious f = new FeedPrevious(feed);
+                final LegacyFeed f = new LegacyFeed(feed);
                 Log.d("Melon", feed.getVoteFlag() + " -> " + voteFlag);
                 if (f.getVoteFlag() == Constant.NONE) {
                     if (voteFlag == Constant.A) {
@@ -149,9 +149,9 @@ public class FeedMockDataSource implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<FeedPrevious>> addSearchFeedList(@NonNull String searchKey,
-                                                                     int start,
-                                                                     int display) {
+    public Single<PagedListResponse<LegacyFeed>> addSearchFeedList(@NonNull String searchKey,
+                                                                   int start,
+                                                                   int display) {
         return Single.create(emitter ->
                 FirebaseFirestore.getInstance()
                         .collection(COLLECTION_FEED)
@@ -163,9 +163,9 @@ public class FeedMockDataSource implements FeedDataSource {
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 final QuerySnapshot result = Objects.requireNonNull(task.getResult());
-                                List<FeedPrevious> feedList = new ArrayList<>();
+                                List<LegacyFeed> feedList = new ArrayList<>();
                                 for (QueryDocumentSnapshot document : result) {
-                                    feedList.add(document.toObject(FeedPrevious.class));
+                                    feedList.add(document.toObject(LegacyFeed.class));
                                 }
                                 Log.d("degkjdfsnk", feedList.toString());
                                 emitter.onSuccess(new PagedListResponse<>(start, result.size(), feedList));
@@ -178,9 +178,9 @@ public class FeedMockDataSource implements FeedDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<FeedPrevious>> addProfileFeedList(@NonNull String userId,
-                                                                      int start,
-                                                                      int display) {
+    public Single<PagedListResponse<LegacyFeed>> addProfileFeedList(@NonNull String userId,
+                                                                    int start,
+                                                                    int display) {
         return Single.create(emitter ->
                 FirebaseFirestore.getInstance()
                         .collection(COLLECTION_FEED)
@@ -193,9 +193,9 @@ public class FeedMockDataSource implements FeedDataSource {
                             if (documentSnapshot.isSuccessful()) {
                                 // 결과 리스트
                                 final QuerySnapshot result = Objects.requireNonNull(documentSnapshot.getResult());
-                                List<FeedPrevious> feedList = new ArrayList<>();
+                                List<LegacyFeed> feedList = new ArrayList<>();
                                 for (QueryDocumentSnapshot document : result) {
-                                    feedList.add(document.toObject(FeedPrevious.class));
+                                    feedList.add(document.toObject(LegacyFeed.class));
                                 }
                                 emitter.onSuccess(new PagedListResponse<>(start, result.size(), feedList));
                             } else {
@@ -216,7 +216,7 @@ public class FeedMockDataSource implements FeedDataSource {
 
     @NonNull
     @Override
-    public Completable upLoadFeed(@NonNull FeedPrevious feed) {
+    public Completable upLoadFeed(@NonNull LegacyFeed feed) {
         return Completable.create(CompletableEmitter::onComplete);
     }
 

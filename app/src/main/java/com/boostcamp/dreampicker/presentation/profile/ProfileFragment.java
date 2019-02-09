@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.FeedPrevious;
+import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
 import com.boostcamp.dreampicker.data.source.remote.firebase.UserFirebaseService;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
@@ -110,7 +110,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
         // TODO. 팔로워, 팔로잉 리스트 화면 띄우기
     }
 
-    private void startFeedDetailActivity(FeedPrevious feed) {
+    private void startFeedDetailActivity(LegacyFeed feed) {
         // TODO. 피드 상세 페이지 띄우기
     }
 }
