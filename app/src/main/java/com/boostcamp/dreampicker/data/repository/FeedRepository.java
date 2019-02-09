@@ -14,4 +14,8 @@ public interface FeedRepository {
 
     @NonNull
     Single<Feed> vote(@NonNull final String feedId, @NonNull final String selectionId);
+
+    // [업로드] 사용자가 작성한 피드를 서버에 업로드한다.
+    @NonNull
+    Completable uploadFeed(@NonNull final FeedUploadRequest feed);
 }
