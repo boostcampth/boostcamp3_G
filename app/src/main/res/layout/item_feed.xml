@@ -35,7 +35,7 @@
                     android:layout_marginBottom="@dimen/space_x_small"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:imageResource="@{feed.user.profileImageResource}"
+                    app:circleImage="@{feed.user.profileImageUrl}"
                     app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
