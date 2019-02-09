@@ -12,7 +12,7 @@ import io.reactivex.Single;
 
 public interface FeedRepository {
     @NonNull
-    Single<List<Feed>> getNotEndedMyFollowerFeedList(@NonNull final Date startAt, final int pageSize);
+    Single<List<Feed>> getNotEndedMyFollowerFeedList(@NonNull final Date startAfter, final int pageSize);
 
     @NonNull
     Single<Feed> vote(@NonNull final String feedId, @NonNull final String selectionId);
