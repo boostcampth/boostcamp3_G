@@ -18,7 +18,7 @@ public class Feed {
     private final VoteSelectionItem itemA; // 1번 이미지 정보
     @NonNull
     private final VoteSelectionItem itemB; // 2번 이미지 정보
-    @NonNull
+    @Nullable
     private String selectionId; // 본인 투표 위치
 
     public Feed(@NonNull String id,
@@ -27,7 +27,7 @@ public class Feed {
                 @NonNull Date date,
                 @NonNull VoteSelectionItem itemA,
                 @NonNull VoteSelectionItem itemB,
-                @NonNull String selectionId) {
+                @Nullable String selectionId) {
         this.id = id;
         this.user = user;
         this.content = content;
@@ -67,12 +67,12 @@ public class Feed {
         return itemB;
     }
 
-    @NonNull
+    @Nullable
     public String getSelectionId() {
         return selectionId;
     }
 
-    public void setSelectionId(@NonNull String selectionId) {
+    public void setSelectionId(@NonNull final String selectionId) {
         this.selectionId = selectionId;
     }
 }
