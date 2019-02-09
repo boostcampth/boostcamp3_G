@@ -14,10 +14,10 @@ public interface FeedRepository {
      * 유저가 업로드 한 투표 목록 페이징
      *
      * @param userId 유저 ID
-     * @param endBefore 이 값의 다음 데이터를 요청
+     * @param startAfter 이 값의 다음 데이터를 요청
      * @param pageSize 페이지의 size
      * @return 피드 리스트 stream
      */
     @NonNull
-    Single<List<ProfileFeed>> getProfileFeedList(@NonNull final String userId, final Date endBefore, final int pageSize);
+    Single<List<ProfileFeed>> getProfileFeedList(@NonNull final String userId, final Date startAfter, final int pageSize);
 }
