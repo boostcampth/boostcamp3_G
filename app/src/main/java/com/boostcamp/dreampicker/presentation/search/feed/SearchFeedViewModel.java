@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.presentation.search.feed;
 
-import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.paging.datasource.SearchFeedDataSource;
 import com.boostcamp.dreampicker.data.paging.repository.SearchFeedRepository;
 import com.boostcamp.dreampicker.data.paging.repository.response.PagingSource;
@@ -26,10 +26,10 @@ public class SearchFeedViewModel extends BaseViewModel {
     @NonNull
     private SearchFeedRepository repository;
     @NonNull
-    private LiveData<PagingSource<Feed, SearchFeedDataSource>> pagingSource;
+    private LiveData<PagingSource<LegacyFeed, SearchFeedDataSource>> pagingSource;
 
     @NonNull
-    public LiveData<PagedList<Feed>> feedPagedList;
+    public LiveData<PagedList<LegacyFeed>> feedPagedList;
     @NonNull
     private MutableLiveData<Throwable> error = new MutableLiveData<>();
 

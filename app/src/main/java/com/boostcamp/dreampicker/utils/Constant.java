@@ -7,11 +7,11 @@ import androidx.annotation.IntDef;
 import androidx.annotation.StringDef;
 
 public class Constant {
-    public static final int NONE = 0, LEFT = 1, RIGHT = 2;
+    public static final int NONE = 0, A = 1, B = 2;
 
-    @IntDef({NONE, LEFT, RIGHT})
+    @IntDef({NONE, A, B})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface VoteFlag { }
+    public @interface Selection { }
 
     public static final String IMAGE_LEFT = "left";
     public static final String IMAGE_RIGHT = "right";
