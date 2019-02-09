@@ -107,7 +107,7 @@ public class FeedMockDataSource implements FeedDataSource {
     @NonNull
     public Single<PagedListResponse<Feed>> addMainFeedList(int start, int display) {
         return Single.create(emitter -> {
-            if(max < 1) {
+            if (max < 1) {
                 emitter.onSuccess(new PagedListResponse<>(start, display, feedList));
             } else {
                 emitter.onError(new MaxPageException("마지막 페이지 에러"));
@@ -118,25 +118,25 @@ public class FeedMockDataSource implements FeedDataSource {
     @Override
     @NonNull
     public Completable updateFeedVote(@NonNull String feedId, @Constant.VoteFlag int voteFlag) {
-        for(int i=0; i<feedList.size(); i++) {
+        for (int i = 0; i < feedList.size(); i++) {
             final Feed feed = feedList.get(i);
-            if(feed.getId().equals(feedId)) {
+            if (feed.getId().equals(feedId)) {
                 final Feed f = new Feed(feed);
                 Log.d("Melon", feed.getVoteFlag() + " -> " + voteFlag);
                 if (f.getVoteFlag() == Constant.NONE) {
-                    if(voteFlag == Constant.LEFT) {
-                        f.setLeftCount(f.getLeftCount()+1);
+                    if (voteFlag == Constant.LEFT) {
+                        f.setLeftCount(f.getLeftCount() + 1);
                     } else {
-                        f.setRightCount(f.getRightCount()+1);
+                        f.setRightCount(f.getRightCount() + 1);
                     }
 
                 } else {
-                    if(voteFlag == Constant.LEFT) {
-                        f.setLeftCount(f.getLeftCount()+1);
-                        f.setRightCount(f.getRightCount()-1);
+                    if (voteFlag == Constant.LEFT) {
+                        f.setLeftCount(f.getLeftCount() + 1);
+                        f.setRightCount(f.getRightCount() - 1);
                     } else {
-                        f.setLeftCount(f.getLeftCount()-1);
-                        f.setRightCount(f.getRightCount()+1);
+                        f.setLeftCount(f.getLeftCount() - 1);
+                        f.setRightCount(f.getRightCount() + 1);
                     }
                 }
                 f.setVoteFlag(voteFlag);
@@ -152,28 +152,28 @@ public class FeedMockDataSource implements FeedDataSource {
     public Single<PagedListResponse<Feed>> addSearchFeedList(@NonNull String searchKey,
                                                              int start,
                                                              int display) {
-        List<Feed> feedList = new ArrayList<>();
-        for (int i = 0; i < display; i++) {
-            Image image1 = new Image("image-0-up", R.drawable.image1, Arrays.asList("술집", "카페"));
-            Image image2 = new Image("image-0-down", R.drawable.image2, Arrays.asList("집구석", "방구석"));
-            Map<String, Image> imageMap = new HashMap<>();
-            imageMap.put("left", image1);
-            imageMap.put("right", image2);
-
-            User user1 = new User("user-0", "박신혜", R.drawable.profile);
-            Feed feed = new Feed(
-                    "feed-0",
-                    imageMap,
-                    user1,
-                    "내일 소개남이랑 첫 데이트인데 장소 좀 골라주세요~!ㅎㅎ",
-                    "2018.01.28",
-                    false
-            );
-
-            feedList.add(feed);
-        }
-
-        return Single.just(new PagedListResponse<>(start, display, feedList));
+        return Single.create(emitter ->
+                FirebaseFirestore.getInstance()
+                        .collection(COLLECTION_FEED)
+                        .whereEqualTo(FieldPath.of("content"), searchKey)
+                        .orderBy("date")
+                        .startAt(start)
+                        .limit(display)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                final QuerySnapshot result = Objects.requireNonNull(task.getResult());
+                                List<Feed> feedList = new ArrayList<>();
+                                for (QueryDocumentSnapshot document : result) {
+                                    feedList.add(document.toObject(Feed.class));
+                                }
+                                Log.d("degkjdfsnk", feedList.toString());
+                                emitter.onSuccess(new PagedListResponse<>(start, result.size(), feedList));
+                            } else {
+                                emitter.onError(task.getException());
+                            }
+                        })
+                        .addOnFailureListener(emitter::onError));
     }
 
     @Override
@@ -210,7 +210,8 @@ public class FeedMockDataSource implements FeedDataSource {
     public Completable toggleFeedState(@NonNull String feedId,
                                        boolean isEnded) {
 
-        return Completable.create(emitter -> { });
+        return Completable.create(emitter -> {
+        });
     }
 
     @NonNull

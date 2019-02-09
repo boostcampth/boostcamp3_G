@@ -2,15 +2,17 @@ package com.boostcamp.dreampicker.presentation.search.feed;
 
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.paging.datasource.SearchFeedDataSource;
+import com.boostcamp.dreampicker.data.paging.repository.SearchFeedRepository;
+import com.boostcamp.dreampicker.data.paging.repository.response.PagingSource;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
 /**
@@ -20,33 +22,30 @@ import androidx.paging.PagedList;
  * 3. 새로고침(refresh layout)
  */
 public class SearchFeedViewModel extends BaseViewModel {
-    private final int PAGE_SIZE = 20;
 
     @NonNull
-    private FeedRepository repository;
+    private SearchFeedRepository repository;
+    @NonNull
+    private LiveData<PagingSource<Feed, SearchFeedDataSource>> pagingSource;
 
     @NonNull
     public LiveData<PagedList<Feed>> feedPagedList;
     @NonNull
     private MutableLiveData<Throwable> error = new MutableLiveData<>();
 
-    private final PagedList.Config config = new PagedList.Config.Builder()
-            .setInitialLoadSizeHint(PAGE_SIZE)
-            .setPageSize(PAGE_SIZE)
-            .setPrefetchDistance(2) // 아래서 2번째 아이템이 보일 때 로딩시작
-            .setEnablePlaceholders(false) // 전체 사이즈 알고있는 경우(Countable List)에만 유효함
-            .build();
+    @NonNull
+    private MutableLiveData<String> searchKey = new MutableLiveData<>();
 
     private SearchFeedViewModel(@NonNull FeedRepository repository) {
-        this.repository = repository;
-        loadSearchFeed("");
+        this.repository = new SearchFeedRepository(repository);
+        this.searchKey.setValue("");
+
+        this.pagingSource = Transformations.map(searchKey, this.repository::addSearchFeedList);
+        this.feedPagedList = Transformations.switchMap(pagingSource, PagingSource::getPagedList);
     }
 
     public void loadSearchFeed(@NonNull String searchKey) {
-        this.feedPagedList = new LivePagedListBuilder<>(
-                new SearchFeedDataSource.Factory(repository, searchKey),
-                config
-        ).build();
+        this.searchKey.setValue(searchKey);
     }
 
     @NonNull
