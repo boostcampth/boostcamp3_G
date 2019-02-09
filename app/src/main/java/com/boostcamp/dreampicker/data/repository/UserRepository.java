@@ -14,5 +14,5 @@ public interface UserRepository {
      * @return 유저 상세 정보 stream
      */
     @NonNull
-    Single<UserDetail> getUserDetail(@NonNull String userId);
+    Single<UserDetail> getUserDetail(@NonNull final String userId);
 }
