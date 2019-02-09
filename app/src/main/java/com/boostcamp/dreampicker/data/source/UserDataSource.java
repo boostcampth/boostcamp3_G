@@ -1,7 +1,7 @@
 package com.boostcamp.dreampicker.data.source;
 
 import com.boostcamp.dreampicker.data.model.User;
-import com.boostcamp.dreampicker.data.model.UserDetail;
+import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
 import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 
@@ -13,7 +13,7 @@ public interface UserDataSource {
 
     // [프로필] 해당 유저의 프로필 정보
     @NonNull
-    Single<UserDetail> getProfileUserDetail(@NonNull String userId);
+    Single<LegacyUserDetail> getProfileUserDetail(@NonNull String userId);
 
     // [프로필] 해당 유저가 팔로잉한 유저 리스트 페이징
     @NonNull

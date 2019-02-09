@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.presentation.profile;
 
-import com.boostcamp.dreampicker.data.model.UserDetail;
+import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
 import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
@@ -21,7 +21,7 @@ public class ProfileViewModel extends BaseViewModel {
     private final String userId;
 
     @NonNull
-    private MutableLiveData<UserDetail> user = new MutableLiveData<>();
+    private MutableLiveData<LegacyUserDetail> user = new MutableLiveData<>();
     @NonNull
     private MutableLiveData<Throwable> error = new MutableLiveData<>();
 
@@ -60,7 +60,7 @@ public class ProfileViewModel extends BaseViewModel {
      * 팔로우 등록 & 취소 */
     public void toggleFollow() {
 
-        final UserDetail user = this.user.getValue();
+        final LegacyUserDetail user = this.user.getValue();
 
         if (user != null) {
             addDisposable(repository.toggleUserFollow(user.getId(), "me")
@@ -71,7 +71,7 @@ public class ProfileViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public LiveData<UserDetail> getUser() {
+    public LiveData<LegacyUserDetail> getUser() {
         return user;
     }
 

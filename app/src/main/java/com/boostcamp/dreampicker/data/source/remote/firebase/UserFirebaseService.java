@@ -1,7 +1,7 @@
 package com.boostcamp.dreampicker.data.source.remote.firebase;
 
 import com.boostcamp.dreampicker.data.model.User;
-import com.boostcamp.dreampicker.data.model.UserDetail;
+import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
@@ -46,7 +46,7 @@ public class UserFirebaseService implements UserDataSource {
 
     @Override
     @NonNull
-    public Single<UserDetail> getProfileUserDetail(@NonNull String userId) {
+    public Single<LegacyUserDetail> getProfileUserDetail(@NonNull String userId) {
 
         // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USERDETAIL)
@@ -56,7 +56,7 @@ public class UserFirebaseService implements UserDataSource {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (Objects.requireNonNull(document).exists()) {
-                            emitter.onSuccess(document.toObject(UserDetail.class));
+                            emitter.onSuccess(document.toObject(LegacyUserDetail.class));
                         } else {
                             emitter.onError(task.getException());
                         }
