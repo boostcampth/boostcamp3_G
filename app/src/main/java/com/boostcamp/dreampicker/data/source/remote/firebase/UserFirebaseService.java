@@ -24,7 +24,7 @@ public class UserFirebaseService implements UserDataSource {
 
     private final String COLLECTION_USERDETAIL = "userDetail";
     private final String COLLECTION_USER = "user";
-
+    private final String FIELD_USER_NAME = "name";
     private final String FIELD_USER_ID = "id";
     private final String FIELD_USER_DATE = "date";
 
@@ -48,7 +48,6 @@ public class UserFirebaseService implements UserDataSource {
     @NonNull
     public Single<UserDetail> getProfileUserDetail(@NonNull String userId) {
 
-        // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USERDETAIL)
                 .document(userId)
                 .get()
@@ -100,7 +99,6 @@ public class UserFirebaseService implements UserDataSource {
         // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USERDETAIL)
                 .whereEqualTo(FIELD_USER_ID, userId)
-                .orderBy(FIELD_USER_ID)
                 .startAt(start)
                 .limit(display)
                 .get()
@@ -124,9 +122,8 @@ public class UserFirebaseService implements UserDataSource {
     public Single<PagedListResponse<User>> addSearchUserList(@NonNull String searchKey,
                                                              int start,
                                                              int display) {
-        // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USER)
-                .whereEqualTo(FIELD_USER_ID, searchKey)
+                .whereEqualTo(FIELD_USER_NAME, searchKey)
                 .orderBy(FIELD_USER_ID)
                 .startAt(start)
                 .limit(display)
@@ -182,13 +179,6 @@ public class UserFirebaseService implements UserDataSource {
                     }
                 })
                 .addOnFailureListener(emitter::onError));
-//        // TODO : 임시데이터 삭제
-//        User user = new User("yoon",
-//                "라이언",
-//                "http://monthly.chosun.com/up_fd/Mdaily/2017-09/bimg_thumb/2017042000056_0.jpg",
-//                R.drawable.profile);
-//
-//        return Single.just(user).subscribeOn(Schedulers.io());
     }
 
     @NonNull

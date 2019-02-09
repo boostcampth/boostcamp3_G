@@ -29,8 +29,7 @@ public class FeedFirebaseService implements FeedDataSource {
 
     private static final String FIELD_USER_ID = "id";
     private static final String FIELD_USER_DATE = "date";
-    private static final String FIELD_USER_NAME = "name";
-    private static final String FIELD_USER_ISENDED = "isEnded";
+    private static final String FIELD_USER_ISENDED = "ended";
     private static final String FIELD_USER_USER = "user";
     private static final String FIELD_FEED_IMAGEMAP = "imageMap";
     private static final String FIELD_FEED_IMAGEMAP_IMAGEURL = "imageUrl";
@@ -38,7 +37,6 @@ public class FeedFirebaseService implements FeedDataSource {
     private static final String STORAGE_FEED_IMAGE_PATH = "feedImage";
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-
     private static volatile FeedFirebaseService INSTANCE;
 
     private FeedFirebaseService() {
@@ -61,10 +59,10 @@ public class FeedFirebaseService implements FeedDataSource {
     public Single<PagedListResponse<Feed>> addMainFeedList(
             int pageIndex,
             int pageUnit) {
-        // TODO : 결과 테스트 필요 DONE
+
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
                 .whereEqualTo(FIELD_USER_ISENDED, false)
-                .startAt(pageIndex)
+                //.startAt(pageIndex)
                 .limit(pageUnit)
                 .orderBy(FIELD_USER_DATE)
                 .get()
@@ -109,10 +107,11 @@ public class FeedFirebaseService implements FeedDataSource {
     public Single<PagedListResponse<Feed>> addSearchFeedList(@NonNull String searchKey,
                                                              int start,
                                                              int display) {
-
         // TODO : 테스트
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_FEED)
-
+                .whereArrayContains("content", searchKey)
+                .startAt(start)
+                .limit(display)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -205,17 +204,22 @@ public class FeedFirebaseService implements FeedDataSource {
         StorageReference feedImages = storage.getReference()
                 .child(STORAGE_FEED_IMAGE_PATH + "/" + feed.getId() + "/" + uri.getLastPathSegment());
 
-        feedImages.putFile(uri)
-                .addOnSuccessListener(taskSnapshot -> FirebaseFirestore.getInstance()
-                        .collection(COLLECTION_FEED)
-                        .document(feed.getId())
-                        .update(FIELD_FEED_IMAGEMAP + "." + position + "." + FIELD_FEED_IMAGEMAP_IMAGEURL,
-                                Objects.requireNonNull(taskSnapshot.getUploadSessionUri()).getPath()))
-                .addOnProgressListener(taskSnapshot -> {
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                }).addOnPausedListener(taskSnapshot -> {
+        feedImages.putFile(uri).continueWithTask(task -> {
+            if (task.isSuccessful()) return feedImages.getDownloadUrl();
+            else throw Objects.requireNonNull(task.getException());
         })
+                .addOnCompleteListener(result -> {
+                    if (result.isSuccessful()) {
+                        if (result.getResult() != null) {
+                            FirebaseFirestore.getInstance()
+                                    .collection(COLLECTION_FEED)
+                                    .document(feed.getId())
+                                    .update(FIELD_FEED_IMAGEMAP + "." + position + "." + FIELD_FEED_IMAGEMAP_IMAGEURL,
+                                            result.getResult().toString());
+                        }
+                    }
+                })
                 .addOnFailureListener(Throwable::printStackTrace);
-    }
 
+    }
 }
