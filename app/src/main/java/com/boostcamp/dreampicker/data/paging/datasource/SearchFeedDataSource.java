@@ -2,7 +2,7 @@ package com.boostcamp.dreampicker.data.paging.datasource;
 
 import android.annotation.SuppressLint;
 
-import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 
@@ -12,36 +12,38 @@ import androidx.paging.DataSource;
 import androidx.paging.PageKeyedDataSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class SearchFeedDataSource extends PageKeyedDataSource<Integer, Feed> {
+public class SearchFeedDataSource extends PageKeyedDataSource<Integer, LegacyFeed> {
 
     @NonNull
     private FeedRepository repository;
     @NonNull
-    private String userId;
+    private String searchKey;
 
     private boolean isPageEnd = false;
 
     private SearchFeedDataSource(@NonNull FeedRepository repository,
-                                 @NonNull String userId) {
+                                 @NonNull String searchKey) {
         this.repository = repository;
-        this.userId = userId;
+        this.searchKey = searchKey;
     }
 
     @SuppressLint("CheckResult")
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params,
-                            @NonNull LoadInitialCallback<Integer, Feed> callback) {
+                            @NonNull LoadInitialCallback<Integer, LegacyFeed> callback) {
 
-        PagedListResponse<Feed> response = repository.addProfileFeedList(userId, 1, params.requestedLoadSize)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(error -> {})
-                .blockingGet();
+        PagedListResponse<LegacyFeed> response =
+                repository.addSearchFeedList(searchKey, 1, params.requestedLoadSize)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError(error -> {
+                        })
+                        .blockingGet();
 
         callback.onResult(response.getItemList(),
                 response.getDisplay(),
                 response.getStart() + response.getDisplay());
 
-        if(response.getDisplay() < params.requestedLoadSize){
+        if (response.getDisplay() < params.requestedLoadSize) {
             isPageEnd = true;
         }
     }
@@ -49,54 +51,54 @@ public class SearchFeedDataSource extends PageKeyedDataSource<Integer, Feed> {
     @SuppressLint("CheckResult")
     @Override
     public void loadBefore(@NonNull LoadParams<Integer> params,
-                           @NonNull LoadCallback<Integer, Feed> callback) {
+                           @NonNull LoadCallback<Integer, LegacyFeed> callback) {
         // ignore
     }
 
     @SuppressLint("CheckResult")
     @Override
     public void loadAfter(@NonNull LoadParams<Integer> params,
-                          @NonNull LoadCallback<Integer, Feed> callback) {
+                          @NonNull LoadCallback<Integer, LegacyFeed> callback) {
 
-        if(!isPageEnd) {
-            PagedListResponse<Feed> response = repository.addProfileFeedList(userId, params.key, params.requestedLoadSize)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnError(error -> {
-                    })
-                    .blockingGet();
+        if (!isPageEnd) {
+            PagedListResponse<LegacyFeed> response =
+                    repository.addProfileFeedList(searchKey, params.key, params.requestedLoadSize)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnError(error -> {
+                            })
+                            .blockingGet();
 
             callback.onResult(response.getItemList(),
                     params.key + response.getDisplay());
 
-            if(response.getDisplay() < params.requestedLoadSize){
+            if (response.getDisplay() < params.requestedLoadSize) {
                 isPageEnd = true;
             }
         }
     }
 
 
-    public static class Factory extends DataSource.Factory<Integer, Feed> {
+    public static class Factory extends DataSource.Factory<Integer, LegacyFeed> {
 
         @NonNull
         private final FeedRepository repository;
         @NonNull
-        private final String userId;
+        private final String searchKey;
 
         public Factory(@NonNull FeedRepository repository,
-                       @NonNull String userId) {
+                       @NonNull String searchKey) {
             this.repository = repository;
-            this.userId = userId;
+            this.searchKey = searchKey;
         }
 
-        // TODO. liveData.postValue() 왜 필요한지 알아보기
-        private MutableLiveData<SearchFeedDataSource> liveData =
+        public MutableLiveData<SearchFeedDataSource> sourceLiveData =
                 new MutableLiveData<>();
 
         @NonNull
         @Override
-        public DataSource<Integer, Feed> create() {
-            SearchFeedDataSource source = new SearchFeedDataSource(repository, userId);
-            liveData.postValue(source);
+        public DataSource<Integer, LegacyFeed> create() {
+            SearchFeedDataSource source = new SearchFeedDataSource(repository, searchKey);
+            sourceLiveData.postValue(source);
             return source;
         }
     }

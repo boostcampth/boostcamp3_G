@@ -6,7 +6,7 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.databinding.ItemFeedBinding;
 import com.boostcamp.dreampicker.utils.Constant;
 import com.sackcentury.shinebuttonlib.ShineButton;
@@ -24,7 +24,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         binding = DataBindingUtil.bind(itemView);
     }
 
-    void bindTo(@NonNull Feed feed) {
+    void bindTo(@NonNull LegacyFeed feed) {
         binding.setFeed(feed);
         binding.ivFeedImageLeft.setTag(R.id.iv_feed_image_left, feed.getId());
         binding.ivFeedImageRight.setTag(R.id.iv_feed_image_right, feed.getId());
@@ -35,7 +35,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         return binding;
     }
 
-    void startVoteAnimation(Context context, @Constant.VoteFlag int flag) {
+    void startVoteAnimation(Context context, @Constant.Selection int flag) {
         final int size = context.getResources().getDimensionPixelSize(R.dimen.vote_icon_size);
 
         final ShineButton button = binding.sbSelector;
@@ -50,10 +50,10 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
                 params.topToBottom = R.id.tv_feed_content;
                 params.bottomToTop = R.id.vote_result;
 
-                if(flag == Constant.LEFT) {
+                if(flag == Constant.A) {
                     params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
                     params.endToStart = R.id.guideline_feed_image_ho;
-                } else if(flag == Constant.RIGHT) {
+                } else if(flag == Constant.B) {
                     params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
                     params.startToEnd = R.id.guideline_feed_image_ho;
                 }

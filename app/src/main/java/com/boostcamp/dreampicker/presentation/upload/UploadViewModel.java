@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.boostcamp.dreampicker.data.model.Feed;
-import com.boostcamp.dreampicker.data.model.Image;
+import com.boostcamp.dreampicker.data.model.LegacyFeed;
+import com.boostcamp.dreampicker.data.model.LegacyImage;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 import com.boostcamp.dreampicker.utils.Constant;
@@ -26,7 +26,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class UploadViewModel extends BaseViewModel {
-    private MutableLiveData<Map<String, Image>> imageMap = new MutableLiveData<>();
+    private MutableLiveData<Map<String, LegacyImage>> imageMap = new MutableLiveData<>();
     private ObservableField<String> content = new ObservableField<>();
 
     private MutableLiveData<Boolean> validate = new MutableLiveData<>();
@@ -36,25 +36,25 @@ public class UploadViewModel extends BaseViewModel {
     UploadViewModel(@NonNull FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
 
-        final Image image = new Image();
-        final Map<String, Image> map = new HashMap<>();
+        final LegacyImage image = new LegacyImage();
+        final Map<String, LegacyImage> map = new HashMap<>();
         map.put(Constant.IMAGE_LEFT, image);
         map.put(Constant.IMAGE_RIGHT, image);
         imageMap.setValue(map);
     }
     void setImage(@NonNull Uri uri, @Constant.ImageFlag String flag) {
-        final Map<String, Image> imageMap = this.imageMap.getValue();
+        final Map<String, LegacyImage> imageMap = this.imageMap.getValue();
         if (imageMap != null) {
-            final Image image = new Image(IdCreator.createImageId(), uri, new ArrayList<>());
+            final LegacyImage image = new LegacyImage(IdCreator.createImageId(), uri, new ArrayList<>());
             imageMap.put(flag, image);
             this.imageMap.postValue(imageMap);
         }
     }
 
     void setTag(@NonNull String tag, @Constant.ImageFlag String flag) {
-        final Map<String, Image> imageMap = this.imageMap.getValue();
+        final Map<String, LegacyImage> imageMap = this.imageMap.getValue();
         if(imageMap != null) {
-            final Image image = imageMap.get(flag);
+            final LegacyImage image = imageMap.get(flag);
             if(image != null) {
                 image.getTagList().add(tag);
                 imageMap.put(flag, image);
@@ -63,9 +63,9 @@ public class UploadViewModel extends BaseViewModel {
     }
 
     void deleteTag(@NonNull String tag, @Constant.ImageFlag String flag) {
-        final Map<String, Image> imageMap = this.imageMap.getValue();
+        final Map<String, LegacyImage> imageMap = this.imageMap.getValue();
         if(imageMap != null) {
-            final Image image = imageMap.get(flag);
+            final LegacyImage image = imageMap.get(flag);
             if(image != null) {
                 image.getTagList().remove(tag);
             }
@@ -75,11 +75,11 @@ public class UploadViewModel extends BaseViewModel {
     // Todo : Firebase에 업로드 연동 필요
     // Todo : 유저 정보 가져오는법 파악 필요
     void upload() {
-        final Map<String, Image> imageMap = this.imageMap.getValue();
+        final Map<String, LegacyImage> imageMap = this.imageMap.getValue();
 
         if(imageMap != null) {
-            final Image leftImage = imageMap.get(Constant.IMAGE_LEFT);
-            final Image rightImage = imageMap.get(Constant.IMAGE_RIGHT);
+            final LegacyImage leftImage = imageMap.get(Constant.IMAGE_LEFT);
+            final LegacyImage rightImage = imageMap.get(Constant.IMAGE_RIGHT);
 
             if(leftImage != null && rightImage != null &&
                     !TextUtils.isEmpty(leftImage.getId()) &&
@@ -101,8 +101,8 @@ public class UploadViewModel extends BaseViewModel {
 
     @NonNull
     @SuppressLint("SimpleDateFormat")
-    private Feed createFeed(@NonNull final Map<String, Image> imageMap) {
-        final Feed feed = new Feed();
+    private LegacyFeed createFeed(@NonNull final Map<String, LegacyImage> imageMap) {
+        final LegacyFeed feed = new LegacyFeed();
         feed.setId(IdCreator.createFeedId());
         feed.setUser(FirebaseManager.getCurrentUser());
         feed.setContent(content.get());
@@ -112,7 +112,7 @@ public class UploadViewModel extends BaseViewModel {
         return feed;
     }
 
-    public LiveData<Map<String, Image>> getImageMap() {
+    public LiveData<Map<String, LegacyImage>> getImageMap() {
         return imageMap;
     }
 

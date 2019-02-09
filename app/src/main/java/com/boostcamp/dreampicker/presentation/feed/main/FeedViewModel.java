@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
-import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
@@ -18,7 +18,7 @@ public class FeedViewModel extends BaseViewModel {
     private final FeedRepository repository;
 
     @NonNull
-    private MutableLiveData<List<Feed>> feedList = new MutableLiveData<>();
+    private MutableLiveData<List<LegacyFeed>> feedList = new MutableLiveData<>();
 
     @NonNull
     private MutableLiveData<Throwable> error = new MutableLiveData<>();
@@ -29,7 +29,7 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     void vote(@NonNull final VoteResult result) {
-        final Feed feed = new Feed(result.getFeed());
+        final LegacyFeed feed = new LegacyFeed(result.getFeed());
         final int flag = result.getFlag();
 
         if (feed.getVoteFlag() != Constant.NONE) {
@@ -51,7 +51,7 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public LiveData<List<Feed>> getFeedList() {
+    public LiveData<List<LegacyFeed>> getFeedList() {
         return feedList;
     }
 

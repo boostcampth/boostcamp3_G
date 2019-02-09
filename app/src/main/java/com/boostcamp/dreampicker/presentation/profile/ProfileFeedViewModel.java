@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.presentation.profile;
 
-import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.paging.datasource.ProfileFeedDataSource;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
@@ -23,7 +23,7 @@ public class ProfileFeedViewModel extends BaseViewModel {
     private final int PAGE_SIZE = 20;
 
     @NonNull
-    public LiveData<PagedList<Feed>> feedPagedList;
+    public LiveData<PagedList<LegacyFeed>> feedPagedList;
     @NonNull
     private MutableLiveData<Throwable> error = new MutableLiveData<>();
 

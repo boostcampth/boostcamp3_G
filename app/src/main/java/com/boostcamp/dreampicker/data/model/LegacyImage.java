@@ -5,30 +5,30 @@ import android.net.Uri;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Image {
+public class LegacyImage {
     private String id; // 이미지 아이디
     private Uri uri; // 업로드 할때 들어가는 uri
     private int image; // 임시 데이터
     private String imageUrl; // 파이어베이스로부터 받아오는 경로
     private List<String> tagList; // 태그 리스트
 
-    public Image() {
+    public LegacyImage() {
         this.tagList = new ArrayList<>();
     }
 
-    public Image(String id, String imageUrl, List<String> tagList) {
+    public LegacyImage(String id, String imageUrl, List<String> tagList) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.tagList = tagList;
     }
 
-    public Image(String id, Uri uri, List<String> tagList) {
+    public LegacyImage(String id, Uri uri, List<String> tagList) {
         this.id = id;
         this.uri = uri;
         this.tagList = tagList;
     }
 
-    public Image(String id, int image, List<String> tagList) {
+    public LegacyImage(String id, int image, List<String> tagList) {
         this.id = id;
         this.image = image;
         this.tagList = tagList;

@@ -1,143 +1,74 @@
 package com.boostcamp.dreampicker.data.model;
 
-import java.util.Map;
-import java.util.Objects;
+import java.util.Date;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class Feed {
-    private String id; // 피드 아이디
-    private Map<String, Image> imageMap; // 피드 이미지 리스트
-    private User user; // 업로더
-    private String content; // 본문
-    private String date; // 업로드 일자
+    @NonNull
+    private final String id; // 피드 ID : 해당 피드를 구별할 수 있는 키로 사용됩니다.
+    @NonNull
+    private final User user; // 작성자 정보
+    @NonNull
+    private final String content; // 본문
+    @NonNull
+    private final Date date; // 업로드 일자
+    @NonNull
+    private final VoteSelectionItem itemA; // 1번 이미지 정보
+    @NonNull
+    private final VoteSelectionItem itemB; // 2번 이미지 정보
+    @Nullable
+    private String selectionId; // 본인 투표 위치
 
-    private int leftCount; // L 투표 수
-    private int rightCount; // R 투표 수
-    private int voteFlag; // 투표 합
-
-    // Todo : 아직 미정
-    private boolean isEnded;
-
-    public Feed() { }
-
-    public Feed(Feed feed) {
-        this.id = feed.id;
-        this.imageMap = feed.imageMap;
-        this.user = feed.user;
-        this.content = feed.content;
-        this.date = feed.date;
-        this.isEnded = feed.isEnded;
-        this.leftCount = feed.leftCount;
-        this.rightCount = feed.rightCount;
-        this.voteFlag = feed.voteFlag;
-    }
-
-    public Feed(String id,
-                Map<String, Image> imageMap,
-                User user,
-                String content,
-                String date,
-                boolean isEnded) {
-
+    public Feed(@NonNull String id,
+                @NonNull User user,
+                @NonNull String content,
+                @NonNull Date date,
+                @NonNull VoteSelectionItem itemA,
+                @NonNull VoteSelectionItem itemB,
+                @Nullable String selectionId) {
         this.id = id;
-        this.imageMap = imageMap;
         this.user = user;
         this.content = content;
         this.date = date;
-        this.isEnded = isEnded;
-        this.leftCount = 3;
-        this.rightCount = 4;
+        this.itemA = itemA;
+        this.itemB = itemB;
+        this.selectionId = selectionId;
     }
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Map<String, Image> getImageMap() {
-        return imageMap;
-    }
-
-    public void setImageMap(Map<String, Image> imageMap) {
-        this.imageMap = imageMap;
-    }
-
+    @NonNull
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
+    @NonNull
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getDate() {
+    @NonNull
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    @NonNull
+    public VoteSelectionItem getItemA() {
+        return itemA;
     }
 
-    public boolean isEnded() {
-        return isEnded;
+    @NonNull
+    public VoteSelectionItem getItemB() {
+        return itemB;
     }
 
-    public void setEnded(boolean ended) {
-        isEnded = ended;
-    }
-
-    public int getLeftCount() {
-        return leftCount;
-    }
-
-    public void setLeftCount(int leftCount) {
-        this.leftCount = leftCount;
-    }
-
-    public int getRightCount() {
-        return rightCount;
-    }
-
-    public void setRightCount(int rightCount) {
-        this.rightCount = rightCount;
-    }
-
-    public int getVoteFlag() {
-        return voteFlag;
-    }
-
-    public void setVoteFlag(int voteFlag) {
-        this.voteFlag = voteFlag;
-    }
-
-    public int getVoteCount() {
-        return leftCount + rightCount;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final Feed feed = (Feed) o;
-        return voteFlag == feed.voteFlag;
-    }
-
-    public int hashCode() {
-        return Objects.hash(voteFlag);
+    @Nullable
+    public String getSelectionId() {
+        return selectionId;
     }
 }
