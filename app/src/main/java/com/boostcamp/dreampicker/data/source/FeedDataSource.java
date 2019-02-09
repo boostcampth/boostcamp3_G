@@ -16,7 +16,7 @@ public interface FeedDataSource {
 
     // [피드공통] 투표하기 / 투표변경 / 투표취소
     @NonNull
-    Completable updateFeedVote(@NonNull String feedId, @Constant.VoteFlag int voteFlag);
+    Completable updateFeedVote(@NonNull String feedId, @Constant.Selection int voteFlag);
 
     // [검색] 검색 결과 피드 리스트 페이징
     @NonNull

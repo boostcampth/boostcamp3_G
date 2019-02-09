@@ -53,11 +53,11 @@ public class FeedAdapter extends ListAdapter<FeedPrevious, FeedViewHolder> {
 
         holder.getBinding().ivFeedImageLeft.setOnDragListener(new VoteDragListener(
                 () -> onVoteListener.onVote(
-                        new VoteResult(getItem(holder.getAdapterPosition()), Constant.LEFT))));
+                        new VoteResult(getItem(holder.getAdapterPosition()), Constant.A))));
 
         holder.getBinding().ivFeedImageRight.setOnDragListener(new VoteDragListener(
                 () -> onVoteListener.onVote(
-                        new VoteResult(getItem(holder.getAdapterPosition()), Constant.RIGHT))));
+                        new VoteResult(getItem(holder.getAdapterPosition()), Constant.B))));
     }
 
     @NonNull

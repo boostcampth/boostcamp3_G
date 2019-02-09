@@ -35,7 +35,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         return binding;
     }
 
-    void startVoteAnimation(Context context, @Constant.VoteFlag int flag) {
+    void startVoteAnimation(Context context, @Constant.Selection int flag) {
         final int size = context.getResources().getDimensionPixelSize(R.dimen.vote_icon_size);
 
         final ShineButton button = binding.sbSelector;
@@ -50,10 +50,10 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
                 params.topToBottom = R.id.tv_feed_content;
                 params.bottomToTop = R.id.vote_result;
 
-                if(flag == Constant.LEFT) {
+                if(flag == Constant.A) {
                     params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
                     params.endToStart = R.id.guideline_feed_image_ho;
-                } else if(flag == Constant.RIGHT) {
+                } else if(flag == Constant.B) {
                     params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
                     params.startToEnd = R.id.guideline_feed_image_ho;
                 }

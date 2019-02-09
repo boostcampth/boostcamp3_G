@@ -51,7 +51,7 @@ public class BindingUtil {
     }
 
     @BindingAdapter({"vote"})
-    public static void doVote(@NonNull CheckBox checkBox, @Constant.VoteFlag int flag) {
+    public static void doVote(@NonNull CheckBox checkBox, @Constant.Selection int flag) {
         if(!checkBox.isChecked() && flag != Constant.NONE) {
             checkBox.performClick();
         }

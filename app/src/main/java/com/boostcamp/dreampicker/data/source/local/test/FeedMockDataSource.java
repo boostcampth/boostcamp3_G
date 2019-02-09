@@ -117,21 +117,21 @@ public class FeedMockDataSource implements FeedDataSource {
 
     @Override
     @NonNull
-    public Completable updateFeedVote(@NonNull String feedId, @Constant.VoteFlag int voteFlag) {
+    public Completable updateFeedVote(@NonNull String feedId, @Constant.Selection int voteFlag) {
         for (int i = 0; i < feedList.size(); i++) {
             final FeedPrevious feed = feedList.get(i);
             if (feed.getId().equals(feedId)) {
                 final FeedPrevious f = new FeedPrevious(feed);
                 Log.d("Melon", feed.getVoteFlag() + " -> " + voteFlag);
                 if (f.getVoteFlag() == Constant.NONE) {
-                    if (voteFlag == Constant.LEFT) {
+                    if (voteFlag == Constant.A) {
                         f.setLeftCount(f.getLeftCount() + 1);
                     } else {
                         f.setRightCount(f.getRightCount() + 1);
                     }
 
                 } else {
-                    if (voteFlag == Constant.LEFT) {
+                    if (voteFlag == Constant.A) {
                         f.setLeftCount(f.getLeftCount() + 1);
                         f.setRightCount(f.getRightCount() - 1);
                     } else {

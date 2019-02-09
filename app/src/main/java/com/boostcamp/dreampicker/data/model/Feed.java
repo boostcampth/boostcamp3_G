@@ -1,5 +1,7 @@
 package com.boostcamp.dreampicker.data.model;
 
+import com.boostcamp.dreampicker.utils.Constant;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -39,8 +41,7 @@ public class Feed {
                 @NonNull String date,
                 int countA,
                 int countB,
-                int selection) {
-
+                @Constant.Selection int selection) {
         this.id = id;
         this.imageUrlA = imageUrlA;
         this.imageUrlB = imageUrlB;
@@ -102,6 +103,7 @@ public class Feed {
         return countB;
     }
 
+    @Constant.Selection
     public int getSelection() {
         return selection;
     }
