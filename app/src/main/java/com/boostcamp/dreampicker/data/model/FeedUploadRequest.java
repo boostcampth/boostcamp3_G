@@ -14,10 +14,10 @@ public class FeedUploadRequest {
     private String content; // 작성글
 
     @NonNull
-    private String imageUrlA; // 1번 이미지 URL
+    private String imagePathA; // 1번 이미지 Path
 
     @NonNull
-    private String imageUrlB; // 2번 이미지 URL
+    private String imagePathB; // 2번 이미지 Path
 
     @Nullable
     private List<String> tagListA; // 1번 이미지 태그 리스트
@@ -27,14 +27,14 @@ public class FeedUploadRequest {
 
     public FeedUploadRequest(@NonNull String userId,
                              @NonNull String content,
-                             @NonNull String imageUrlA,
-                             @NonNull String imageUrlB,
+                             @NonNull String imagePathA,
+                             @NonNull String imagePathB,
                              @Nullable List<String> tagListA,
                              @Nullable List<String> tagListB) {
         this.userId = userId;
         this.content = content;
-        this.imageUrlA = imageUrlA;
-        this.imageUrlB = imageUrlB;
+        this.imagePathA = imagePathA;
+        this.imagePathB = imagePathB;
         this.tagListA = tagListA;
         this.tagListB = tagListB;
     }
@@ -50,13 +50,13 @@ public class FeedUploadRequest {
     }
 
     @NonNull
-    public String getImageUrlA() {
-        return imageUrlA;
+    public String getimagePathA() {
+        return imagePathA;
     }
 
     @NonNull
-    public String getImageUrlB() {
-        return imageUrlB;
+    public String getimagePathB() {
+        return imagePathB;
     }
 
     @Nullable
