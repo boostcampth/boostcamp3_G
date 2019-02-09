@@ -31,12 +31,18 @@ public class FeedUploadRequest {
                              @NonNull String imagePathB,
                              @Nullable List<String> tagListA,
                              @Nullable List<String> tagListB) {
+
         this.userId = userId;
         this.content = content;
         this.imagePathA = imagePathA;
         this.imagePathB = imagePathB;
         this.tagListA = tagListA;
         this.tagListB = tagListB;
+    }
+
+    @NonNull
+    public String getUserId() {
+        return userId;
     }
 
     @NonNull
@@ -50,12 +56,12 @@ public class FeedUploadRequest {
     }
 
     @NonNull
-    public String getimagePathA() {
+    public String getImagePathA() {
         return imagePathA;
     }
 
     @NonNull
-    public String getimagePathB() {
+    public String getImagePathB() {
         return imagePathB;
     }
 
