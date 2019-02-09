@@ -1,11 +1,13 @@
 package com.boostcamp.dreampicker.data.repository;
 
 import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 
 import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public interface FeedRepository {
