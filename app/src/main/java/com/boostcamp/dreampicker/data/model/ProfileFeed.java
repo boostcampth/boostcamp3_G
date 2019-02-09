@@ -8,20 +8,20 @@ public class ProfileFeed {
     @NonNull
     private final String content; // 내용
     @NonNull
-    private final String imageAUrl; // 첫번째 이미지 URL
+    private final String imageUrlA; // 첫번째 이미지 URL
     @NonNull
-    private final String imageBUrl; // 두번째 이미지 URL
     private final boolean isEnded; // 투표 마감 여부
+    private final String imageUrlB; // 두번째 이미지 URL
 
     public ProfileFeed(@NonNull String id,
                        @NonNull String content,
-                       @NonNull String imageAUrl,
-                       @NonNull String imageBUrl,
+                       @NonNull String imageUrlA,
+                       @NonNull String imageUrlB,
                        boolean isEnded) {
         this.id = id;
         this.content = content;
-        this.imageAUrl = imageAUrl;
-        this.imageBUrl = imageBUrl;
+        this.imageUrlA = imageUrlA;
+        this.imageUrlB = imageUrlB;
         this.isEnded = isEnded;
     }
 
@@ -36,13 +36,9 @@ public class ProfileFeed {
     }
 
     @NonNull
-    public String getImageAUrl() {
-        return imageAUrl;
     }
 
     @NonNull
-    public String getImageBUrl() {
-        return imageBUrl;
     }
 
     public boolean isEnded() {
