@@ -7,26 +7,28 @@ import androidx.annotation.Nullable;
 
 public class FeedItem {
     @NonNull
-    private final String id; // 피드 ID : 해당 피드를 구별할 수 있는 키로 사용됩니다.
+    private String id; // 피드 ID : 해당 피드를 구별할 수 있는 키로 사용됩니다.
     @NonNull
-    private final String imageUrlA; // 1번 이미지 URL
+    private String imageUrlA; // 1번 이미지 URL
     @NonNull
-    private final String imageUrlB; // 2번 이미지 URL
+    private String imageUrlB; // 2번 이미지 URL
     @Nullable
-    private final List<String> tagA; // 1번 이미지 태그 리스트
+    private List<String> tagA; // 1번 이미지 태그 리스트
     @Nullable
-    private final List<String> tagB; // 2번 이미지 태그 리스트
+    private List<String> tagB; // 2번 이미지 태그 리스트
     @NonNull
-    private final UserItem userItem; // 작성자 정보
+    private UserItem userItem; // 작성자 정보
     @NonNull
-    private final String content; // 본문
+    private String content; // 본문
     @NonNull
-    private final String date; // 업로드 일자
+    private String date; // 업로드 일자
 
-    private final int countA; // 1번 투표 수
-    private final int countB; // 2번 투표 수
-    private final int totalCount; // 총합 투표 수
-    private final int voteFlag; // 본인 투표 위치
+    private int countA; // 1번 투표 수
+    private int countB; // 2번 투표 수
+    private int totalCount; // 총합 투표 수
+    private int voteFlag; // 본인 투표 위치
+
+    public FeedItem() { }
 
     public FeedItem(@NonNull String id,
                     @NonNull String imageUrlA,

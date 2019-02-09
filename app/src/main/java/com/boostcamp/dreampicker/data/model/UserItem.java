@@ -5,11 +5,13 @@ import androidx.annotation.Nullable;
 
 public class UserItem {
     @NonNull
-    private final String id; // 유저 아이디
+    private String id; // 유저 아이디
     @NonNull
-    private final String name; // 유저 이름
+    private  String name; // 유저 이름
     @Nullable
     private String profileImageUrl ; // 프로필 이미지 URL
+
+    public UserItem() { }
 
     public UserItem(@NonNull String id,
                     @NonNull String name,
