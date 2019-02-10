@@ -6,10 +6,9 @@ import java.util.Date;
 import java.util.Map;
 
 public class FeedRemoteData {
-    private String id;
     private FeedItemRemoteData itemA;
     private FeedItemRemoteData itemB;
-    private User user;
+    private User writer;
     private String content;
     private Date date;
     private Map<String, String> votedUserMap;
@@ -17,26 +16,20 @@ public class FeedRemoteData {
 
     public FeedRemoteData() { }
 
-    public FeedRemoteData(String id,
-                          FeedItemRemoteData itemA,
+    public FeedRemoteData(FeedItemRemoteData itemA,
                           FeedItemRemoteData itemB,
-                          User user,
+                          User writer,
                           String content,
                           Map<String, String> votedUserMap,
                           Date date,
                           boolean isEnded) {
-        this.id = id;
         this.itemA = itemA;
         this.itemB = itemB;
-        this.user = user;
+        this.writer = writer;
         this.content = content;
         this.date = date;
         this.votedUserMap = votedUserMap;
         this.isEnded = isEnded;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public FeedItemRemoteData getItemA() {
@@ -47,8 +40,8 @@ public class FeedRemoteData {
         return itemB;
     }
 
-    public User getUser() {
-        return user;
+    public User getWriter() {
+        return writer;
     }
 
     public String getContent() {

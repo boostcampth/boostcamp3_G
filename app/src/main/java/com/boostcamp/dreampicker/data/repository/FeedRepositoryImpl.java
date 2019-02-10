@@ -76,8 +76,8 @@ public class FeedRepositoryImpl implements FeedRepository {
                                             }
                                             final FeedRemoteData data = snapshots.toObject(FeedRemoteData.class);
 
-                                            if (followerList.contains(data.getUser().getId())) { // 팔로워 확인
-                                                feedList.add(FeedResponseMapper.toFeed(data));
+                                            if (followerList.contains(data.getWriter().getId())) { // 팔로워 확인
+                                                feedList.add(FeedResponseMapper.toFeed(snapshots.getId(), data));
                                                 count++;
                                             }
                                         }
@@ -122,7 +122,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                             if(task.isSuccessful() && task.getResult() != null) {
                                 final FeedRemoteData data = task.getResult().toObject(FeedRemoteData.class);
                                 if(data != null) {
-                                    emitter.onSuccess(FeedResponseMapper.toFeed(data));
+                                    emitter.onSuccess(FeedResponseMapper.toFeed(feedId, data));
                                 } else {
                                     emitter.onError(task.getException());
                                 }
