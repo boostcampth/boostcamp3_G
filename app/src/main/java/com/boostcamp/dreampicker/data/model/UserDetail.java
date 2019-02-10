@@ -63,4 +63,17 @@ public class UserDetail {
     public boolean isFollow() {
         return isFollow;
     }
+
+    @Override
+    public String toString() {
+        return "UserDetail{" + '\n' +
+                "id='" + id + '\n' +
+                ", name='" + name + '\n' +
+                ", profileImageUrl='" + profileImageUrl + '\n' +
+                ", feedCount=" + feedCount + '\n' +
+                ", followerCount=" + followerCount + '\n' +
+                ", followingCount=" + followingCount + '\n' +
+                ", isFollow=" + isFollow + '\n' +
+                '}' + '\n';
+    }
 }

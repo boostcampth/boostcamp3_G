@@ -47,4 +47,15 @@ public class ProfileFeed {
     public void setEnded(boolean ended) {
         isEnded = ended;
     }
+
+    @Override
+    public String toString() {
+        return "ProfileFeed{" + '\n' +
+                "id='" + id + '\n' +
+                ", content='" + content + '\n' +
+                ", imageUrlA='" + imageUrlA + '\n' +
+                ", imageUrlB='" + imageUrlB + '\n' +
+                ", isEnded=" + isEnded +
+                '}' + '\n';
+    }
 }
