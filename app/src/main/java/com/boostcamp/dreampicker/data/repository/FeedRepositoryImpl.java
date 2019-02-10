@@ -4,22 +4,16 @@ import android.net.Uri;
 
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.source.firebase.model.FeedRemoteData;
-import com.boostcamp.dreampicker.data.source.firebase.model.FeedRemoteVoteItem;
-import com.boostcamp.dreampicker.utils.FirebaseManager;
-import com.boostcamp.dreampicker.utils.IdCreator;
+import com.boostcamp.dreampicker.data.source.firebase.model.mapper.FeedMapper;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.Date;
-import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
 
 public class FeedRepositoryImpl implements FeedRepository {
-
 
     private static final String COLLECTION_FEED = "feed";
     private static final String FIELD_FEED_VOTESELECTIONITEM_IMAGEURL = "voteSelectionItem.imageURL";
@@ -48,13 +42,13 @@ public class FeedRepositoryImpl implements FeedRepository {
     public Completable uploadFeed(@NonNull final FeedUploadRequest uploadFeed) {
         return Completable.create(emitter -> {
 
-            FeedRemoteData feedRemoteData = feedToRemote(uploadFeed);
+            FeedRemoteData feedRemoteData = FeedMapper.setFeed(uploadFeed);
             uploadImageStorage(feedRemoteData, Uri.parse(uploadFeed.getImagePathA()));
             uploadImageStorage(feedRemoteData, Uri.parse(uploadFeed.getImagePathB()));
 
             db.collection(COLLECTION_FEED)
                     .document(feedRemoteData.getId())
-                    .set(uploadFeed)
+                    .set(feedRemoteData)
                     .addOnSuccessListener(documentReference -> emitter.onComplete())
                     .addOnFailureListener(Throwable::printStackTrace);
 
@@ -72,29 +66,18 @@ public class FeedRepositoryImpl implements FeedRepository {
             } else {
                 throw task.getException();
             }
-        }).addOnCompleteListener(task1 -> {
-            if (task1.isSuccessful()) {
-                if (task1.getResult() != null) {
+        }).addOnCompleteListener(result -> {
+            if (result.isSuccessful()) {
+                if (result.getResult() != null) {
                     db.collection(COLLECTION_FEED)
                             .document(feed.getId())
-                            .update(FIELD_FEED_VOTESELECTIONITEM_IMAGEURL, task1.getResult().toString());
+                            .update(FIELD_FEED_VOTESELECTIONITEM_IMAGEURL, result.getResult().toString());
                 }
-            } else {
             }
-        });
+        })
+                .addOnFailureListener(Throwable::printStackTrace);
 
     }
 
-    private FeedRemoteData feedToRemote(FeedUploadRequest feedUploadRequest) {
-
-        return new FeedRemoteData(IdCreator.createFeedId(),
-                new FeedRemoteVoteItem(IdCreator.createImageId(), feedUploadRequest.getImagePathA(), feedUploadRequest.getTagListA()),
-                new FeedRemoteVoteItem(IdCreator.createImageId(), feedUploadRequest.getImagePathB(), feedUploadRequest.getTagListB()),
-                FirebaseManager.getCurrentUser(),
-                feedUploadRequest.getContent(),
-                new HashMap<String, String>(),
-                new Date(),
-                false);
-    }
 
 }
