@@ -29,7 +29,6 @@ public class UploadViewModel extends BaseViewModel {
 
     UploadViewModel(@NonNull FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
-
     }
 
     void upload() {
