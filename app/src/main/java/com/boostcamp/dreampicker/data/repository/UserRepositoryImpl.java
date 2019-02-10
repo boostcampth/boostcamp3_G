@@ -38,11 +38,12 @@ public class UserRepositoryImpl implements UserRepository {
                 firestore.collection(COLLECTION_USER).document(userId)
                         .get()
                         .addOnSuccessListener(task -> {
-                            if(task.exists()){
-                                final UserDetailEntity response = task.toObject(UserDetailEntity.class);
-                                emitter.onSuccess(response == null ? null : UserDetailMapper.toUserDetail(response));
+                            final UserDetailEntity response = task.exists()
+                                    ? task.toObject(UserDetailEntity.class) : null;
+                            if (response != null) {
+                                emitter.onSuccess(UserDetailMapper.toUserDetail(response));
                             } else {
-                                emitter.onSuccess(null);
+                                emitter.onError(new IllegalArgumentException());
                             }
                         })
                         .addOnFailureListener(emitter::onError));

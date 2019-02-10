@@ -10,6 +10,7 @@ public class UserDetailMapper {
     @NonNull
     public static UserDetail toUserDetail(@NonNull UserDetailEntity response){
 
+        // TODO. 팔로우 기능 구현 후 isFollow 정보 리턴
         return new UserDetail(
                 response.getId(),
                 response.getName(),
