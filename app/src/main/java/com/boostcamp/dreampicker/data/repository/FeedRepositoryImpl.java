@@ -106,7 +106,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful() && task.getResult() != null) {
                         final FeedRemoteData data = task.getResult().toObject(FeedRemoteData.class);
-                        if(data != null) {
+                        if(data != null && !data.isEnded()) {
                             emitter.onSuccess(FeedResponseMapper.toFeed(feedId, data));
                         } else {
                             emitter.onError(task.getException());
