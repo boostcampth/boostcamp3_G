@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.common.FeedPrinter;
 import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
@@ -19,11 +18,8 @@ import com.boostcamp.dreampicker.utils.FirebaseManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Date;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -41,12 +37,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
     protected void onCreate(Bundle savedInstanceState) {
         FeedRepositoryImpl repository = FeedRepositoryImpl.getInstance(FirebaseFirestore.getInstance());
 
-/*       repository.getNotEndedFeedList(new Date(), 10)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(list -> FeedPrinter.printFeed(list), e -> e.printStackTrace());*/
-
-/*        repository.vote(FirebaseManager.getCurrentUserId(),"feed-cda3e1be-de33-4ba6-a400-4c041fc7bbf2", "image-9327270a-c3dc-4325-ab75-b3952abd5f1f")
-                    .subscribe(feed -> FeedPrinter.print(feed), e -> e.printStackTrace());*/
 
         super.onCreate(savedInstanceState);
 
