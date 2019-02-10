@@ -9,7 +9,7 @@ public class Feed {
     @NonNull
     private final String id; // 피드 ID : 해당 피드를 구별할 수 있는 키로 사용됩니다.
     @NonNull
-    private final User user; // 작성자 정보
+    private final User writer; // 작성자 정보
     @NonNull
     private final String content; // 본문
     @NonNull
@@ -22,14 +22,14 @@ public class Feed {
     private String selectionId; // 본인 투표 위치
 
     public Feed(@NonNull String id,
-                @NonNull User user,
+                @NonNull User writer,
                 @NonNull String content,
                 @NonNull Date date,
                 @NonNull VoteSelectionItem itemA,
                 @NonNull VoteSelectionItem itemB,
                 @Nullable String selectionId) {
         this.id = id;
-        this.user = user;
+        this.writer = writer;
         this.content = content;
         this.date = date;
         this.itemA = itemA;
@@ -43,8 +43,8 @@ public class Feed {
     }
 
     @NonNull
-    public User getUser() {
-        return user;
+    public User getWriter() {
+        return writer;
     }
 
     @NonNull

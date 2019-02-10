@@ -12,8 +12,8 @@ public class LegacyUserDetail {
     private int followingCount; // 팔로잉 수
     private boolean isFollow; // 내가 이 사람을 팔로우 했는지 여부
 
-    private List<User> followerList; // 해당 유저의 팔로워 리스트
-    private List<User> followingList; // 해당 유저의 팔로잉 리스트
+    private List<LegacyUser> followerList; // 해당 유저의 팔로워 리스트
+    private List<LegacyUser> followingList; // 해당 유저의 팔로잉 리스트
     private List<LegacyFeed> feedList; // 해당 유저의 피드 리스트
 
     public LegacyUserDetail() { }
@@ -100,19 +100,19 @@ public class LegacyUserDetail {
         isFollow = follow;
     }
 
-    public List<User> getFollowerList() {
+    public List<LegacyUser> getFollowerList() {
         return followerList;
     }
 
-    public void setFollowerList(List<User> followerList) {
+    public void setFollowerList(List<LegacyUser> followerList) {
         this.followerList = followerList;
     }
 
-    public List<User> getFollowingList() {
+    public List<LegacyUser> getFollowingList() {
         return followingList;
     }
 
-    public void setFollowingList(List<User> followingList) {
+    public void setFollowingList(List<LegacyUser> followingList) {
         this.followingList = followingList;
     }
 

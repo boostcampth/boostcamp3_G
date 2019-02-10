@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.data.source.remote.firebase;
 
-import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
@@ -68,9 +68,9 @@ public class UserFirebaseService implements UserDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<User>> addProfileFollowingList(@NonNull String userId,
-                                                                   int start,
-                                                                   int display) {
+    public Single<PagedListResponse<LegacyUser>> addProfileFollowingList(@NonNull String userId,
+                                                                         int start,
+                                                                         int display) {
         // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USERDETAIL)
                 .whereEqualTo(FIELD_USER_ID, userId)
@@ -81,9 +81,9 @@ public class UserFirebaseService implements UserDataSource {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         final QuerySnapshot result = Objects.requireNonNull(task.getResult());
-                        List<User> followingList = new ArrayList<>();
+                        List<LegacyUser> followingList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            followingList.add(document.toObject(User.class));
+                            followingList.add(document.toObject(LegacyUser.class));
                         }
                         emitter.onSuccess(new PagedListResponse<>(start, result.size(), followingList));
                     } else {
@@ -94,9 +94,9 @@ public class UserFirebaseService implements UserDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<User>> addProfileFollowerList(@NonNull String userId,
-                                                                  int start,
-                                                                  int display) {
+    public Single<PagedListResponse<LegacyUser>> addProfileFollowerList(@NonNull String userId,
+                                                                        int start,
+                                                                        int display) {
         // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USERDETAIL)
                 .whereEqualTo(FIELD_USER_ID, userId)
@@ -107,9 +107,9 @@ public class UserFirebaseService implements UserDataSource {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         final QuerySnapshot result = Objects.requireNonNull(task.getResult());
-                        List<User> followerList = new ArrayList<>();
+                        List<LegacyUser> followerList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            followerList.add(document.toObject(User.class));
+                            followerList.add(document.toObject(LegacyUser.class));
                         }
                         emitter.onSuccess(new PagedListResponse<>(start, result.size(), followerList));
                     } else {
@@ -121,9 +121,9 @@ public class UserFirebaseService implements UserDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<User>> addSearchUserList(@NonNull String searchKey,
-                                                             int start,
-                                                             int display) {
+    public Single<PagedListResponse<LegacyUser>> addSearchUserList(@NonNull String searchKey,
+                                                                   int start,
+                                                                   int display) {
         // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USER)
                 .whereEqualTo(FIELD_USER_ID, searchKey)
@@ -135,9 +135,9 @@ public class UserFirebaseService implements UserDataSource {
                     if (task.isSuccessful()) {
                         // 결과 리스트
                         final QuerySnapshot result = Objects.requireNonNull(task.getResult());
-                        List<User> userList = new ArrayList<>();
+                        List<LegacyUser> userList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : result) {
-                            userList.add(document.toObject(User.class));
+                            userList.add(document.toObject(LegacyUser.class));
                         }
                         emitter.onSuccess(new PagedListResponse<>(start, result.size(), userList));
                     } else {
@@ -164,7 +164,7 @@ public class UserFirebaseService implements UserDataSource {
 
     @NonNull
     @Override
-    public Single<User> getMyProfile() {
+    public Single<LegacyUser> getMyProfile() {
         //TODO : 유저정보 저장소 확인
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USER)
                 .document(Objects.requireNonNull(FirebaseManager.getCurrentUserId()))
@@ -173,7 +173,7 @@ public class UserFirebaseService implements UserDataSource {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (Objects.requireNonNull(document).exists()) {
-                            emitter.onSuccess(document.toObject(User.class));
+                            emitter.onSuccess(document.toObject(LegacyUser.class));
                         } else {
                             emitter.onError(task.getException());
                         }

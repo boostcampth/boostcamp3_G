@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.presentation.search.user;
 
-import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.paging.datasource.SearchUserDataSource;
 import com.boostcamp.dreampicker.data.paging.repository.SearchUserRepository;
 import com.boostcamp.dreampicker.data.paging.repository.response.PagingSource;
@@ -21,10 +21,10 @@ public class SearchUserViewModel extends BaseViewModel {
     private SearchUserRepository repository;
 
     @NonNull
-    private LiveData<PagingSource<User, SearchUserDataSource>> pagingSource;
+    private LiveData<PagingSource<LegacyUser, SearchUserDataSource>> pagingSource;
 
     @NonNull
-    public LiveData<PagedList<User>> userPagedList;
+    public LiveData<PagedList<LegacyUser>> userPagedList;
     @NonNull
     private MutableLiveData<Throwable> error = new MutableLiveData<>();
 

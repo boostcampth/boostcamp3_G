@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.data.source.repository;
 
-import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.local.test.UserMockDataSource;
@@ -52,9 +52,9 @@ public class UserRepository implements UserDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<User>> addProfileFollowingList(@NonNull String userId,
-                                                                   int start,
-                                                                   int display) {
+    public Single<PagedListResponse<LegacyUser>> addProfileFollowingList(@NonNull String userId,
+                                                                         int start,
+                                                                         int display) {
         if (isTesting) {
             return mockDataSource.addProfileFollowingList(userId, start, display);
         }
@@ -64,9 +64,9 @@ public class UserRepository implements UserDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<User>> addProfileFollowerList(@NonNull String userId,
-                                                                  int start,
-                                                                  int display) {
+    public Single<PagedListResponse<LegacyUser>> addProfileFollowerList(@NonNull String userId,
+                                                                        int start,
+                                                                        int display) {
         if (isTesting) {
             return mockDataSource.addProfileFollowerList(userId, start, display);
         }
@@ -76,9 +76,9 @@ public class UserRepository implements UserDataSource {
 
     @Override
     @NonNull
-    public Single<PagedListResponse<User>> addSearchUserList(@NonNull String searchKey,
-                                                             int start,
-                                                             int display) {
+    public Single<PagedListResponse<LegacyUser>> addSearchUserList(@NonNull String searchKey,
+                                                                   int start,
+                                                                   int display) {
         if (isTesting) {
             return mockDataSource.addSearchUserList(searchKey, start, display);
         }
@@ -99,7 +99,7 @@ public class UserRepository implements UserDataSource {
 
     @NonNull
     @Override
-    public Single<User> getMyProfile() {
+    public Single<LegacyUser> getMyProfile() {
         if (isTesting) {
             return mockDataSource.getMyProfile();
         }

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.source.remote.firebase.UserFirebaseService;
 import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 import com.boostcamp.dreampicker.databinding.FragmentSearchUserBinding;
@@ -57,7 +57,7 @@ public class SearchUserFragment extends BaseFragment<FragmentSearchUserBinding> 
         binding.recyclerSearchUser.setAdapter(adapter);
     }
 
-    private void startUserProfileActivity(User user) {
+    private void startUserProfileActivity(LegacyUser user) {
         // TODO. 유저 프로필 화면 띄우기
     }
 
