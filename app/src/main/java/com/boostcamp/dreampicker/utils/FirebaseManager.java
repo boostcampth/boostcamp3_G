@@ -4,16 +4,13 @@ import com.boostcamp.dreampicker.data.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class FirebaseManager {
-
     @NonNull
     public static String getCurrentUserId() {
-        return Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).toString();
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @Nullable

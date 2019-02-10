@@ -1,7 +1,5 @@
 package com.boostcamp.dreampicker.data.repository;
 
-import android.util.Log;
-
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.model.ProfileFeed;
@@ -16,7 +14,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +21,6 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
 
 public class FeedRepositoryImpl implements FeedRepository {
     private static final String COLLECTION_FEED = "feed";
@@ -54,38 +50,25 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     @Override
-    public Single<List<Feed>> getNotEndedMyFollowerFeedList(@NonNull Date startAfter, int pageSize) {
-        final List<Feed> feedList = new ArrayList<>();
-
-        // Follower 리스트 가져올 스펙이 아직 없기 때문에 임시로 정의
-        return Single.just(Arrays.asList("9N4eQgBFB9PTGR35fehqlMQKFfU2", "Jngb48ofn6U3l2ouOvcVjxiyPjj1"))
-                .subscribeOn(Schedulers.io())
-                .flatMap(followerList ->
-                        Single.create(emitter -> db.collection(COLLECTION_FEED)
-                                .whereEqualTo(FIELD_ENDED, false)
-                                .orderBy(FIELD_USER_DATE, Query.Direction.DESCENDING) // 시간 정렬
-                                .startAfter(startAfter)
-                                .get()
-                                .addOnCompleteListener(task -> {
-                                    if (task.isSuccessful() && task.getResult() != null) {
-                                        int count = 0;
-                                        for (final QueryDocumentSnapshot snapshots : task.getResult()) {
-                                            Log.d("Melon", snapshots.getId());
-                                            if (count >= pageSize) {
-                                                break;
-                                            }
-                                            final FeedRemoteData data = snapshots.toObject(FeedRemoteData.class);
-
-                                            if (followerList.contains(data.getWriter().getId())) { // 팔로워 확인
-                                                feedList.add(FeedResponseMapper.toFeed(snapshots.getId(), data));
-                                                count++;
-                                            }
-                                        }
-                                        emitter.onSuccess(feedList);
-                                    } else {
-                                        emitter.onError(task.getException());
-                                    }
-                                })));
+    public Single<List<Feed>> getNotEndedFeedList(@NonNull Date startAfter, int pageSize) {
+        return Single.create(emitter -> db.collection(COLLECTION_FEED)
+                .whereEqualTo(FIELD_ENDED, false)
+                .orderBy(FIELD_USER_DATE, Query.Direction.DESCENDING) // 시간 정렬
+                .startAfter(startAfter)
+                .limit(pageSize)
+                .get()
+                .addOnCompleteListener(task -> {
+                    final List<Feed> feedList = new ArrayList<>();
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        for (final QueryDocumentSnapshot snapshots : task.getResult()) {
+                            final FeedRemoteData data = snapshots.toObject(FeedRemoteData.class);
+                            feedList.add(FeedResponseMapper.toFeed(snapshots.getId(), data));
+                        }
+                        emitter.onSuccess(feedList);
+                    } else {
+                        emitter.onError(task.getException());
+                    }
+                }));
     }
 
     @NonNull
@@ -108,6 +91,8 @@ public class FeedRepositoryImpl implements FeedRepository {
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         emitter.onComplete();
+                    } else {
+                        emitter.onError(task.getException());
                     }
                 }));
     }
@@ -115,19 +100,19 @@ public class FeedRepositoryImpl implements FeedRepository {
     @NonNull
     @Override
     public Single<Feed> getFeed(@NonNull String feedId) {
-        return Single.create(emitter ->
-                db.collection(COLLECTION_FEED).document(feedId)
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if(task.isSuccessful() && task.getResult() != null) {
-                                final FeedRemoteData data = task.getResult().toObject(FeedRemoteData.class);
-                                if(data != null) {
-                                    emitter.onSuccess(FeedResponseMapper.toFeed(feedId, data));
-                                } else {
-                                    emitter.onError(task.getException());
-                                }
-                            }
-                        }));
+        return Single.create(emitter -> db.collection(COLLECTION_FEED)
+                .document(feedId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful() && task.getResult() != null) {
+                        final FeedRemoteData data = task.getResult().toObject(FeedRemoteData.class);
+                        if(data != null) {
+                            emitter.onSuccess(FeedResponseMapper.toFeed(feedId, data));
+                        } else {
+                            emitter.onError(task.getException());
+                        }
+                    }
+                }));
     }
 
     @NonNull

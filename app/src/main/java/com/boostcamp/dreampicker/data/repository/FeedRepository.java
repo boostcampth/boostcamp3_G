@@ -13,7 +13,7 @@ import io.reactivex.Single;
 
 public interface FeedRepository {
     @NonNull
-    Single<List<Feed>> getNotEndedMyFollowerFeedList(@NonNull final Date startAfter, final int pageSize);
+    Single<List<Feed>> getNotEndedFeedList(@NonNull final Date startAfter, final int pageSize);
 
     @NonNull
     Completable vote(@NonNull final String feedId, @NonNull final String selectionId);
