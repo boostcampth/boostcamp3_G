@@ -11,9 +11,9 @@ import java.util.HashMap;
 
 public class FeedMapper {
 
-    public static FeedRemoteData setFeed(final FeedUploadRequest feedUploadRequest) {
+    public static FeedRemoteData toFeed(final FeedUploadRequest feedUploadRequest) {
 
-        return new FeedRemoteData(IdCreator.createFeedId(),
+        return new FeedRemoteData("",
                 new FeedRemoteVoteItem(IdCreator.createImageId(), feedUploadRequest.getImagePathA(), feedUploadRequest.getTagListA()),
                 new FeedRemoteVoteItem(IdCreator.createImageId(), feedUploadRequest.getImagePathB(), feedUploadRequest.getTagListB()),
                 FirebaseManager.getCurrentUser(),

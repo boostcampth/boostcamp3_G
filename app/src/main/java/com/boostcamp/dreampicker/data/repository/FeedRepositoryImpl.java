@@ -7,6 +7,7 @@ import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.model.ProfileFeed;
 import com.boostcamp.dreampicker.data.source.firebase.model.FeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firebase.model.mapper.FeedMapper;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -26,18 +27,19 @@ public class FeedRepositoryImpl implements FeedRepository {
     private static final String FIELD_FEED_VOTESELECTIONITEM_IMAGEURL = "voteSelectionItem.imageURL";
     private static final String STORAGE_FEED_IMAGE_PATH = "feedImages";
     private final FirebaseFirestore firestore;
+    private final FirebaseStorage storage;
+    private static volatile FeedRepositoryImpl INSTANCE = null;
 
-    private static FeedRepositoryImpl INSTANCE = null;
-
-    private FeedRepositoryImpl(@NonNull FirebaseFirestore firestore) {
+    private FeedRepositoryImpl(@NonNull FirebaseFirestore firestore,@NonNull FirebaseStorage storage) {
         this.firestore = firestore;
+        this.storage = storage;
     }
 
-    public static FeedRepositoryImpl getInstance(@NonNull FirebaseFirestore firestore) {
+    public static FeedRepositoryImpl getInstance(@NonNull FirebaseFirestore firestore,@NonNull FirebaseStorage storage) {
         if (INSTANCE == null) {
             synchronized (FeedRepositoryImpl.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new FeedRepositoryImpl(firestore);
+                    INSTANCE = new FeedRepositoryImpl(firestore,storage);
                 }
             }
         }
@@ -67,22 +69,22 @@ public class FeedRepositoryImpl implements FeedRepository {
     public Completable uploadFeed(@NonNull final FeedUploadRequest uploadFeed) {
         return Completable.create(emitter -> {
 
-            FeedRemoteData feedRemoteData = FeedMapper.setFeed(uploadFeed);
+            FeedRemoteData feedRemoteData = FeedMapper.toFeed(uploadFeed);
             uploadImageStorage(feedRemoteData, Uri.parse(uploadFeed.getImagePathA()));
             uploadImageStorage(feedRemoteData, Uri.parse(uploadFeed.getImagePathB()));
 
             firestore.collection(COLLECTION_FEED)
-                    .document(feedRemoteData.getId())
-                    .set(feedRemoteData)
-                    .addOnSuccessListener(documentReference -> emitter.onComplete())
-                    .addOnFailureListener(Throwable::printStackTrace);
+                            .add(feedRemoteData)
+                            .addOnSuccessListener(documentReference -> emitter.onComplete())
+                            .addOnFailureListener(Throwable::printStackTrace);
 
         }).subscribeOn(Schedulers.io());
+
     }
 
     private void uploadImageStorage(@NonNull final FeedRemoteData feed, final Uri uri) {
 
-        StorageReference feedImages = FirebaseStorage.getInstance().getReference()
+        StorageReference feedImages = storage.getReference()
                 .child(STORAGE_FEED_IMAGE_PATH + "/" + feed.getId() + "/" + uri.getLastPathSegment());
 
         feedImages.putFile(uri).continueWithTask(task -> {
@@ -99,8 +101,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                             .update(FIELD_FEED_VOTESELECTIONITEM_IMAGEURL, result.getResult().toString());
                 }
             }
-        })
-                .addOnFailureListener(Throwable::printStackTrace);
+        });
 
     }
 
