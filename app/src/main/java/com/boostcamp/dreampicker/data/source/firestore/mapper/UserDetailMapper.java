@@ -1,13 +1,14 @@
 package com.boostcamp.dreampicker.data.source.firestore.mapper;
 
 import com.boostcamp.dreampicker.data.model.UserDetail;
-import com.boostcamp.dreampicker.data.source.firestore.response.UserDetailResponse;
+import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailEntity;
 
 import androidx.annotation.NonNull;
 
-public class UserResponseMapper {
+public class UserDetailMapper {
 
-    public static UserDetail toUserDetail(@NonNull UserDetailResponse response){
+    @NonNull
+    public static UserDetail toUserDetail(@NonNull UserDetailEntity response){
 
         return new UserDetail(
                 response.getId(),
