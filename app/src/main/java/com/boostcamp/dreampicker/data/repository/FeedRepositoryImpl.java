@@ -29,12 +29,12 @@ public class FeedRepositoryImpl implements FeedRepository {
     private static final String FIELD_ENDED = "ended";
 
     @NonNull
-    private final FirebaseFirestore db;
+    private final FirebaseFirestore firestore;
 
     private static volatile FeedRepositoryImpl INSTANCE;
 
-    private FeedRepositoryImpl(@NonNull FirebaseFirestore db) {
-        this.db = db;
+    private FeedRepositoryImpl(@NonNull FirebaseFirestore firestore) {
+        this.firestore = firestore;
     }
 
     public static FeedRepositoryImpl getInstance(@NonNull FirebaseFirestore db) {
@@ -50,8 +50,8 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     @Override
-    public Single<List<Feed>> getNotEndedFeedList(@NonNull Date startAfter, int pageSize) {
-        return Single.create(emitter -> db.collection(COLLECTION_FEED)
+    public Single<List<Feed>> getNotEndedFeedList(@NonNull final Date startAfter, final int pageSize) {
+        return Single.create(emitter -> firestore.collection(COLLECTION_FEED)
                 .whereEqualTo(FIELD_ENDED, false)
                 .orderBy(FIELD_USER_DATE, Query.Direction.DESCENDING) // 시간 정렬
                 .startAfter(startAfter)
@@ -59,10 +59,12 @@ public class FeedRepositoryImpl implements FeedRepository {
                 .get()
                 .addOnCompleteListener(task -> {
                     final List<Feed> feedList = new ArrayList<>();
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        for (final QueryDocumentSnapshot snapshots : task.getResult()) {
-                            final FeedRemoteData data = snapshots.toObject(FeedRemoteData.class);
-                            feedList.add(FeedResponseMapper.toFeed(snapshots.getId(), data));
+                    if (task.isSuccessful()) {
+                        if(task.getResult() != null) {
+                            for (final QueryDocumentSnapshot snapshots : task.getResult()) {
+                                final FeedRemoteData data = snapshots.toObject(FeedRemoteData.class);
+                                feedList.add(FeedResponseMapper.toFeed(snapshots.getId(), data));
+                            }
                         }
                         emitter.onSuccess(feedList);
                     } else {
@@ -73,11 +75,13 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     @Override
-    public Completable vote(@NonNull String feedId, @NonNull String selectionId) {
-        final DocumentReference docRef = db.collection(COLLECTION_FEED).document(feedId);
+    public Completable vote(@NonNull final String userId,
+                            @NonNull final String feedId,
+                            @NonNull final String selectionId) {
+        final DocumentReference docRef = firestore.collection(COLLECTION_FEED).document(feedId);
 
         return Completable.create(emitter ->
-                db.runTransaction(transaction -> {
+                firestore.runTransaction(transaction -> {
                     final DocumentSnapshot snapshot = transaction.get(docRef);
                     final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
 
@@ -99,8 +103,8 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     @Override
-    public Single<Feed> getFeed(@NonNull String feedId) {
-        return Single.create(emitter -> db.collection(COLLECTION_FEED)
+    public Single<Feed> getFeed(@NonNull final String feedId) {
+        return Single.create(emitter -> firestore.collection(COLLECTION_FEED)
                 .document(feedId)
                 .get()
                 .addOnCompleteListener(task -> {

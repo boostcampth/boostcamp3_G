@@ -16,7 +16,9 @@ public interface FeedRepository {
     Single<List<Feed>> getNotEndedFeedList(@NonNull final Date startAfter, final int pageSize);
 
     @NonNull
-    Completable vote(@NonNull final String feedId, @NonNull final String selectionId);
+    Completable vote(@NonNull final String userId,
+                     @NonNull final String feedId,
+                     @NonNull final String selectionId);
 
     @NonNull
     Single<Feed> getFeed(@NonNull final String feedId);
