@@ -1,7 +1,6 @@
 package com.boostcamp.dreampicker.data.repository;
 
 import com.boostcamp.dreampicker.data.model.ProfileFeed;
-import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.source.firestore.response.FeedResponse;
 
@@ -18,9 +17,11 @@ public interface FeedRepository {
     Single<FeedResponse> getNotEndedMyFollowerFeedList(@Nullable List<String> followerList,
                                                        @NonNull final Date startAfter,
                                                        final int pageSize);
+    @NonNull
+    Single<FeedResponse> vote(@NonNull final String feedId, @NonNull final String selectionId);
 
     @NonNull
-    Single<Feed> vote(@NonNull final String feedId, @NonNull final String selectionId);
+    Single<FeedResponse> getFeed(@NonNull final String feedId);
 
     // [업로드] 사용자가 작성한 피드를 서버에 업로드한다.
     @NonNull

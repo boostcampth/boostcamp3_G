@@ -4,6 +4,7 @@ import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.VoteSelectionItem;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteVoteItem;
+import com.boostcamp.dreampicker.utils.FirebaseManager;
 
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class FeedResponseMapper {
                 data.getDate(),
                 getVoteSelectionItem(itemA, countA),
                 getVoteSelectionItem(itemB, countB),
-                getMySelection(data.getVotedUserMap(), data.getUser().getId()));
+                getMySelection(data.getVotedUserMap(), FirebaseManager.getCurrentUserId()));
     }
 
     @NonNull
