@@ -2,7 +2,7 @@ package com.boostcamp.dreampicker.data.repository;
 
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
-import com.boostcamp.dreampicker.data.model.ProfileFeed;
+import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
 import com.google.firebase.firestore.DocumentReference;
@@ -24,8 +24,11 @@ import io.reactivex.Single;
 public class FeedRepositoryImpl implements FeedRepository {
     private static final String COLLECTION_FEED = "feed";
 
-    private static final String FIELD_USER_DATE = "date";
+    private static final String FIELD_DATE = "date";
     private static final String FIELD_ENDED = "ended";
+
+    private static final String COLLECTION_USER = "user";
+    private static final String SUBCOLLECTION_MYFEEDS = "myFeeds";
 
     @NonNull
     private final FirebaseFirestore firestore;
@@ -52,7 +55,7 @@ public class FeedRepositoryImpl implements FeedRepository {
     public Single<List<Feed>> getNotEndedFeedList(@NonNull final Date startAfter, final int pageSize) {
         return Single.create(emitter -> firestore.collection(COLLECTION_FEED)
                 .whereEqualTo(FIELD_ENDED, false)
-                .orderBy(FIELD_USER_DATE, Query.Direction.DESCENDING) // 시간 정렬
+                .orderBy(FIELD_DATE, Query.Direction.DESCENDING) // 시간 정렬
                 .startAfter(startAfter)
                 .limit(pageSize)
                 .get()
@@ -122,7 +125,27 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     @Override
-    public Single<List<ProfileFeed>> getFeedListByUserId(@NonNull String userId, Date startAfter, int pageSize) {
-        return null;
+    public Single<List<MyFeed>> getFeedListByUserId(@NonNull String userId, Date startAfter, int pageSize) {
+        return Single.create(emitter ->
+                firestore.collection(COLLECTION_USER).document(userId)
+                        .collection(SUBCOLLECTION_MYFEEDS)
+                        .orderBy(FIELD_DATE, Query.Direction.DESCENDING)
+                        .startAfter(startAfter)
+                        .limit(pageSize)
+                        .get()
+                        .addOnSuccessListener(task -> {
+                            List<MyFeed> feedList = new ArrayList<>();
+                            if (!task.isEmpty()) {
+                                for(DocumentSnapshot document : task.getDocuments()){
+                                    final MyFeed feed = document.toObject(MyFeed.class);
+                                    if(feed != null){
+                                        feed.setId(document.getId());
+                                        feedList.add(feed);
+                                    }
+                                }
+                            }
+                            emitter.onSuccess(feedList);
+                        })
+                        .addOnFailureListener(emitter::onError));
     }
 }

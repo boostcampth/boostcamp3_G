@@ -2,7 +2,7 @@ package com.boostcamp.dreampicker.data.repository;
 
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
-import com.boostcamp.dreampicker.data.model.ProfileFeed;
+import com.boostcamp.dreampicker.data.model.MyFeed;
 
 import java.util.Date;
 import java.util.List;
@@ -33,5 +33,5 @@ public interface FeedRepository {
      * @return 피드 리스트 stream
      */
     @NonNull
-    Single<List<ProfileFeed>> getFeedListByUserId(@NonNull final String userId, final Date startAfter, final int pageSize);
+    Single<List<MyFeed>> getFeedListByUserId(@NonNull final String userId, final Date startAfter, final int pageSize);
 }
