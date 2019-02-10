@@ -15,22 +15,23 @@ import io.reactivex.schedulers.Schedulers;
 
 public class FeedRepositoryImpl implements FeedRepository {
 
+    @NonNull
     private static final String COLLECTION_FEED = "feed";
     private static final String FIELD_FEED_VOTESELECTIONITEM_IMAGEURL = "voteSelectionItem.imageURL";
     private static final String STORAGE_FEED_IMAGE_PATH = "feedImages";
+    private final FirebaseFirestore firestore;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static FeedRepositoryImpl INSTANCE = null;
 
-    private static volatile FeedRepositoryImpl INSTANCE;
-
-    private FeedRepositoryImpl() {
+    private FeedRepositoryImpl(@NonNull FirebaseFirestore firestore) {
+        this.firestore = firestore;
     }
 
-    public static FeedRepositoryImpl getInstance() {
+    public static FeedRepositoryImpl getInstance(@NonNull FirebaseFirestore firestore) {
         if (INSTANCE == null) {
             synchronized (FeedRepositoryImpl.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new FeedRepositoryImpl();
+                    INSTANCE = new FeedRepositoryImpl(firestore);
                 }
             }
         }
@@ -46,7 +47,7 @@ public class FeedRepositoryImpl implements FeedRepository {
             uploadImageStorage(feedRemoteData, Uri.parse(uploadFeed.getImagePathA()));
             uploadImageStorage(feedRemoteData, Uri.parse(uploadFeed.getImagePathB()));
 
-            db.collection(COLLECTION_FEED)
+            firestore.collection(COLLECTION_FEED)
                     .document(feedRemoteData.getId())
                     .set(feedRemoteData)
                     .addOnSuccessListener(documentReference -> emitter.onComplete())
@@ -69,7 +70,7 @@ public class FeedRepositoryImpl implements FeedRepository {
         }).addOnCompleteListener(result -> {
             if (result.isSuccessful()) {
                 if (result.getResult() != null) {
-                    db.collection(COLLECTION_FEED)
+                    firestore.collection(COLLECTION_FEED)
                             .document(feed.getId())
                             .update(FIELD_FEED_VOTESELECTIONITEM_IMAGEURL, result.getResult().toString());
                 }
