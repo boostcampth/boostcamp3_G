@@ -1,7 +1,5 @@
 package com.boostcamp.dreampicker.data.model;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 

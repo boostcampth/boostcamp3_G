@@ -2,7 +2,7 @@ package com.boostcamp.dreampicker.data.repository;
 
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
-import com.boostcamp.dreampicker.data.model.ProfileFeed;
+import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -60,7 +60,7 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     @Override
-    public Single<List<ProfileFeed>> getFeedListByUserId(@NonNull String userId, Date startAfter, int pageSize) {
+    public Single<List<MyFeed>> getFeedListByUserId(@NonNull String userId, Date startAfter, int pageSize) {
         return Single.create(emitter ->
                 firestore.collection(COLLECTION_USER).document(userId)
                         .collection(SUBCOLLECTION_MYFEEDS)
@@ -74,12 +74,12 @@ public class FeedRepositoryImpl implements FeedRepository {
                                 // result 없거나 리스트가 비어있으면 null 반환
                                 List<DocumentSnapshot> result =
                                         task.getResult() == null || task.getResult().isEmpty()
-                                        ? null : task.getResult().getDocuments();
+                                                ? null : task.getResult().getDocuments();
 
-                                if(result != null){ // 결과 존재
-                                    List<ProfileFeed> feedList = new ArrayList<>();
+                                if (result != null) { // 결과 존재
+                                    List<MyFeed> feedList = new ArrayList<>();
                                     for (DocumentSnapshot document : result) {
-                                        feedList.add(document.toObject(ProfileFeed.class));
+                                        feedList.add(document.toObject(MyFeed.class));
                                     }
                                     emitter.onSuccess(feedList);
                                 } else {

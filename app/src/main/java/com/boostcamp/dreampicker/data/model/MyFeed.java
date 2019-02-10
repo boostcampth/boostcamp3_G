@@ -2,21 +2,21 @@ package com.boostcamp.dreampicker.data.model;
 
 import androidx.annotation.NonNull;
 
-public class ProfileFeed {
+public class MyFeed {
     private String id; // 피드 ID
     private String content; // 내용
     private String imageUrlA; // 첫번째 이미지 URL
     private String imageUrlB; // 두번째 이미지 URL
     private boolean isEnded; // 투표 마감 여부
 
-    public ProfileFeed() {
+    public MyFeed() {
     }
 
-    public ProfileFeed(@NonNull String id,
-                       @NonNull String content,
-                       @NonNull String imageUrlA,
-                       @NonNull String imageUrlB,
-                       boolean isEnded) {
+    public MyFeed(@NonNull String id,
+                  @NonNull String content,
+                  @NonNull String imageUrlA,
+                  @NonNull String imageUrlB,
+                  boolean isEnded) {
         this.id = id;
         this.content = content;
         this.imageUrlA = imageUrlA;
@@ -50,7 +50,7 @@ public class ProfileFeed {
 
     @Override
     public String toString() {
-        return "ProfileFeed{" + '\n' +
+        return "MyFeed{" + '\n' +
                 "id='" + id + '\n' +
                 ", content='" + content + '\n' +
                 ", imageUrlA='" + imageUrlA + '\n' +
