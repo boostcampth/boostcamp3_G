@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.feed.main;
+package com.boostcamp.dreampicker.presentation.feed.legacymain;
 
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 
