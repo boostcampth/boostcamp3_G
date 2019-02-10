@@ -2,15 +2,21 @@ package com.boostcamp.dreampicker.data.repository;
 
 import android.net.Uri;
 
+import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
+import com.boostcamp.dreampicker.data.model.ProfileFeed;
 import com.boostcamp.dreampicker.data.source.firebase.model.FeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firebase.model.mapper.FeedMapper;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Date;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 public class FeedRepositoryImpl implements FeedRepository {
@@ -36,6 +42,24 @@ public class FeedRepositoryImpl implements FeedRepository {
             }
         }
         return INSTANCE;
+    }
+
+    @NonNull
+    @Override
+    public Single<List<Feed>> getNotEndedMyFollowerFeedList(@NonNull Date startAfter, int pageSize) {
+        return null;
+    }
+
+    @NonNull
+    @Override
+    public Single<Feed> vote(@NonNull String feedId, @NonNull String selectionId) {
+        return null;
+    }
+
+    @NonNull
+    @Override
+    public Single<List<ProfileFeed>> getFeedListByUserId(@NonNull String userId, Date startAfter, int pageSize) {
+        return null;
     }
 
     @NonNull
