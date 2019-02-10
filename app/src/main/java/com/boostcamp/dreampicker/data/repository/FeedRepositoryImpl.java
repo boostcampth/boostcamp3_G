@@ -5,7 +5,6 @@ import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.model.ProfileFeed;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
-import com.boostcamp.dreampicker.utils.FirebaseManager;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -75,48 +74,44 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     @Override
-    public Completable vote(@NonNull final String userId,
-                            @NonNull final String feedId,
-                            @NonNull final String selectionId) {
+    public Single<Feed> vote(@NonNull final String userId,
+                             @NonNull final String feedId,
+                             @NonNull final String selectionId) {
         final DocumentReference docRef = firestore.collection(COLLECTION_FEED).document(feedId);
 
-        return Completable.create(emitter ->
-                firestore.runTransaction(transaction -> {
+        return Single.create(emitter ->
+                firestore.runTransaction(transaction ->  {
                     final DocumentSnapshot snapshot = transaction.get(docRef);
                     final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
 
-                    final String myId = FirebaseManager.getCurrentUserId();
-                    if (data != null) {
+                    if(data != null) {
                         final Map<String, String> map = data.getVotedUserMap();
-                        map.put(myId, selectionId);
+                        map.put(userId, selectionId);
                         transaction.set(docRef, data, SetOptions.merge());
                     }
                     return null;
                 }).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        emitter.onComplete();
+                    if(task.isSuccessful()) {
+                        emitter.onSuccess(feedId);
                     } else {
                         emitter.onError(task.getException());
                     }
-                }));
-    }
-
-    @NonNull
-    @Override
-    public Single<Feed> getFeed(@NonNull final String feedId) {
-        return Single.create(emitter -> firestore.collection(COLLECTION_FEED)
-                .document(feedId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful() && task.getResult() != null) {
-                        final FeedRemoteData data = task.getResult().toObject(FeedRemoteData.class);
-                        if(data != null && !data.isEnded()) {
-                            emitter.onSuccess(FeedResponseMapper.toFeed(feedId, data));
-                        } else {
-                            emitter.onError(task.getException());
-                        }
-                    }
-                }));
+                })).flatMap(__ ->
+                Single.create(emitter ->
+                        docRef.get().addOnCompleteListener(task -> {
+                            if(task.isSuccessful()) {
+                                final DocumentSnapshot snapshot = task.getResult();
+                                if(snapshot != null) {
+                                    final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
+                                    if(data != null && !data.isEnded()) {
+                                        final Feed feed = FeedResponseMapper.toFeed(feedId, data);
+                                        emitter.onSuccess(feed);
+                                    }
+                                }
+                            } else {
+                                emitter.onError(task.getException());
+                            }
+                        })));
     }
 
     @NonNull
