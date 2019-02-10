@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
@@ -65,9 +66,11 @@ public class FeedRepositoryImpl implements FeedRepository {
                                 final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
                                 if(data != null) {
                                     feedList.add(FeedResponseMapper.toFeed(snapshot.getId(), data));
+                                    emitter.onSuccess(feedList);
+                                } else {
+                                    emitter.onError(new IllegalStateException("FeedRemoteData is Null"));
                                 }
                             }
-                            emitter.onSuccess(feedList);
                         }).addOnFailureListener(emitter::onError));
     }
 
@@ -96,10 +99,11 @@ public class FeedRepositoryImpl implements FeedRepository {
                         .addOnSuccessListener(snapshot -> {
                             if (snapshot != null) {
                                 final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
-                                if (data != null && !data.isEnded()) {
-                                    final Feed feed = FeedResponseMapper.toFeed(feedId, data);
+                                if(data != null) {
+                                    final Feed feed = FeedResponseMapper.toFeed(feedId, Objects.requireNonNull(data));
                                     emitter.onSuccess(feed);
-                                }
+                                } else
+                                    emitter.onError(new IllegalStateException("FeedRemoteData is Null"));
                             }
                         }).addOnFailureListener(emitter::onError)));
     }
