@@ -39,11 +39,11 @@ public class FeedRepositoryImpl implements FeedRepository {
         this.firestore = firestore;
     }
 
-    public static FeedRepositoryImpl getInstance(@NonNull FirebaseFirestore db) {
+    public static FeedRepositoryImpl getInstance(@NonNull FirebaseFirestore firestore) {
         if (INSTANCE == null) {
             synchronized (FeedRepositoryImpl.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new FeedRepositoryImpl(db);
+                    INSTANCE = new FeedRepositoryImpl(firestore);
                 }
             }
         }
