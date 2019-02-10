@@ -9,7 +9,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
@@ -53,26 +52,23 @@ public class FeedRepositoryImpl implements FeedRepository {
     @NonNull
     @Override
     public Single<List<Feed>> getNotEndedFeedList(@NonNull final Date startAfter, final int pageSize) {
-        return Single.create(emitter -> firestore.collection(COLLECTION_FEED)
-                .whereEqualTo(FIELD_ENDED, false)
-                .orderBy(FIELD_DATE, Query.Direction.DESCENDING) // 시간 정렬
-                .startAfter(startAfter)
-                .limit(pageSize)
-                .get()
-                .addOnCompleteListener(task -> {
-                    final List<Feed> feedList = new ArrayList<>();
-                    if (task.isSuccessful()) {
-                        if(task.getResult() != null) {
-                            for (final QueryDocumentSnapshot snapshots : task.getResult()) {
-                                final FeedRemoteData data = snapshots.toObject(FeedRemoteData.class);
-                                feedList.add(FeedResponseMapper.toFeed(snapshots.getId(), data));
+        return Single.create(emitter ->
+                firestore.collection(COLLECTION_FEED)
+                        .whereEqualTo(FIELD_ENDED, false)
+                        .orderBy(FIELD_DATE, Query.Direction.DESCENDING) // 시간 정렬
+                        .startAfter(startAfter)
+                        .limit(pageSize)
+                        .get()
+                        .addOnSuccessListener(snapshots -> {
+                            final List<Feed> feedList = new ArrayList<>();
+                            for(DocumentSnapshot snapshot : snapshots.getDocuments()) {
+                                final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
+                                if(data != null) {
+                                    feedList.add(FeedResponseMapper.toFeed(snapshot.getId(), data));
+                                }
                             }
-                        }
-                        emitter.onSuccess(feedList);
-                    } else {
-                        emitter.onError(task.getException());
-                    }
-                }));
+                            emitter.onSuccess(feedList);
+                        }).addOnFailureListener(emitter::onError));
     }
 
     @NonNull
@@ -82,7 +78,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                              @NonNull final String selectionId) {
         final DocumentReference docRef = firestore.collection(COLLECTION_FEED).document(feedId);
 
-        return Single.create(emitter ->
+        return Completable.create(emitter ->
                 firestore.runTransaction(transaction ->  {
                     final DocumentSnapshot snapshot = transaction.get(docRef);
                     final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
@@ -93,28 +89,19 @@ public class FeedRepositoryImpl implements FeedRepository {
                         transaction.set(docRef, data, SetOptions.merge());
                     }
                     return null;
-                }).addOnCompleteListener(task -> {
-                    if(task.isSuccessful()) {
-                        emitter.onSuccess(feedId);
-                    } else {
-                        emitter.onError(task.getException());
-                    }
-                })).flatMap(__ ->
-                Single.create(emitter ->
-                        docRef.get().addOnCompleteListener(task -> {
-                            if(task.isSuccessful()) {
-                                final DocumentSnapshot snapshot = task.getResult();
-                                if(snapshot != null) {
-                                    final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
-                                    if(data != null && !data.isEnded()) {
-                                        final Feed feed = FeedResponseMapper.toFeed(feedId, data);
-                                        emitter.onSuccess(feed);
-                                    }
+                })
+                        .addOnSuccessListener(e -> emitter.onComplete())
+                        .addOnFailureListener(emitter::onError))
+                .andThen(Single.create(emitter -> docRef.get()
+                        .addOnSuccessListener(snapshot -> {
+                            if (snapshot != null) {
+                                final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
+                                if (data != null && !data.isEnded()) {
+                                    final Feed feed = FeedResponseMapper.toFeed(feedId, data);
+                                    emitter.onSuccess(feed);
                                 }
-                            } else {
-                                emitter.onError(task.getException());
                             }
-                        })));
+                        }).addOnFailureListener(emitter::onError)));
     }
 
     @NonNull
