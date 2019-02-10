@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import io.reactivex.Single;
 
 public class UserRepositoryImpl implements UserRepository {
-    private static UserRepository INSTANCE = null;
+    private static volatile UserRepository INSTANCE = null;
 
     public static UserRepository getInstance(@NonNull final FirebaseFirestore firestore) {
         if (INSTANCE == null) {

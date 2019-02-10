@@ -16,7 +16,7 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class FeedRepositoryImpl implements FeedRepository {
-    private static FeedRepository INSTANCE = null;
+    private static volatile FeedRepository INSTANCE = null;
 
     public static FeedRepository getInstance(@NonNull FirebaseFirestore firestore) {
         if (INSTANCE == null) {
