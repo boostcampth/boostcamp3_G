@@ -1,27 +1,25 @@
 package com.boostcamp.dreampicker.data.repository;
 
-import com.boostcamp.dreampicker.data.model.ProfileFeed;
+import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
-import com.boostcamp.dreampicker.data.source.firestore.response.FeedResponse;
+import com.boostcamp.dreampicker.data.model.ProfileFeed;
 
 import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public interface FeedRepository {
     @NonNull
-    Single<FeedResponse> getNotEndedMyFollowerFeedList(@Nullable List<String> followerList,
-                                                       @NonNull final Date startAfter,
-                                                       final int pageSize);
-    @NonNull
-    Single<FeedResponse> vote(@NonNull final String feedId, @NonNull final String selectionId);
+    Single<List<Feed>> getNotEndedMyFollowerFeedList(@NonNull final Date startAfter, final int pageSize);
 
     @NonNull
-    Single<FeedResponse> getFeed(@NonNull final String feedId);
+    Completable vote(@NonNull final String feedId, @NonNull final String selectionId);
+
+    @NonNull
+    Single<Feed> getFeed(@NonNull final String feedId);
 
     // [업로드] 사용자가 작성한 피드를 서버에 업로드한다.
     @NonNull

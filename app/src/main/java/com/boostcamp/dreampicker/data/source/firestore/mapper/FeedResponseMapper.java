@@ -3,7 +3,7 @@ package com.boostcamp.dreampicker.data.source.firestore.mapper;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.VoteSelectionItem;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
-import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteVoteItem;
+import com.boostcamp.dreampicker.data.source.firestore.model.FeedItemRemoteData;
 import com.boostcamp.dreampicker.utils.FirebaseManager;
 
 import java.util.Map;
@@ -14,9 +14,9 @@ import androidx.annotation.Nullable;
 public class FeedResponseMapper {
 
     @NonNull
-    public static Feed getFeed(@NonNull final FeedRemoteData data) {
-        final FeedRemoteVoteItem itemA = data.getItemA();
-        final FeedRemoteVoteItem itemB = data.getItemB();
+    public static Feed toFeed(@NonNull final FeedRemoteData data) {
+        final FeedItemRemoteData itemA = data.getItemA();
+        final FeedItemRemoteData itemB = data.getItemB();
 
         final int countA = getVoteCount(data.getVotedUserMap(), itemA.getId());
         final int countB = getVoteCount(data.getVotedUserMap(), itemB.getId());
@@ -31,7 +31,7 @@ public class FeedResponseMapper {
     }
 
     @NonNull
-    private static VoteSelectionItem getVoteSelectionItem(@NonNull final FeedRemoteVoteItem item,
+    private static VoteSelectionItem getVoteSelectionItem(@NonNull final FeedItemRemoteData item,
                                                           final int voteCount) {
         return new VoteSelectionItem(item.getId(), item.getImageUrl(), item.getTagList(), voteCount);
     }
@@ -52,8 +52,7 @@ public class FeedResponseMapper {
     }
 
     @Nullable
-    private static String getMySelection(@Nullable Map<String, String> map,
-                                  @NonNull String userId) {
+    private static String getMySelection(@Nullable Map<String, String> map, @NonNull String userId) {
         if(map == null || map.isEmpty()) {
             return null;
         } else {

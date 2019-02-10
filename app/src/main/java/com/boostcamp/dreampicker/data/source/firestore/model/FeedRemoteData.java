@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class FeedRemoteData {
     private String id;
-    private FeedRemoteVoteItem itemA;
-    private FeedRemoteVoteItem itemB;
+    private FeedItemRemoteData itemA;
+    private FeedItemRemoteData itemB;
     private User user;
     private String content;
     private Date date;
@@ -18,8 +18,8 @@ public class FeedRemoteData {
     public FeedRemoteData() { }
 
     public FeedRemoteData(String id,
-                          FeedRemoteVoteItem itemA,
-                          FeedRemoteVoteItem itemB,
+                          FeedItemRemoteData itemA,
+                          FeedItemRemoteData itemB,
                           User user,
                           String content,
                           Map<String, String> votedUserMap,
@@ -39,11 +39,11 @@ public class FeedRemoteData {
         return id;
     }
 
-    public FeedRemoteVoteItem getItemA() {
+    public FeedItemRemoteData getItemA() {
         return itemA;
     }
 
-    public FeedRemoteVoteItem getItemB() {
+    public FeedItemRemoteData getItemB() {
         return itemB;
     }
 
