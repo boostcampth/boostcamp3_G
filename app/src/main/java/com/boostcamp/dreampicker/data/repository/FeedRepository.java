@@ -7,12 +7,15 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public interface FeedRepository {
     @NonNull
-    Single<List<Feed>> getNotEndedMyFollowerFeedList(@NonNull final Date startAfter, final int pageSize);
+    Single<List<Feed>> getNotEndedMyFollowerFeedList(@Nullable List<String> followerList,
+                                                     @NonNull final Date startAfter,
+                                                     final int pageSize);
 
     @NonNull
     Single<Feed> vote(@NonNull final String feedId, @NonNull final String selectionId);
