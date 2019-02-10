@@ -1,7 +1,8 @@
 package com.boostcamp.dreampicker.data.repository;
 
 import com.boostcamp.dreampicker.data.model.UserDetail;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.boostcamp.dreampicker.data.source.firestore.mapper.UserResponseMapper;
+import com.boostcamp.dreampicker.data.source.firestore.response.UserDetailResponse;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
@@ -37,11 +38,15 @@ public class UserRepositoryImpl implements UserRepository {
                 firestore.collection(COLLECTION_USER).document(userId)
                         .get()
                         .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                // 쿼리 성공
-                                DocumentSnapshot document = task.getResult();
-                                if (document != null && !document.exists()) { // 결과 존재
-                                    emitter.onSuccess(document.toObject(UserDetail.class));
+                            if (task.isSuccessful()) { // 쿼리 성공
+
+                                // result 없거나, document 비었을 때 null 반환
+                                final UserDetailResponse response =
+                                        task.getResult() == null || !task.getResult().exists()
+                                        ? null : task.getResult().toObject(UserDetailResponse.class);
+
+                                if (response != null) { // 결과 존재
+                                    emitter.onSuccess(UserResponseMapper.toUserDetail(response));
                                 } else { // 결과 없음
                                     emitter.onError(new Throwable("result is empty"));
                                 }
