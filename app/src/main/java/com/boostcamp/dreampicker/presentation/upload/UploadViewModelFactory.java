@@ -1,7 +1,6 @@
 package com.boostcamp.dreampicker.presentation.upload;
 
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
-import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -17,9 +16,9 @@ public class UploadViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if(modelClass.isAssignableFrom(UploadViewModel.class)) {
+        if(modelClass.isAssignableFrom(LegacyUploadViewModel.class)) {
             //noinspection unchecked
-            return (T) new UploadViewModel(feedRepository);
+            return (T) new LegacyUploadViewModel(feedRepository);
         } else {
             throw new IllegalArgumentException("ViewModel Not Found");
         }
