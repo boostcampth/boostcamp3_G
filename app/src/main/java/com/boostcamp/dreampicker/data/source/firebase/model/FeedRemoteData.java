@@ -5,8 +5,10 @@ import com.boostcamp.dreampicker.data.model.User;
 import java.util.Date;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+
 public class FeedRemoteData {
-    private String id;
+
     private FeedRemoteVoteItem itemA;
     private FeedRemoteVoteItem itemB;
     private User user;
@@ -17,15 +19,13 @@ public class FeedRemoteData {
 
     public FeedRemoteData() { }
 
-    public FeedRemoteData(String id,
-                          FeedRemoteVoteItem itemA,
-                          FeedRemoteVoteItem itemB,
-                          User user,
-                          String content,
-                          Map<String, String> votedUserMap,
-                          Date date,
-                          boolean isEnded) {
-        this.id = id;
+    public FeedRemoteData(@NonNull FeedRemoteVoteItem itemA,
+                          @NonNull FeedRemoteVoteItem itemB,
+                          @NonNull User user,
+                          @NonNull String content,
+                          @NonNull Map<String, String> votedUserMap,
+                          @NonNull Date date,
+                          @NonNull boolean isEnded) {
         this.itemA = itemA;
         this.itemB = itemB;
         this.user = user;
@@ -33,10 +33,6 @@ public class FeedRemoteData {
         this.date = date;
         this.votedUserMap = votedUserMap;
         this.isEnded = isEnded;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public FeedRemoteVoteItem getItemA() {
