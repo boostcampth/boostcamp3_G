@@ -3,6 +3,7 @@ package com.boostcamp.dreampicker.data.repository;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.model.MyFeed;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -69,7 +70,13 @@ public class FeedRepositoryImpl implements FeedRepository {
                         .addOnSuccessListener(task -> {
                             List<MyFeed> feedList = new ArrayList<>();
                             if (!task.isEmpty()) {
-                                feedList = task.toObjects(MyFeed.class);
+                                for(DocumentSnapshot document : task.getDocuments()){
+                                    final MyFeed feed = document.toObject(MyFeed.class);
+                                    if(feed != null){
+                                        feed.setId(document.getId());
+                                        feedList.add(feed);
+                                    }
+                                }
                             }
                             emitter.onSuccess(feedList);
                         })

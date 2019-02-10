@@ -41,7 +41,8 @@ public class UserRepositoryImpl implements UserRepository {
                             final UserDetailEntity response = task.exists()
                                     ? task.toObject(UserDetailEntity.class) : null;
                             if (response != null) {
-                                emitter.onSuccess(UserDetailMapper.toUserDetail(response));
+                                emitter.onSuccess(UserDetailMapper
+                                        .toUserDetail(response.getId(), response));
                             } else {
                                 emitter.onError(new IllegalArgumentException());
                             }

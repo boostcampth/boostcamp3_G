@@ -8,11 +8,11 @@ import androidx.annotation.NonNull;
 public class UserDetailMapper {
 
     @NonNull
-    public static UserDetail toUserDetail(@NonNull UserDetailEntity response){
+    public static UserDetail toUserDetail(@NonNull String userId, @NonNull UserDetailEntity response){
 
         // TODO. 팔로우 기능 구현 후 isFollow 정보 리턴
         return new UserDetail(
-                response.getId(),
+                userId,
                 response.getName(),
                 response.getProfileImageUrl(),
                 response.getFeedCount(),
