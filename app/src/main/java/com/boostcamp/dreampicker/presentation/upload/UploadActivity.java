@@ -40,10 +40,10 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     }
 
     private void initViewModel() {
-        final UploadViewModel viewModel = ViewModelProviders.of(this,
+        final LegacyUploadViewModel viewModel = ViewModelProviders.of(this,
                 new UploadViewModelFactory(
                         FeedRepository.getInstance(FeedFirebaseService.getInstance())))
-                .get(UploadViewModel.class);
+                .get(LegacyUploadViewModel.class);
 
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
