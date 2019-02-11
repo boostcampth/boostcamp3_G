@@ -1,7 +1,5 @@
 package com.boostcamp.dreampicker.presentation.upload;
 
-import android.text.TextUtils;
-
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
@@ -10,74 +8,83 @@ import com.boostcamp.dreampicker.utils.FirebaseManager;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class UploadViewModel extends BaseViewModel {
 
-    private ObservableField<String> content = new ObservableField<>();
-    private ObservableField<String> imagePathA = new ObservableField<>();
-    private ObservableField<String> imagePathB = new ObservableField<>();
-    private ObservableField<List<String>> tagListA = new ObservableField<>();
-    private ObservableField<List<String>> tagListB = new ObservableField<>();
-
+    @NonNull
+    private MutableLiveData<String> content = new MutableLiveData<>();
+    @NonNull
+    private MutableLiveData<String> imagePathA = new MutableLiveData<>();
+    @NonNull
+    private MutableLiveData<String> imagePathB = new MutableLiveData<>();
+    @Nullable
+    private MutableLiveData<List<String>> tagListA = new MutableLiveData<>();
+    @Nullable
+    private MutableLiveData<List<String>> tagListB = new MutableLiveData<>();
+    @NonNull
     private MutableLiveData<Boolean> validate = new MutableLiveData<>();
 
+    @NonNull
     private final FeedRepository feedRepository;
 
-    UploadViewModel(@NonNull FeedRepository feedRepository) {
+    UploadViewModel(@NonNull final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
     }
 
     void upload() {
-
-        if (!TextUtils.isEmpty(imagePathA.get()) &&
-                !TextUtils.isEmpty(imagePathB.get()) &&
-                !TextUtils.isEmpty(content.get())) {
-
-            addDisposable(feedRepository.uploadFeed(createFeed())
-                    .subscribeOn(Schedulers.io())
+        if (getContent().getValue() != null &&
+                getImagePathA().getValue() != null &&
+                getImagePathB().getValue() != null) {
+            addDisposable(feedRepository.uploadFeed(createFeedUploadRequest())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> validate.setValue(true),
                             e -> validate.setValue(false)));
-        } else {
+        }else{
             validate.setValue(false);
         }
     }
 
     @NonNull
-    private FeedUploadRequest createFeed() {
+    private FeedUploadRequest createFeedUploadRequest() {
 
         return new FeedUploadRequest(FirebaseManager.getCurrentUserId(),
-                content.get(),
-                imagePathA.get(),
-                imagePathB.get(),
-                tagListA.get(),
-                tagListB.get());
+                getContent().getValue(),
+                getImagePathA().getValue(),
+                getImagePathB().getValue(),
+                getTagListA().getValue(),
+                getTagListB().getValue());
+
     }
 
-    public ObservableField<String> getContent() {
+    @NonNull
+    public MutableLiveData<String> getContent() {
         return content;
     }
 
-    public ObservableField<String> getImagePathA() {
+    @NonNull
+    public MutableLiveData<String> getImagePathA() {
         return imagePathA;
     }
 
-    public ObservableField<String> getImagePathB() {
+    @NonNull
+    public MutableLiveData<String> getImagePathB() {
         return imagePathB;
     }
 
-    public ObservableField<List<String>> getTagListA() {
+    @Nullable
+    public MutableLiveData<List<String>> getTagListA() {
         return tagListA;
     }
 
-    public ObservableField<List<String>> getTagListB() {
+    @Nullable
+    public MutableLiveData<List<String>> getTagListB() {
         return tagListB;
     }
 
+    @NonNull
     MutableLiveData<Boolean> getValidate() {
         return validate;
     }
