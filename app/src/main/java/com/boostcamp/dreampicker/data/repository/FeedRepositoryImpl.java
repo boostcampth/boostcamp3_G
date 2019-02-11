@@ -39,17 +39,21 @@ public class FeedRepositoryImpl implements FeedRepository {
     private static final String COLLECTION_USER = "user";
     private static final String SUBCOLLECTION_MYFEEDS = "myFeeds";
 
+    @NonNull
     private final FirebaseFirestore firestore;
+    @NonNull
     private final FirebaseStorage storage;
 
     private static volatile FeedRepositoryImpl INSTANCE = null;
 
-    private FeedRepositoryImpl(@NonNull FirebaseFirestore firestore, @NonNull FirebaseStorage storage) {
+    private FeedRepositoryImpl(@NonNull FirebaseFirestore firestore,
+                               @NonNull FirebaseStorage storage) {
         this.firestore = firestore;
         this.storage = storage;
     }
 
-    public static FeedRepositoryImpl getInstance(@NonNull FirebaseFirestore firestore, @NonNull FirebaseStorage storage) {
+    public static FeedRepositoryImpl getInstance(@NonNull FirebaseFirestore firestore,
+                                                 @NonNull FirebaseStorage storage) {
         if (INSTANCE == null) {
             synchronized (FeedRepositoryImpl.class) {
                 if (INSTANCE == null) {
