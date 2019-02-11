@@ -1,13 +1,17 @@
 package com.boostcamp.dreampicker.utils;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -51,10 +55,17 @@ public class BindingUtil {
     }
 
     @BindingAdapter({"vote"})
-    public static void doVote(@NonNull CheckBox checkBox, @Constant.Selection int flag) {
-        if(!checkBox.isChecked() && flag != Constant.NONE) {
+    public static void doVote(@NonNull CheckBox checkBox, @Nullable final String selectionId) {
+        if(selectionId != null && !checkBox.isChecked()) {
             checkBox.performClick();
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    @BindingAdapter({"date"})
+    public static void setDate(@NonNull final TextView textView, @NonNull final Date date) {
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-DD");
+        textView.setText(format.format(date));
     }
 
     @BindingAdapter({"rcProgress"})
@@ -68,11 +79,9 @@ public class BindingUtil {
     }
 
     @BindingAdapter({"visible"})
-    public static void setVisibility(LinearLayout layout, int flag) {
-        if(flag != 0) {
+    public static void setVisibility(@NonNull final LinearLayout layout, @Nullable final String selectionId) {
+        if(selectionId != null) {
             layout.setVisibility(View.VISIBLE);
-        } else {
-            layout.setVisibility(View.GONE);
         }
     }
 }

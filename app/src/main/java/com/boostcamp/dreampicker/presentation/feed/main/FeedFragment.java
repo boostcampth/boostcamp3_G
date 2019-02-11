@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,10 @@ public class FeedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViewModel();
-        subscribeViewModel();
+        initRecyclerView();
+        subscribeLoading();
+        subscribeError();
+        binding.getVm().loadFeedList();
     }
 
     private void initViewModel() {
@@ -49,11 +53,26 @@ public class FeedFragment extends Fragment {
         binding.setVm(vm);
     }
 
-    private void subscribeViewModel() {
-        binding.getVm().getFeedList().observe(this, list -> { });
-        binding.getVm().getError().observe(this, e -> { });
-        binding.getVm().getIsLoading().observe(this, loading -> { });
+    private void initRecyclerView() {
+        final FeedAdapter adapter = new FeedAdapter();
+        binding.rvFeed.setAdapter(adapter);
+        binding.getVm().getFeedList().observe(this, list -> {
+            if(list.size() > 0) {
+                binding.rvFeed.setVisibility(View.VISIBLE);
+            }
+            adapter.submitList(list);
+        });
+    }
+    private void subscribeLoading() {
+        // Todo : DataBinding
+        binding.getVm().getIsLoading().observe(this, loading -> Log.d("Melon", loading +""));
+        // Todo : SnackBar
         binding.getVm().getIsLastPage().observe(this, isLastPage -> { });
+    }
+
+    private void subscribeError() {
+        // Todo : 에러 처리 구현
+        binding.getVm().getError().observe(this, e -> { });
     }
 
     public static FeedFragment newInstance() {

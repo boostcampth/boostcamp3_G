@@ -5,7 +5,7 @@
     <data>
         <variable
             name="feed"
-            type="com.boostcamp.dreampicker.data.model.LegacyFeed"/>
+            type="com.boostcamp.dreampicker.data.model.Feed"/>
     </data>
 
     <LinearLayout
@@ -27,7 +27,7 @@
 
                 <!-- 피드 상단 부분 -->
                 <ImageView
-                    android:id="@+id/iv_user_img"
+                    android:id="@+id/iv_writer_img"
                     android:layout_width="@dimen/profile_image_size_small"
                     android:layout_height="@dimen/profile_image_size_small"
                     android:layout_marginStart="@dimen/space_x_small"
@@ -35,21 +35,21 @@
                     android:layout_marginBottom="@dimen/space_x_small"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    app:imageResource="@{feed.user.profileImageResource}"
+                    app:circleImage="@{feed.writer.profileImageUrl}"
                     app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_feed_user_name"
+                    android:id="@+id/tv_feed_writer_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_x_small"
                     android:layout_marginTop="@dimen/space_x_small"
-                    android:text="@{feed.user.name}"
+                    android:text="@{feed.writer.name}"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_title_size"
-                    app:layout_constraintStart_toEndOf="@+id/iv_user_img"
+                    app:layout_constraintStart_toEndOf="@+id/iv_writer_img"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -58,10 +58,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_x_small"
                     android:layout_marginBottom="@dimen/space_x_small"
-                    android:text="@{feed.date}"
+                    app:date="@{feed.date}"
                     android:textSize="@dimen/text_sub_size"
                     app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
-                    app:layout_constraintStart_toEndOf="@+id/iv_user_img" />
+                    app:layout_constraintStart_toEndOf="@+id/iv_writer_img" />
 
                 <CheckBox
                     android:id="@+id/tv_feed_vote_count"
@@ -71,9 +71,9 @@
                     android:layout_marginEnd="@dimen/space_median"
                     android:layout_marginBottom="@dimen/space_x_small"
                     android:clickable="false"
-                    android:text="@{String.valueOf(feed.voteCount)}"
+                    android:text="@{String.valueOf(feed.itemA.voteCount + feed.itemB.voteCount)}"
                     android:textSize="@dimen/text_title_size"
-                    app:vote="@{feed.voteFlag}"
+                    app:vote="@{feed.selectionId}"
                     app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -123,55 +123,55 @@
 
                 <!-- 피드 하단 부분 -->
                 <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_feed_image_ho"
+                    android:id="@+id/guideline_feed_image_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.5" />
 
                 <ImageView
-                    android:id="@+id/iv_feed_image_left"
+                    android:id="@+id/iv_feed_image_a"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/feed_photo_image_height"
                     android:scaleType="fitXY"
                     android:layout_marginTop="@dimen/space_x_small"
-                    app:image='@{feed.imageMap["left"].imageUrl}'
+                    app:image="@{feed.itemA.imageUrl}"
                     app:layout_constraintBottom_toTopOf="@id/vote_result"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline_feed_image_ho"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_feed_image_horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_feed_content"/>
 
                 <me.gujun.android.taggroup.TagGroup
-                    android:id="@+id/tv_feed_tag_left"
+                    android:id="@+id/tv_feed_tag_a"
                     style="@style/TagGroup.Small"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/feed_tag_group_height"
                     android:layout_margin="@dimen/space_x_small"
-                    app:tagItems='@{feed.imageMap["right"].tagList}'
+                    app:tagItems="@{feed.itemA.tagList}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/guideline_feed_image_ho"
+                    app:layout_constraintEnd_toStartOf="@id/guideline_feed_image_horizontal"
                     app:layout_constraintBottom_toTopOf="@id/vote_result"/>
 
                 <ImageView
-                    android:id="@+id/iv_feed_image_right"
+                    android:id="@+id/iv_feed_image_b"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/feed_photo_image_height"
                     android:scaleType="fitXY"
                     android:layout_marginTop="@dimen/space_x_small"
-                    app:image='@{feed.imageMap["right"].imageUrl}'
+                    app:image="@{feed.itemB.imageUrl}"
                     app:layout_constraintBottom_toTopOf="@id/vote_result"
-                    app:layout_constraintStart_toEndOf="@+id/guideline_feed_image_ho"
+                    app:layout_constraintStart_toEndOf="@+id/guideline_feed_image_horizontal"
                     app:layout_constraintTop_toBottomOf="@id/tv_feed_content"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
                 <me.gujun.android.taggroup.TagGroup
-                    android:id="@+id/tv_feed_tag_right"
+                    android:id="@+id/tv_feed_tag_b"
                     style="@style/TagGroup.Small"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/feed_tag_group_height"
                     android:layout_margin="@dimen/space_x_small"
-                    app:tagItems='@{feed.imageMap["right"].tagList}'
-                    app:layout_constraintStart_toEndOf="@id/guideline_feed_image_ho"
+                    app:tagItems="@{feed.itemB.tagList}"
+                    app:layout_constraintStart_toEndOf="@id/guideline_feed_image_horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/vote_result"/>
 
@@ -182,25 +182,25 @@
                     android:layout_height="40dp"
                     android:orientation="horizontal"
                     android:padding="@dimen/space_x_small"
-                    app:visible="@{feed.voteFlag}"
+                    app:visible="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
                     <TextView
-                        android:id="@+id/tv_vote_count_left"
+                        android:id="@+id/tv_vote_count_a"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@{String.valueOf(feed.leftCount)}" />
+                        android:text="@{String.valueOf(feed.itemA.voteCount)}" />
 
                     <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
-                        android:id="@+id/pb_vote_count_left"
+                        android:id="@+id/pb_vote_count_a"
                         style="@style/RoundCornerProgressbar"
                         app:rcProgressColor="@color/colorAccent"
                         app:rcBackgroundColor="@color/colorGray"
-                        app:rcProgress="@{feed.leftCount}"
-                        app:rcMax="@{feed.voteCount}"
+                        app:rcProgress="@{feed.itemA.voteCount}"
+                        app:rcMax="@{feed.itemA.voteCount}"
                         app:rcRadius="5dp"
                         app:rcReverse="true"/>
 
@@ -214,20 +214,20 @@
                         android:text="@string/vote_result_title" />
 
                     <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
-                        android:id="@+id/pb_vote_count_right"
+                        android:id="@+id/pb_vote_count_b"
                         style="@style/RoundCornerProgressbar"
                         app:rcProgressColor="@color/colorAccent"
                         app:rcBackgroundColor="@color/colorGray"
-                        app:rcProgress="@{feed.rightCount}"
-                        app:rcMax="@{feed.voteCount}"
+                        app:rcProgress="@{feed.itemB.voteCount}"
+                        app:rcMax="@{feed.itemB.voteCount}"
                         app:rcRadius="5dp"/>
 
                     <TextView
-                        android:id="@+id/tv_vote_count_right"
+                        android:id="@+id/tv_vote_count_b"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@{String.valueOf(feed.rightCount)}" />
+                        android:text="@{String.valueOf(feed.itemB.voteCount)}" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

@@ -25,10 +25,10 @@ public class VoteDragListener implements View.OnDragListener {
 
         String containerTag = "";
 
-        if(v.getTag(R.id.iv_feed_image_left) != null) {
-            containerTag = v.getTag(R.id.iv_feed_image_left).toString();
-        } else if(v.getTag(R.id.iv_feed_image_right) != null) {
-            containerTag = v.getTag(R.id.iv_feed_image_right).toString();
+        if(v.getTag(R.id.iv_feed_image_a) != null) {
+            containerTag = v.getTag(R.id.iv_feed_image_a).toString();
+        } else if(v.getTag(R.id.iv_feed_image_b) != null) {
+            containerTag = v.getTag(R.id.iv_feed_image_b).toString();
         }
 
         // 이벤트 시작

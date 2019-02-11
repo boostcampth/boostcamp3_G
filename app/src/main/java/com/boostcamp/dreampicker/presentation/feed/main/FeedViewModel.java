@@ -1,5 +1,7 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
+import android.util.Log;
+
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
@@ -15,7 +17,7 @@ import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class FeedViewModel extends BaseViewModel {
-    private static final int PAGE_SIZE = 1;
+    private static final int PAGE_SIZE = 10;
     private static final String ERROR_NOT_EXIST ="Not Exists user information";
     @NonNull
     private final MutableLiveData<List<Feed>> feedList = new MutableLiveData<>();
@@ -31,12 +33,11 @@ public class FeedViewModel extends BaseViewModel {
 
     FeedViewModel(@NonNull final FeedRepository repository) {
         this.repository = repository;
-        feedList.setValue(new ArrayList<>());
         isLoading.setValue(false);
         isLastPage.setValue(false);
     }
 
-    private void loadFeedList() {
+    void loadFeedList() {
         final String userId = FirebaseManager.getCurrentUserId();
         if(userId == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
@@ -62,13 +63,6 @@ public class FeedViewModel extends BaseViewModel {
                     }
                     isLoading.setValue(false);
                 }, error::setValue));
-    }
-
-    public void refresh() {
-        feedList.setValue(new ArrayList<>());
-        startAfter = null;
-        isLastPage.setValue(false);
-        loadFeedList();
     }
 
     public void vote(@NonNull final String feedId, @NonNull final String selectionId) {
@@ -98,6 +92,13 @@ public class FeedViewModel extends BaseViewModel {
             }
         }
         this.feedList.setValue(feedList);
+    }
+
+    public void refresh() {
+        feedList.setValue(new ArrayList<>());
+        startAfter = null;
+        isLastPage.setValue(false);
+        loadFeedList();
     }
 
     @NonNull
