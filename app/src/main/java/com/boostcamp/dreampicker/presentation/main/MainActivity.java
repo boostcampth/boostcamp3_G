@@ -35,8 +35,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        FeedRepositoryImpl repository = FeedRepositoryImpl.getInstance(FirebaseFirestore.getInstance());
-
 
         super.onCreate(savedInstanceState);
 
