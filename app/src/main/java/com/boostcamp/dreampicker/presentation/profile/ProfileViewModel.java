@@ -44,13 +44,13 @@ public class ProfileViewModel extends BaseViewModel {
         this.isPageEnd.setValue(false);
     }
 
-    public void loadUserDetail() {
+    void loadUserDetail() {
         addDisposable(repository.getUserDetail(userId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this.user::setValue, this.error::setValue));
     }
 
-    public void loadMyFeeds() {
+    void loadMyFeeds() {
         if (Boolean.TRUE.equals(isLoading.getValue()) ||
                 Boolean.TRUE.equals(isPageEnd.getValue())) {
             return;
@@ -80,34 +80,34 @@ public class ProfileViewModel extends BaseViewModel {
                 }));
     }
 
-    public void refreshMyFeeds(){
+    void refreshMyFeeds(){
         feedList.setValue(new ArrayList<>());
         startAfter = null;
         loadMyFeeds();
     }
 
     @NonNull
-    public LiveData<UserDetail> getUser() {
+    LiveData<UserDetail> getUser() {
         return user;
     }
 
     @NonNull
-    public LiveData<Throwable> getError() {
+    LiveData<Throwable> getError() {
         return error;
     }
 
     @NonNull
-    public LiveData<Boolean> getIsLoading() {
+    LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 
     @NonNull
-    public LiveData<Boolean> getIsPageEnd() {
+    LiveData<Boolean> getIsPageEnd() {
         return isPageEnd;
     }
 
     @NonNull
-    public LiveData<List<MyFeed>> getFeedList() {
+    LiveData<List<MyFeed>> getFeedList() {
         return feedList;
     }
 }
