@@ -5,6 +5,7 @@ import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 import com.boostcamp.dreampicker.utils.FirebaseManager;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class FeedViewModel extends BaseViewModel {
     private static final int PAGE_SIZE = 1;
     private static final String ERROR_NOT_EXIST ="Not Exists user information";
+    private static final String ERROR_NULL_FEED ="FeedList is Null";
     @NonNull
     private final MutableLiveData<List<Feed>> feedList = new MutableLiveData<>();
     @NonNull
@@ -24,10 +26,10 @@ public class FeedViewModel extends BaseViewModel {
     private final MutableLiveData<Throwable> error = new MutableLiveData<>();
     @NonNull
     private final FeedRepository repository;
-    private Date startAfter;
 
     FeedViewModel(@NonNull final FeedRepository repository) {
         this.repository = repository;
+        feedList.setValue(new ArrayList<>());
     }
 
     public void loadFeedList() {
@@ -36,37 +38,24 @@ public class FeedViewModel extends BaseViewModel {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
-        isLoading.setValue(true);
-        startAfter = new Date();
-
-        addDisposable(repository.getNotEndedFeedList(userId, startAfter, PAGE_SIZE)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(list -> {
-                    feedList.setValue(list);
-                    isLoading.setValue(false);
-                }, error::setValue));
-    }
-
-    public void loadMoreFeedList() {
-        final String userId = FirebaseManager.getCurrentUserId();
-        if(userId == null) {
-            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
-            return;
-        }
-        isLoading.setValue(true);
         final List<Feed> feedList = this.feedList.getValue();
-
-        if(feedList != null && feedList.size() > 0) {
-            startAfter = feedList.get(feedList.size() - 1).getDate();
+        if(feedList != null) {
+            Date startAfter;
+            if(feedList.isEmpty()) {
+                startAfter = new Date();
+            } else {
+                startAfter = feedList.get(feedList.size()-1).getDate();
+            }
+            isLoading.setValue(true);
             addDisposable(repository.getNotEndedFeedList(userId, startAfter, PAGE_SIZE)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(list -> {
                         feedList.addAll(list);
-                        this.feedList.setValue(feedList);
+                        this.feedList.setValue(list);
                         isLoading.setValue(false);
                     }, error::setValue));
-        } else {
-            loadFeedList();
+        } else { // feedList == null
+            error.setValue(new IllegalStateException(ERROR_NULL_FEED));
         }
     }
 
@@ -78,10 +67,10 @@ public class FeedViewModel extends BaseViewModel {
         }
         addDisposable(repository.vote(userId, feedId, selectionId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::updateFeed, error::setValue));
+                .subscribe(this::updateFeedList, error::setValue));
     }
 
-    private void updateFeed(@NonNull final Feed feed) {
+    private void updateFeedList(@NonNull final Feed feed) {
         final List<Feed> feedList = this.feedList.getValue();
         if(feedList == null) {
             return;
