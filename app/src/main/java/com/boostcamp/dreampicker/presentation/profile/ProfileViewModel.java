@@ -97,17 +97,17 @@ public class ProfileViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getIsLoading() {
+    public LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getIsPageEnd() {
+    public LiveData<Boolean> getIsPageEnd() {
         return isPageEnd;
     }
 
     @NonNull
-    public MutableLiveData<List<MyFeed>> getFeedList() {
+    public LiveData<List<MyFeed>> getFeedList() {
         return feedList;
     }
 }
