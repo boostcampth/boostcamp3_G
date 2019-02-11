@@ -33,14 +33,26 @@ public class FeedViewModel extends BaseViewModel {
     FeedViewModel(@NonNull final FeedRepository repository) {
         this.repository = repository;
         feedList.setValue(new ArrayList<>());
+        isLoading.setValue(false);
+        isLastPage.setValue(false);
     }
 
-    public void loadFeedList() {
+    public void loadItems() {
+        if(isLoading.getValue() == null || isLoading.getValue()) {
+            return;
+        }
+        if(isLastPage.getValue() == null || isLastPage.getValue()) {
+            return;
+        }
         final String userId = FirebaseManager.getCurrentUserId();
         if(userId == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
+        loadFeedList(userId);
+    }
+
+    private void loadFeedList(@NonNull final String userId) {
         final List<Feed> feedList = this.feedList.getValue();
         if(feedList != null) {
             if(feedList.isEmpty()) {
@@ -48,27 +60,28 @@ public class FeedViewModel extends BaseViewModel {
                 startAfter = new Date();
             }
             isLoading.setValue(true);
-            if(isLastPage.getValue() != null && !isLastPage.getValue()) {
-                addDisposable(repository.getNotEndedFeedList(userId, startAfter, PAGE_SIZE)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(list -> {
-                            if(list.size() > 0) {
-                                startAfter = list.get(list.size()-1).getDate();
-                                feedList.addAll(list);
-                                this.feedList.setValue(feedList);
-                            }
-                            if (list.size() < PAGE_SIZE) {
-                                isLastPage.setValue(true);
-                            }
-                            isLoading.setValue(false);
-                        }, error::setValue));
-            }
+            addDisposable(repository.getNotEndedFeedList(userId, startAfter, PAGE_SIZE)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(list -> {
+                        if(list.size() > 0) {
+                            startAfter = list.get(list.size()-1).getDate();
+                            feedList.addAll(list);
+                            this.feedList.setValue(feedList);
+                        }
+                        if (list.size() < PAGE_SIZE) {
+                            isLastPage.setValue(true);
+                        }
+                        isLoading.setValue(false);
+                    }, error::setValue));
         } else { // feedList == null
             error.setValue(new IllegalStateException(ERROR_NULL_FEED));
         }
     }
 
     public void vote(@NonNull final String feedId, @NonNull final String selectionId) {
+        if(isLoading.getValue() == null || isLoading.getValue()) {
+            return;
+        }
         final String userId = FirebaseManager.getCurrentUserId();
         if(userId == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
