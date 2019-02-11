@@ -1,11 +1,10 @@
-package com.boostcamp.dreampicker.presentation.notification;
+package com.boostcamp.dreampicker.presentation.result;
 
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.view.View;
 
@@ -13,17 +12,17 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentNotificationBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
-public class NotificationFragment extends BaseFragment<FragmentNotificationBinding> {
+public class ResultFragment extends BaseFragment<FragmentNotificationBinding> {
 
-    public NotificationFragment() {}
+    public ResultFragment() {}
 
-    public static NotificationFragment newInstance(){
-        return new NotificationFragment();
+    public static ResultFragment newInstance(){
+        return new ResultFragment();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_notification;
+        return R.layout.fragment_result;
     }
 
     @Override
