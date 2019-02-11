@@ -14,6 +14,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 public class FeedRepositoryImpl implements FeedRepository {
     private static volatile FeedRepository INSTANCE = null;
@@ -35,9 +36,6 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     private final FirebaseFirestore firestore;
-    private final String COLLECTION_USER = "user";
-    private final String SUBCOLLECTION_MYFEEDS = "myFeeds";
-    private final String FIELD_DATE = "date";
 
     @NonNull
     @Override
@@ -55,31 +53,5 @@ public class FeedRepositoryImpl implements FeedRepository {
     @Override
     public Completable uploadFeed(@NonNull FeedUploadRequest feed) {
         return null;
-    }
-
-    @NonNull
-    @Override
-    public Single<List<MyFeed>> getFeedListByUserId(@NonNull String userId, Date startAfter, int pageSize) {
-        return Single.create(emitter ->
-                firestore.collection(COLLECTION_USER).document(userId)
-                        .collection(SUBCOLLECTION_MYFEEDS)
-                        .orderBy(FIELD_DATE, Query.Direction.DESCENDING)
-                        .startAfter(startAfter)
-                        .limit(pageSize)
-                        .get()
-                        .addOnSuccessListener(documents -> {
-                            List<MyFeed> feedList = new ArrayList<>();
-                            if (!documents.isEmpty()) {
-                                for(DocumentSnapshot document : documents.getDocuments()){
-                                    final MyFeed feed = document.toObject(MyFeed.class);
-                                    if(feed != null){
-                                        feed.setId(document.getId());
-                                        feedList.add(feed);
-                                    }
-                                }
-                            }
-                            emitter.onSuccess(feedList);
-                        })
-                        .addOnFailureListener(emitter::onError));
     }
 }
