@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.data.paging.repository;
 
-import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.paging.datasource.SearchUserDataSource;
 import com.boostcamp.dreampicker.data.paging.repository.response.PagingSource;
 import com.boostcamp.dreampicker.data.source.repository.UserRepository;
@@ -19,7 +19,7 @@ public class SearchUserRepository {
         this.repository = repository;
     }
 
-    public PagingSource<User, SearchUserDataSource> addSearchUserList(@NonNull String searchKey) {
+    public PagingSource<LegacyUser, SearchUserDataSource> addSearchUserList(@NonNull String searchKey) {
 
         // 데이터 소스 팩토리 생성
         SearchUserDataSource.Factory factory =
@@ -35,7 +35,7 @@ public class SearchUserRepository {
                 .build();
 
         // PagedList LiveData 생성
-        LiveData<PagedList<User>> userPagedList =
+        LiveData<PagedList<LegacyUser>> userPagedList =
                 new LivePagedListBuilder<>(factory, config).build();
 
         return new PagingSource<>(

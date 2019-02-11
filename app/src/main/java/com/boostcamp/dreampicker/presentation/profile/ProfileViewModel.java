@@ -32,7 +32,7 @@ public class ProfileViewModel extends BaseViewModel {
     @NonNull
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     @NonNull
-    private MutableLiveData<Boolean> isPageEnd = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
 
     private Date startAfter;
 
@@ -41,7 +41,7 @@ public class ProfileViewModel extends BaseViewModel {
         this.repository = repository;
         this.userId = userId;
         this.isLoading.setValue(false);
-        this.isPageEnd.setValue(false);
+        this.isLastPage.setValue(false);
     }
 
     void loadUserDetail() {
@@ -52,7 +52,7 @@ public class ProfileViewModel extends BaseViewModel {
 
     void loadMyFeeds() {
         if (Boolean.TRUE.equals(isLoading.getValue()) ||
-                Boolean.TRUE.equals(isPageEnd.getValue())) {
+                Boolean.TRUE.equals(isLastPage.getValue())) {
             return;
         }
         this.isLoading.setValue(true);
@@ -71,7 +71,7 @@ public class ProfileViewModel extends BaseViewModel {
                         this.startAfter = result.get(result.size() - 1).getDate();
                     }
                     if (result.size() < PAGE_SIZE) { // 마지막 페이지
-                        isPageEnd.setValue(true);
+                        isLastPage.setValue(true);
                     }
                     isLoading.setValue(false);
                 }, error -> {
@@ -102,8 +102,8 @@ public class ProfileViewModel extends BaseViewModel {
     }
 
     @NonNull
-    LiveData<Boolean> getIsPageEnd() {
-        return isPageEnd;
+    LiveData<Boolean> getIsLastPage() {
+        return isLastPage;
     }
 
     @NonNull
