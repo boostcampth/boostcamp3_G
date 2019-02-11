@@ -4,7 +4,6 @@ import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.VoteSelectionItem;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedItemRemoteData;
-import com.boostcamp.dreampicker.utils.FirebaseManager;
 
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public class FeedResponseMapper {
                 data.getDate(),
                 getVoteSelectionItem(itemA, countA),
                 getVoteSelectionItem(itemB, countB),
-                getMySelection(data.getVotedUserMap(), FirebaseManager.getCurrentUserId()));
+                getMySelection(data.getVotedUserMap(), data.getWriter().getId()));
     }
 
     @NonNull
@@ -38,7 +37,7 @@ public class FeedResponseMapper {
     }
 
     private static int getVoteCount(@Nullable final Map<String, String> map,
-                             @NonNull String itemId) {
+                                    @NonNull String itemId) {
         if(map == null || map.isEmpty()) {
             return 0;
         } else {
@@ -53,7 +52,8 @@ public class FeedResponseMapper {
     }
 
     @Nullable
-    private static String getMySelection(@Nullable Map<String, String> map, @NonNull String userId) {
+    private static String getMySelection(@Nullable final Map<String, String> map,
+                                         @NonNull final String userId) {
         if(map == null || map.isEmpty()) {
             return null;
         } else {
