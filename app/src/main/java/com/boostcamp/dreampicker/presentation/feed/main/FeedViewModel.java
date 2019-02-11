@@ -33,7 +33,7 @@ public class FeedViewModel extends BaseViewModel {
     public void loadFeedList() {
         final String userId = FirebaseManager.getCurrentUserId();
         if(userId == null) {
-            error.postValue(new IllegalArgumentException(ERROR_NOT_EXIST));
+            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
         isLoading.setValue(true);
@@ -50,7 +50,7 @@ public class FeedViewModel extends BaseViewModel {
     public void loadMoreFeedList() {
         final String userId = FirebaseManager.getCurrentUserId();
         if(userId == null) {
-            error.postValue(new IllegalArgumentException(ERROR_NOT_EXIST));
+            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
         isLoading.setValue(true);
@@ -62,7 +62,7 @@ public class FeedViewModel extends BaseViewModel {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(list -> {
                         feedList.addAll(list);
-                        this.feedList.postValue(feedList);
+                        this.feedList.setValue(feedList);
                         isLoading.setValue(false);
                     }, error::setValue));
         } else {
@@ -73,7 +73,7 @@ public class FeedViewModel extends BaseViewModel {
     public void vote(@NonNull final String feedId, @NonNull final String selectionId) {
         final String userId = FirebaseManager.getCurrentUserId();
         if(userId == null) {
-            error.postValue(new IllegalArgumentException(ERROR_NOT_EXIST));
+            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
         addDisposable(repository.vote(userId, feedId, selectionId)
