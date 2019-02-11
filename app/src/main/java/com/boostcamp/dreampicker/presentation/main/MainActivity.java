@@ -3,21 +3,27 @@ package com.boostcamp.dreampicker.presentation.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.data.repository.UserRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
 import com.boostcamp.dreampicker.presentation.notification.NotificationFragment;
-import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
+import com.boostcamp.dreampicker.presentation.legacyprofile.ProfileFragment;
+import com.boostcamp.dreampicker.presentation.profile.ProfileViewModel;
+import com.boostcamp.dreampicker.presentation.profile.ProfileViewModelFactory;
 import com.boostcamp.dreampicker.presentation.search.SearchFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.boostcamp.dreampicker.utils.FirebaseManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
 

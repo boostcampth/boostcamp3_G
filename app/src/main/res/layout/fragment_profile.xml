@@ -6,10 +6,10 @@
     <data>
         <variable
             name="vm"
-            type="com.boostcamp.dreampicker.presentation.profile.ProfileViewModel" />
+            type="com.boostcamp.dreampicker.presentation.legacyprofile.ProfileViewModel" />
         <variable
             name="feedVm"
-            type="com.boostcamp.dreampicker.presentation.profile.ProfileFeedViewModel" />
+            type="com.boostcamp.dreampicker.presentation.legacyprofile.ProfileFeedViewModel" />
     </data>
 
     <androidx.constraintlayout.motion.widget.MotionLayout

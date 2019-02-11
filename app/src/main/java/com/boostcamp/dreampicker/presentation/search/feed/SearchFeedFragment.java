@@ -9,7 +9,7 @@ import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.databinding.FragmentSearchFeedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
-import com.boostcamp.dreampicker.presentation.profile.ProfileFeedAdapter;
+import com.boostcamp.dreampicker.presentation.legacyprofile.ProfileFeedAdapter;
 import com.boostcamp.dreampicker.presentation.search.OnSearchListener;
 
 import androidx.annotation.NonNull;
