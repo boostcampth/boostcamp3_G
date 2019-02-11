@@ -64,9 +64,13 @@ public class LegacyFeed {
         this.imageMap = imageMap;
     }
 
-    public LegacyUser getUser() { return user; }
+    public LegacyUser getUser() {
+        return user;
+    }
 
-    public void setUser(LegacyUser user) { this.user = user; }
+    public void setUser(LegacyUser user) {
+        this.user = user;
+    }
 
     public String getContent() {
         return content;

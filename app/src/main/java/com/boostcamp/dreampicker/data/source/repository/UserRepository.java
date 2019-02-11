@@ -1,7 +1,6 @@
 package com.boostcamp.dreampicker.data.source.repository;
 
 import com.boostcamp.dreampicker.data.model.LegacyUser;
-import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.local.test.UserMockDataSource;
@@ -66,8 +65,8 @@ public class UserRepository implements UserDataSource {
     @Override
     @NonNull
     public Single<PagedListResponse<LegacyUser>> addProfileFollowerList(@NonNull String userId,
-                                                                  int start,
-                                                                  int display) {
+                                                                        int start,
+                                                                        int display) {
         if (isTesting) {
             return mockDataSource.addProfileFollowerList(userId, start, display);
         }
@@ -78,8 +77,8 @@ public class UserRepository implements UserDataSource {
     @Override
     @NonNull
     public Single<PagedListResponse<LegacyUser>> addSearchUserList(@NonNull String searchKey,
-                                                             int start,
-                                                             int display) {
+                                                                   int start,
+                                                                   int display) {
         if (isTesting) {
             return mockDataSource.addSearchUserList(searchKey, start, display);
         }

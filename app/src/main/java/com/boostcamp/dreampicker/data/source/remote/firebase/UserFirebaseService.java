@@ -95,8 +95,8 @@ public class UserFirebaseService implements UserDataSource {
     @Override
     @NonNull
     public Single<PagedListResponse<LegacyUser>> addProfileFollowerList(@NonNull String userId,
-                                                                  int start,
-                                                                  int display) {
+                                                                        int start,
+                                                                        int display) {
         // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USERDETAIL)
                 .whereEqualTo(FIELD_USER_ID, userId)
@@ -122,8 +122,8 @@ public class UserFirebaseService implements UserDataSource {
     @Override
     @NonNull
     public Single<PagedListResponse<LegacyUser>> addSearchUserList(@NonNull String searchKey,
-                                                             int start,
-                                                             int display) {
+                                                                   int start,
+                                                                   int display) {
         // TODO :테스트 필요
         return Single.create(emitter -> FirebaseFirestore.getInstance().collection(COLLECTION_USER)
                 .whereEqualTo(FIELD_USER_ID, searchKey)

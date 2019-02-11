@@ -6,10 +6,10 @@ import android.text.TextUtils;
 
 import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.model.LegacyImage;
+import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 import com.boostcamp.dreampicker.utils.Constant;
-import com.boostcamp.dreampicker.utils.FirebaseManager;
 import com.boostcamp.dreampicker.utils.IdCreator;
 
 import java.text.SimpleDateFormat;
@@ -104,7 +104,7 @@ public class UploadViewModel extends BaseViewModel {
     private LegacyFeed createFeed(@NonNull final Map<String, LegacyImage> imageMap) {
         final LegacyFeed feed = new LegacyFeed();
         feed.setId(IdCreator.createFeedId());
-        //feed.setUser(FirebaseManager.getCurrentUser());
+        feed.setUser(new LegacyUser());
         feed.setContent(content.get());
         feed.setImageMap(imageMap);
         feed.setDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));

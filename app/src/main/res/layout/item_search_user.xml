@@ -5,7 +5,7 @@
     <data>
         <variable
             name="user"
-            type="com.boostcamp.dreampicker.data.model.User"/>
+            type="com.boostcamp.dreampicker.data.model.LegacyUser"/>
     </data>
 
     <androidx.cardview.widget.CardView

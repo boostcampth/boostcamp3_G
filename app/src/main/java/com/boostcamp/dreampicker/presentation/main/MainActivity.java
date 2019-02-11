@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
@@ -15,6 +16,7 @@ import com.boostcamp.dreampicker.presentation.search.SearchFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.boostcamp.dreampicker.utils.FirebaseManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -33,6 +35,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FeedRepositoryImpl repository = FeedRepositoryImpl.getInstance(FirebaseFirestore.getInstance());
+
+
         super.onCreate(savedInstanceState);
 
         initView();

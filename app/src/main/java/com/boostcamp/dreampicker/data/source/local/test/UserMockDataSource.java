@@ -2,7 +2,6 @@ package com.boostcamp.dreampicker.data.source.local.test;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.LegacyUser;
-import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
 import com.boostcamp.dreampicker.data.source.UserDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
@@ -61,8 +60,8 @@ public class UserMockDataSource implements UserDataSource {
     @Override
     @NonNull
     public Single<PagedListResponse<LegacyUser>> addProfileFollowingList(@NonNull String userId,
-                                                                   int start,
-                                                                   int display) {
+                                                                         int start,
+                                                                         int display) {
         List<LegacyUser> userList = new ArrayList<>();
         for (int i = 0; i < display; i++) {
             LegacyUser user = new LegacyUser(
@@ -78,8 +77,8 @@ public class UserMockDataSource implements UserDataSource {
     @Override
     @NonNull
     public Single<PagedListResponse<LegacyUser>> addProfileFollowerList(@NonNull String userId,
-                                                                  int start,
-                                                                  int display) {
+                                                                        int start,
+                                                                        int display) {
         List<LegacyUser> userList = new ArrayList<>();
         for (int i = 0; i < display; i++) {
             LegacyUser user = new LegacyUser(
@@ -95,8 +94,8 @@ public class UserMockDataSource implements UserDataSource {
     @Override
     @NonNull
     public Single<PagedListResponse<LegacyUser>> addSearchUserList(@NonNull String searchKey,
-                                                             int start,
-                                                             int display) {
+                                                                   int start,
+                                                                   int display) {
         return Single.create(emitter ->
                 FirebaseFirestore.getInstance()
                         .collection(COLLECTION_USER)

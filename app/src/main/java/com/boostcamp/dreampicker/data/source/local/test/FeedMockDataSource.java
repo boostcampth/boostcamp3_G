@@ -6,7 +6,6 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.model.LegacyImage;
 import com.boostcamp.dreampicker.data.model.LegacyUser;
-import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.boostcamp.dreampicker.utils.Constant;

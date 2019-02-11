@@ -1,7 +1,6 @@
 package com.boostcamp.dreampicker.data.paging.datasource;
 
 import com.boostcamp.dreampicker.data.model.LegacyUser;
-import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 
