@@ -23,9 +23,12 @@ public class FeedViewModel extends BaseViewModel {
     @NonNull
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     @NonNull
+    private final MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
+    @NonNull
     private final MutableLiveData<Throwable> error = new MutableLiveData<>();
     @NonNull
     private final FeedRepository repository;
+    private Date startAfter;
 
     FeedViewModel(@NonNull final FeedRepository repository) {
         this.repository = repository;
@@ -40,20 +43,26 @@ public class FeedViewModel extends BaseViewModel {
         }
         final List<Feed> feedList = this.feedList.getValue();
         if(feedList != null) {
-            Date startAfter;
             if(feedList.isEmpty()) {
+                isLastPage.setValue(false);
                 startAfter = new Date();
-            } else {
-                startAfter = feedList.get(feedList.size()-1).getDate();
             }
             isLoading.setValue(true);
-            addDisposable(repository.getNotEndedFeedList(userId, startAfter, PAGE_SIZE)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(list -> {
-                        feedList.addAll(list);
-                        this.feedList.setValue(list);
-                        isLoading.setValue(false);
-                    }, error::setValue));
+            if(isLastPage.getValue() != null && !isLastPage.getValue()) {
+                addDisposable(repository.getNotEndedFeedList(userId, startAfter, PAGE_SIZE)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(list -> {
+                            if(list.size() > 0) {
+                                startAfter = list.get(list.size()-1).getDate();
+                                feedList.addAll(list);
+                                this.feedList.setValue(feedList);
+                            }
+                            if (list.size() < PAGE_SIZE) {
+                                isLastPage.setValue(true);
+                            }
+                            isLoading.setValue(false);
+                        }, error::setValue));
+            }
         } else { // feedList == null
             error.setValue(new IllegalStateException(ERROR_NULL_FEED));
         }
@@ -93,6 +102,11 @@ public class FeedViewModel extends BaseViewModel {
     @NonNull
     public MutableLiveData<Boolean> getIsLoading() {
         return isLoading;
+    }
+
+    @NonNull
+    public MutableLiveData<Boolean> getIsLastPage() {
+        return isLastPage;
     }
 
     @NonNull
