@@ -66,11 +66,11 @@ public class FeedRepositoryImpl implements FeedRepository {
                                 final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
                                 if(data != null) {
                                     feedList.add(FeedResponseMapper.toFeed(snapshot.getId(), data));
-                                    emitter.onSuccess(feedList);
                                 } else {
                                     emitter.onError(new IllegalArgumentException("FeedRemoteData is Null"));
                                 }
                             }
+                            emitter.onSuccess(feedList);
                         }).addOnFailureListener(emitter::onError));
     }
 
@@ -102,9 +102,9 @@ public class FeedRepositoryImpl implements FeedRepository {
                                 if(data != null) {
                                     final Feed feed = FeedResponseMapper.toFeed(feedId, Objects.requireNonNull(data));
                                     emitter.onSuccess(feed);
-                                } else
-                                    emitter.onError(new IllegalArgumentException("FeedRemoteData is Null"));
+                                }
                             }
+                            emitter.onError(new IllegalArgumentException("Snapshot or FeedRemoteData error"));
                         }).addOnFailureListener(emitter::onError)));
     }
 
