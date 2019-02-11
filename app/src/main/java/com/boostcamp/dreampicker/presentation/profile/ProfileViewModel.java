@@ -82,6 +82,7 @@ public class ProfileViewModel extends BaseViewModel {
 
     void refreshMyFeeds(){
         feedList.setValue(new ArrayList<>());
+        isLastPage.setValue(false);
         startAfter = null;
         loadMyFeeds();
     }
