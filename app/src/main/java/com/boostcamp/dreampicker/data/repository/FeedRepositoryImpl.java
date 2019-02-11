@@ -20,6 +20,7 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 public class FeedRepositoryImpl implements FeedRepository {
     private static final String COLLECTION_FEED = "feed";
@@ -53,7 +54,7 @@ public class FeedRepositoryImpl implements FeedRepository {
     @NonNull
     @Override
     public Single<List<Feed>> getNotEndedFeedList(@NonNull final Date startAfter, final int pageSize) {
-        return Single.create(emitter ->
+        final Single<List<Feed>> single = Single.create(emitter ->
                 firestore.collection(COLLECTION_FEED)
                         .whereEqualTo(FIELD_ENDED, false)
                         .orderBy(FIELD_DATE, Query.Direction.DESCENDING) // 시간 정렬
@@ -72,6 +73,8 @@ public class FeedRepositoryImpl implements FeedRepository {
                             }
                             emitter.onSuccess(feedList);
                         }).addOnFailureListener(emitter::onError));
+
+        return single.subscribeOn(Schedulers.io());
     }
 
     @NonNull
@@ -81,7 +84,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                              @NonNull final String selectionId) {
         final DocumentReference docRef = firestore.collection(COLLECTION_FEED).document(feedId);
 
-        return Completable.create(emitter ->
+        final Single<Feed> single = Completable.create(emitter ->
                 firestore.runTransaction(transaction ->  {
                     final DocumentSnapshot snapshot = transaction.get(docRef);
                     final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
@@ -106,6 +109,8 @@ public class FeedRepositoryImpl implements FeedRepository {
                             }
                             emitter.onError(new IllegalArgumentException("Snapshot or FeedRemoteData error"));
                         }).addOnFailureListener(emitter::onError)));
+
+        return single.subscribeOn(Schedulers.io());
     }
 
     @NonNull
