@@ -45,7 +45,7 @@ public class BindingUtil {
     @BindingAdapter({"tagItems"})
     public static void setTagItems(@NonNull TagGroup tagGroup, @NonNull final List<String> items) {
         final List<String> tagItems = Arrays.asList(tagGroup.getTags());
-        if(!tagItems.containsAll(items)) {
+           if(!tagItems.containsAll(items)) {
             tagGroup.setTags(items);
         }
     }
