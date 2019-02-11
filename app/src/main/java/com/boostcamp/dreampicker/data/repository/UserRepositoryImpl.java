@@ -76,13 +76,11 @@ public class UserRepositoryImpl implements UserRepository {
                         .get()
                         .addOnSuccessListener(documents -> {
                             List<MyFeed> feedList = new ArrayList<>();
-                            if (!documents.isEmpty()) {
-                                for (DocumentSnapshot document : documents.getDocuments()) {
-                                    final MyFeed feed = document.toObject(MyFeed.class);
-                                    if (feed != null) {
-                                        feed.setId(document.getId());
-                                        feedList.add(feed);
-                                    }
+                            for (DocumentSnapshot document : documents.getDocuments()) {
+                                final MyFeed feed = document.toObject(MyFeed.class);
+                                if (feed != null) {
+                                    feed.setId(document.getId());
+                                    feedList.add(feed);
                                 }
                             }
                             emitter.onSuccess(feedList);
