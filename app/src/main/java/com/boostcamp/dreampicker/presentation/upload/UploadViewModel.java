@@ -1,5 +1,7 @@
 package com.boostcamp.dreampicker.presentation.upload;
 
+import android.text.TextUtils;
+
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
@@ -9,6 +11,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -35,9 +38,9 @@ public class UploadViewModel extends BaseViewModel {
     }
 
     void upload() {
-        if (getContent().getValue() != null &&
-                getImagePathA().getValue() != null &&
-                getImagePathB().getValue() != null) {
+        if (!TextUtils.isEmpty(getContent().getValue()) &&
+                !TextUtils.isEmpty(getImagePathA().getValue()) &&
+                !TextUtils.isEmpty(getImagePathB().getValue())) {
             addDisposable(feedRepository.uploadFeed(createFeedUploadRequest())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> validate.setValue(true),
@@ -60,27 +63,27 @@ public class UploadViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public MutableLiveData<String> getContent() {
+    public LiveData<String> getContent() {
         return content;
     }
 
     @NonNull
-    public MutableLiveData<String> getImagePathA() {
+    public LiveData<String> getImagePathA() {
         return imagePathA;
     }
 
     @NonNull
-    public MutableLiveData<String> getImagePathB() {
+    public LiveData<String> getImagePathB() {
         return imagePathB;
     }
 
     @Nullable
-    public MutableLiveData<List<String>> getTagListA() {
+    public LiveData<List<String>> getTagListA() {
         return tagListA;
     }
 
     @Nullable
-    public MutableLiveData<List<String>> getTagListB() {
+    public LiveData<List<String>> getTagListB() {
         return tagListB;
     }
 
