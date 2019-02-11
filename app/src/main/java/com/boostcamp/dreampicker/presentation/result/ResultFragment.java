@@ -9,10 +9,10 @@ import androidx.annotation.Nullable;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.databinding.FragmentNotificationBinding;
+import com.boostcamp.dreampicker.databinding.FragmentResultBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
-public class ResultFragment extends BaseFragment<FragmentNotificationBinding> {
+public class ResultFragment extends BaseFragment<FragmentResultBinding> {
 
     public ResultFragment() {}
 
