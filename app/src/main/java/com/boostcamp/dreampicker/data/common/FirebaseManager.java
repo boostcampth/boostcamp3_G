@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.utils;
+package com.boostcamp.dreampicker.data.common;
 
 import com.boostcamp.dreampicker.data.model.User;
 import com.google.firebase.auth.FirebaseAuth;

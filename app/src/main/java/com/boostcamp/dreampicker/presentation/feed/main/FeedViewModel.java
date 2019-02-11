@@ -1,11 +1,9 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
-import android.util.Log;
-
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
-import com.boostcamp.dreampicker.utils.FirebaseManager;
+import com.boostcamp.dreampicker.data.common.FirebaseManager;
 
 import java.util.ArrayList;
 import java.util.Date;

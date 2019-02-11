@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.utils;
+package com.boostcamp.dreampicker.data.common;
 
 import java.util.UUID;
 

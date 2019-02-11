@@ -9,7 +9,7 @@ import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.source.FeedDataSource;
 import com.boostcamp.dreampicker.data.source.remote.firebase.response.PagedListResponse;
 import com.boostcamp.dreampicker.utils.Constant;
-import com.boostcamp.dreampicker.utils.IdCreator;
+import com.boostcamp.dreampicker.data.common.IdCreator;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;

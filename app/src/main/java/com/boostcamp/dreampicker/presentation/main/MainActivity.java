@@ -13,7 +13,7 @@ import com.boostcamp.dreampicker.presentation.result.ResultFragment;
 import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.search.SearchFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
-import com.boostcamp.dreampicker.utils.FirebaseManager;
+import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
