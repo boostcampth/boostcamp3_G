@@ -4,7 +4,6 @@ import android.net.Uri;
 
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
-import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.source.firebase.model.mapper.FeedMapper;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
@@ -34,9 +33,6 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     private static final String FIELD_DATE = "date";
     private static final String FIELD_ENDED = "ended";
-
-    private static final String COLLECTION_USER = "user";
-    private static final String SUBCOLLECTION_MYFEEDS = "myFeeds";
 
     @NonNull
     private final FirebaseFirestore firestore;
@@ -76,9 +72,9 @@ public class FeedRepositoryImpl implements FeedRepository {
                         .get()
                         .addOnSuccessListener(snapshots -> {
                             final List<Feed> feedList = new ArrayList<>();
-                            for(DocumentSnapshot snapshot : snapshots.getDocuments()) {
+                            for (DocumentSnapshot snapshot : snapshots.getDocuments()) {
                                 final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
-                                if(data != null) {
+                                if (data != null) {
                                     feedList.add(FeedResponseMapper.toFeed(userId, snapshot.getId(), data));
                                 } else {
                                     emitter.onError(new IllegalArgumentException("FeedRemoteData is Null"));
@@ -98,11 +94,11 @@ public class FeedRepositoryImpl implements FeedRepository {
         final DocumentReference docRef = firestore.collection(COLLECTION_FEED).document(feedId);
 
         final Single<Feed> single = Completable.create(emitter ->
-                firestore.runTransaction(transaction ->  {
+                firestore.runTransaction(transaction -> {
                     final DocumentSnapshot snapshot = transaction.get(docRef);
                     final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
 
-                    if(data != null) {
+                    if (data != null) {
                         final Map<String, String> map = data.getVotedUserMap();
                         map.put(userId, selectionId);
                         transaction.set(docRef, data, SetOptions.merge());
@@ -115,7 +111,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                         .addOnSuccessListener(snapshot -> {
                             if (snapshot != null) {
                                 final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
-                                if(data != null) {
+                                if (data != null) {
                                     final Feed feed = FeedResponseMapper.toFeed(userId, feedId, data);
                                     emitter.onSuccess(feed);
                                 }
@@ -126,7 +122,6 @@ public class FeedRepositoryImpl implements FeedRepository {
 
         return single.subscribeOn(Schedulers.io());
     }
-
 
 
     @NonNull
@@ -170,31 +165,5 @@ public class FeedRepositoryImpl implements FeedRepository {
                 }
             });
         });
-    }
-
-    @NonNull
-    @Override
-    public Single<List<MyFeed>> getFeedListByUserId(@NonNull String userId, Date startAfter, int pageSize) {
-        return Single.create(emitter ->
-                firestore.collection(COLLECTION_USER).document(userId)
-                        .collection(SUBCOLLECTION_MYFEEDS)
-                        .orderBy(FIELD_DATE, Query.Direction.DESCENDING)
-                        .startAfter(startAfter)
-                        .limit(pageSize)
-                        .get()
-                        .addOnSuccessListener(task -> {
-                            List<MyFeed> feedList = new ArrayList<>();
-                            if (!task.isEmpty()) {
-                                for(DocumentSnapshot document : task.getDocuments()){
-                                    final MyFeed feed = document.toObject(MyFeed.class);
-                                    if(feed != null){
-                                        feed.setId(document.getId());
-                                        feedList.add(feed);
-                                    }
-                                }
-                            }
-                            emitter.onSuccess(feedList);
-                        })
-                        .addOnFailureListener(emitter::onError));
     }
 }

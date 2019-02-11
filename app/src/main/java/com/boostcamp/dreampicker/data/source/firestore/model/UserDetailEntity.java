@@ -5,8 +5,6 @@ public class UserDetailEntity {
     private String name; // 유저 이름
     private String profileImageUrl; // 유저 프로필 url
     private int feedCount; // 올린 피드 수
-    private int followerCount; // 팔로워 수
-    private int followingCount; // 팔로잉 수
 
     public UserDetailEntity() {
     }
@@ -27,11 +25,4 @@ public class UserDetailEntity {
         return feedCount;
     }
 
-    public int getFollowerCount() {
-        return followerCount;
-    }
-
-    public int getFollowingCount() {
-        return followingCount;
-    }
 }

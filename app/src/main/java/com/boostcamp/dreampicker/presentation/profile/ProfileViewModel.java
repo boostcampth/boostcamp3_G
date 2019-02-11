@@ -1,19 +1,21 @@
 package com.boostcamp.dreampicker.presentation.profile;
 
-import com.boostcamp.dreampicker.data.model.LegacyUserDetail;
-import com.boostcamp.dreampicker.data.source.repository.UserRepository;
+import com.boostcamp.dreampicker.data.model.MyFeed;
+import com.boostcamp.dreampicker.data.model.UserDetail;
+import com.boostcamp.dreampicker.data.repository.UserRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class ProfileViewModel extends BaseViewModel {
+    private final int PAGE_SIZE = 10;
 
     @NonNull
     private final UserRepository repository;
@@ -21,85 +23,92 @@ public class ProfileViewModel extends BaseViewModel {
     private final String userId;
 
     @NonNull
-    private MutableLiveData<LegacyUserDetail> user = new MutableLiveData<>();
+    private MutableLiveData<UserDetail> user = new MutableLiveData<>();
+    @NonNull
+    private MutableLiveData<List<MyFeed>> feedList = new MutableLiveData<>();
     @NonNull
     private MutableLiveData<Throwable> error = new MutableLiveData<>();
 
-    public final ObservableBoolean isLoading = new ObservableBoolean(false);
+    @NonNull
+    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    @NonNull
+    private MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
 
-    private ProfileViewModel(@NonNull UserRepository repository,
-                             @NonNull String userId) {
+    private Date startAfter;
+
+    ProfileViewModel(@NonNull UserRepository repository,
+                     @NonNull String userId) {
         this.repository = repository;
         this.userId = userId;
-        loadUserDetail();
+        this.isLoading.setValue(false);
+        this.isLastPage.setValue(false);
     }
 
-    /**
-     * 사용자 정보 로딩 */
-    private void loadUserDetail() {
-        if (isLoading.get()) {
+    void loadUserDetail() {
+        addDisposable(repository.getUserDetail(userId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this.user::setValue, this.error::setValue));
+    }
+
+    void loadMyFeeds() {
+        if (Boolean.TRUE.equals(isLoading.getValue()) ||
+                Boolean.TRUE.equals(isLastPage.getValue())) {
             return;
         }
+        this.isLoading.setValue(true);
 
-        isLoading.set(true);
+        final List<MyFeed> newList = this.feedList.getValue() == null
+                ? new ArrayList<>() : this.feedList.getValue();
 
-        addDisposable(repository.getProfileUserDetail(userId)
-                .subscribeOn(Schedulers.io())
+        addDisposable(repository.getFeedListByUserId(userId,
+                startAfter == null ? new Date() : startAfter,
+                PAGE_SIZE)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(user -> {
-                            this.user.setValue(user);
-                            this.isLoading.set(false);
-                        }, error -> {
-                            this.error.setValue(error);
-                            this.isLoading.set(false);
-                        }
-                ));
+                .subscribe(result -> {
+                    if (result.size() > 0) {
+                        newList.addAll(result);
+                        this.feedList.setValue(newList);
+                        this.startAfter = result.get(result.size() - 1).getDate();
+                    }
+                    if (result.size() < PAGE_SIZE) { // 마지막 페이지
+                        isLastPage.setValue(true);
+                    }
+                    isLoading.setValue(false);
+                }, error -> {
+                    this.error.setValue(error);
+                    isLoading.setValue(false);
+                }));
     }
 
-    /**
-     * 팔로우 등록 & 취소 */
-    public void toggleFollow() {
-
-        final LegacyUserDetail user = this.user.getValue();
-
-        if (user != null) {
-            addDisposable(repository.toggleUserFollow(user.getId(), "me")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::loadUserDetail, error::setValue));
-        }
+    void refreshMyFeeds(){
+        feedList.setValue(new ArrayList<>());
+        isLastPage.setValue(false);
+        startAfter = null;
+        loadMyFeeds();
     }
 
     @NonNull
-    public LiveData<LegacyUserDetail> getUser() {
+    LiveData<UserDetail> getUser() {
         return user;
     }
 
     @NonNull
-    public LiveData<Throwable> getError() {
+    LiveData<Throwable> getError() {
         return error;
     }
 
-    static class Factory implements ViewModelProvider.Factory {
-        @NonNull
-        private final UserRepository repository;
-        @NonNull
-        private String userId;
+    @NonNull
+    LiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
 
-        Factory(@NonNull UserRepository repository,
-                @NonNull String userId) {
-            this.repository = repository;
-            this.userId = userId;
-        }
+    @NonNull
+    LiveData<Boolean> getIsLastPage() {
+        return isLastPage;
+    }
 
-        @NonNull
-        @Override
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if (modelClass.isAssignableFrom(ProfileViewModel.class)) {
-                //noinspection unchecked
-                return (T) new ProfileViewModel(repository, userId);
-            }
-            throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
-        }
+    @NonNull
+    LiveData<List<MyFeed>> getFeedList() {
+        return feedList;
     }
 }
