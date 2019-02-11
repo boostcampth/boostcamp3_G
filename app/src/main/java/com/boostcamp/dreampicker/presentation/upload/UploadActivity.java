@@ -1,30 +1,14 @@
 package com.boostcamp.dreampicker.presentation.upload;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
-import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
-import com.boostcamp.dreampicker.utils.Constant;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
-
-import java.util.List;
-
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
-import gun0912.tedbottompicker.TedBottomPicker;
-import me.gujun.android.taggroup.TagGroup;
 
 public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
-    private static final String CAMERA = Manifest.permission.CAMERA;
+    /*private static final String CAMERA = Manifest.permission.CAMERA;
     private static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
     private static final String PERMISSION_DENIED_MESSAGE = "권한이 없습니다.";
@@ -137,7 +121,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
-
+*/
     @Override
     protected int getLayoutId() {
         return R.layout.activity_upload;

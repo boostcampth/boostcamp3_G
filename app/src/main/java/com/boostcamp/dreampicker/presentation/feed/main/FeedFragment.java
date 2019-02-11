@@ -2,37 +2,25 @@ package com.boostcamp.dreampicker.presentation.feed.main;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
+import com.boostcamp.dreampicker.presentation.BaseFragment;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-public class FeedFragment extends Fragment {
-    private FragmentFeedBinding binding;
+public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
+    private static final String TEXT_LAST_PAGE = "마지막 페이지입니다.";
+    private static final String ERROR_MESSAGE = "에러가 발생했습니다.";
 
     public FeedFragment() { }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_feed, container, false);
-        binding.setLifecycleOwner(this);
-
-        return binding.getRoot();
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -56,26 +44,28 @@ public class FeedFragment extends Fragment {
     private void initRecyclerView() {
         final FeedAdapter adapter = new FeedAdapter();
         binding.rvFeed.setAdapter(adapter);
-        binding.getVm().getFeedList().observe(this, list -> {
-            if(list.size() > 0) {
-                binding.rvFeed.setVisibility(View.VISIBLE);
-            }
-            adapter.submitList(list);
-        });
+        binding.getVm().getFeedList().observe(this, adapter::submitList);
     }
     private void subscribeLoading() {
-        // Todo : DataBinding
+        // Todo : Loading Library
         binding.getVm().getIsLoading().observe(this, loading -> Log.d("Melon", loading +""));
-        // Todo : SnackBar
-        binding.getVm().getIsLastPage().observe(this, isLastPage -> { });
+        binding.getVm().getIsLastPage().observe(this, isLastPage -> showToast(TEXT_LAST_PAGE));
     }
 
     private void subscribeError() {
-        // Todo : 에러 처리 구현
-        binding.getVm().getError().observe(this, e -> { });
+        binding.getVm().getError().observe(this, e -> showToast(ERROR_MESSAGE));
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     public static FeedFragment newInstance() {
         return new FeedFragment();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_feed;
     }
 }

@@ -10,10 +10,7 @@ import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
 import com.boostcamp.dreampicker.presentation.result.ResultFragment;
-import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
-import com.boostcamp.dreampicker.presentation.search.SearchFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
-import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -58,7 +55,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 fragment = FeedFragment.newInstance();
                 break;
             case R.id.navigation_search:
-                fragment = SearchFragment.newInstance();
+                // fragment = SearchFragment.newInstance();
                 break;
             case R.id.navigation_upload:
                 startActivity(UploadActivity.getLaunchIntent(this));
@@ -68,7 +65,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 fragment = ResultFragment.newInstance();
                 break;
             case R.id.navigation_profile:
-                fragment = ProfileFragment.newInstance(FirebaseManager.getCurrentUserId());
+                //fragment = ProfileFragment.newInstance(FirebaseManager.getCurrentUserId());
                 break;
         }
 

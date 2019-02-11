@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.source.remote.firebase.UserFirebaseService;
-import com.boostcamp.dreampicker.data.source.remote.firebase.request.InsertUserRequest;
-import com.boostcamp.dreampicker.data.source.repository.UserRepository;
 import com.boostcamp.dreampicker.databinding.ActivityLogInBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -22,7 +19,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import androidx.annotation.NonNull;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 
@@ -125,15 +121,15 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
 
     private void insertNewUser(@NonNull FirebaseUser user) {
 
-        final InsertUserRequest newUser = new InsertUserRequest(user.getUid(),
+/*        final InsertUserRequest newUser = new InsertUserRequest(user.getUid(),
                 user.getDisplayName(),
                 user.getEmail(),
-                user.getPhotoUrl() == null ? null : user.getPhotoUrl().toString());
+                user.getPhotoUrl() == null ? null : user.getPhotoUrl().toString());*/
 
-        disposable.add(UserRepository.getInstance(UserFirebaseService.getInstance())
+/*        disposable.add(UserRepository.getInstance(UserFirebaseService.getInstance())
                 .insertNewUser(newUser)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::startMainActivity));
+                .subscribe(this::startMainActivity));*/
     }
 
     private void startMainActivity() {
