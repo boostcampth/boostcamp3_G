@@ -15,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class FeedViewModel extends BaseViewModel {
     private static final int PAGE_SIZE = 1;
+    private static final String ERROR_NOT_EXIST ="Not Exists user information";
     @NonNull
     private final MutableLiveData<List<Feed>> feedList = new MutableLiveData<>();
     @NonNull
@@ -30,10 +31,15 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     public void loadFeedList() {
+        final String userId = FirebaseManager.getCurrentUserId();
+        if(userId == null) {
+            error.postValue(new IllegalArgumentException(ERROR_NOT_EXIST));
+            return;
+        }
         isLoading.setValue(true);
         startAfter = new Date();
 
-        addDisposable(repository.getNotEndedFeedList(startAfter, PAGE_SIZE)
+        addDisposable(repository.getNotEndedFeedList(userId, startAfter, PAGE_SIZE)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> {
                     feedList.setValue(list);
@@ -42,12 +48,17 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     public void loadMoreFeedList() {
+        final String userId = FirebaseManager.getCurrentUserId();
+        if(userId == null) {
+            error.postValue(new IllegalArgumentException(ERROR_NOT_EXIST));
+            return;
+        }
         isLoading.setValue(true);
         final List<Feed> feedList = this.feedList.getValue();
 
         if(feedList != null && feedList.size() > 0) {
             startAfter = feedList.get(feedList.size() - 1).getDate();
-            addDisposable(repository.getNotEndedFeedList(startAfter, PAGE_SIZE)
+            addDisposable(repository.getNotEndedFeedList(userId, startAfter, PAGE_SIZE)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(list -> {
                         feedList.addAll(list);
@@ -62,7 +73,7 @@ public class FeedViewModel extends BaseViewModel {
     public void vote(@NonNull final String feedId, @NonNull final String selectionId) {
         final String userId = FirebaseManager.getCurrentUserId();
         if(userId == null) {
-            error.postValue(new IllegalArgumentException("Not exists user information"));
+            error.postValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
         addDisposable(repository.vote(userId, feedId, selectionId)

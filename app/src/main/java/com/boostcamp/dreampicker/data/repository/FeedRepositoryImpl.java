@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
@@ -53,7 +52,8 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     @Override
-    public Single<List<Feed>> getNotEndedFeedList(@NonNull final Date startAfter, final int pageSize) {
+    public Single<List<Feed>> getNotEndedFeedList(@NonNull final String userId,
+                                                  @NonNull final Date startAfter, final int pageSize) {
         final Single<List<Feed>> single = Single.create(emitter ->
                 firestore.collection(COLLECTION_FEED)
                         .whereEqualTo(FIELD_ENDED, false)
@@ -66,7 +66,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                             for(DocumentSnapshot snapshot : snapshots.getDocuments()) {
                                 final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
                                 if(data != null) {
-                                    feedList.add(FeedResponseMapper.toFeed(snapshot.getId(), data));
+                                    feedList.add(FeedResponseMapper.toFeed(userId, snapshot.getId(), data));
                                 } else {
                                     emitter.onError(new IllegalArgumentException("FeedRemoteData is Null"));
                                 }
@@ -103,11 +103,12 @@ public class FeedRepositoryImpl implements FeedRepository {
                             if (snapshot != null) {
                                 final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
                                 if(data != null) {
-                                    final Feed feed = FeedResponseMapper.toFeed(feedId, Objects.requireNonNull(data));
+                                    final Feed feed = FeedResponseMapper.toFeed(userId, feedId, data);
                                     emitter.onSuccess(feed);
                                 }
+                            } else {
+                                emitter.onError(new IllegalArgumentException("Snapshot or FeedRemoteData error"));
                             }
-                            emitter.onError(new IllegalArgumentException("Snapshot or FeedRemoteData error"));
                         }).addOnFailureListener(emitter::onError)));
 
         return single.subscribeOn(Schedulers.io());

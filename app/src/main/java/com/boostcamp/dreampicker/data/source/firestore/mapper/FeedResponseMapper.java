@@ -13,7 +13,8 @@ import androidx.annotation.Nullable;
 public class FeedResponseMapper {
 
     @NonNull
-    public static Feed toFeed(@NonNull final String feedId,
+    public static Feed toFeed(@NonNull final String userId,
+                              @NonNull final String feedId,
                               @NonNull final FeedRemoteData data) {
         final FeedItemRemoteData itemA = data.getItemA();
         final FeedItemRemoteData itemB = data.getItemB();
@@ -27,7 +28,7 @@ public class FeedResponseMapper {
                 data.getDate(),
                 getVoteSelectionItem(itemA, countA),
                 getVoteSelectionItem(itemB, countB),
-                getMySelection(data.getVotedUserMap(), data.getWriter().getId()));
+                getMySelection(data.getVotedUserMap(), userId));
     }
 
     @NonNull
