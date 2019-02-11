@@ -18,9 +18,6 @@ public abstract class BaseViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-
-        if(!compositeDisposable.isDisposed()) {
-            compositeDisposable.dispose();
-        }
+        compositeDisposable.dispose();
     }
 }

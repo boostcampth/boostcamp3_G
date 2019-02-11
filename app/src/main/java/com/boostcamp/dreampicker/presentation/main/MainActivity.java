@@ -9,7 +9,7 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
-import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
+import com.boostcamp.dreampicker.presentation.feed.legacymain.FeedFragment;
 import com.boostcamp.dreampicker.presentation.notification.NotificationFragment;
 import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.search.SearchFragment;
