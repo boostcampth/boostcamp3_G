@@ -9,13 +9,17 @@ import com.boostcamp.dreampicker.utils.IdCreator;
 import java.util.Date;
 import java.util.HashMap;
 
+import androidx.annotation.NonNull;
+
 public class FeedMapper {
 
-    public static FeedRemoteData toFeed(final FeedUploadRequest feedUploadRequest) {
+    public static FeedRemoteData toFeed(@NonNull final FeedUploadRequest feedUploadRequest,
+                                        @NonNull final String imageUrlA,
+                                        @NonNull final String imageUrlB) {
 
-        return new FeedRemoteData("",
-                new FeedRemoteVoteItem(IdCreator.createImageId(), feedUploadRequest.getImagePathA(), feedUploadRequest.getTagListA()),
-                new FeedRemoteVoteItem(IdCreator.createImageId(), feedUploadRequest.getImagePathB(), feedUploadRequest.getTagListB()),
+        return new FeedRemoteData(
+                new FeedRemoteVoteItem(IdCreator.createImageId(), imageUrlA, feedUploadRequest.getTagListA()),
+                new FeedRemoteVoteItem(IdCreator.createImageId(), imageUrlB, feedUploadRequest.getTagListB()),
                 FirebaseManager.getCurrentUser(),
                 feedUploadRequest.getContent(),
                 new HashMap<String, String>(),
