@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
@@ -66,8 +65,9 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     @Override
-    public Single<List<Feed>> getNotEndedFeedList(@NonNull final Date startAfter, final int pageSize) {
-        return Single.create(emitter ->
+    public Single<List<Feed>> getNotEndedFeedList(@NonNull final String userId,
+                                                  @NonNull final Date startAfter, final int pageSize) {
+        final Single<List<Feed>> single = Single.create(emitter ->
                 firestore.collection(COLLECTION_FEED)
                         .whereEqualTo(FIELD_ENDED, false)
                         .orderBy(FIELD_DATE, Query.Direction.DESCENDING) // 시간 정렬
@@ -79,13 +79,15 @@ public class FeedRepositoryImpl implements FeedRepository {
                             for(DocumentSnapshot snapshot : snapshots.getDocuments()) {
                                 final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
                                 if(data != null) {
-                                    feedList.add(FeedResponseMapper.toFeed(snapshot.getId(), data));
-                                    emitter.onSuccess(feedList);
+                                    feedList.add(FeedResponseMapper.toFeed(userId, snapshot.getId(), data));
                                 } else {
                                     emitter.onError(new IllegalArgumentException("FeedRemoteData is Null"));
                                 }
                             }
+                            emitter.onSuccess(feedList);
                         }).addOnFailureListener(emitter::onError));
+
+        return single.subscribeOn(Schedulers.io());
     }
 
     @NonNull
@@ -95,7 +97,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                              @NonNull final String selectionId) {
         final DocumentReference docRef = firestore.collection(COLLECTION_FEED).document(feedId);
 
-        return Completable.create(emitter ->
+        final Single<Feed> single = Completable.create(emitter ->
                 firestore.runTransaction(transaction ->  {
                     final DocumentSnapshot snapshot = transaction.get(docRef);
                     final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
@@ -114,12 +116,15 @@ public class FeedRepositoryImpl implements FeedRepository {
                             if (snapshot != null) {
                                 final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
                                 if(data != null) {
-                                    final Feed feed = FeedResponseMapper.toFeed(feedId, Objects.requireNonNull(data));
+                                    final Feed feed = FeedResponseMapper.toFeed(userId, feedId, data);
                                     emitter.onSuccess(feed);
-                                } else
-                                    emitter.onError(new IllegalArgumentException("FeedRemoteData is Null"));
+                                }
+                            } else {
+                                emitter.onError(new IllegalArgumentException("Snapshot or FeedRemoteData error"));
                             }
                         }).addOnFailureListener(emitter::onError)));
+
+        return single.subscribeOn(Schedulers.io());
     }
 
 

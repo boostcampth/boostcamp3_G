@@ -1,6 +1,6 @@
-package com.boostcamp.dreampicker.presentation.feed.main;
+package com.boostcamp.dreampicker.presentation.feed.legacymain;
 
-import com.boostcamp.dreampicker.data.repository.FeedRepository;
+import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -10,7 +10,7 @@ public class FeedViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final FeedRepository repository;
 
-    public FeedViewModelFactory(@NonNull FeedRepository repository) {
+    FeedViewModelFactory(@NonNull FeedRepository repository) {
         this.repository = repository;
     }
 

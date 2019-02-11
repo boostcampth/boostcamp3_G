@@ -71,8 +71,4 @@ public class Feed {
     public String getSelectionId() {
         return selectionId;
     }
-
-    public void setSelectionId(@NonNull final String selectionId) {
-        this.selectionId = selectionId;
-    }
 }
