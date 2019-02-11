@@ -67,10 +67,10 @@ public class FeedRepositoryImpl implements FeedRepository {
                         .startAfter(startAfter)
                         .limit(pageSize)
                         .get()
-                        .addOnSuccessListener(task -> {
+                        .addOnSuccessListener(documents -> {
                             List<MyFeed> feedList = new ArrayList<>();
-                            if (!task.isEmpty()) {
-                                for(DocumentSnapshot document : task.getDocuments()){
+                            if (!documents.isEmpty()) {
+                                for(DocumentSnapshot document : documents.getDocuments()){
                                     final MyFeed feed = document.toObject(MyFeed.class);
                                     if(feed != null){
                                         feed.setId(document.getId());
