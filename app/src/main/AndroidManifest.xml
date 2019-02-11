@@ -26,7 +26,7 @@
         </activity>
         <activity android:name=".presentation.main.MainActivity"/>
         <activity android:name=".presentation.feed.detail.FeedDetailActivity"/>
-        <activity android:name=".presentation.upload.UploadActivity"
+        <activity android:name=".presentation.legacyupload.UploadActivity"
             android:windowSoftInputMode="stateAlwaysHidden"/>
 
     </application>

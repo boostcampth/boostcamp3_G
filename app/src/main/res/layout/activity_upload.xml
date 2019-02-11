@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.boostcamp.dreampicker.presentation.upload.LegacyUploadViewModel"/>
+            type="com.boostcamp.dreampicker.presentation.legacyupload.UploadViewModel"/>
     </data>
 
     <LinearLayout

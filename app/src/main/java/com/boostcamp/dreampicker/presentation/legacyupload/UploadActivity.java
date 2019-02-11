@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.upload;
+package com.boostcamp.dreampicker.presentation.legacyupload;
 
 import android.Manifest;
 import android.content.Context;
@@ -40,10 +40,10 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     }
 
     private void initViewModel() {
-        final LegacyUploadViewModel viewModel = ViewModelProviders.of(this,
+        final UploadViewModel viewModel = ViewModelProviders.of(this,
                 new UploadViewModelFactory(
                         FeedRepository.getInstance(FeedFirebaseService.getInstance())))
-                .get(LegacyUploadViewModel.class);
+                .get(UploadViewModel.class);
 
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);

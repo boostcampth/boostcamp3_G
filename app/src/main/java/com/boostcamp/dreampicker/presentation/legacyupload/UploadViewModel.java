@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.upload;
+package com.boostcamp.dreampicker.presentation.legacyupload;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
@@ -10,7 +10,6 @@ import com.boostcamp.dreampicker.data.model.LegacyUser;
 import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 import com.boostcamp.dreampicker.utils.Constant;
-import com.boostcamp.dreampicker.utils.FirebaseManager;
 import com.boostcamp.dreampicker.utils.IdCreator;
 
 import java.text.SimpleDateFormat;
@@ -26,7 +25,7 @@ import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class LegacyUploadViewModel extends BaseViewModel {
+public class UploadViewModel extends BaseViewModel {
     private MutableLiveData<Map<String, LegacyImage>> imageMap = new MutableLiveData<>();
     private ObservableField<String> content = new ObservableField<>();
 
@@ -34,7 +33,7 @@ public class LegacyUploadViewModel extends BaseViewModel {
 
     private final FeedRepository feedRepository;
 
-    LegacyUploadViewModel(@NonNull FeedRepository feedRepository) {
+    UploadViewModel(@NonNull FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
 
         final LegacyImage image = new LegacyImage();
