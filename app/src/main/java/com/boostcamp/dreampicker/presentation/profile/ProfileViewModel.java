@@ -15,7 +15,7 @@ import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ProfileViewModel extends BaseViewModel {
-    private final int PAGE_SIZE = 10;
+    private final int PAGE_SIZE = 4;
 
     @NonNull
     private final UserRepository repository;
@@ -82,7 +82,7 @@ public class ProfileViewModel extends BaseViewModel {
                 }));
     }
 
-    void refreshMyFeeds(){
+    public void refreshMyFeeds() {
         myFeedList.setValue(new ArrayList<>());
         isLastPage.setValue(false);
         startAfter = null;

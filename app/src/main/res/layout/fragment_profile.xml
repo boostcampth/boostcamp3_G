@@ -18,49 +18,30 @@
             android:id="@+id/iv_user_image"
             android:layout_width="@dimen/profile_image_size_large"
             android:layout_height="@dimen/profile_image_size_large"
-            android:layout_marginTop="16dp"
-            app:circleImage="@{vm.user.profileImageUrl}"
-            app:layout_constraintBottom_toTopOf="@id/btn_follow"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="@dimen/space_median"
+            app:circleImage="@{vm.user.profileImageUrl}"/>
 
         <TextView
-            android:id="@+id/btn_follow"
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{vm.user.name}"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_large"
+            android:textSize="@dimen/text_x_large"
             android:textStyle="bold"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/iv_user_image"
-            app:layout_constraintBottom_toTopOf="@id/guideline_count"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:gravity="center"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_count"
+            android:id="@+id/gl_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="200dp"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:orientation="horizontal"/>
 
         <include
             android:id="@+id/layout_feed"
             layout="@layout/layout_profile_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_small"
-            android:layout_marginEnd="@dimen/space_small"
-            app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
-            app:layout_constraintEnd_toStartOf="@id/layout_following"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline_count"
             bind:count="@{String.valueOf(vm.user.feedCount)}"
             bind:title="@{String.valueOf(@string/profile_feed_count)}" />
 
@@ -69,35 +50,30 @@
             layout="@layout/layout_profile_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_small"
-            android:layout_marginEnd="@dimen/space_small"
-            app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/layout_feed"
-            app:layout_constraintTop_toBottomOf="@id/guideline_count"
             bind:count="@{String.valueOf(vm.user.feedCount)}"
-            bind:title="@{String.valueOf(@string/profile_following_count)}" />
+            bind:title="@{String.valueOf(@string/profile_voted_count)}" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_count_bottom"
+            android:id="@+id/gl_count_bottom"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="240dp"/>
+            android:orientation="horizontal"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_profile_feed"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline_count_bottom"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:items="@{vm.myFeedList}"/>
+            app:refreshing="@{safeUnbox(vm.isLoading)}"
+            app:onRefreshListener="@{vm::refreshMyFeeds}"
+            android:background="@drawable/line_top">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_profile_feed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:items="@{vm.myFeedList}"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
