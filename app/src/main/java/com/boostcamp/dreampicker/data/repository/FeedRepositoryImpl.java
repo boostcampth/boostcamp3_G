@@ -2,13 +2,13 @@ package com.boostcamp.dreampicker.data.repository;
 
 import android.net.Uri;
 
+import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.source.firebase.model.MyFeedRemoteData;
-import com.boostcamp.dreampicker.data.source.firebase.model.mapper.FeedRequestMapper;
+import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedRequestMapper;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
-import com.boostcamp.dreampicker.utils.FirebaseManager;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,8 +29,6 @@ import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 public class FeedRepositoryImpl implements FeedRepository {
-
-
     private static final String COLLECTION_FEED = "feed";
     private static final String COLLECTION_USER = "user";
     private static final String SUBCOLLECTION_MYFEEDS = "myFeeds";

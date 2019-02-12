@@ -1,10 +1,10 @@
-package com.boostcamp.dreampicker.data.source.firebase.model.mapper;
+package com.boostcamp.dreampicker.data.source.firestore.mapper;
 
+import com.boostcamp.dreampicker.data.common.FirebaseManager;
+import com.boostcamp.dreampicker.data.common.IdCreator;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
-import com.boostcamp.dreampicker.data.source.firebase.model.FeedRemoteData;
-import com.boostcamp.dreampicker.data.source.firebase.model.FeedItemRemoteData;
-import com.boostcamp.dreampicker.utils.FirebaseManager;
-import com.boostcamp.dreampicker.utils.IdCreator;
+import com.boostcamp.dreampicker.data.source.firestore.model.FeedItemRemoteData;
+import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
 
 import java.util.Date;
 import java.util.HashMap;
