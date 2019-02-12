@@ -1,7 +1,9 @@
 package com.boostcamp.dreampicker.databinding;
 
 import android.annotation.SuppressLint;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
@@ -16,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+import me.gujun.android.taggroup.TagGroup;
 
 public class BindingUtil {
     @SuppressWarnings("unchecked")
@@ -29,6 +32,13 @@ public class BindingUtil {
         }
     }
 
+    @BindingAdapter({"tagItems"})
+    public static void setTagItems(@NonNull final TagGroup tagGroup, @Nullable final List<String> tagList) {
+        if(tagList != null) {
+            tagGroup.setTags(tagList);
+        }
+    }
+
     @BindingAdapter({"vote"})
     public static void doVote(@NonNull CheckBox checkBox, @Nullable final String selectionId) {
         if(selectionId != null && !checkBox.isChecked()) {
@@ -39,7 +49,7 @@ public class BindingUtil {
     @SuppressLint("SimpleDateFormat")
     @BindingAdapter({"date"})
     public static void setDate(@NonNull final TextView textView, @NonNull final Date date) {
-        final SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-DD");
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         textView.setText(format.format(date));
     }
 
@@ -51,5 +61,14 @@ public class BindingUtil {
     @BindingAdapter({"rcMax"})
     public static void setRcMax(@NonNull final RoundCornerProgressBar progressBar, final int value) {
         progressBar.setMax(value);
+    }
+
+    @BindingAdapter({"visible"})
+    public static void setVisibility(@NonNull final ProgressBar pb, final boolean isVisible) {
+        if(isVisible) {
+            pb.setVisibility(View.VISIBLE);
+        } else {
+            pb.setVisibility(View.GONE);
+        }
     }
 }

@@ -148,6 +148,7 @@
                     android:layout_height="@dimen/feed_tag_group_height"
                     android:layout_margin="@dimen/space_x_small"
                     app:tagItems="@{feed.itemA.tagList}"
+
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/guideline_feed_image_horizontal"
                     app:layout_constraintBottom_toTopOf="@id/vote_result"/>

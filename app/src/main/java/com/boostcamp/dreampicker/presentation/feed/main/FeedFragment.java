@@ -1,7 +1,6 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,8 +26,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         super.onViewCreated(view, savedInstanceState);
         initViewModel();
         initRecyclerView();
-        subscribeLoading();
-        subscribeError();
+        subscribeViewModel();
         binding.getVm().loadFeedList();
     }
 
@@ -46,16 +44,10 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         binding.rvFeed.setAdapter(adapter);
         binding.getVm().getFeedList().observe(this, adapter::submitList);
     }
-    private void subscribeLoading() {
-        // Todo : Loading Library
-        binding.getVm().getIsLoading().observe(this, loading -> Log.d("Melon", loading +""));
+    private void subscribeViewModel() {
         binding.getVm().getIsLastPage().observe(this, isLastPage -> showToast(TEXT_LAST_PAGE));
-    }
-
-    private void subscribeError() {
         binding.getVm().getError().observe(this, e -> showToast(ERROR_MESSAGE));
     }
-
     private void showToast(String msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
