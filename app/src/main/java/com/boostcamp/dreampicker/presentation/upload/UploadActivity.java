@@ -16,6 +16,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.lifecycle.ViewModelProviders;
@@ -46,46 +47,19 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     }
 
     private void initViewModel() {
-        final UploadViewModel viewModel = ViewModelProviders.of(this,
+        final UploadViewModel vm = ViewModelProviders.of(this,
                 new UploadViewModelFactory(
                         FeedRepositoryImpl.getInstance(FirebaseFirestore.getInstance(),
                                 FirebaseStorage.getInstance())))
                 .get(UploadViewModel.class);
 
-        binding.setViewModel(viewModel);
+        binding.setViewModel(vm);
         binding.setLifecycleOwner(this);
     }
 
     private void initViews() {
         initToolbar();
         initImageViews();
-        initTagGroup();
-    }
-
-    private void initTagGroup() {
-        binding.tgUploadTagA.setOnTagChangeListener(new TagGroup.OnTagChangeListener() {
-            @Override
-            public void onAppend(TagGroup tagGroup, String tag) {
-                binding.getViewModel().setTagA(tag);
-            }
-
-            @Override
-            public void onDelete(TagGroup tagGroup, String tag) {
-                binding.getViewModel().deleteTagA(tag);
-            }
-        });
-
-        binding.tgUploadTagB.setOnTagChangeListener(new TagGroup.OnTagChangeListener() {
-            @Override
-            public void onAppend(TagGroup tagGroup, String tag) {
-                binding.getViewModel().setTagB(tag);
-            }
-
-            @Override
-            public void onDelete(TagGroup tagGroup, String tag) {
-                binding.getViewModel().deleteTagB(tag);
-            }
-        });
     }
 
     private void initImageViews() {
@@ -96,12 +70,14 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private void initToolbar() {
         final ImageButton btnClose = binding.toolbar.btnLeft;
         final ImageButton btnUpload = binding.toolbar.btnRight;
+        final List<String> tagListA = Arrays.asList(binding.tgUploadTagA.getTags());
+        final List<String> tagListB = Arrays.asList(binding.tgUploadTagB.getTags());
 
         btnClose.setImageResource(R.drawable.btn_toolbar_close);
         btnUpload.setImageResource(R.drawable.btn_toolbar_finger);
 
         btnClose.setOnClickListener(__ -> finish());
-        btnUpload.setOnClickListener(__ -> binding.getViewModel().upload());
+        btnUpload.setOnClickListener(__ -> binding.getViewModel().upload(tagListA, tagListB));
     }
 
     public void onImageClick(final int flag) {

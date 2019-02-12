@@ -8,9 +8,7 @@ import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 import com.boostcamp.dreampicker.utils.FirebaseManager;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,10 +24,6 @@ public class UploadViewModel extends BaseViewModel {
     private MutableLiveData<String> imagePathA = new MutableLiveData<>();
     @NonNull
     private MutableLiveData<String> imagePathB = new MutableLiveData<>();
-    @Nullable
-    private MutableLiveData<List<String>> tagListA = new MutableLiveData<>();
-    @Nullable
-    private MutableLiveData<List<String>> tagListB = new MutableLiveData<>();
     @NonNull
     private MutableLiveData<Boolean> validate = new MutableLiveData<>();
     @NonNull
@@ -41,11 +35,11 @@ public class UploadViewModel extends BaseViewModel {
 
     UploadViewModel(@NonNull final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
-        tagListA.setValue(new ArrayList<>());
-        tagListB.setValue(new ArrayList<>());
     }
 
-    void upload() {
+    void upload(@Nullable final List<String> tagListA,
+                @Nullable final List<String> tagListB) {
+
         final String userId = FirebaseManager.getCurrentUserId();
         if (userId == null) {
             error.setValue(new IllegalArgumentException());
@@ -54,7 +48,7 @@ public class UploadViewModel extends BaseViewModel {
         if (!TextUtils.isEmpty(getContent().getValue()) &&
                 !TextUtils.isEmpty(getImagePathA().getValue()) &&
                 !TextUtils.isEmpty(getImagePathB().getValue())) {
-            addDisposable(feedRepository.uploadFeed(createFeedUploadRequest(userId))
+            addDisposable(feedRepository.uploadFeed(createFeedUploadRequest(userId, tagListA, tagListB))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> validate.setValue(true),
                             e -> validate.setValue(false)));
@@ -65,14 +59,16 @@ public class UploadViewModel extends BaseViewModel {
 
 
     @NonNull
-    private FeedUploadRequest createFeedUploadRequest(String userId) {
+    private FeedUploadRequest createFeedUploadRequest(@NonNull final String userId,
+                                                      @Nullable final List<String> tagListA,
+                                                      @Nullable final List<String> tagListB) {
 
         return new FeedUploadRequest(userId,
                 getContent().getValue(),
                 getImagePathA().getValue(),
                 getImagePathB().getValue(),
-                Objects.requireNonNull(getTagListA()).getValue(),
-                Objects.requireNonNull(getTagListB()).getValue());
+                tagListA,
+                tagListB);
 
     }
 
@@ -91,16 +87,6 @@ public class UploadViewModel extends BaseViewModel {
         return imagePathB;
     }
 
-    @Nullable
-    public LiveData<List<String>> getTagListA() {
-        return tagListA;
-    }
-
-    @Nullable
-    public LiveData<List<String>> getTagListB() {
-        return tagListB;
-    }
-
     @NonNull
     MutableLiveData<Boolean> getValidate() {
         return validate;
@@ -111,28 +97,8 @@ public class UploadViewModel extends BaseViewModel {
         return error;
     }
 
-    public void setTagA(@NonNull final String tag) {
-        final List<String> tagList = this.tagListA.getValue();
-        if (tagList != null) tagList.add(tag);
-    }
-
-    public void setTagB(@NonNull final String tag) {
-        final List<String> tagList = this.tagListB.getValue();
-        if (tagList != null) tagList.add(tag);
-    }
-
-    public void deleteTagA(@NonNull final String tag) {
-        final List<String> tagList = this.tagListA.getValue();
-        if (tagList != null) tagList.remove(tag);
-    }
-
-    public void deleteTagB(@NonNull final String tag) {
-        final List<String> tagList = this.tagListB.getValue();
-        if (tagList != null) tagList.remove(tag);
-    }
-
     public void setImagePath(@NonNull final Uri uri,
-                             @NonNull final int flag) {
+                             final int flag) {
         if (flag == A) {
             imagePathA.setValue(uri.toString());
         } else {
