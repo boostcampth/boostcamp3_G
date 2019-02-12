@@ -63,7 +63,7 @@
             android:id="@+id/swipe_refresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:refreshing="@{vm.isLoading}"
+            app:refreshing="@{safeUnbox(vm.isLoading)}"
             app:onRefreshListener="@{vm::refreshMyFeeds}"
             android:background="@drawable/line_top">
 
