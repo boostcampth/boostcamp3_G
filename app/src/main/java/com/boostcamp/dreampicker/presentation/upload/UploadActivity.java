@@ -27,10 +27,6 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private static final String CAMERA = Manifest.permission.CAMERA;
     private static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-    private static final String PERMISSION_DENIED_MESSAGE = "권한이 없습니다.";
-    private static final String UPLOAD_DENIED_MESSAGE = "투표를 등록할 수 없습니다.";
-    private static final String UPLOAD_GRANTED_MESSAGE = "투표 등록 완료";
-
     private static final int A = 1;
     private static final int B = 2;
 
@@ -93,8 +89,8 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     }
 
     private void initImageViews() {
-        binding.ivUploadA.setOnClickListener((v) -> onImageClick(A));
-        binding.ivUploadB.setOnClickListener((v) -> onImageClick(B));
+        binding.ivUploadA.setOnClickListener(__ -> onImageClick(A));
+        binding.ivUploadB.setOnClickListener(__ -> onImageClick(B));
     }
 
     private void initToolbar() {
@@ -104,8 +100,8 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         btnClose.setImageResource(R.drawable.btn_toolbar_close);
         btnUpload.setImageResource(R.drawable.btn_toolbar_finger);
 
-        btnClose.setOnClickListener((v) -> finish());
-        btnUpload.setOnClickListener((v) -> binding.getViewModel().upload());
+        btnClose.setOnClickListener(__ -> finish());
+        btnUpload.setOnClickListener(__ -> binding.getViewModel().upload());
     }
 
     public void onImageClick(final int flag) {
@@ -118,7 +114,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
                     @Override
                     public void onPermissionDenied(List<String> deniedPermissions) {
-                        showToast(PERMISSION_DENIED_MESSAGE);
+                        showToast(getString(R.string.permission_denied_message));
                     }
                 })
                 .setPermissions(CAMERA, WRITE_EXTERNAL_STORAGE)
@@ -138,10 +134,10 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private void subscribeValidate() {
         binding.getViewModel().getValidate().observe(this, v -> {
             if (v) {
-                showToast(UPLOAD_GRANTED_MESSAGE);
+                showToast(getString(R.string.upload_success_message));
                 finish();
             } else {
-                showToast(UPLOAD_DENIED_MESSAGE);
+                showToast(getString(R.string.upload_fail_message));
             }
         });
     }
