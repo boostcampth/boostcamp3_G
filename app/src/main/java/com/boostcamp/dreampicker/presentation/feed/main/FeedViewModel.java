@@ -15,7 +15,7 @@ import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class FeedViewModel extends BaseViewModel {
-    private static final int PAGE_SIZE = 2;
+    private static final int PAGE_SIZE = 4;
     private static final int ERROR_REPEAT_COUNT = 3;
     private static final String ERROR_NOT_EXIST ="Not Exists user information";
     @NonNull
@@ -99,7 +99,7 @@ public class FeedViewModel extends BaseViewModel {
         this.feedList.setValue(feedList);
     }
 
-    public void refresh() {
+    void refresh() {
         if(Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
@@ -115,17 +115,17 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public LiveData<Boolean> getIsLoading() {
+    LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getIsLastPage() {
+    MutableLiveData<Boolean> getIsLastPage() {
         return isLastPage;
     }
 
     @NonNull
-    public LiveData<Throwable> getError() {
+    LiveData<Throwable> getError() {
         return error;
     }
 }

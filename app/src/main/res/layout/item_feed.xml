@@ -64,7 +64,7 @@
                     app:layout_constraintStart_toEndOf="@+id/iv_writer_img" />
 
                 <CheckBox
-                    android:id="@+id/tv_feed_vote_count"
+                    android:id="@+id/cb_feed_vote_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_x_small"
@@ -73,7 +73,6 @@
                     android:clickable="false"
                     android:text="@{String.valueOf(feed.itemA.voteCount + feed.itemB.voteCount)}"
                     android:textSize="@dimen/text_title_size"
-                    app:vote="@{feed.selectionId}"
                     app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

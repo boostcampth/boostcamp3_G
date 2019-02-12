@@ -40,33 +40,21 @@ public class BindingUtil {
         }
     }
 
-    @BindingAdapter({"vote"})
-    public static void doVote(@NonNull CheckBox checkBox, @Nullable final String selectionId) {
-        if(selectionId != null && !checkBox.isChecked()) {
-            checkBox.performClick();
-        }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    @BindingAdapter({"date"})
-    public static void setDate(@NonNull final TextView textView, @NonNull final Date date) {
-        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        textView.setText(format.format(date));
-    }
-
     @BindingAdapter(value = {"rcProgress", "rcMax"}, requireAll = true)
     public static void setProgress(@NonNull final RoundCornerProgressBar progressBar, final int progress, final int max) {
         progressBar.setMax(max);
         progressBar.setProgress(progress);
     }
 
+    @SuppressLint("SimpleDateFormat")
     @BindingAdapter({"date"})
-    public static void convertDateToDisplayText(TextView textView, Date inputDate) {
+    public static void convertDateToDisplayText(@NonNull final TextView textView,
+                                                @Nullable final Date inputDate) {
         if(inputDate == null){
             return;
         }
 
-        SimpleDateFormat dateYearOnly = new SimpleDateFormat("yyyy.MM.dd");
+        final SimpleDateFormat dateYearOnly = new SimpleDateFormat("yyyy.MM.dd");
 
         String displayString = "";
 

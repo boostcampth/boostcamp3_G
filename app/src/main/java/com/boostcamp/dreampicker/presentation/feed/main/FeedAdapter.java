@@ -47,12 +47,21 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-        final Feed feed = getItem(position);
+        final Feed feed = getItem(holder.getAdapterPosition());
         holder.bindTo(feed);
 
+        holder.startVoteAnimation(feed.getItemA().getId(), feed.getItemB().getId(), feed.getSelectionId());
+
         if(feed.getSelectionId() != null) {
-            holder.startVoteAnimation(feed.getItemA().getId(), feed.getItemB().getId(), feed.getSelectionId());
+            if(!holder.getBinding().cbFeedVoteCount.isChecked()) {
+                holder.getBinding().cbFeedVoteCount.performClick();
+            }
             holder.getBinding().voteResult.setVisibility(View.VISIBLE);
+        } else {
+            if(holder.getBinding().cbFeedVoteCount.isChecked()) {
+                holder.getBinding().cbFeedVoteCount.performClick();
+            }
+            holder.getBinding().voteResult.setVisibility(View.GONE);
         }
 
         holder.getBinding().sbSelector.setOnTouchListener(touchListener);
