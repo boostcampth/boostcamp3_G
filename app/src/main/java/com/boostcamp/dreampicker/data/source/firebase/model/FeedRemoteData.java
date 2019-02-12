@@ -9,9 +9,9 @@ import androidx.annotation.NonNull;
 
 public class FeedRemoteData {
 
-    private FeedRemoteVoteItem itemA;
-    private FeedRemoteVoteItem itemB;
-    private User user;
+    private FeedItemRemoteData itemA;
+    private FeedItemRemoteData itemB;
+    private User writer;
     private String content;
     private Date date;
     private Map<String, String> votedUserMap;
@@ -19,32 +19,32 @@ public class FeedRemoteData {
 
     public FeedRemoteData() { }
 
-    public FeedRemoteData(@NonNull FeedRemoteVoteItem itemA,
-                          @NonNull FeedRemoteVoteItem itemB,
-                          @NonNull User user,
+    public FeedRemoteData(@NonNull FeedItemRemoteData itemA,
+                          @NonNull FeedItemRemoteData itemB,
+                          @NonNull User writer,
                           @NonNull String content,
                           @NonNull Map<String, String> votedUserMap,
                           @NonNull Date date,
                           @NonNull boolean isEnded) {
         this.itemA = itemA;
         this.itemB = itemB;
-        this.user = user;
+        this.writer = writer;
         this.content = content;
         this.date = date;
         this.votedUserMap = votedUserMap;
         this.isEnded = isEnded;
     }
 
-    public FeedRemoteVoteItem getItemA() {
+    public FeedItemRemoteData getItemA() {
         return itemA;
     }
 
-    public FeedRemoteVoteItem getItemB() {
+    public FeedItemRemoteData getItemB() {
         return itemB;
     }
 
-    public User getUser() {
-        return user;
+    public User getWriter() {
+        return writer;
     }
 
     public String getContent() {

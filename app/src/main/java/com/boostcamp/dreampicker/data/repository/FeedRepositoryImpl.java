@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
-import com.boostcamp.dreampicker.data.source.firebase.model.mapper.FeedMapper;
+import com.boostcamp.dreampicker.data.source.firebase.model.mapper.FeedRequestMapper;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
 import com.google.firebase.firestore.DocumentReference;
@@ -131,7 +131,7 @@ public class FeedRepositoryImpl implements FeedRepository {
         return Single
                 .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())),
                         uploadImageStorage(Uri.parse(uploadFeed.getImagePathB()))
-                        , (imageUrlA, imageUrlB) -> FeedMapper.toFeed(uploadFeed, imageUrlA, imageUrlB))
+                        , (imageUrlA, imageUrlB) -> FeedRequestMapper.toFeed(uploadFeed, imageUrlA, imageUrlB))
                 .flatMapCompletable(feedRemoteData ->
                         Completable.create(emitter -> firestore.collection(COLLECTION_FEED)
                                 .add(feedRemoteData)
