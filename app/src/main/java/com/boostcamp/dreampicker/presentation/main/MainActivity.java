@@ -19,8 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding>
-        implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     public static Intent getLaunchIntent(Context context) {
         return new Intent(context, MainActivity.class);

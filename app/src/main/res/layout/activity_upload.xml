@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.boostcamp.dreampicker.presentation.upload.LegacyUploadViewModel"/>
+            type="com.boostcamp.dreampicker.presentation.upload.UploadViewModel"/>
     </data>
 
     <LinearLayout
@@ -31,9 +31,9 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/iv_upload_left"
+                    android:id="@+id/iv_upload_a"
                     style="@style/ImageView.UploadImage"
-                    app:image='@{viewModel.imageMap["left"].uri}'
+                    app:image='@{viewModel.imagePathA}'
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
@@ -41,16 +41,15 @@
                     style="@style/UploadTagScrollView"
                     app:layout_constraintBottom_toTopOf="@+id/guideline1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_upload_left"
+                    app:layout_constraintStart_toEndOf="@+id/iv_upload_a"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <me.gujun.android.taggroup.TagGroup
-                        android:id="@+id/tg_upload_tag_left"
+                        android:id="@+id/tg_upload_tag_a"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:atg_inputHint="@string/upload_tag_hint"
-                        app:atg_isAppendMode="true"
-                        app:tagItems='@{viewModel.imageMap["left"].tagList}'/>
+                        app:atg_isAppendMode="true" />
 
                 </ScrollView>
 
@@ -61,12 +60,12 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_upload_left" />
+                    app:layout_constraintTop_toBottomOf="@+id/iv_upload_a" />
 
                 <ImageView
-                    android:id="@+id/iv_upload_right"
+                    android:id="@+id/iv_upload_b"
                     style="@style/ImageView.UploadImage"
-                    app:image='@{viewModel.imageMap["right"].uri}'
+                    app:image='@{viewModel.imagePathB}'
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/guideline1" />
 
@@ -75,17 +74,16 @@
                     style="@style/UploadTagScrollView"
                     app:layout_constraintBottom_toTopOf="@+id/guideline2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_upload_right"
+                    app:layout_constraintStart_toEndOf="@+id/iv_upload_b"
                     app:layout_constraintTop_toBottomOf="@+id/guideline1">
 
                     <me.gujun.android.taggroup.TagGroup
-                        android:id="@+id/tg_upload_tag_right"
+                        android:id="@+id/tg_upload_tag_b"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/space_x_small"
                         app:atg_inputHint="@string/upload_tag_hint"
-                        app:atg_isAppendMode="true"
-                        app:tagItems='@{viewModel.imageMap["right"].tagList}'/>
+                        app:atg_isAppendMode="true" />
                 </ScrollView>
 
 
@@ -96,7 +94,7 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_upload_right" />
+                    app:layout_constraintTop_toBottomOf="@+id/iv_upload_b" />
 
                 <EditText
                     android:id="@+id/et_upload_content"

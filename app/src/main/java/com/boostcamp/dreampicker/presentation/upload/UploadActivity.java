@@ -8,96 +8,79 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.source.remote.firebase.FeedFirebaseService;
-import com.boostcamp.dreampicker.data.source.repository.FeedRepository;
+import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
-import com.boostcamp.dreampicker.utils.Constant;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import java.util.Arrays;
 import java.util.List;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import gun0912.tedbottompicker.TedBottomPicker;
 import me.gujun.android.taggroup.TagGroup;
 
 public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
+
     private static final String CAMERA = Manifest.permission.CAMERA;
     private static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-    private static final String PERMISSION_DENIED_MESSAGE = "권한이 없습니다.";
-    private static final String UPLOAD_DENIED_MESSAGE = "투표를 등록할 수 없습니다.";
-    private static final String UPLOAD_GRANTED_MESSAGE = "투표 등록 완료";
+    private static final int A = 1;
+    private static final int B = 2;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected int getLayoutId() {
+        return R.layout.activity_upload;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         initViewModel();
         initViews();
         subscribeValidate();
+
     }
 
     private void initViewModel() {
-        final LegacyUploadViewModel viewModel = ViewModelProviders.of(this,
+        final UploadViewModel vm = ViewModelProviders.of(this,
                 new UploadViewModelFactory(
-                        FeedRepository.getInstance(FeedFirebaseService.getInstance())))
-                .get(LegacyUploadViewModel.class);
+                        FeedRepositoryImpl.getInstance(FirebaseFirestore.getInstance(),
+                                FirebaseStorage.getInstance())))
+                .get(UploadViewModel.class);
 
-        binding.setViewModel(viewModel);
+        binding.setViewModel(vm);
         binding.setLifecycleOwner(this);
     }
 
     private void initViews() {
         initToolbar();
         initImageViews();
-        initTagGroup();
+    }
+
+    private void initImageViews() {
+        binding.ivUploadA.setOnClickListener(__ -> onImageClick(A));
+        binding.ivUploadB.setOnClickListener(__ -> onImageClick(B));
     }
 
     private void initToolbar() {
         final ImageButton btnClose = binding.toolbar.btnLeft;
         final ImageButton btnUpload = binding.toolbar.btnRight;
+        final List<String> tagListA = Arrays.asList(binding.tgUploadTagA.getTags());
+        final List<String> tagListB = Arrays.asList(binding.tgUploadTagB.getTags());
 
         btnClose.setImageResource(R.drawable.btn_toolbar_close);
         btnUpload.setImageResource(R.drawable.btn_toolbar_finger);
 
-        btnClose.setOnClickListener((v) -> finish());
-        btnUpload.setOnClickListener((v) -> binding.getViewModel().upload());
+        btnClose.setOnClickListener(__ -> finish());
+        btnUpload.setOnClickListener(__ -> binding.getViewModel().upload(tagListA, tagListB));
     }
 
-    private void initImageViews() {
-        binding.ivUploadLeft.setOnClickListener((v) -> onImageClick(Constant.IMAGE_LEFT));
-        binding.ivUploadRight.setOnClickListener((v) -> onImageClick(Constant.IMAGE_RIGHT));
-    }
-
-    private void initTagGroup() {
-        binding.tgUploadTagLeft.setOnTagChangeListener(new TagGroup.OnTagChangeListener() {
-            @Override
-            public void onAppend(TagGroup tagGroup, String tag) {
-                binding.getViewModel().setTag(tag, Constant.IMAGE_LEFT);
-            }
-
-            @Override
-            public void onDelete(TagGroup tagGroup, String tag) {
-                binding.getViewModel().deleteTag(tag, Constant.IMAGE_LEFT);
-            }
-        });
-
-        binding.tgUploadTagRight.setOnTagChangeListener(new TagGroup.OnTagChangeListener() {
-            @Override
-            public void onAppend(TagGroup tagGroup, String tag) {
-                binding.getViewModel().setTag(tag, Constant.IMAGE_RIGHT);
-            }
-
-            @Override
-            public void onDelete(TagGroup tagGroup, String tag) {
-                binding.getViewModel().deleteTag(tag, Constant.IMAGE_RIGHT);
-            }
-        });
-    }
-
-    public void onImageClick(@Constant.ImageFlag String flag) {
+    public void onImageClick(final int flag) {
         TedPermission.with(this)
                 .setPermissionListener(new PermissionListener() {
                     @Override
@@ -107,40 +90,36 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
                     @Override
                     public void onPermissionDenied(List<String> deniedPermissions) {
-                        showToast(PERMISSION_DENIED_MESSAGE);
+                        showToast(getString(R.string.permission_denied_message));
                     }
                 })
                 .setPermissions(CAMERA, WRITE_EXTERNAL_STORAGE)
                 .check();
     }
 
-    public void showBottomPicker(@Constant.ImageFlag String flag) {
+    public void showBottomPicker(final int flag) {
         new TedBottomPicker.Builder(this)
-                .setOnImageSelectedListener(uri -> binding.getViewModel().setImage(uri, flag))
+                .setOnImageSelectedListener(uri -> binding.getViewModel().setImagePath(uri, flag))
                 .setPeekHeight(800)
                 .showTitle(true)
                 .create()
                 .show(getSupportFragmentManager());
     }
 
+
     private void subscribeValidate() {
         binding.getViewModel().getValidate().observe(this, v -> {
-            if(v) {
-                showToast(UPLOAD_GRANTED_MESSAGE);
+            if (v) {
+                showToast(getString(R.string.upload_success_message));
                 finish();
             } else {
-                showToast(UPLOAD_DENIED_MESSAGE);
+                showToast(getString(R.string.upload_fail_message));
             }
         });
     }
 
     private void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_upload;
     }
 
     public static Intent getLaunchIntent(Context context) {
