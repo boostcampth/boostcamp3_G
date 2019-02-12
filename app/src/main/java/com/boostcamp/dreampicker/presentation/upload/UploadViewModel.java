@@ -1,5 +1,6 @@
 package com.boostcamp.dreampicker.presentation.upload;
 
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
@@ -23,47 +24,56 @@ public class UploadViewModel extends BaseViewModel {
     private MutableLiveData<String> imagePathA = new MutableLiveData<>();
     @NonNull
     private MutableLiveData<String> imagePathB = new MutableLiveData<>();
-    @Nullable
-    private MutableLiveData<List<String>> tagListA = new MutableLiveData<>();
-    @Nullable
-    private MutableLiveData<List<String>> tagListB = new MutableLiveData<>();
     @NonNull
     private MutableLiveData<Boolean> validate = new MutableLiveData<>();
-
+    @NonNull
+    private final MutableLiveData<Throwable> error = new MutableLiveData<>();
     @NonNull
     private final FeedRepository feedRepository;
+
+    private static final int A = 1;
 
     UploadViewModel(@NonNull final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
     }
 
-    void upload() {
+    void upload(@Nullable final List<String> tagListA,
+                @Nullable final List<String> tagListB) {
+
+        final String userId = FirebaseManager.getCurrentUserId();
+        if (userId == null) {
+            error.setValue(new IllegalArgumentException());
+            return;
+        }
         if (!TextUtils.isEmpty(getContent().getValue()) &&
                 !TextUtils.isEmpty(getImagePathA().getValue()) &&
                 !TextUtils.isEmpty(getImagePathB().getValue())) {
-            addDisposable(feedRepository.uploadFeed(createFeedUploadRequest())
+            addDisposable(feedRepository.uploadFeed(createFeedUploadRequest(userId, tagListA, tagListB))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> validate.setValue(true),
                             e -> validate.setValue(false)));
-        }else{
+        } else {
             validate.setValue(false);
         }
     }
 
-    @NonNull
-    private FeedUploadRequest createFeedUploadRequest() {
 
-        return new FeedUploadRequest(FirebaseManager.getCurrentUserId(),
+    @NonNull
+    private FeedUploadRequest createFeedUploadRequest(@NonNull final String userId,
+                                                      @Nullable final List<String> tagListA,
+                                                      @Nullable final List<String> tagListB) {
+
+        return new FeedUploadRequest(userId,
                 getContent().getValue(),
                 getImagePathA().getValue(),
                 getImagePathB().getValue(),
-                getTagListA().getValue(),
-                getTagListB().getValue());
+                tagListA,
+                tagListB);
 
     }
 
     @NonNull
-    public LiveData<String> getContent() {
+    public MutableLiveData<String> getContent() {
         return content;
     }
 
@@ -77,18 +87,22 @@ public class UploadViewModel extends BaseViewModel {
         return imagePathB;
     }
 
-    @Nullable
-    public LiveData<List<String>> getTagListA() {
-        return tagListA;
-    }
-
-    @Nullable
-    public LiveData<List<String>> getTagListB() {
-        return tagListB;
-    }
-
     @NonNull
     MutableLiveData<Boolean> getValidate() {
         return validate;
+    }
+
+    @NonNull
+    public LiveData<Throwable> getError() {
+        return error;
+    }
+
+    public void setImagePath(@NonNull final Uri uri,
+                             final int flag) {
+        if (flag == A) {
+            imagePathA.setValue(uri.toString());
+        } else {
+            imagePathB.setValue(uri.toString());
+        }
     }
 }
