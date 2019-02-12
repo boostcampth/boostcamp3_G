@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     private static final String ARGUMENT_USER_ID = "ARGUMENT_USER_ID";
@@ -66,5 +67,15 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter();
         binding.rvProfileFeed.setAdapter(adapter);
+        binding.rvProfileFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!binding.rvProfileFeed.canScrollVertically(1)) {
+                    binding.getVm().loadMyFeeds();
+                }
+            }
+        });
     }
+
 }

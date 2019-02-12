@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,5 +58,33 @@ public class BindingUtil {
     public static void setProgress(@NonNull final RoundCornerProgressBar progressBar, final int progress, final int max) {
         progressBar.setMax(max);
         progressBar.setProgress(progress);
+    }
+
+    @BindingAdapter({"date"})
+    public static void convertDateToDisplayText(TextView textView, Date inputDate) {
+        if(inputDate == null){
+            return;
+        }
+
+        SimpleDateFormat dateYearOnly = new SimpleDateFormat("yyyy.MM.dd");
+
+        String displayString = "";
+
+        long diffTimeMillis = System.currentTimeMillis() - inputDate.getTime(); // 경과된 시간 (ms)
+        int diffTime = (int) (diffTimeMillis / (1000 * 60)); // 분 단위로 변경
+
+        if (diffTime >= 0) {
+            if (diffTime < 60) { // ~ 59분 전
+                displayString = diffTime + "분 전";
+            } else {
+                diffTime = diffTime / 60; // 시간 단위로 변경
+                if (diffTime < 24) { // ~ 23시간 전
+                    displayString = diffTime + "시간 전";
+                } else { // 날짜 출력
+                    displayString = dateYearOnly.format(inputDate);
+                }
+            }
+        }
+        textView.setText(displayString);
     }
 }
