@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         initViewModel();
         initViews();
         subscribeValidate();
+        subscribeViewModel();
 
     }
 
@@ -118,11 +120,35 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         });
     }
 
+
+
     private void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     public static Intent getLaunchIntent(Context context) {
         return new Intent(context, UploadActivity.class);
+    }
+
+    private void subscribeViewModel() {
+        binding.getViewModel().getIsLoading().observe(this, isLoading -> {
+            if (isLoading) {
+                binding.loading.setVisibility(View.VISIBLE);
+            } else {
+                binding.loading.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        binding.getViewModel().getIsLoading().observe(this, isLoading -> {
+            if (isLoading) {
+                showToast(getString(R.string.upload_backpress_denied_message));
+            }
+            else{
+                super.onBackPressed();
+            }
+        });
     }
 }
