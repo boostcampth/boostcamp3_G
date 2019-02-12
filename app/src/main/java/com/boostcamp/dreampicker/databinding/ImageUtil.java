@@ -32,10 +32,16 @@ public class ImageUtil {
     @BindingAdapter({"image"})
     public static void loadImage(ImageView imageView, String url){
         if (url == null) {
-            return;
+            GlideApp.with(imageView)
+                    .load(R.drawable.ic_photo)
+                    .into(imageView);
+        }
+        else {
+            GlideApp.with(imageView)
+                    .load(url)
+                    .into(imageView);
         }
 
-        GlideApp.with(imageView).load(url).into(imageView);
     }
 
     @BindingAdapter({"image"})

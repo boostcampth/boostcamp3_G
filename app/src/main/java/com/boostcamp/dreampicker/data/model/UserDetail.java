@@ -37,6 +37,10 @@ public class UserDetail {
         return profileImageUrl;
     }
 
+    public int getFeedCount() {
+        return feedCount;
+    }
+
     @Override
     public String toString() {
         return "UserDetail{" + '\n' +

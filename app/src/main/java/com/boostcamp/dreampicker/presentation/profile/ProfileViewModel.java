@@ -25,7 +25,7 @@ public class ProfileViewModel extends BaseViewModel {
     @NonNull
     private MutableLiveData<UserDetail> user = new MutableLiveData<>();
     @NonNull
-    private MutableLiveData<List<MyFeed>> feedList = new MutableLiveData<>();
+    private MutableLiveData<List<MyFeed>> myFeedList = new MutableLiveData<>();
     @NonNull
     private MutableLiveData<Throwable> error = new MutableLiveData<>();
 
@@ -42,6 +42,8 @@ public class ProfileViewModel extends BaseViewModel {
         this.userId = userId;
         this.isLoading.setValue(false);
         this.isLastPage.setValue(false);
+        loadUserDetail();
+        loadMyFeeds();
     }
 
     void loadUserDetail() {
@@ -57,8 +59,8 @@ public class ProfileViewModel extends BaseViewModel {
         }
         this.isLoading.setValue(true);
 
-        final List<MyFeed> newList = this.feedList.getValue() == null
-                ? new ArrayList<>() : this.feedList.getValue();
+        final List<MyFeed> newList = this.myFeedList.getValue() == null
+                ? new ArrayList<>() : this.myFeedList.getValue();
 
         addDisposable(repository.getFeedListByUserId(userId,
                 startAfter == null ? new Date() : startAfter,
@@ -67,7 +69,7 @@ public class ProfileViewModel extends BaseViewModel {
                 .subscribe(result -> {
                     if (result.size() > 0) {
                         newList.addAll(result);
-                        this.feedList.setValue(newList);
+                        this.myFeedList.setValue(newList);
                         this.startAfter = result.get(result.size() - 1).getDate();
                     }
                     if (result.size() < PAGE_SIZE) { // 마지막 페이지
@@ -81,15 +83,20 @@ public class ProfileViewModel extends BaseViewModel {
     }
 
     void refreshMyFeeds(){
-        feedList.setValue(new ArrayList<>());
+        myFeedList.setValue(new ArrayList<>());
         isLastPage.setValue(false);
         startAfter = null;
         loadMyFeeds();
     }
 
     @NonNull
-    LiveData<UserDetail> getUser() {
+    public LiveData<UserDetail> getUser() {
         return user;
+    }
+
+    @NonNull
+    public LiveData<List<MyFeed>> getMyFeedList() {
+        return myFeedList;
     }
 
     @NonNull
@@ -98,17 +105,7 @@ public class ProfileViewModel extends BaseViewModel {
     }
 
     @NonNull
-    LiveData<Boolean> getIsLoading() {
+    public LiveData<Boolean> getIsLoading() {
         return isLoading;
-    }
-
-    @NonNull
-    LiveData<Boolean> getIsLastPage() {
-        return isLastPage;
-    }
-
-    @NonNull
-    LiveData<List<MyFeed>> getFeedList() {
-        return feedList;
     }
 }

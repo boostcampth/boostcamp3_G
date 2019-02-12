@@ -8,9 +8,12 @@ import android.view.MenuItem;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
-import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
-import com.boostcamp.dreampicker.presentation.result.ResultFragment;
+import com.boostcamp.dreampicker.presentation.feed.legacymain.FeedFragment;
+import com.boostcamp.dreampicker.presentation.notification.NotificationFragment;
+import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
+import com.boostcamp.dreampicker.presentation.search.SearchFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
+import com.boostcamp.dreampicker.utils.FirebaseManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +22,6 @@ import androidx.fragment.app.Fragment;
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     public static Intent getLaunchIntent(Context context) {
-
         return new Intent(context, MainActivity.class);
     }
 
@@ -30,7 +32,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         initView();
@@ -55,17 +56,22 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 fragment = FeedFragment.newInstance();
                 break;
             case R.id.navigation_search:
-                // fragment = SearchFragment.newInstance();
+                fragment = SearchFragment.newInstance();
                 break;
             case R.id.navigation_upload:
                 startActivity(UploadActivity.getLaunchIntent(this));
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 return true;
             case R.id.navigation_notifications:
-                fragment = ResultFragment.newInstance();
+                fragment = NotificationFragment.newInstance();
                 break;
             case R.id.navigation_profile:
-                //fragment = ProfileFragment.newInstance(FirebaseManager.getCurrentUserId());
+                final String userId = FirebaseManager.getCurrentUserId();
+                if(userId != null) {
+                    fragment = ProfileFragment.newInstance(userId);
+                } else {
+                    // TODO. userId 없는 경우 - 로그인 안된상태 에러 처리
+                }
                 break;
         }
 
