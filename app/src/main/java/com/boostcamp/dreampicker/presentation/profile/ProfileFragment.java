@@ -19,7 +19,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     public ProfileFragment() {
     }
 
-    public static ProfileFragment newInstance(@Nullable String userId) {
+    public static ProfileFragment newInstance(@NonNull String userId) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARGUMENT_USER_ID, userId);

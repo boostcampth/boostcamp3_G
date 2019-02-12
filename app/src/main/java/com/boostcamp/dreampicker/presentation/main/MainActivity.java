@@ -67,7 +67,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
                 fragment = NotificationFragment.newInstance();
                 break;
             case R.id.navigation_profile:
-                fragment = ProfileFragment.newInstance(FirebaseManager.getCurrentUserId());
+                final String userId = FirebaseManager.getCurrentUserId();
+                if(userId != null) {
+                    fragment = ProfileFragment.newInstance(userId);
+                } else {
+                    // TODO. userId 없는 경우 - 로그인 안된상태 에러 처리
+                }
                 break;
         }
 
