@@ -10,13 +10,8 @@
     <string name="main_navigation_profile">프로필</string>
 
     <!-- 프로필 화면에서 사용 -->
-    <string name="profile_feed_count">포스팅</string>
-    <string name="profile_follower_count">팔로워</string>
-    <string name="profile_following_count">팔로잉</string>
-    <string name="profile_follow">팔로우하기</string>
-    <string name="profile_follow_cancel">팔로우취소</string>
-    <string name="profile_tab_doing">진행중인 투표</string>
-    <string name="profile_tab_done">왼료된 투표</string>
+    <string name="profile_feed_count">내가 올린 투표</string>
+    <string name="profile_voted_count">내가 한 투표</string>
 
     <!-- 검색 화면에서 사용 -->
     <string name="search_text_hint">검색어를 입력하세요.</string>
