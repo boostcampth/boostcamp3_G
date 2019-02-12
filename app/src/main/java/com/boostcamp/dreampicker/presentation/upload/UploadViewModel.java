@@ -27,6 +27,8 @@ public class UploadViewModel extends BaseViewModel {
     @NonNull
     private MutableLiveData<Boolean> validate = new MutableLiveData<>();
     @NonNull
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    @NonNull
     private final MutableLiveData<Throwable> error = new MutableLiveData<>();
     @NonNull
     private final FeedRepository feedRepository;
@@ -35,6 +37,7 @@ public class UploadViewModel extends BaseViewModel {
 
     UploadViewModel(@NonNull final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
+        isLoading.setValue(false);
     }
 
     void upload(@Nullable final List<String> tagListA,
@@ -45,15 +48,19 @@ public class UploadViewModel extends BaseViewModel {
             error.setValue(new IllegalArgumentException());
             return;
         }
+        isLoading.setValue(true);
         if (!TextUtils.isEmpty(getContent().getValue()) &&
                 !TextUtils.isEmpty(getImagePathA().getValue()) &&
                 !TextUtils.isEmpty(getImagePathB().getValue())) {
             addDisposable(feedRepository.uploadFeed(createFeedUploadRequest(userId, tagListA, tagListB))
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> validate.setValue(true),
-                            e -> validate.setValue(false)));
+                    .subscribe(() -> {
+                                validate.setValue(true);
+                                isLoading.setValue(false);
+                            }, error::setValue));
         } else {
             validate.setValue(false);
+            isLoading.setValue(false);
         }
     }
 
@@ -90,6 +97,11 @@ public class UploadViewModel extends BaseViewModel {
     @NonNull
     MutableLiveData<Boolean> getValidate() {
         return validate;
+    }
+
+    @NonNull
+    public LiveData<Boolean> getIsLoading() {
+        return isLoading;
     }
 
     @NonNull
