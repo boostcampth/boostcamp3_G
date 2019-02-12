@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="220dp"
+            app:layout_constraintGuide_begin="180dp"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
@@ -42,13 +42,19 @@
             android:layout_height="40dp"
             android:scaleX="0.9"
             android:scaleY="0.9"
-            android:layout_marginEnd="@dimen/space_median"
-            android:layout_marginTop="@dimen/space_median"
-            android:layout_marginBottom="@dimen/space_median"
             app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
             app:layout_constraintEnd_toStartOf="@id/layout_feed"
             app:layout_constraintStart_toEndOf="@id/iv_user_image"/>
+
+        <Constraint
+            android:id="@+id/guideline_count_bottom"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_begin="180dp"/>
 
         <Constraint
             android:id="@id/layout_feed"
@@ -109,7 +115,7 @@
         <Constraint
             android:id="@id/btn_follow"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_median"
             android:layout_marginBottom="@dimen/space_median"
             app:layout_constraintTop_toBottomOf="@id/iv_user_image"
@@ -121,8 +127,8 @@
             android:id="@id/layout_feed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_goneMarginStart="@dimen/space_small"
-            app:layout_goneMarginEnd="@dimen/space_small"
+            android:layout_marginStart="@dimen/space_small"
+            android:layout_marginEnd="@dimen/space_small"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@id/guideline_count"
             app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
@@ -134,8 +140,8 @@
             android:id="@id/layout_following"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_goneMarginStart="@dimen/space_small"
-            app:layout_goneMarginEnd="@dimen/space_small"
+            android:layout_marginStart="@dimen/space_small"
+            android:layout_marginEnd="@dimen/space_small"
             app:layout_constraintTop_toBottomOf="@id/guideline_count"
             app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
             app:layout_constraintEnd_toEndOf="parent"
@@ -158,7 +164,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_follow"/>
+            app:layout_constraintTop_toBottomOf="@id/guideline_count_bottom"/>
 
     </ConstraintSet>
 
