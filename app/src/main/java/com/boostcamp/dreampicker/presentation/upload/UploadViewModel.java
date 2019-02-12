@@ -100,7 +100,7 @@ public class UploadViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getIsLoading() {
+    public LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 

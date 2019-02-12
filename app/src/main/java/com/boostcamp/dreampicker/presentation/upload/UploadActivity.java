@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -22,7 +21,6 @@ import java.util.List;
 
 import androidx.lifecycle.ViewModelProviders;
 import gun0912.tedbottompicker.TedBottomPicker;
-import me.gujun.android.taggroup.TagGroup;
 
 public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
@@ -44,7 +42,6 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         initViewModel();
         initViews();
         subscribeValidate();
-        subscribeViewModel();
 
     }
 
@@ -128,24 +125,12 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         return new Intent(context, UploadActivity.class);
     }
 
-    private void subscribeViewModel() {
-        binding.getViewModel().getIsLoading().observe(this, isLoading -> {
-            if (isLoading) {
-                binding.loading.setVisibility(View.VISIBLE);
-                binding.toolbar.btnRight.setEnabled(false);
-            } else {
-                binding.loading.setVisibility(View.GONE);
-                binding.toolbar.btnRight.setEnabled(true);
-            }
-        });
-    }
-
     @Override
     public void onBackPressed() {
         binding.getViewModel().getIsLoading().observe(this, isLoading -> {
             if (isLoading) {
                 showToast(getString(R.string.upload_backpress_denied_message));
-            } else{
+            } else {
                 super.onBackPressed();
             }
         });
