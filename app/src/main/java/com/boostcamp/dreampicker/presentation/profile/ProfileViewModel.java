@@ -15,7 +15,7 @@ import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ProfileViewModel extends BaseViewModel {
-    private final int PAGE_SIZE = 2;
+    private final int PAGE_SIZE = 4;
 
     @NonNull
     private final UserRepository repository;
