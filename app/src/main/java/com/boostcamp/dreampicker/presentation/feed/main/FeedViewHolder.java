@@ -11,6 +11,7 @@ import com.boostcamp.dreampicker.databinding.ItemFeedBinding;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
 
     void bindTo(@NonNull final Feed feed) {
         binding.setFeed(feed);
+        binding.executePendingBindings();
         binding.ivFeedImageA.setTag(R.id.iv_feed_image_a, feed.getId());
         binding.ivFeedImageB.setTag(R.id.iv_feed_image_b, feed.getId());
         binding.sbSelector.setTag(R.id.sb_selector, feed.getId());
@@ -32,7 +34,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
 
     void startVoteAnimation(@NonNull final String itemAId,
                             @NonNull final String itemBId,
-                            @NonNull final String selectionId) {
+                            @Nullable final String selectionId) {
         final Context context = binding.getRoot().getContext();
 
         final int size = context.getResources().getDimensionPixelSize(R.dimen.vote_icon_size);
@@ -49,12 +51,17 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
                 params.topToBottom = R.id.tv_feed_content;
                 params.bottomToTop = R.id.vote_result;
 
-                if (itemAId.equals(selectionId)) {
+                if(selectionId == null) {
                     params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-                    params.endToStart = R.id.guideline_feed_image_horizontal;
-                } else if (itemBId.equals(selectionId)) {
                     params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
-                    params.startToEnd = R.id.guideline_feed_image_horizontal;
+                } else {
+                    if (itemAId.equals(selectionId)) {
+                        params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+                        params.endToStart = R.id.guideline_feed_image_horizontal;
+                    } else if (itemBId.equals(selectionId)) {
+                        params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+                        params.startToEnd = R.id.guideline_feed_image_horizontal;
+                    }
                 }
                 button.setLayoutParams(params);
             }
