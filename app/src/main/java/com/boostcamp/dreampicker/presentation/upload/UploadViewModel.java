@@ -3,10 +3,10 @@ package com.boostcamp.dreampicker.presentation.upload;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
-import com.boostcamp.dreampicker.utils.FirebaseManager;
 
 import java.util.List;
 

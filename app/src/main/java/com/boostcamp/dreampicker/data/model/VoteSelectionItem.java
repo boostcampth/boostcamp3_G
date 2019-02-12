@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.data.model;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,5 +42,22 @@ public class VoteSelectionItem {
 
     public int getVoteCount() {
         return voteCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        VoteSelectionItem item = (VoteSelectionItem) o;
+        return voteCount == item.voteCount &&
+                Objects.equals(id, item.id) &&
+                Objects.equals(imageUrl, item.imageUrl) &&
+                Objects.equals(tagList, item.tagList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, imageUrl, tagList);
     }
 }

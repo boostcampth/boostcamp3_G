@@ -3,7 +3,7 @@ package com.boostcamp.dreampicker.presentation.feed.main;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
-import com.boostcamp.dreampicker.utils.FirebaseManager;
+import com.boostcamp.dreampicker.data.common.FirebaseManager;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,9 +15,9 @@ import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class FeedViewModel extends BaseViewModel {
-    private static final int PAGE_SIZE = 1;
+    private static final int PAGE_SIZE = 2;
+    private static final int ERROR_REPEAT_COUNT = 3;
     private static final String ERROR_NOT_EXIST ="Not Exists user information";
-    private static final String ERROR_NULL_FEED ="FeedList is Null";
     @NonNull
     private final MutableLiveData<List<Feed>> feedList = new MutableLiveData<>();
     @NonNull
@@ -32,51 +32,56 @@ public class FeedViewModel extends BaseViewModel {
 
     FeedViewModel(@NonNull final FeedRepository repository) {
         this.repository = repository;
-        feedList.setValue(new ArrayList<>());
+        isLoading.setValue(false);
+        isLastPage.setValue(false);
     }
 
-    public void loadFeedList() {
+    void loadFeedList() {
         final String userId = FirebaseManager.getCurrentUserId();
         if(userId == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
-        final List<Feed> feedList = this.feedList.getValue();
-        if(feedList != null) {
-            if(feedList.isEmpty()) {
-                isLastPage.setValue(false);
-                startAfter = new Date();
-            }
-            isLoading.setValue(true);
-            if(isLastPage.getValue() != null && !isLastPage.getValue()) {
-                addDisposable(repository.getNotEndedFeedList(userId, startAfter, PAGE_SIZE)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(list -> {
-                            if(list.size() > 0) {
-                                startAfter = list.get(list.size()-1).getDate();
-                                feedList.addAll(list);
-                                this.feedList.setValue(feedList);
-                            }
-                            if (list.size() < PAGE_SIZE) {
-                                isLastPage.setValue(true);
-                            }
-                            isLoading.setValue(false);
-                        }, error::setValue));
-            }
-        } else { // feedList == null
-            error.setValue(new IllegalStateException(ERROR_NULL_FEED));
+        if(Boolean.TRUE.equals(isLoading.getValue()) || Boolean.TRUE.equals(isLastPage.getValue())) {
+            return;
         }
+        isLoading.setValue(true);
+        final List<Feed> feedList = this.feedList.getValue() == null
+                ? new ArrayList<>() : this.feedList.getValue();
+        addDisposable(repository.getNotEndedFeedList(userId, startAfter == null
+                ? new Date() : startAfter, PAGE_SIZE)
+                .observeOn(AndroidSchedulers.mainThread())
+                .retry(ERROR_REPEAT_COUNT)
+                .subscribe(list -> {
+                    if(list.size() > 0) {
+                        feedList.addAll(list);
+                        this.feedList.setValue(feedList);
+                        this.startAfter = list.get(list.size()-1).getDate();
+                    }
+                    if (list.size() < PAGE_SIZE) {
+                        isLastPage.setValue(true);
+                    }
+                    isLoading.setValue(false);
+                }, error::setValue));
     }
 
-    public void vote(@NonNull final String feedId, @NonNull final String selectionId) {
+    void vote(@NonNull final String feedId, @NonNull final String selectionId) {
+        if(Boolean.TRUE.equals(isLoading.getValue())) {
+            return;
+        }
         final String userId = FirebaseManager.getCurrentUserId();
         if(userId == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
+        isLoading.setValue(true);
         addDisposable(repository.vote(userId, feedId, selectionId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::updateFeedList, error::setValue));
+                .retry(ERROR_REPEAT_COUNT)
+                .subscribe(feed -> {
+                    isLoading.setValue(false);
+                    updateFeedList(feed);
+                }, error::setValue));
     }
 
     private void updateFeedList(@NonNull final Feed feed) {
@@ -94,13 +99,23 @@ public class FeedViewModel extends BaseViewModel {
         this.feedList.setValue(feedList);
     }
 
+    public void refresh() {
+        if(Boolean.TRUE.equals(isLoading.getValue())) {
+            return;
+        }
+        feedList.setValue(new ArrayList<>());
+        startAfter = null;
+        isLastPage.setValue(false);
+        loadFeedList();
+    }
+
     @NonNull
     public LiveData<List<Feed>> getFeedList() {
         return feedList;
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getIsLoading() {
+    public LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 
