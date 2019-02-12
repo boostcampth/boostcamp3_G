@@ -120,8 +120,6 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         });
     }
 
-
-
     private void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
@@ -134,8 +132,10 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         binding.getViewModel().getIsLoading().observe(this, isLoading -> {
             if (isLoading) {
                 binding.loading.setVisibility(View.VISIBLE);
+                binding.toolbar.btnRight.setEnabled(false);
             } else {
                 binding.loading.setVisibility(View.GONE);
+                binding.toolbar.btnRight.setEnabled(true);
             }
         });
     }
@@ -145,8 +145,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         binding.getViewModel().getIsLoading().observe(this, isLoading -> {
             if (isLoading) {
                 showToast(getString(R.string.upload_backpress_denied_message));
-            }
-            else{
+            } else{
                 super.onBackPressed();
             }
         });
