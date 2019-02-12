@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.data.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -70,5 +71,25 @@ public class Feed {
     @Nullable
     public String getSelectionId() {
         return selectionId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Feed feed = (Feed) o;
+        return Objects.equals(id, feed.id) &&
+                Objects.equals(writer, feed.writer) &&
+                Objects.equals(content, feed.content) &&
+                Objects.equals(date, feed.date) &&
+                Objects.equals(itemA, feed.itemA) &&
+                Objects.equals(itemB, feed.itemB) &&
+                Objects.equals(selectionId, feed.selectionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, writer, content, date, itemA, itemB, selectionId);
     }
 }

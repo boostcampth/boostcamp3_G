@@ -65,7 +65,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
                 }
             }
         });
-
+        binding.rvFeed.setItemAnimator(null);
         binding.rvFeed.setAdapter(adapter);
     }
 
