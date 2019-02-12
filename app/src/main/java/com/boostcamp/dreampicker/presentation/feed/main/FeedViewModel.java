@@ -16,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class FeedViewModel extends BaseViewModel {
     private static final int PAGE_SIZE = 10;
+    private static final int ERROR_REPEAT_COUNT = 3;
     private static final String ERROR_NOT_EXIST ="Not Exists user information";
     @NonNull
     private final MutableLiveData<List<Feed>> feedList = new MutableLiveData<>();
@@ -50,6 +51,7 @@ public class FeedViewModel extends BaseViewModel {
         addDisposable(repository.getNotEndedFeedList(userId, startAfter == null
                 ? new Date() : startAfter, PAGE_SIZE)
                 .observeOn(AndroidSchedulers.mainThread())
+                .retry(ERROR_REPEAT_COUNT)
                 .subscribe(list -> {
                     if(list.size() > 0) {
                         feedList.addAll(list);
@@ -63,7 +65,7 @@ public class FeedViewModel extends BaseViewModel {
                 }, error::setValue));
     }
 
-    public void vote(@NonNull final String feedId, @NonNull final String selectionId) {
+    void vote(@NonNull final String feedId, @NonNull final String selectionId) {
         if(isLoading.getValue() == null || isLoading.getValue()) {
             return;
         }
@@ -72,9 +74,14 @@ public class FeedViewModel extends BaseViewModel {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
+        isLoading.setValue(true);
         addDisposable(repository.vote(userId, feedId, selectionId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::updateFeedList, error::setValue));
+                .retry(ERROR_REPEAT_COUNT)
+                .subscribe(feed -> {
+                    isLoading.setValue(false);
+                    updateFeedList(feed);
+                }, error::setValue));
     }
 
     private void updateFeedList(@NonNull final Feed feed) {
@@ -105,7 +112,7 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getIsLoading() {
+    public LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 

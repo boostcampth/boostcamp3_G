@@ -201,7 +201,7 @@
                         app:rcProgressColor="@color/colorAccent"
                         app:rcBackgroundColor="@color/colorGray"
                         app:rcProgress="@{feed.itemA.voteCount}"
-                        app:rcMax="@{feed.itemA.voteCount}"
+                        app:rcMax="@{feed.itemA.voteCount + feed.itemB.voteCount}"
                         app:rcRadius="5dp"
                         app:rcReverse="true"/>
 
@@ -220,7 +220,7 @@
                         app:rcProgressColor="@color/colorAccent"
                         app:rcBackgroundColor="@color/colorGray"
                         app:rcProgress="@{feed.itemB.voteCount}"
-                        app:rcMax="@{feed.itemB.voteCount}"
+                        app:rcMax="@{feed.itemA.voteCount + feed.itemB.voteCount}"
                         app:rcRadius="5dp"/>
 
                     <TextView

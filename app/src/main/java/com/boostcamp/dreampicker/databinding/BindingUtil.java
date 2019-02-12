@@ -62,13 +62,4 @@ public class BindingUtil {
     public static void setRcMax(@NonNull final RoundCornerProgressBar progressBar, final int value) {
         progressBar.setMax(value);
     }
-
-    @BindingAdapter({"visible"})
-    public static void setVisibility(@NonNull final ProgressBar pb, final boolean isVisible) {
-        if(isVisible) {
-            pb.setVisibility(View.VISIBLE);
-        } else {
-            pb.setVisibility(View.GONE);
-        }
-    }
 }
