@@ -8,7 +8,7 @@
 
         <OnSwipe
             app:dragDirection="dragUp"
-            app:touchAnchorId="@id/rv_profile_feed"
+            app:touchAnchorId="@id/swipe_refresh"
             app:touchAnchorSide="top"
             app:moveWhenScrollAtTop="true"/>
 
@@ -21,39 +21,26 @@
             android:id="@id/iv_user_image"
             android:layout_width="@dimen/profile_image_size_median"
             android:layout_height="@dimen/profile_image_size_median"
-            android:layout_marginStart="@dimen/space_median"
             android:layout_marginTop="@dimen/space_median"
             android:layout_marginBottom="@dimen/space_median"
-            app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
+            android:layout_marginStart="@dimen/space_median"
+            android:scaleX="0.95"
+            android:scaleY="0.95"
+            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <Constraint
-            android:id="@id/guideline_count"
+            android:id="@id/tv_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="180dp"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Constraint
-            android:id="@id/btn_follow"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
+            android:layout_height="0dp"
             android:scaleX="0.9"
             android:scaleY="0.9"
-            app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
+            android:layout_marginStart="@dimen/space_median"
+            android:layout_marginEnd="@dimen/space_median"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_user_image"/>
-
-        <Constraint
-            android:id="@+id/guideline_count_bottom"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="180dp"/>
+            app:layout_constraintStart_toEndOf="@id/iv_user_image"
+            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"/>
 
         <Constraint
             android:id="@id/layout_feed"
@@ -61,14 +48,11 @@
             android:layout_height="wrap_content"
             android:scaleX="0.95"
             android:scaleY="0.95"
-            android:layout_marginStart="@dimen/space_small"
-            android:layout_marginEnd="@dimen/space_small"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
+            android:layout_marginStart="@dimen/space_median"
+            android:layout_marginEnd="@dimen/space_median"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/layout_following"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/btn_follow"/>
+            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
+            app:layout_constraintEnd_toStartOf="@id/layout_following"/>
 
         <Constraint
             android:id="@id/layout_following"
@@ -76,30 +60,20 @@
             android:layout_height="wrap_content"
             android:scaleX="0.95"
             android:scaleY="0.95"
-            android:layout_marginStart="@dimen/space_small"
-            android:layout_marginEnd="@dimen/space_small"
-            app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
+            android:layout_marginStart="@dimen/space_median"
+            android:layout_marginEnd="@dimen/space_median"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/layout_feed"/>
+            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <Constraint
-            android:id="@id/guideline_count_bottom"
+            android:id="@+id/swipe_refresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="220dp"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Constraint
-            android:id="@+id/rv_profile_feed"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/iv_user_image"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_user_image"/>
+            app:layout_constraintEnd_toEndOf="parent"/>
     </ConstraintSet>
 
     <ConstraintSet
@@ -109,22 +83,30 @@
             android:id="@id/iv_user_image"
             android:layout_width="@dimen/profile_image_size_large"
             android:layout_height="@dimen/profile_image_size_large"
-            android:layout_margin="@dimen/space_median"
-            app:layout_constraintBottom_toTopOf="@id/btn_follow"
+            android:layout_marginTop="@dimen/space_median"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <Constraint
-            android:id="@id/btn_follow"
+            android:id="@id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_median"
             android:layout_marginBottom="@dimen/space_median"
             app:layout_constraintTop_toBottomOf="@id/iv_user_image"
-            app:layout_constraintBottom_toTopOf="@id/guideline_count"
+            app:layout_constraintBottom_toTopOf="@id/gl_count"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
+
+        <Constraint
+            android:id="@+id/gl_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintGuide_begin="140dp"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <Constraint
             android:id="@id/layout_feed"
@@ -132,11 +114,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_small"
             android:layout_marginEnd="@dimen/space_small"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintTop_toBottomOf="@id/guideline_count"
-            app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintTop_toBottomOf="@id/gl_count"
+            app:layout_constraintBottom_toTopOf="@id/gl_count_bottom"
             app:layout_constraintEnd_toStartOf="@id/layout_following"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <Constraint
@@ -145,29 +126,28 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_small"
             android:layout_marginEnd="@dimen/space_small"
-            app:layout_constraintTop_toBottomOf="@id/guideline_count"
-            app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/layout_feed"/>
+            app:layout_constraintTop_toBottomOf="@id/gl_count"
+            app:layout_constraintBottom_toTopOf="@id/gl_count_bottom"
+            app:layout_constraintStart_toEndOf="@id/layout_feed"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <Constraint
-            android:id="@id/guideline_count_bottom"
+            android:id="@id/gl_count_bottom"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="260dp"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintGuide_begin="220dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <Constraint
-            android:id="@+id/rv_profile_feed"
+            android:id="@+id/swipe_refresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline_count_bottom"/>
+            app:layout_constraintTop_toBottomOf="@id/gl_count_bottom"/>
 
     </ConstraintSet>
 </MotionScene>
