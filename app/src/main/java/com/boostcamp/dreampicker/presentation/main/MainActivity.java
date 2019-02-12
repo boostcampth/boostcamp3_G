@@ -9,8 +9,8 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.presentation.feed.legacymain.FeedFragment;
-import com.boostcamp.dreampicker.presentation.legacyprofile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.notification.NotificationFragment;
+import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.search.SearchFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.boostcamp.dreampicker.utils.FirebaseManager;
@@ -19,10 +19,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity<ActivityMainBinding>
+        implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     public static Intent getLaunchIntent(Context context) {
-
         return new Intent(context, MainActivity.class);
     }
 
