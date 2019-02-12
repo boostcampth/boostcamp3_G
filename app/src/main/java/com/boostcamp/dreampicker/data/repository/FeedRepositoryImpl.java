@@ -140,23 +140,26 @@ public class FeedRepositoryImpl implements FeedRepository {
                 .flatMapCompletable(feedRemoteData ->
                         Completable.create(emitter -> {
                             final String writerId = FirebaseManager.getCurrentUserId();
-                            if(writerId==null) emitter.onError(new IllegalArgumentException("no User error"));
+                            if (writerId == null) {
+                                emitter.onError(new IllegalArgumentException("no User error"));
+                            } else {
 
-                            WriteBatch batch = firestore.batch();
-                            DocumentReference feedRef = firestore.collection(COLLECTION_FEED).document();
-                            DocumentReference userRef = firestore.collection(COLLECTION_USER).document(writerId)
-                                    .collection(SUBCOLLECTION_MYFEEDS).document(feedRef.getId());
+                                WriteBatch batch = firestore.batch();
+                                DocumentReference feedRef = firestore.collection(COLLECTION_FEED).document();
+                                DocumentReference userRef = firestore.collection(COLLECTION_USER).document(writerId)
+                                        .collection(SUBCOLLECTION_MYFEEDS).document(feedRef.getId());
 
-                            batch.set(feedRef, feedRemoteData);
-                            batch.set(userRef, new MyFeedRemoteData(
-                                    feedRemoteData.getContent(),
-                                    feedRemoteData.getDate(),
-                                    feedRemoteData.getItemA().getImageUrl(),
-                                    feedRemoteData.getItemB().getImageUrl(),
-                                    false));
-                            batch.commit()
-                                    .addOnSuccessListener(aVoid -> emitter.onComplete())
-                                    .addOnFailureListener(emitter::onError);
+                                batch.set(feedRef, feedRemoteData);
+                                batch.set(userRef, new MyFeedRemoteData(
+                                        feedRemoteData.getContent(),
+                                        feedRemoteData.getDate(),
+                                        feedRemoteData.getItemA().getImageUrl(),
+                                        feedRemoteData.getItemB().getImageUrl(),
+                                        false));
+                                batch.commit()
+                                        .addOnSuccessListener(aVoid -> emitter.onComplete())
+                                        .addOnFailureListener(emitter::onError);
+                            }
                         }))
                 .subscribeOn(Schedulers.io());
 
