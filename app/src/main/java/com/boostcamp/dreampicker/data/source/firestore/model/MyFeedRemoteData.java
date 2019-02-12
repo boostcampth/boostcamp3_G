@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.data.source.firebase.model;
+package com.boostcamp.dreampicker.data.source.firestore.model;
 
 import java.util.Date;
 

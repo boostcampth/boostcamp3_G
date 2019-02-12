@@ -21,7 +21,6 @@ import java.util.List;
 
 import androidx.lifecycle.ViewModelProviders;
 import gun0912.tedbottompicker.TedBottomPicker;
-import me.gujun.android.taggroup.TagGroup;
 
 public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
@@ -124,5 +123,16 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
     public static Intent getLaunchIntent(Context context) {
         return new Intent(context, UploadActivity.class);
+    }
+
+    @Override
+    public void onBackPressed() {
+        binding.getViewModel().getIsLoading().observe(this, isLoading -> {
+            if (isLoading) {
+                showToast(getString(R.string.upload_backpress_denied_message));
+            } else {
+                super.onBackPressed();
+            }
+        });
     }
 }

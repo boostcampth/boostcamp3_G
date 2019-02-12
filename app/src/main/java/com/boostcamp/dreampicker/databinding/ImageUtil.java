@@ -39,6 +39,9 @@ public class ImageUtil {
         else {
             GlideApp.with(imageView)
                     .load(url)
+                    .transform(new RoundedCorners(20))
+                    .error(R.drawable.ic_photo)
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .into(imageView);
         }
 
