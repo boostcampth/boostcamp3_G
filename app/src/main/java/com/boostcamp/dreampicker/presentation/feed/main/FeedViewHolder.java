@@ -13,7 +13,6 @@ import com.sackcentury.shinebuttonlib.ShineButton;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 class FeedViewHolder extends RecyclerView.ViewHolder {
@@ -31,10 +30,11 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         binding.sbSelector.setTag(R.id.sb_selector, feed.getId());
     }
 
-    void startVoteAnimation(@NonNull final Context context,
-                            @NonNull final String itemAId,
+    void startVoteAnimation(@NonNull final String itemAId,
                             @NonNull final String itemBId,
                             @NonNull final String selectionId) {
+        final Context context = binding.getRoot().getContext();
+
         final int size = context.getResources().getDimensionPixelSize(R.dimen.vote_icon_size);
 
         final ShineButton button = binding.sbSelector;

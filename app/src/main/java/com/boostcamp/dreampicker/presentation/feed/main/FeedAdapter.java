@@ -1,6 +1,5 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +22,6 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
                     @NonNull final String selectionId);
     }
 
-    private Context context;
-
     FeedAdapter(@NonNull final OnVoteListener onVoteListener,
                 @NonNull final OnItemClickListener onItemClickListener) {
         super(DIFF_CALLBACK);
@@ -44,7 +41,6 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     @NonNull
     @Override
     public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        this.context = parent.getContext();
         return new FeedViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_feed, parent, false));
     }
@@ -55,7 +51,7 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
         holder.bindTo(feed);
 
         if(feed.getSelectionId() != null) {
-            holder.startVoteAnimation(context, feed.getItemA().getId(), feed.getItemB().getId(), feed.getSelectionId());
+            holder.startVoteAnimation(feed.getItemA().getId(), feed.getItemB().getId(), feed.getSelectionId());
             holder.getBinding().voteResult.setVisibility(View.VISIBLE);
         }
 

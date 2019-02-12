@@ -60,8 +60,9 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
                 if(!binding.rvFeed.canScrollVertically(RecyclerView.FOCUS_DOWN)){
                     if(isLastPage) {
                         showToast(TEXT_LAST_PAGE);
+                    } else {
+                        binding.getVm().loadFeedList();
                     }
-                    binding.getVm().loadFeedList();
                 }
             }
         });
