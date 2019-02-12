@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="item"
             type="com.boostcamp.dreampicker.data.model.MyFeed" />
@@ -11,50 +12,77 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space_median"
-            android:layout_weight="2"
-            android:elevation="5dp"
-            app:cardCornerRadius="5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/iv_image_a"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    app:image="@{item.imageUrlA}" />
-
-                <ImageView
-                    android:id="@+id/iv_image_b"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    app:image="@{item.imageUrlB}" />
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_content"
-            android:layout_width="0dp"
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space_median"
-            android:layout_weight="1"
-            android:text="@{item.content}" />
+            android:layout_marginTop="@dimen/space_median"
+            android:layout_marginStart="@dimen/space_median"
+            android:layout_marginBottom="@dimen/space_x_small"
+            android:textSize="@dimen/text_small"
+            app:date="@{item.date}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginEnd="@dimen/space_median"
+                android:layout_weight="2"
+                android:elevation="5dp"
+                app:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_image_a"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:image="@{item.imageUrlA}" />
+
+                    <ImageView
+                        android:id="@+id/iv_image_b"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:image="@{item.imageUrlB}" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/space_median"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="false"
+                    android:text="@{item.content}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_median" />
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
+
 </layout>
