@@ -5,11 +5,8 @@ import android.text.TextUtils;
 
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
-import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 import com.boostcamp.dreampicker.utils.FirebaseManager;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +54,7 @@ public class UploadViewModel extends BaseViewModel {
         if (!TextUtils.isEmpty(getContent().getValue()) &&
                 !TextUtils.isEmpty(getImagePathA().getValue()) &&
                 !TextUtils.isEmpty(getImagePathB().getValue())) {
-            addDisposable(FeedRepositoryImpl.getInstance(FirebaseFirestore.getInstance(),
-                    FirebaseStorage.getInstance())
-                    .uploadFeed(createFeedUploadRequest(userId))
+            addDisposable(feedRepository.uploadFeed(createFeedUploadRequest(userId))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> validate.setValue(true),
                             e -> validate.setValue(false)));

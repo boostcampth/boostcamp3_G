@@ -8,9 +8,11 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.repository.FeedRepository;
+import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -32,8 +34,6 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private static final int A = 1;
     private static final int B = 2;
 
-    private FeedRepository feedRepository;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_upload;
@@ -52,7 +52,8 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private void initViewModel() {
         final UploadViewModel viewModel = ViewModelProviders.of(this,
                 new UploadViewModelFactory(
-                        feedRepository))
+                        FeedRepositoryImpl.getInstance(FirebaseFirestore.getInstance(),
+                                FirebaseStorage.getInstance())))
                 .get(UploadViewModel.class);
 
         binding.setViewModel(viewModel);
