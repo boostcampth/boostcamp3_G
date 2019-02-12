@@ -4,7 +4,9 @@ import android.net.Uri;
 
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
+import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.User;
+import com.boostcamp.dreampicker.data.source.firebase.model.MyFeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firebase.model.mapper.FeedMapper;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
@@ -30,10 +32,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class FeedRepositoryImpl implements FeedRepository {
 
-    @NonNull
+
     private static final String COLLECTION_FEED = "feed";
-    @NonNull
     private static final String COLLECTION_USER = "user";
+    private static final String SUBCOLLECTION_MYFEEDS = "myFeeds";
     private static final String STORAGE_FEED_IMAGE_PATH = "feedImages";
 
     private static final String FIELD_DATE = "date";
@@ -139,14 +141,21 @@ public class FeedRepositoryImpl implements FeedRepository {
                         , (imageUrlA, imageUrlB) -> FeedMapper.toFeed(uploadFeed, imageUrlA, imageUrlB))
                 .flatMapCompletable(feedRemoteData ->
                         Completable.create(emitter -> {
-                            final User writer = FirebaseManager.getCurrentUser();
-                            if(writer==null) emitter.onError(new IllegalArgumentException("no User error"));
+                            final String writerId = FirebaseManager.getCurrentUserId();
+                            if(writerId==null) emitter.onError(new IllegalArgumentException("no User error"));
 
                             WriteBatch batch = firestore.batch();
                             DocumentReference feedRef = firestore.collection(COLLECTION_FEED).document();
-                            DocumentReference userRef = firestore.collection(COLLECTION_USER).document();
-                            batch.set(feedRef,feedRemoteData);
-                            batch.set(userRef,writer);
+                            DocumentReference userRef = firestore.collection(COLLECTION_USER).document(writerId)
+                                    .collection(SUBCOLLECTION_MYFEEDS).document(feedRef.getId());
+
+                            batch.set(feedRef, feedRemoteData);
+                            batch.set(userRef, new MyFeedRemoteData(
+                                    feedRemoteData.getContent(),
+                                    feedRemoteData.getDate(),
+                                    feedRemoteData.getItemA().getImageUrl(),
+                                    feedRemoteData.getItemB().getImageUrl(),
+                                    false));
                             batch.commit()
                                     .addOnSuccessListener(aVoid -> emitter.onComplete())
                                     .addOnFailureListener(emitter::onError);
