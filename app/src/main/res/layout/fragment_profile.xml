@@ -14,26 +14,16 @@
         android:layout_height="match_parent"
         app:layoutDescription="@xml/collapsing_user_profile">
 
-        <include
-            android:id="@+id/layout_toolbar"
-            layout="@layout/layout_toolbar_profile"
-            android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_marginBottom="@dimen/space_median"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            bind:userName="@{vm.user.name}"/>
-
         <ImageView
             android:id="@+id/iv_user_image"
             android:layout_width="@dimen/profile_image_size_large"
             android:layout_height="@dimen/profile_image_size_large"
             android:layout_marginTop="16dp"
             app:circleImage="@{vm.user.profileImageUrl}"
+            app:layout_constraintBottom_toTopOf="@id/btn_follow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/btn_follow"

@@ -25,7 +25,7 @@
             android:layout_marginTop="@dimen/space_median"
             android:layout_marginBottom="@dimen/space_median"
             app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <Constraint
@@ -43,8 +43,7 @@
             android:scaleX="0.9"
             android:scaleY="0.9"
             app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-            app:layout_constraintEnd_toStartOf="@id/layout_feed"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_user_image"/>
 
         <Constraint
@@ -62,9 +61,11 @@
             android:layout_height="wrap_content"
             android:scaleX="0.95"
             android:scaleY="0.95"
+            android:layout_marginStart="@dimen/space_small"
+            android:layout_marginEnd="@dimen/space_small"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/layout_following"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@id/btn_follow"/>
@@ -75,8 +76,10 @@
             android:layout_height="wrap_content"
             android:scaleX="0.95"
             android:scaleY="0.95"
+            android:layout_marginStart="@dimen/space_small"
+            android:layout_marginEnd="@dimen/space_small"
             app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@id/layout_feed"/>
@@ -110,7 +113,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn_follow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <Constraint
             android:id="@id/btn_follow"
@@ -167,5 +170,4 @@
             app:layout_constraintTop_toBottomOf="@id/guideline_count_bottom"/>
 
     </ConstraintSet>
-
 </MotionScene>
