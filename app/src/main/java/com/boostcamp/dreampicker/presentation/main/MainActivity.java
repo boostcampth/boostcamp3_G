@@ -9,8 +9,8 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.presentation.feed.legacymain.FeedFragment;
+import com.boostcamp.dreampicker.presentation.legacyprofile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.notification.NotificationFragment;
-import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.search.SearchFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.boostcamp.dreampicker.utils.FirebaseManager;
@@ -34,7 +34,6 @@ MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigati
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         initView();

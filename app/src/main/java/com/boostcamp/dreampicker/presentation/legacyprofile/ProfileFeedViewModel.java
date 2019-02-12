@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.profile;
+package com.boostcamp.dreampicker.presentation.legacyprofile;
 
 import com.boostcamp.dreampicker.data.model.LegacyFeed;
 import com.boostcamp.dreampicker.data.paging.datasource.ProfileFeedDataSource;

@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.profile;
+package com.boostcamp.dreampicker.presentation.legacyprofile;
 
 import android.os.Bundle;
 import android.view.View;
