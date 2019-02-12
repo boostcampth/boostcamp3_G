@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
+import com.boostcamp.dreampicker.data.source.firebase.model.MyFeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firebase.model.mapper.FeedRequestMapper;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
