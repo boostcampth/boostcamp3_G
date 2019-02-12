@@ -39,13 +39,6 @@ public class BindingUtil {
         }
     }
 
-    @BindingAdapter({"vote"})
-    public static void doVote(@NonNull CheckBox checkBox, @Nullable final String selectionId) {
-        if(selectionId != null && !checkBox.isChecked()) {
-            checkBox.performClick();
-        }
-    }
-
     @SuppressLint("SimpleDateFormat")
     @BindingAdapter({"date"})
     public static void setDate(@NonNull final TextView textView, @NonNull final Date date) {

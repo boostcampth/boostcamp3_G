@@ -50,10 +50,17 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
         final Feed feed = getItem(holder.getAdapterPosition());
         holder.bindTo(feed);
 
+        holder.startVoteAnimation(feed.getItemA().getId(), feed.getItemB().getId(), feed.getSelectionId());
+
         if(feed.getSelectionId() != null) {
-            holder.startVoteAnimation(feed.getItemA().getId(), feed.getItemB().getId(), feed.getSelectionId());
+            if(!holder.getBinding().cbFeedVoteCount.isChecked()) {
+                holder.getBinding().cbFeedVoteCount.performClick();
+            }
             holder.getBinding().voteResult.setVisibility(View.VISIBLE);
         } else {
+            if(holder.getBinding().cbFeedVoteCount.isChecked()) {
+                holder.getBinding().cbFeedVoteCount.performClick();
+            }
             holder.getBinding().voteResult.setVisibility(View.GONE);
         }
 
