@@ -15,7 +15,7 @@ import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class FeedViewModel extends BaseViewModel {
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 2;
     private static final int ERROR_REPEAT_COUNT = 3;
     private static final String ERROR_NOT_EXIST ="Not Exists user information";
     @NonNull
@@ -66,7 +66,7 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     void vote(@NonNull final String feedId, @NonNull final String selectionId) {
-        if(isLoading.getValue() == null || isLoading.getValue()) {
+        if(Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
         final String userId = FirebaseManager.getCurrentUserId();
@@ -100,6 +100,9 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     public void refresh() {
+        if(Boolean.TRUE.equals(isLoading.getValue())) {
+            return;
+        }
         feedList.setValue(new ArrayList<>());
         startAfter = null;
         isLastPage.setValue(false);

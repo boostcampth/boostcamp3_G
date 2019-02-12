@@ -53,13 +53,9 @@ public class BindingUtil {
         textView.setText(format.format(date));
     }
 
-    @BindingAdapter({"rcProgress"})
-    public static void setRcProgress(@NonNull final RoundCornerProgressBar progressBar, final int value) {
-        progressBar.setProgress(value);
-    }
-
-    @BindingAdapter({"rcMax"})
-    public static void setRcMax(@NonNull final RoundCornerProgressBar progressBar, final int value) {
-        progressBar.setMax(value);
+    @BindingAdapter(value = {"rcProgress", "rcMax"}, requireAll = true)
+    public static void setProgress(@NonNull final RoundCornerProgressBar progressBar, final int progress, final int max) {
+        progressBar.setMax(max);
+        progressBar.setProgress(progress);
     }
 }

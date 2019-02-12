@@ -62,10 +62,18 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
         holder.getBinding().sbSelector.setOnTouchListener(touchListener);
 
         holder.getBinding().ivFeedImageA.setOnDragListener(new VoteDragListener(
-                () -> onVoteListener.onVote(feed.getId(), feed.getItemA().getId())));
+                () -> {
+                    if(feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemA().getId())) {
+                        onVoteListener.onVote(feed.getId(), feed.getItemA().getId());
+                    }
+                }));
 
         holder.getBinding().ivFeedImageB.setOnDragListener(new VoteDragListener(
-                () -> onVoteListener.onVote(feed.getId(), feed.getItemB().getId())));
+                () -> {
+                    if(feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemB().getId())) {
+                        onVoteListener.onVote(feed.getId(), feed.getItemB().getId());
+                    }
+                }));
     }
 
     private static final DiffUtil.ItemCallback<Feed> DIFF_CALLBACK =

@@ -15,6 +15,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private static final String TEXT_LAST_PAGE = "마지막 페이지입니다.";
@@ -28,7 +29,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViewModel();
-        initRecyclerView();
+        initViews();
         subscribeViewModel();
         binding.getVm().loadFeedList();
     }
@@ -42,11 +43,37 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         binding.setVm(vm);
     }
 
+    private void initViews() {
+        initRecyclerView();
+        initSwipeRefreshLayout();
+    }
+
     private void initRecyclerView() {
         final FeedAdapter adapter = new FeedAdapter(
                 (feedId, selectionId) -> binding.getVm().vote(feedId, selectionId),
                 () -> Log.d("", "")); // Todo : 상세보기로 이동
+
+        binding.rvFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(!binding.rvFeed.canScrollVertically(RecyclerView.FOCUS_DOWN)){
+                    if(isLastPage) {
+                        showToast(TEXT_LAST_PAGE);
+                    }
+                    binding.getVm().loadFeedList();
+                }
+            }
+        });
+
         binding.rvFeed.setAdapter(adapter);
+    }
+
+    private void initSwipeRefreshLayout() {
+        binding.swipe.setOnRefreshListener(() -> {
+            binding.getVm().refresh();
+            binding.swipe.setRefreshing(false);
+        });
     }
 
     private void subscribeViewModel() {
