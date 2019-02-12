@@ -8,7 +8,7 @@
 
         <OnSwipe
             app:dragDirection="dragUp"
-            app:touchAnchorId="@id/recycler_profile_feed"
+            app:touchAnchorId="@id/rv_profile_feed"
             app:touchAnchorSide="top"
             app:moveWhenScrollAtTop="true"/>
 
@@ -24,8 +24,8 @@
             android:layout_marginStart="@dimen/space_median"
             android:layout_marginTop="@dimen/space_median"
             android:layout_marginBottom="@dimen/space_median"
-            app:layout_constraintBottom_toTopOf="@id/tab_profile"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
+            app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <Constraint
@@ -37,31 +37,38 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
+            android:id="@id/btn_follow"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_user_image"/>
+
+        <Constraint
+            android:id="@+id/guideline_count_bottom"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_begin="180dp"/>
+
+        <Constraint
             android:id="@id/layout_feed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleX="0.95"
             android:scaleY="0.95"
+            android:layout_marginStart="@dimen/space_small"
+            android:layout_marginEnd="@dimen/space_small"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintBottom_toTopOf="@id/tab_profile"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-            app:layout_constraintEnd_toStartOf="@id/layout_follower"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/iv_user_image"/>
-
-        <Constraint
-            android:id="@id/layout_follower"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_large"
-            android:layout_marginEnd="@dimen/space_large"
-            android:scaleX="0.95"
-            android:scaleY="0.95"
+            app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/layout_following"
-            app:layout_constraintBottom_toTopOf="@id/tab_profile"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/layout_feed"/>
+            app:layout_constraintStart_toEndOf="@id/btn_follow"/>
 
         <Constraint
             android:id="@id/layout_following"
@@ -69,42 +76,30 @@
             android:layout_height="wrap_content"
             android:scaleX="0.95"
             android:scaleY="0.95"
-            app:layout_constraintBottom_toTopOf="@id/tab_profile"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-            app:layout_constraintEnd_toStartOf="@id/btn_follow"
+            android:layout_marginStart="@dimen/space_small"
+            android:layout_marginEnd="@dimen/space_small"
+            app:layout_constraintBottom_toTopOf="@id/rv_profile_feed"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/layout_follower"/>
+            app:layout_constraintStart_toEndOf="@id/layout_feed"/>
 
         <Constraint
             android:id="@id/guideline_count_bottom"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="180dp"
+            app:layout_constraintGuide_begin="220dp"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
-            android:id="@id/btn_follow"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:scaleX="0.9"
-            android:scaleY="0.9"
-            android:layout_marginEnd="@dimen/space_median"
-            android:layout_marginTop="@dimen/space_median"
-            android:layout_marginBottom="@dimen/space_median"
-            app:layout_constraintBottom_toTopOf="@id/tab_profile"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <Constraint
-            android:id="@id/tab_profile"
+            android:id="@+id/rv_profile_feed"
             android:layout_width="0dp"
-            android:layout_height="@dimen/profile_tab_height"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_user_image"
-            app:layout_constraintBottom_toTopOf="@id/recycler_profile_feed"/>
-
+            app:layout_constraintTop_toBottomOf="@id/iv_user_image"/>
     </ConstraintSet>
 
     <ConstraintSet
@@ -115,43 +110,46 @@
             android:layout_width="@dimen/profile_image_size_large"
             android:layout_height="@dimen/profile_image_size_large"
             android:layout_margin="@dimen/space_median"
-            app:layout_constraintBottom_toTopOf="@id/guideline_count"
+            app:layout_constraintBottom_toTopOf="@id/btn_follow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"/>
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <Constraint
+            android:id="@id/btn_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_median"
+            android:layout_marginBottom="@dimen/space_median"
+            app:layout_constraintTop_toBottomOf="@id/iv_user_image"
+            app:layout_constraintBottom_toTopOf="@id/guideline_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <Constraint
             android:id="@id/layout_feed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_small"
+            android:layout_marginEnd="@dimen/space_small"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@id/guideline_count"
             app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
-            app:layout_constraintEnd_toStartOf="@id/layout_follower"
+            app:layout_constraintEnd_toStartOf="@id/layout_following"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"/>
-
-        <Constraint
-            android:id="@id/layout_follower"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintEnd_toStartOf="@id/layout_following"
-            app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/layout_feed"
-            app:layout_constraintTop_toBottomOf="@id/guideline_count"/>
 
         <Constraint
             android:id="@id/layout_following"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_small"
+            android:layout_marginEnd="@dimen/space_small"
             app:layout_constraintTop_toBottomOf="@id/guideline_count"
             app:layout_constraintBottom_toTopOf="@id/guideline_count_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/layout_follower"/>
+            app:layout_constraintStart_toEndOf="@id/layout_feed"/>
 
         <Constraint
             android:id="@id/guideline_count_bottom"
@@ -159,29 +157,17 @@
             android:layout_height="0dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="220dp"
+            app:layout_constraintGuide_begin="260dp"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
-            android:id="@id/btn_follow"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="@dimen/space_median"
-            android:layout_marginBottom="@dimen/space_median"
-            app:layout_constraintBottom_toTopOf="@id/tab_profile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline_count_bottom" />
-
-        <Constraint
-            android:id="@id/tab_profile"
+            android:id="@+id/rv_profile_feed"
             android:layout_width="0dp"
-            android:layout_height="@dimen/profile_tab_height"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_follow"
-            app:layout_constraintBottom_toTopOf="@id/recycler_profile_feed"/>
+            app:layout_constraintTop_toBottomOf="@id/guideline_count_bottom"/>
 
     </ConstraintSet>
-
 </MotionScene>
