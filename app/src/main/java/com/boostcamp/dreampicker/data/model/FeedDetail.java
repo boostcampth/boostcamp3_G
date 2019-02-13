@@ -29,16 +29,16 @@ public class FeedDetail {
                       @NonNull Date date,
                       @NonNull VoteSelectionItem itemA,
                       @NonNull VoteSelectionItem itemB,
-                      boolean isEnded,
-                      @Nullable String selectionId) {
+                      @Nullable String selectionId,
+                      boolean isEnded) {
         this.id = id;
         this.writer = writer;
         this.content = content;
         this.date = date;
         this.itemA = itemA;
         this.itemB = itemB;
-        this.isEnded = isEnded;
         this.selectionId = selectionId;
+        this.isEnded = isEnded;
     }
 
     @NonNull
