@@ -40,7 +40,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final String COLLECTION_FEED = "feed";
     private final String SUBCOLLECTION_MYFEEDS = "myFeeds";
     private final String FIELD_DATE = "date";
-    private final String FIELD_ENDED = "isEnded";
+    private final String FIELD_ENDED = "ended";
 
 
     private UserRepositoryImpl(@NonNull final FirebaseFirestore firestore) {
