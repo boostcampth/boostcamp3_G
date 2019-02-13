@@ -16,7 +16,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -35,6 +35,7 @@ public class FeedRepositoryImpl implements FeedRepository {
     private static final String COLLECTION_USER = "user";
     private static final String SUBCOLLECTION_MYFEEDS = "myFeeds";
     private static final String STORAGE_FEED_IMAGE_PATH = "feedImages";
+    private static final String FIELD_FEEDCOUNT = "feedCount";
 
     private static final String FIELD_DATE = "date";
     private static final String FIELD_ENDED = "ended";
@@ -165,20 +166,27 @@ public class FeedRepositoryImpl implements FeedRepository {
                                 emitter.onError(new IllegalArgumentException("no User error"));
                             } else {
 
-                                WriteBatch batch = firestore.batch();
-                                DocumentReference feedRef = firestore.collection(COLLECTION_FEED).document();
-                                DocumentReference userRef = firestore.collection(COLLECTION_USER).document(writerId)
-                                        .collection(SUBCOLLECTION_MYFEEDS).document(feedRef.getId());
+                                final DocumentReference feedRef = firestore.collection(COLLECTION_FEED).document();
+                                final DocumentReference userRef = firestore.collection(COLLECTION_USER).document(writerId);
 
-                                batch.set(feedRef, feedRemoteData);
-                                batch.set(userRef, new MyFeedRemoteData(
-                                        feedRemoteData.getContent(),
-                                        feedRemoteData.getDate(),
-                                        feedRemoteData.getItemA().getImageUrl(),
-                                        feedRemoteData.getItemB().getImageUrl(),
-                                        false));
-                                batch.commit()
-                                        .addOnSuccessListener(aVoid -> emitter.onComplete())
+                                firestore.runTransaction((Transaction.Function<Void>) transaction -> {
+                                    DocumentSnapshot documentSnapshot = transaction.get(userRef);
+                                    final Double oldFeedCount = documentSnapshot.getDouble(FIELD_FEEDCOUNT);
+                                    final Double newFeedCount = oldFeedCount+1;
+
+                                    transaction.update(userRef, FIELD_FEEDCOUNT, newFeedCount);
+
+                                    transaction.set(feedRef, feedRemoteData);
+                                    transaction.set(userRef.collection(SUBCOLLECTION_MYFEEDS)
+                                                    .document(feedRef.getId()),
+                                            new MyFeedRemoteData(
+                                                    feedRemoteData.getContent(),
+                                                    feedRemoteData.getItemA().getImageUrl(),
+                                                    feedRemoteData.getItemB().getImageUrl(),
+                                                    false));
+                                    return null;
+                                })
+                                        .addOnSuccessListener(__ -> emitter.onComplete())
                                         .addOnFailureListener(emitter::onError);
                             }
                         }))
