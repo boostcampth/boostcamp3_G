@@ -30,12 +30,13 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(profileImageUrl, user.profileImageUrl);
+        if(o instanceof User) {
+            User user = (User) o;
+            return Objects.equals(id, user.id) &&
+                    Objects.equals(name, user.name) &&
+                    Objects.equals(profileImageUrl, user.profileImageUrl);
+        }
+        return false;
     }
 
     @Override

@@ -76,16 +76,17 @@ public class Feed {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Feed feed = (Feed) o;
-        return Objects.equals(id, feed.id) &&
-                Objects.equals(writer, feed.writer) &&
-                Objects.equals(content, feed.content) &&
-                Objects.equals(date, feed.date) &&
-                Objects.equals(itemA, feed.itemA) &&
-                Objects.equals(itemB, feed.itemB) &&
-                Objects.equals(selectionId, feed.selectionId);
+        if(o instanceof Feed) {
+            Feed feed = (Feed) o;
+            return Objects.equals(id, feed.id) &&
+                    Objects.equals(writer, feed.writer) &&
+                    Objects.equals(content, feed.content) &&
+                    Objects.equals(date, feed.date) &&
+                    Objects.equals(itemA, feed.itemA) &&
+                    Objects.equals(itemB, feed.itemB) &&
+                    Objects.equals(selectionId, feed.selectionId);
+        }
+        return false;
     }
 
     @Override

@@ -10,6 +10,25 @@
         android:orientation="vertical"
         tools:context=".presentation.main.MainActivity">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorWhite"
+            android:elevation="3dp"
+            app:contentInsetStart="0dp">
+
+            <ImageView
+                android:id="@+id/iv_center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ImageView"
+                android:padding="@dimen/space_x_small"
+                android:gravity="center"
+                android:src="@drawable/img_logo"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
         <FrameLayout
             android:id="@+id/frame"
             android:layout_width="match_parent"
