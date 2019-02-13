@@ -119,29 +119,30 @@ public class FeedRepositoryImpl implements FeedRepository {
                         .addOnSuccessListener(emitter::onSuccess)
                         .addOnFailureListener(emitter::onError));
 
-        final Single<Feed> single = feedRemoteDataSingle.subscribeOn(Schedulers.io())
-                // DB 추가 스트림
-                .flatMapCompletable(data -> votedFeedDao.insert(new VotedFeed(feedId,
+        // 파이어스토어에서 Feed 가져오기 스트림
+        final Single<Feed> getFeedSingle = Single.create(emitter -> docRef.get()
+                .addOnSuccessListener(snapshot -> {
+                    if (snapshot != null) {
+                        final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
+                        if (data != null) {
+                            final Feed feed = FeedResponseMapper.toFeed(userId, feedId, data);
+                            emitter.onSuccess(feed);
+                        }
+                    } else {
+                        emitter.onError(new IllegalArgumentException("Snapshot or FeedRemoteData error"));
+                    }
+                }).addOnFailureListener(emitter::onError));
+
+        return feedRemoteDataSingle.subscribeOn(Schedulers.io())
+                .map(data -> new VotedFeed(feedId,
                         data.getWriter().getName(),
                         data.getWriter().getProfileImageUrl(),
                         data.getContent(),
                         data.getItemA().getImageUrl(),
-                        data.getItemB().getImageUrl())).subscribeOn(Schedulers.io()))
-                // 파이어스토어에서 Feed 가져오기 스트림
-                .andThen(Single.create(emitter -> docRef.get()
-                        .addOnSuccessListener(snapshot -> {
-                            if (snapshot != null) {
-                                final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
-                                if (data != null) {
-                                    final Feed feed = FeedResponseMapper.toFeed(userId, feedId, data);
-                                    emitter.onSuccess(feed);
-                                }
-                            } else {
-                                emitter.onError(new IllegalArgumentException("Snapshot or FeedRemoteData error"));
-                            }
-                        }).addOnFailureListener(emitter::onError)));
-
-        return single.subscribeOn(Schedulers.io());
+                        data.getItemB().getImageUrl()))
+                .flatMapCompletable(votedFeed ->
+                        votedFeedDao.insert(votedFeed).subscribeOn(Schedulers.io()))
+                .andThen(getFeedSingle.subscribeOn(Schedulers.io()));
     }
 
     @Override
