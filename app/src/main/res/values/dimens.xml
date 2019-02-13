@@ -47,4 +47,8 @@
 
     <!-- 업로드 화면 -->
     <dimen name="upload_image_size">120dp</dimen>
+
+    <!-- 결과보기 화면 -->
+    <dimen name="voted_feed_container_size_height">100dp</dimen>
+    <dimen name="voted_feed_image_size">80dp</dimen>
 </resources>
