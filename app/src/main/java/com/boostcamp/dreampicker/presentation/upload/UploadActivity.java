@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.data.local.room.AppDatabase;
 import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
@@ -49,7 +50,8 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         final UploadViewModel vm = ViewModelProviders.of(this,
                 new UploadViewModelFactory(
                         FeedRepositoryImpl.getInstance(FirebaseFirestore.getInstance(),
-                                FirebaseStorage.getInstance())))
+                                FirebaseStorage.getInstance(),
+                                AppDatabase.getDatabase(this).votedFeedDao())))
                 .get(UploadViewModel.class);
 
         binding.setVm(vm);

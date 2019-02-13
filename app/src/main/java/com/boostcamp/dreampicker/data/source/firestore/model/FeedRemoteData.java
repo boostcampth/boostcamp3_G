@@ -38,27 +38,55 @@ public class FeedRemoteData {
         return itemA;
     }
 
+    public void setItemA(FeedItemRemoteData itemA) {
+        this.itemA = itemA;
+    }
+
     public FeedItemRemoteData getItemB() {
         return itemB;
+    }
+
+    public void setItemB(FeedItemRemoteData itemB) {
+        this.itemB = itemB;
     }
 
     public User getWriter() {
         return writer;
     }
 
+    public void setWriter(User writer) {
+        this.writer = writer;
+    }
+
     public String getContent() {
         return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Date getDate() {
         return date;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public Map<String, String> getVotedUserMap() {
         return votedUserMap;
     }
 
+    public void setVotedUserMap(Map<String, String> votedUserMap) {
+        this.votedUserMap = votedUserMap;
+    }
+
     public boolean isEnded() {
         return isEnded;
+    }
+
+    public void setEnded(boolean ended) {
+        isEnded = ended;
     }
 }
