@@ -8,6 +8,12 @@ public class UserDetailRemoteData {
     public UserDetailRemoteData() {
     }
 
+    public UserDetailRemoteData(String name, String profileImageUrl, int feedCount) {
+        this.name = name;
+        this.profileImageUrl = profileImageUrl;
+        this.feedCount = feedCount;
+    }
+
     public String getName() {
         return name;
     }

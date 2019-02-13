@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.main.LogInActivity">
+        android:gravity="center"
+        android:orientation="vertical">
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2" />
 
         <ImageView
-            android:id="@+id/iv_login_logo"
-            android:layout_width="@dimen/login_logo_size"
-            android:layout_height="@dimen/login_logo_size"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="?attr/actionBarSize"
+            android:id="@+id/iv_logo"
+            style="@style/ImageView"
+            android:layout_width="@dimen/splash_logo_size"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/space_x_large"
             android:src="@drawable/img_logo" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/btn_sign_in"
             android:layout_width="@dimen/login_button_width"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_login_logo"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="200dp"
-            android:padding="@dimen/space_x_small" />
+            android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_copyright"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_x_large"
+            android:gravity="center"
+            android:text="@string/app_copyright"
+            android:textSize="@dimen/text_median" />
+    </LinearLayout>
 </layout>

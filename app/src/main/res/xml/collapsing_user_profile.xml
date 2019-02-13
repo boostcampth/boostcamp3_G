@@ -10,7 +10,7 @@
             app:dragDirection="dragUp"
             app:touchAnchorId="@id/swipe_refresh"
             app:touchAnchorSide="top"
-            app:moveWhenScrollAtTop="true"/>
+            app:moveWhenScrollAtTop="false"/>
 
     </Transition>
 
