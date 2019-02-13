@@ -1,6 +1,7 @@
 <resources>
 
     <!-- margin/padding -->
+    <dimen name="space_xx_small">4dp</dimen>
     <dimen name="space_x_small">8dp</dimen>
     <dimen name="space_small">12dp</dimen>
     <dimen name="space_median">16dp</dimen>

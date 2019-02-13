@@ -18,8 +18,9 @@
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_median"
             android:layout_marginStart="@dimen/space_median"
+            android:layout_marginTop="@dimen/space_median"
+            android:layout_marginEnd="@dimen/space_median"
             android:layout_marginBottom="@dimen/space_x_small"
             android:textSize="@dimen/text_small"
             app:date="@{item.date}" />
@@ -34,7 +35,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_median"
-                android:layout_marginEnd="@dimen/space_median"
                 android:layout_weight="2"
                 android:elevation="5dp"
                 app:cardCornerRadius="5dp">
@@ -68,21 +68,43 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/space_median"
                 android:layout_marginEnd="@dimen/space_median"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="false"
+                    android:layout_marginBottom="@dimen/space_median"
+                    android:text="@{item.isEnded ? @string/profile_vote_ended : @string/profile_vote_not_ended}"
+                    android:textSize="@dimen/text_small" />
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="@dimen/space_median"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:minLines="1"
                     android:text="@{item.content}"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_median" />
+
+                <TextView
+                    android:id="@+id/btn_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@{item.isEnded ? @drawable/line_round : @drawable/line_round_red}"
+                    android:gravity="center"
+                    android:padding="@dimen/space_xx_small"
+                    android:text="@{item.isEnded ? @string/profile_request_restart : @string/profile_request_end}"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_small" />
+
             </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
-
 </layout>

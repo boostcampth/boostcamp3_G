@@ -7,12 +7,18 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.MyFeed;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
 public class MyFeedAdapter extends ListAdapter<MyFeed, MyFeedItemViewHolder> {
-    protected MyFeedAdapter() {
+
+    @Nullable
+    private OnEndButtonClickListener onEndButtonClickListener;
+
+    MyFeedAdapter(@Nullable OnEndButtonClickListener onEndButtonClickListener) {
         super(DIFF_CALLBACK);
+        this.onEndButtonClickListener = onEndButtonClickListener;
     }
 
     @NonNull
@@ -26,6 +32,16 @@ public class MyFeedAdapter extends ListAdapter<MyFeed, MyFeedItemViewHolder> {
     public void onBindViewHolder(@NonNull MyFeedItemViewHolder holder, int position) {
         final MyFeed item = getItem(position);
         holder.bindTo(item);
+
+        holder.binding().btnEnd.setOnClickListener(v -> {
+            if (onEndButtonClickListener != null) {
+                onEndButtonClickListener.onEndedButtonClick(getItem(holder.getAdapterPosition()));
+            }
+        });
+    }
+
+    interface OnEndButtonClickListener {
+        void onEndedButtonClick(MyFeed item);
     }
 
     private static final DiffUtil.ItemCallback<MyFeed> DIFF_CALLBACK =
