@@ -3,16 +3,20 @@ package com.boostcamp.dreampicker.data.repository;
 import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.UserDetailMapper;
+import com.boostcamp.dreampicker.data.source.firestore.model.MyFeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailEntity;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
@@ -33,8 +37,10 @@ public class UserRepositoryImpl implements UserRepository {
     @NonNull
     private final FirebaseFirestore firestore;
     private final String COLLECTION_USER = "user";
+    private final String COLLECTION_FEED = "feed";
     private final String SUBCOLLECTION_MYFEEDS = "myFeeds";
     private final String FIELD_DATE = "date";
+    private final String FIELD_ENDED = "ended";
 
 
     private UserRepositoryImpl(@NonNull final FirebaseFirestore firestore) {
@@ -65,7 +71,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @NonNull
     @Override
-    public Single<List<MyFeed>> getFeedListByUserId(@NonNull String userId, Date startAfter, int pageSize) {
+    public Single<List<MyFeed>> getFeedListByUserId(@NonNull final String userId,
+                                                    final Date startAfter,
+                                                    int pageSize) {
 
         Single<List<MyFeed>> single = Single.create(emitter ->
                 firestore.collection(COLLECTION_USER).document(userId)
@@ -88,6 +96,36 @@ public class UserRepositoryImpl implements UserRepository {
                         .addOnFailureListener(emitter::onError));
 
         return single.subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Completable toggleVoteEnded(@NonNull final String userId,
+                                       @NonNull final String feedId,
+                                       final boolean isEnded) {
+
+        return Completable.create(emitter -> {
+
+            WriteBatch batch = firestore.batch(); // 일괄 수정
+
+            // feed Document
+            DocumentReference feedDocRef =
+                    firestore.collection(COLLECTION_FEED)
+                            .document(feedId);
+
+            // myFeeds Document
+            DocumentReference myFeedDocRef =
+                    firestore.collection(COLLECTION_USER)
+                            .document(userId)
+                            .collection(SUBCOLLECTION_MYFEEDS)
+                            .document(feedId);
+
+            batch.update(feedDocRef, FIELD_ENDED, isEnded);
+            batch.update(myFeedDocRef, FIELD_ENDED, isEnded);
+
+            batch.commit()
+                    .addOnSuccessListener(__ -> emitter.onComplete())
+                    .addOnFailureListener(emitter::onError);
+        });
     }
 
 }
