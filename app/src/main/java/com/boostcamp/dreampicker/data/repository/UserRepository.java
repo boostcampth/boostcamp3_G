@@ -2,6 +2,7 @@ package com.boostcamp.dreampicker.data.repository;
 
 import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.UserDetail;
+import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
 
 import java.util.Date;
 import java.util.List;
@@ -41,4 +42,7 @@ public interface UserRepository {
      * */
     @NonNull
     Completable toggleVoteEnded(@NonNull final String userId, @NonNull final String feedId, final boolean isEnded);
+
+    @NonNull
+    Completable addNewUser(@NonNull final String userId, @NonNull final UserDetailRemoteData userDetail);
 }
