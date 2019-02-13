@@ -39,5 +39,6 @@ public interface UserRepository {
      * @param isEnded true-마감 / false-재시작
      * @return Completable
      * */
+    @NonNull
     Completable toggleVoteEnded(@NonNull final String userId, @NonNull final String feedId, final boolean isEnded);
 }
