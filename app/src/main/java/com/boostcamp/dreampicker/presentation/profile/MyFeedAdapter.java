@@ -30,14 +30,26 @@ public class MyFeedAdapter extends ListAdapter<MyFeed, MyFeedItemViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyFeedItemViewHolder holder, int position) {
-        final MyFeed item = getItem(position);
+        final MyFeed item = getItem(holder.getAdapterPosition());
         holder.bindTo(item);
 
         holder.binding().btnEnd.setOnClickListener(v -> {
             if (onEndButtonClickListener != null) {
-                onEndButtonClickListener.onEndedButtonClick(getItem(holder.getAdapterPosition()));
+                onEndButtonClickListener.onEndedButtonClick(item);
             }
         });
+
+        holder.binding().tvVoteState.setText(
+                item.isEnded() ? R.string.profile_vote_ended : R.string.profile_vote_not_ended
+        );
+
+        holder.binding().btnEnd.setBackgroundResource(
+                item.isEnded() ? R.drawable.line_round : R.drawable.line_round_red
+        );
+
+        holder.binding().btnEnd.setText(
+                item.isEnded() ? R.string.profile_request_restart : R.string.profile_request_end
+        );
     }
 
     interface OnEndButtonClickListener {

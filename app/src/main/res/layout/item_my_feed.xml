@@ -78,10 +78,10 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_vote_state"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/space_median"
-                        android:text="@{item.isEnded ? @string/profile_vote_ended : @string/profile_vote_not_ended}"
                         android:textSize="@dimen/text_small" />
 
                     <TextView
@@ -101,10 +101,8 @@
                         android:id="@+id/btn_end"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@{item.isEnded ? @drawable/line_round : @drawable/line_round_red}"
                         android:gravity="center"
                         android:padding="@dimen/space_xx_small"
-                        android:text="@{item.isEnded ? @string/profile_request_restart : @string/profile_request_end}"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/text_small" />
 
