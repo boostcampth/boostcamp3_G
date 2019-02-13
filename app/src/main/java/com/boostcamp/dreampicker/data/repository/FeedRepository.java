@@ -1,9 +1,9 @@
 package com.boostcamp.dreampicker.data.repository;
 
+import com.boostcamp.dreampicker.data.local.room.entity.VotedFeed;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
-import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
 import java.util.List;
@@ -29,4 +29,6 @@ public interface FeedRepository {
     @NonNull
     Single<FeedDetail> getFeedDetail(@NonNull final String userId,
                                      @NonNull final String feedId);
+
+    Single<List<VotedFeed>> getVotedFeedList();
 }

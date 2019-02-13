@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.data.local.room.AppDatabase;
 import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
@@ -49,10 +50,11 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         final UploadViewModel vm = ViewModelProviders.of(this,
                 new UploadViewModelFactory(
                         FeedRepositoryImpl.getInstance(FirebaseFirestore.getInstance(),
-                                FirebaseStorage.getInstance())))
+                                FirebaseStorage.getInstance(),
+                                AppDatabase.getDatabase(this).votedFeedDao())))
                 .get(UploadViewModel.class);
 
-        binding.setViewModel(vm);
+        binding.setVm(vm);
         binding.setLifecycleOwner(this);
     }
 
@@ -76,7 +78,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         btnUpload.setImageResource(R.drawable.btn_toolbar_finger);
 
         btnClose.setOnClickListener(__ -> finish());
-        btnUpload.setOnClickListener(__ -> binding.getViewModel().upload(tagListA, tagListB));
+        btnUpload.setOnClickListener(__ -> binding.getVm().upload(tagListA, tagListB));
     }
 
     public void onImageClick(final int flag) {
@@ -98,7 +100,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
     public void showBottomPicker(final int flag) {
         new TedBottomPicker.Builder(this)
-                .setOnImageSelectedListener(uri -> binding.getViewModel().setImagePath(uri, flag))
+                .setOnImageSelectedListener(uri -> binding.getVm().setImagePath(uri, flag))
                 .setPeekHeight(800)
                 .showTitle(true)
                 .create()
@@ -107,7 +109,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
 
     private void subscribeValidate() {
-        binding.getViewModel().getValidate().observe(this, v -> {
+        binding.getVm().getValidate().observe(this, v -> {
             if (v) {
                 showToast(getString(R.string.upload_success_message));
                 finish();
@@ -127,7 +129,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
     @Override
     public void onBackPressed() {
-        binding.getViewModel().getIsLoading().observe(this, isLoading -> {
+        binding.getVm().getIsLoading().observe(this, isLoading -> {
             if (isLoading) {
                 showToast(getString(R.string.upload_backpress_denied_message));
             } else {

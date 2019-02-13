@@ -23,7 +23,7 @@ public class FeedRequestMapper {
                 FirebaseManager.getCurrentUser(),
                 feedUploadRequest.getContent(),
                 new HashMap<>(),
-                new Date(),
+                null,
                 false);
     }
 }
