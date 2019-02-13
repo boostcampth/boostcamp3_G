@@ -148,12 +148,9 @@ public class FeedRepositoryImpl implements FeedRepository {
 
                                 firestore.runTransaction((Transaction.Function<Void>) transaction -> {
                                     DocumentSnapshot documentSnapshot = transaction.get(userRef);
-                                    double newFeedCount;
-                                    if (documentSnapshot.getDouble(FIELD_FEEDCOUNT) == null) {
-                                        newFeedCount = 1;
-                                    } else {
-                                        newFeedCount = documentSnapshot.getDouble(FIELD_FEEDCOUNT) + 1;
-                                    }
+                                    final Double oldFeedCount = documentSnapshot.getDouble(FIELD_FEEDCOUNT);
+                                    final Double newFeedCount = oldFeedCount+1;
+
                                     transaction.update(userRef, FIELD_FEEDCOUNT, newFeedCount);
 
                                     transaction.set(feedRef, feedRemoteData);
@@ -166,7 +163,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                                                     false));
                                     return null;
                                 })
-                                        .addOnSuccessListener(aVoid -> emitter.onComplete())
+                                        .addOnSuccessListener(__ -> emitter.onComplete())
                                         .addOnFailureListener(emitter::onError);
                             }
                         }))
