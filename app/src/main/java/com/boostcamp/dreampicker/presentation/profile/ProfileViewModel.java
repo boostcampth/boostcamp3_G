@@ -43,7 +43,7 @@ public class ProfileViewModel extends BaseViewModel {
         this.isLoading.setValue(false);
         this.isLastPage.setValue(false);
         loadUserDetail();
-        loadMyFeeds();
+        addMyFeeds();
     }
 
     void loadUserDetail() {
@@ -52,7 +52,7 @@ public class ProfileViewModel extends BaseViewModel {
                 .subscribe(this.user::setValue, this.error::setValue));
     }
 
-    void loadMyFeeds() {
+    void addMyFeeds() {
         if (Boolean.TRUE.equals(isLoading.getValue()) ||
                 Boolean.TRUE.equals(isLastPage.getValue())) {
             return;
@@ -86,7 +86,15 @@ public class ProfileViewModel extends BaseViewModel {
         myFeedList.setValue(new ArrayList<>());
         isLastPage.setValue(false);
         startAfter = null;
-        loadMyFeeds();
+        addMyFeeds();
+    }
+
+    public void toggleVoteEnded(@NonNull final MyFeed feed) {
+        final boolean oldEnded = feed.isEnded();
+        addDisposable(repository.toggleVoteEnded(userId, feed.getId(), !oldEnded)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> feed.setEnded(!oldEnded), error::setValue)
+        );
     }
 
     @NonNull
