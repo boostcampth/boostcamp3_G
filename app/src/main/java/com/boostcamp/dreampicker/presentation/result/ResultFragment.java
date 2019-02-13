@@ -36,7 +36,8 @@ public class ResultFragment extends BaseFragment<FragmentResultBinding> {
                 .get(ResultViewModel.class);
         // For test
         viewModel.getVotedFeedList().observe(this, list -> {
-            Log.d("Melon", list.get(0).getId());
+/*            Log.d("Melon", list.get(0).getDate().getTime() +"");
+            Log.d("Melon", list.get(1).getDate().getTime() +"");*/
         });
     }
 

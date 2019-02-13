@@ -15,6 +15,6 @@ public interface VotedFeedDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insert(final VotedFeed votedFeed);
 
-    @Query("SELECT * FROM voted_feeds")
+    @Query("SELECT * FROM voted_feeds ORDER BY date DESC")
     DataSource.Factory<Integer, VotedFeed> selectAll();
 }

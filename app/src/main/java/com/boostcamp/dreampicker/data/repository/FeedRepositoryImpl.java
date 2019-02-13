@@ -141,7 +141,8 @@ public class FeedRepositoryImpl implements FeedRepository {
                         data.getWriter().getProfileImageUrl(),
                         data.getContent(),
                         data.getItemA().getImageUrl(),
-                        data.getItemB().getImageUrl()))
+                        data.getItemB().getImageUrl(),
+                        new Date()))
                 .flatMapCompletable(votedFeed ->
                         votedFeedDao.insert(votedFeed).subscribeOn(Schedulers.io()))
                 .andThen(getFeedSingle.subscribeOn(Schedulers.io()));
@@ -168,7 +169,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                                 firestore.runTransaction((Transaction.Function<Void>) transaction -> {
                                     DocumentSnapshot documentSnapshot = transaction.get(userRef);
                                     final Double oldFeedCount = documentSnapshot.getDouble(FIELD_FEEDCOUNT);
-                                    final Double newFeedCount = oldFeedCount+1;
+                                    final Double newFeedCount = oldFeedCount + 1;
 
                                     transaction.update(userRef, FIELD_FEEDCOUNT, newFeedCount);
 
