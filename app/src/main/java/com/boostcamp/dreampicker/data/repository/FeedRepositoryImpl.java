@@ -6,6 +6,7 @@ import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.local.room.dao.VotedFeedDao;
 import com.boostcamp.dreampicker.data.local.room.entity.VotedFeed;
 import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedRequestMapper;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
@@ -218,5 +219,26 @@ public class FeedRepositoryImpl implements FeedRepository {
                 }
             });
         });
+    }
+
+    @NonNull
+    @Override
+    public Single<FeedDetail> getFeedDetail(@NonNull final String userId,
+                                            @NonNull final String feedId) {
+        return Single.create(emitter -> firestore.collection(COLLECTION_FEED)
+                .document(feedId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    final FeedRemoteData data = documentSnapshot.toObject(FeedRemoteData.class);
+                    if (data != null) {
+                        emitter.onSuccess(FeedResponseMapper.toFeedDetail(userId,
+                                documentSnapshot.getId(),
+                                data,
+                                data.isEnded()));
+                    } else {
+                        emitter.onError(new IllegalArgumentException("FeedRemoteData is Null"));
+                    }
+                })
+                .addOnFailureListener(emitter::onError));
     }
 }
