@@ -16,6 +16,7 @@ import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -33,7 +34,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initToolbar();
         initView();
+    }
+
+    private void initToolbar() {
+        final Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     private void initView() {
