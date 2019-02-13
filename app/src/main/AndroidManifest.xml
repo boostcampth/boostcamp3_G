@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".presentation.upload.UploadActivity"></activity>
+        <activity android:name=".presentation.feed.detail.FeedDetailActivity"></activity>
+        <activity android:name=".presentation.upload.UploadActivity" />
         <activity android:name=".presentation.main.SplashActivity" />
         <activity android:name=".presentation.main.LogInActivity">
             <intent-filter>
