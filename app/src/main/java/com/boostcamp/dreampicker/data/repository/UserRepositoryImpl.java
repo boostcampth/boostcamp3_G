@@ -4,7 +4,7 @@ import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.UserDetailMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.MyFeedRemoteData;
-import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailEntity;
+import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,8 +55,8 @@ public class UserRepositoryImpl implements UserRepository {
                 firestore.collection(COLLECTION_USER).document(userId)
                         .get()
                         .addOnSuccessListener(document -> {
-                            final UserDetailEntity response = document.exists()
-                                    ? document.toObject(UserDetailEntity.class) : null;
+                            final UserDetailRemoteData response = document.exists()
+                                    ? document.toObject(UserDetailRemoteData.class) : null;
                             if (response != null) {
                                 emitter.onSuccess(UserDetailMapper
                                         .toUserDetail(document.getId(), response));
