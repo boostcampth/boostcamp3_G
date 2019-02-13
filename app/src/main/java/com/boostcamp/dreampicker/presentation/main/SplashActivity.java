@@ -3,8 +3,10 @@ package com.boostcamp.dreampicker.presentation.main;
 import android.os.Bundle;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.databinding.ActivitySplashBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,7 +16,6 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
     private CompositeDisposable disposable = new CompositeDisposable();
-    private final int LAUNCHING_TIME_OUT = 2;
 
     @Override
     protected int getLayoutId() {
@@ -26,14 +27,18 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
         super.onCreate(savedInstanceState);
 
         // 2초후 액티비티 전환
+        final int LAUNCHING_TIME_OUT = 0;
         disposable.add(Completable
                 .timer(LAUNCHING_TIME_OUT, TimeUnit.SECONDS)
-                .subscribe(this::startMainActivity));
-    }
-
-    private void startMainActivity() {
-        startActivity(MainActivity.getLaunchIntent(this));
-        finish();
+                .subscribe(() -> {
+                    if (FirebaseManager.getCurrentUser() == null) {
+                        startActivity(LogInActivity.getLaunchIntent(this));
+                    } else {
+                        startActivity(MainActivity.getLaunchIntent(this));
+                    }
+                    finish();
+                })
+        );
     }
 
     @Override
@@ -44,8 +49,6 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(!disposable.isDisposed()){
-            disposable.clear();
-        }
+        disposable.clear();
     }
 }
