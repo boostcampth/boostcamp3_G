@@ -6,6 +6,8 @@ public class VotedFeed {
     @NonNull
     private final String id; // Feed ID
     @NonNull
+    private final String name;
+    @NonNull
     private final String profileImageUrl;
     @NonNull
     private final String content;
@@ -15,11 +17,13 @@ public class VotedFeed {
     private final String imageUrlB;
 
     public VotedFeed(@NonNull String id,
+                     @NonNull String name,
                      @NonNull String profileImageUrl,
                      @NonNull String content,
                      @NonNull String imageUrlA,
                      @NonNull String imageUrlB) {
         this.id = id;
+        this.name = name;
         this.profileImageUrl = profileImageUrl;
         this.content = content;
         this.imageUrlA = imageUrlA;
@@ -29,6 +33,11 @@ public class VotedFeed {
     @NonNull
     public String getId() {
         return id;
+    }
+
+    @NonNull
+    public String getName() {
+        return name;
     }
 
     @NonNull
