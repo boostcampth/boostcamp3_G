@@ -16,7 +16,6 @@ import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -33,14 +32,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initToolbar();
         initView();
     }
 
     private void initToolbar() {
-        final Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
     }
 
     private void initView() {
@@ -72,10 +69,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 break;
             case R.id.navigation_profile:
                 final String userId = FirebaseManager.getCurrentUserId();
-                if(userId != null) {
+                if (userId != null) {
                     fragment = ProfileFragment.newInstance(userId);
                 } else {
-                    // TODO. userId 없는 경우 - 로그인 안된상태 에러 처리
+                    startActivity(LogInActivity.getLaunchIntent(this));
+                    finish();
                 }
                 break;
         }
