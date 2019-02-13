@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.feed.detail;
+package com.boostcamp.dreampicker.presentation.feed.legacydetail;
 
 import android.os.Bundle;
 import android.view.View;
@@ -13,23 +13,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class FeedDetailLeftFragment extends BaseFragment<FragmentFeedDetailImageBinding> {
+public class FeedDetailRightFragment extends BaseFragment<FragmentFeedDetailImageBinding> {
 
-   public FeedDetailLeftFragment() {
+    public FeedDetailRightFragment() {
 
-   }
+    }
 
-   static Fragment newInstance() {
-       return new FeedDetailLeftFragment();
-   }
+    static Fragment newInstance() {
+        return new FeedDetailRightFragment();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Test
+
+        // Todo
         GlideApp.with(this)
-                .load(R.drawable.jajang)
+                .load(R.drawable.skin)
                 .transform(new RoundedCorners(20))
                 .into(binding.ivFeedDetailImage);
     }

@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.presentation.feed.detail;
+package com.boostcamp.dreampicker.presentation.feed.legacydetail;
 
 import android.content.Context;
 import android.content.Intent;
