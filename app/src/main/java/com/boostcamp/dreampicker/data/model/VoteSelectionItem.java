@@ -47,13 +47,14 @@ public class VoteSelectionItem {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        VoteSelectionItem item = (VoteSelectionItem) o;
-        return voteCount == item.voteCount &&
-                Objects.equals(id, item.id) &&
-                Objects.equals(imageUrl, item.imageUrl) &&
-                Objects.equals(tagList, item.tagList);
+        if(o instanceof VoteSelectionItem) {
+            VoteSelectionItem item = (VoteSelectionItem) o;
+            return voteCount == item.voteCount &&
+                    Objects.equals(id, item.id) &&
+                    Objects.equals(imageUrl, item.imageUrl) &&
+                    Objects.equals(tagList, item.tagList);
+        }
+        return false;
     }
 
     @Override
