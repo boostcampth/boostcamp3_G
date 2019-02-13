@@ -1,6 +1,9 @@
 package com.boostcamp.dreampicker.data.local.room.entity;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -66,5 +69,25 @@ public class VotedFeed {
     @NonNull
     public String getImageUrlB() {
         return imageUrlB;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object o) {
+        if (this == o) return true;
+        if(o instanceof VotedFeed) {
+            final VotedFeed feed = (VotedFeed) o;
+            return Objects.equals(id, feed.id) &&
+                    Objects.equals(name, feed.name) &&
+                    Objects.equals(profileImageUrl, feed.profileImageUrl) &&
+                    Objects.equals(content, feed.content) &&
+                    Objects.equals(imageUrlA, feed.imageUrlA) &&
+                    Objects.equals(imageUrlB, feed.imageUrlB);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, profileImageUrl, content, imageUrlA, imageUrlB);
     }
 }

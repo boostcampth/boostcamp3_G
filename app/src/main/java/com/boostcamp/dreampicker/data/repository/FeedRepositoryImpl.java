@@ -147,11 +147,6 @@ public class FeedRepositoryImpl implements FeedRepository {
                 .andThen(getFeedSingle.subscribeOn(Schedulers.io()));
     }
 
-    @Override
-    public Single<List<VotedFeed>> getVotedFeedList() {
-        return votedFeedDao.selectAll().subscribeOn(Schedulers.io());
-    }
-
     @NonNull
     @Override
     public Completable uploadFeed(@NonNull final FeedUploadRequest uploadFeed) {
