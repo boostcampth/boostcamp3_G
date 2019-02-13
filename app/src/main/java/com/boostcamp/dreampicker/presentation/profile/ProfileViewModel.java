@@ -16,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ProfileViewModel extends BaseViewModel {
     private final int PAGE_SIZE = 4;
+    private static final int ERROR_REPEAT_COUNT = 3;
 
     @NonNull
     private final UserRepository repository;
@@ -66,6 +67,7 @@ public class ProfileViewModel extends BaseViewModel {
                 startAfter == null ? new Date() : startAfter,
                 PAGE_SIZE)
                 .observeOn(AndroidSchedulers.mainThread())
+                .retry(ERROR_REPEAT_COUNT)
                 .subscribe(result -> {
                     if (result.size() > 0) {
                         newList.addAll(result);
@@ -83,6 +85,9 @@ public class ProfileViewModel extends BaseViewModel {
     }
 
     public void refreshMyFeeds() {
+        if(Boolean.TRUE.equals(isLoading.getValue())) {
+            return;
+        }
         myFeedList.setValue(new ArrayList<>());
         isLastPage.setValue(false);
         startAfter = null;
@@ -91,6 +96,11 @@ public class ProfileViewModel extends BaseViewModel {
 
     void toggleVoteEnded(@NonNull final MyFeed oldFeed,
                          final boolean updateEnded) {
+        if (Boolean.TRUE.equals(isLoading.getValue())) {
+            return;
+        }
+        this.isLoading.setValue(true);
+
         final MyFeed newFeed = new MyFeed(oldFeed.getId(),
                 oldFeed.getContent(),
                 oldFeed.getDate(),
@@ -103,10 +113,12 @@ public class ProfileViewModel extends BaseViewModel {
                 .subscribe(() -> {
                             oldFeed.setEnded(updateEnded);
                             updateMyFeed(newFeed);
+                            this.isLoading.setValue(false);
                         },
                         error -> {
                             this.error.setValue(error);
                             updateMyFeed(oldFeed);
+                            this.isLoading.setValue(false);
                         }));
     }
 
