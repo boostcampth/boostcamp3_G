@@ -1,6 +1,5 @@
 package com.boostcamp.dreampicker.data.repository;
 
-import com.boostcamp.dreampicker.data.local.room.entity.VotedFeed;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
@@ -29,6 +28,4 @@ public interface FeedRepository {
     @NonNull
     Single<FeedDetail> getFeedDetail(@NonNull final String userId,
                                      @NonNull final String feedId);
-
-    Single<List<VotedFeed>> getVotedFeedList();
 }
