@@ -3,7 +3,6 @@ package com.boostcamp.dreampicker.data.repository;
 import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.UserDetailMapper;
-import com.boostcamp.dreampicker.data.source.firestore.model.MyFeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -126,6 +125,19 @@ public class UserRepositoryImpl implements UserRepository {
                     .addOnSuccessListener(__ -> emitter.onComplete())
                     .addOnFailureListener(emitter::onError);
         });
+    }
+
+    @NonNull
+    @Override
+    public Completable addNewUser(@NonNull final String userId, @NonNull UserDetailRemoteData userDetail) {
+        Completable completable = Completable.create(emitter ->
+                firestore.collection(COLLECTION_USER)
+                        .document(userId)
+                        .set(userDetail)
+                        .addOnSuccessListener(__ -> emitter.onComplete())
+                        .addOnFailureListener(emitter::onError));
+
+        return completable.subscribeOn(Schedulers.io());
     }
 
 }
