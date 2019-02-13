@@ -161,7 +161,6 @@ public class FeedRepositoryImpl implements FeedRepository {
                                                     .document(feedRef.getId()),
                                             new MyFeedRemoteData(
                                                     feedRemoteData.getContent(),
-                                                    feedRemoteData.getDate(),
                                                     feedRemoteData.getItemA().getImageUrl(),
                                                     feedRemoteData.getItemB().getImageUrl(),
                                                     false));
