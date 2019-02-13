@@ -111,7 +111,6 @@ public class ProfileViewModel extends BaseViewModel {
         addDisposable(repository.toggleVoteEnded(userId, oldFeed.getId(), updateEnded)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                            oldFeed.setEnded(updateEnded);
                             updateMyFeed(newFeed);
                             this.isLoading.setValue(false);
                         },
