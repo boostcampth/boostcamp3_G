@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.data.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class MyFeed {
     private String id; // 피드 ID
@@ -11,6 +12,20 @@ public class MyFeed {
     private boolean isEnded; // 투표 마감 여부
 
     public MyFeed() {
+    }
+
+    public MyFeed(String id,
+                  String content,
+                  Date date,
+                  String imageUrlA,
+                  String imageUrlB,
+                  boolean isEnded) {
+        this.id = id;
+        this.content = content;
+        this.date = date;
+        this.imageUrlA = imageUrlA;
+        this.imageUrlB = imageUrlB;
+        this.isEnded = isEnded;
     }
 
     public String getId() {
@@ -55,5 +70,23 @@ public class MyFeed {
                 ", imageUrlB='" + imageUrlB + '\n' +
                 ", isEnded=" + isEnded +
                 '}' + '\n';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MyFeed feed = (MyFeed) o;
+        return isEnded == feed.isEnded &&
+                Objects.equals(id, feed.id) &&
+                Objects.equals(content, feed.content) &&
+                Objects.equals(date, feed.date) &&
+                Objects.equals(imageUrlA, feed.imageUrlA) &&
+                Objects.equals(imageUrlB, feed.imageUrlB);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, content, date, imageUrlA, imageUrlB, isEnded);
     }
 }

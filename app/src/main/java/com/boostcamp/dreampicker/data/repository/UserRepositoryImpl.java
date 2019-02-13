@@ -97,12 +97,13 @@ public class UserRepositoryImpl implements UserRepository {
         return single.subscribeOn(Schedulers.io());
     }
 
+    @NonNull
     @Override
     public Completable toggleVoteEnded(@NonNull final String userId,
                                        @NonNull final String feedId,
                                        final boolean isEnded) {
 
-        return Completable.create(emitter -> {
+        Completable completable = Completable.create(emitter -> {
 
             WriteBatch batch = firestore.batch(); // 일괄 수정
 
@@ -125,6 +126,8 @@ public class UserRepositoryImpl implements UserRepository {
                     .addOnSuccessListener(__ -> emitter.onComplete())
                     .addOnFailureListener(emitter::onError);
         });
+
+        return completable.subscribeOn(Schedulers.io());
     }
 
     @NonNull

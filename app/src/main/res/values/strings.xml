@@ -12,6 +12,10 @@
     <!-- 프로필 화면에서 사용 -->
     <string name="profile_feed_count">내가 올린 투표</string>
     <string name="profile_voted_count">내가 한 투표</string>
+    <string name="profile_vote_not_ended">진행중인 투표</string>
+    <string name="profile_vote_ended">마감된 투표</string>
+    <string name="profile_request_end">마감하기</string>
+    <string name="profile_request_restart">재진행하기</string>
 
     <!-- 검색 화면에서 사용 -->
     <string name="search_text_hint">검색어를 입력하세요.</string>

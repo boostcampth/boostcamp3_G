@@ -65,14 +65,16 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     }
 
     private void initRecyclerView() {
-        MyFeedAdapter adapter = new MyFeedAdapter();
+        MyFeedAdapter adapter = new MyFeedAdapter(feed ->
+                binding.getVm().toggleVoteEnded(feed, !feed.isEnded()));
+
         binding.rvProfileFeed.setAdapter(adapter);
         binding.rvProfileFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (!binding.rvProfileFeed.canScrollVertically(1)) {
-                    binding.getVm().loadMyFeeds();
+                    binding.getVm().addMyFeeds();
                 }
             }
         });
