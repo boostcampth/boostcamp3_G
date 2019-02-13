@@ -18,7 +18,7 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
 
     public VotedFragment() { }
 
-    public static VotedFragment newInstance(){
+    public static VotedFragment newInstance() {
         return new VotedFragment();
     }
 
@@ -26,7 +26,7 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViewModel();
-        initView();
+        initRecyclerView();
     }
 
     private void initViewModel() {
@@ -37,8 +37,16 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
         binding.setVm(viewModel);
     }
 
-    private void initView() {
-        // TODO. 뷰 그리기
+    private void initRecyclerView() {
+        final VotedAdapter adapter = new VotedAdapter();
+        binding.rvVotedFeed.setAdapter(adapter);
+        binding.getVm().getVotedFeedList().observe(this, list -> {
+            if (list.isEmpty()) {
+                binding.ivVotedFeedEmptyFinger.setVisibility(View.VISIBLE);
+                binding.tvVotedFeedEmptyText.setVisibility(View.VISIBLE);
+            }
+            adapter.submitList(list);
+        });
     }
 
     @Override
