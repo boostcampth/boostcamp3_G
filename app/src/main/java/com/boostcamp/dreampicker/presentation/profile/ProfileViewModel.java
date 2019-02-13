@@ -89,12 +89,40 @@ public class ProfileViewModel extends BaseViewModel {
         addMyFeeds();
     }
 
-    public void toggleVoteEnded(@NonNull final MyFeed feed) {
-        final boolean oldEnded = feed.isEnded();
-        addDisposable(repository.toggleVoteEnded(userId, feed.getId(), !oldEnded)
+    void toggleVoteEnded(@NonNull final MyFeed oldFeed,
+                         final boolean updateEnded) {
+        final MyFeed newFeed = new MyFeed(oldFeed.getId(),
+                oldFeed.getContent(),
+                oldFeed.getDate(),
+                oldFeed.getImageUrlA(),
+                oldFeed.getImageUrlB(),
+                updateEnded);
+        updateMyFeed(newFeed);
+        addDisposable(repository.toggleVoteEnded(userId, oldFeed.getId(), updateEnded)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> feed.setEnded(!oldEnded), error::setValue)
-        );
+                .subscribe(() -> {
+                            oldFeed.setEnded(updateEnded);
+                            updateMyFeed(newFeed);
+                        },
+                        error -> {
+                            this.error.setValue(error);
+                            updateMyFeed(oldFeed);
+                        }));
+    }
+
+    private void updateMyFeed(@NonNull MyFeed newFeed) {
+        final List<MyFeed> itemList = this.myFeedList.getValue();
+        if (itemList == null) {
+            return;
+        }
+        for (int i = 0; i < itemList.size(); i++) {
+            final MyFeed item = itemList.get(i);
+            if (item.getId().equals(newFeed.getId())) {
+                itemList.set(i, newFeed);
+                break;
+            }
+        }
+        this.myFeedList.setValue(itemList);
     }
 
     @NonNull
