@@ -42,25 +42,29 @@ public class UploadViewModel extends BaseViewModel {
 
     void upload(@Nullable final List<String> tagListA,
                 @Nullable final List<String> tagListB) {
-
+        if(Boolean.TRUE.equals(isLoading.getValue())) {
+            return;
+        }
         final String userId = FirebaseManager.getCurrentUserId();
         if (userId == null) {
             error.setValue(new IllegalArgumentException());
             return;
         }
-        isLoading.setValue(true);
         if (!TextUtils.isEmpty(getContent().getValue()) &&
                 !TextUtils.isEmpty(getImagePathA().getValue()) &&
                 !TextUtils.isEmpty(getImagePathB().getValue())) {
+            isLoading.setValue(true);
             addDisposable(feedRepository.uploadFeed(createFeedUploadRequest(userId, tagListA, tagListB))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                                validate.setValue(true);
-                                isLoading.setValue(false);
-                            }, error::setValue));
+                        isLoading.setValue(false);
+                        validate.setValue(true);
+                    }, e -> {
+                        isLoading.setValue(false);
+                        error.setValue(e);
+                    }));
         } else {
             validate.setValue(false);
-            isLoading.setValue(false);
         }
     }
 
@@ -71,9 +75,9 @@ public class UploadViewModel extends BaseViewModel {
                                                       @Nullable final List<String> tagListB) {
 
         return new FeedUploadRequest(userId,
-                getContent().getValue(),
-                getImagePathA().getValue(),
-                getImagePathB().getValue(),
+                content.getValue(),
+                imagePathA.getValue(),
+                imagePathB.getValue(),
                 tagListA,
                 tagListB);
 
@@ -95,22 +99,21 @@ public class UploadViewModel extends BaseViewModel {
     }
 
     @NonNull
-    MutableLiveData<Boolean> getValidate() {
-        return validate;
-    }
-
-    @NonNull
     public LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 
     @NonNull
-    public LiveData<Throwable> getError() {
+    LiveData<Boolean> getValidate() {
+        return validate;
+    }
+
+    @NonNull
+    LiveData<Throwable> getError() {
         return error;
     }
 
-    public void setImagePath(@NonNull final Uri uri,
-                             final int flag) {
+    void setImagePath(@NonNull final Uri uri, final int flag) {
         if (flag == A) {
             imagePathA.setValue(uri.toString());
         } else {

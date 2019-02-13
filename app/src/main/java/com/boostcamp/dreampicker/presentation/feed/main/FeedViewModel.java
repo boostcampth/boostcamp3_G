@@ -62,7 +62,10 @@ public class FeedViewModel extends BaseViewModel {
                         isLastPage.setValue(true);
                     }
                     isLoading.setValue(false);
-                }, error::setValue));
+                }, e -> {
+                    isLoading.setValue(true);
+                    error.setValue(e);
+                }));
     }
 
     void vote(@NonNull final String feedId, @NonNull final String selectionId) {
@@ -81,7 +84,10 @@ public class FeedViewModel extends BaseViewModel {
                 .subscribe(feed -> {
                     isLoading.setValue(false);
                     updateFeedList(feed);
-                }, error::setValue));
+                }, e -> {
+                    isLoading.setValue(false);
+                    error.setValue(e);
+                }));
     }
 
     private void updateFeedList(@NonNull final Feed feed) {
