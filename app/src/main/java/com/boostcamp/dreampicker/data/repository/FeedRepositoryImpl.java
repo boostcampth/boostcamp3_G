@@ -3,12 +3,14 @@ package com.boostcamp.dreampicker.data.repository;
 import android.net.Uri;
 
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
+import com.boostcamp.dreampicker.data.local.room.dao.VotedFeedDao;
+import com.boostcamp.dreampicker.data.local.room.entity.VotedFeed;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
-import com.boostcamp.dreampicker.data.source.firestore.model.MyFeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedRequestMapper;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
+import com.boostcamp.dreampicker.data.source.firestore.model.MyFeedRemoteData;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,21 +43,26 @@ public class FeedRepositoryImpl implements FeedRepository {
     private final FirebaseFirestore firestore;
     @NonNull
     private final FirebaseStorage storage;
+    @NonNull
+    private final VotedFeedDao votedFeedDao;
 
     private static volatile FeedRepositoryImpl INSTANCE = null;
 
-    private FeedRepositoryImpl(@NonNull FirebaseFirestore firestore,
-                               @NonNull FirebaseStorage storage) {
+    private FeedRepositoryImpl(@NonNull final FirebaseFirestore firestore,
+                               @NonNull final FirebaseStorage storage,
+                               @NonNull final VotedFeedDao votedFeedDao) {
         this.firestore = firestore;
         this.storage = storage;
+        this.votedFeedDao = votedFeedDao;
     }
 
-    public static FeedRepositoryImpl getInstance(@NonNull FirebaseFirestore firestore,
-                                                 @NonNull FirebaseStorage storage) {
+    public static FeedRepositoryImpl getInstance(@NonNull final FirebaseFirestore firestore,
+                                                 @NonNull final FirebaseStorage storage,
+                                                 @NonNull final VotedFeedDao votedFeedDao) {
         if (INSTANCE == null) {
             synchronized (FeedRepositoryImpl.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new FeedRepositoryImpl(firestore, storage);
+                    INSTANCE = new FeedRepositoryImpl(firestore, storage, votedFeedDao);
                 }
             }
         }
@@ -96,7 +103,8 @@ public class FeedRepositoryImpl implements FeedRepository {
                              @NonNull final String selectionId) {
         final DocumentReference docRef = firestore.collection(COLLECTION_FEED).document(feedId);
 
-        final Single<Feed> single = Completable.create(emitter ->
+        // 파이어스토어에서 Feed 업데이트 스트림
+        final Single<FeedRemoteData> feedRemoteDataSingle = Single.create(emitter ->
                 firestore.runTransaction(transaction -> {
                     final DocumentSnapshot snapshot = transaction.get(docRef);
                     final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
@@ -106,10 +114,20 @@ public class FeedRepositoryImpl implements FeedRepository {
                         map.put(userId, selectionId);
                         transaction.set(docRef, data, SetOptions.merge());
                     }
-                    return null;
+                    return data;
                 })
-                        .addOnSuccessListener(e -> emitter.onComplete())
-                        .addOnFailureListener(emitter::onError))
+                        .addOnSuccessListener(emitter::onSuccess)
+                        .addOnFailureListener(emitter::onError));
+
+        final Single<Feed> single = feedRemoteDataSingle.subscribeOn(Schedulers.io())
+                // DB 추가 스트림
+                .flatMapCompletable(data -> votedFeedDao.insert(new VotedFeed(feedId,
+                        data.getWriter().getName(),
+                        data.getWriter().getProfileImageUrl(),
+                        data.getContent(),
+                        data.getItemA().getImageUrl(),
+                        data.getItemB().getImageUrl())).subscribeOn(Schedulers.io()))
+                // 파이어스토어에서 Feed 가져오기 스트림
                 .andThen(Single.create(emitter -> docRef.get()
                         .addOnSuccessListener(snapshot -> {
                             if (snapshot != null) {
@@ -126,6 +144,10 @@ public class FeedRepositoryImpl implements FeedRepository {
         return single.subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Single<List<VotedFeed>> getVotedFeedList() {
+        return votedFeedDao.selectAll().subscribeOn(Schedulers.io());
+    }
 
     @NonNull
     @Override

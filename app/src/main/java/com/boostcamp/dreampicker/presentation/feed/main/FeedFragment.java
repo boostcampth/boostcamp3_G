@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.data.local.room.AppDatabase;
 import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
@@ -37,7 +38,9 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private void initViewModel() {
         final FeedViewModel vm = ViewModelProviders.of(this,
                 new FeedViewModelFactory(FeedRepositoryImpl.getInstance(
-                        FirebaseFirestore.getInstance(), FirebaseStorage.getInstance())))
+                        FirebaseFirestore.getInstance(),
+                        FirebaseStorage.getInstance(),
+                        AppDatabase.getDatabase(getContext()).votedFeedDao())))
                 .get(FeedViewModel.class);
 
         binding.setVm(vm);
