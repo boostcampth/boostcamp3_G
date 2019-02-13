@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.data.repository.UserRepositoryImpl;
+import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
 import com.boostcamp.dreampicker.databinding.ActivityLogInBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -17,8 +19,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import androidx.annotation.NonNull;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 
@@ -27,10 +30,7 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
 
     private static final int REQUEST_SIGN_IN = 200;
 
-    private FirebaseAuth firebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
-
-    private boolean isTest = false;
 
     public static Intent getLaunchIntent(Context context) {
         return new Intent(context, LogInActivity.class);
@@ -44,14 +44,8 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(isTest) {
-            startMainActivity();
-        } else {
-            setUpGoogleSignIn();
-            firebaseAuth = FirebaseAuth.getInstance();
-            initView();
-        }
+        setUpGoogleSignIn();
+        initView();
     }
 
     private void setUpGoogleSignIn() {
@@ -76,18 +70,8 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            startMainActivity();
-        }
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == REQUEST_SIGN_IN) {
             try {
                 final GoogleSignInAccount account = GoogleSignIn
@@ -106,30 +90,21 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
         AuthCredential credential =
                 GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
-        firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        final FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if (user != null) {
-                            insertNewUser(user);
-                        }
-                    } else {
-                        task.addOnFailureListener(Throwable::printStackTrace);
-                    }
-                });
-    }
+        FirebaseAuth.getInstance()
+                .signInWithCredential(credential)
+                .addOnSuccessListener(authResult -> {
+                    final FirebaseUser user = authResult.getUser();
+                    final UserDetailRemoteData newUser =
+                            new UserDetailRemoteData(user.getDisplayName(),
+                                    user.getPhotoUrl() == null ? null : user.getPhotoUrl().toString(),
+                                    0);
 
-    private void insertNewUser(@NonNull FirebaseUser user) {
-
-/*        final InsertUserRequest newUser = new InsertUserRequest(user.getUid(),
-                user.getDisplayName(),
-                user.getEmail(),
-                user.getPhotoUrl() == null ? null : user.getPhotoUrl().toString());*/
-
-/*        disposable.add(UserRepository.getInstance(UserFirebaseService.getInstance())
-                .insertNewUser(newUser)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::startMainActivity));*/
+                    disposable.add(UserRepositoryImpl.getInstance(FirebaseFirestore.getInstance())
+                            .addNewUser(user.getUid(), newUser)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(this::startMainActivity));
+                })
+                .addOnFailureListener(Throwable::printStackTrace);
     }
 
     private void startMainActivity() {
@@ -140,8 +115,6 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (!disposable.isDisposed()) {
-            disposable.clear();
-        }
+        disposable.clear();
     }
 }
