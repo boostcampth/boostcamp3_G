@@ -31,6 +31,7 @@
     <string name="upload_fail_message">투표를 등록할 수 없습니다.</string>
     <string name="upload_success_message">투표 등록 완료</string>
     <string name="upload_backpress_denied_message">업로드 중 입니다.</string>
+    <string name="upload_error_message">업로드에 실패하였습니다.</string>
 
     <!-- 피드 상세 화면 -->
     <string name="feed_detail_tag_toggle">TAG</string>
