@@ -1,10 +1,13 @@
 package com.boostcamp.dreampicker.data.source.firestore.model;
 
+import com.google.firebase.firestore.ServerTimestamp;
+
 import java.util.Date;
 
 public class MyFeedRemoteData {
 
     private String content;
+    @ServerTimestamp
     private Date date;
     private String imageUrlA;
     private String imageUrlB;
@@ -14,13 +17,12 @@ public class MyFeedRemoteData {
     }
 
     public MyFeedRemoteData(String content,
-                            Date date,
                             String imageUrlA,
                             String imageUrlB,
                             boolean isEnded) {
 
         this.content = content;
-        this.date = date;
+        this.date = null;
         this.imageUrlA = imageUrlA;
         this.imageUrlB = imageUrlB;
         this.isEnded = isEnded;
