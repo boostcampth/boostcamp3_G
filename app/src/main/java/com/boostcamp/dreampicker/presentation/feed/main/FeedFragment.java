@@ -10,6 +10,7 @@ import com.boostcamp.dreampicker.data.local.room.AppDatabase;
 import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
+import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -54,7 +55,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private void initRecyclerView() {
         final FeedAdapter adapter = new FeedAdapter(
                 (feedId, selectionId) -> binding.getVm().vote(feedId, selectionId),
-                () -> Log.d("", "")); // Todo : 상세보기로 이동
+                () -> startActivity(FeedDetailActivity.getLaunchIntent(getContext(),"0rqqmHzlvf0BXp4dhyC8"))); // Todo : 상세보기로 이동
 
         binding.rvFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

@@ -86,7 +86,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_feed_detail;
+        return R.layout.activity_legacy_feed_detail;
     }
 
     private class FeedDetailPagerAdapter extends FragmentStatePagerAdapter {
