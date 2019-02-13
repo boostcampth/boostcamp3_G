@@ -1,7 +1,7 @@
 package com.boostcamp.dreampicker.presentation.feed.voted;
 
-import com.boostcamp.dreampicker.data.local.room.dao.VotedFeedDao;
 import com.boostcamp.dreampicker.data.local.room.entity.VotedFeed;
+import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
 import androidx.annotation.NonNull;
@@ -14,9 +14,9 @@ public class VotedViewModel extends BaseViewModel {
     @NonNull
     private LiveData<PagedList<VotedFeed>> votedFeedList;
 
-    VotedViewModel(@NonNull final VotedFeedDao votedFeedDao) {
+    VotedViewModel(@NonNull final FeedRepository repository) {
         this.votedFeedList =
-                new LivePagedListBuilder<>(votedFeedDao.selectAll(), PAGE_SIZE).build();
+                new LivePagedListBuilder<>(repository.getMyVotedFeedList(), PAGE_SIZE).build();
     }
 
     @NonNull
