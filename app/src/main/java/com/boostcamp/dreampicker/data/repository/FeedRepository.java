@@ -27,6 +27,6 @@ public interface FeedRepository {
     Completable uploadFeed(@NonNull final FeedUploadRequest feed);
 
     @NonNull
-    Single<FeedDetail> getNotEndedFeedDetail(@NonNull final String userId,
-                                             @NonNull final String feedId);
+    Single<FeedDetail> getFeedDetail(@NonNull final String userId,
+                                     @NonNull final String feedId);
 }

@@ -192,8 +192,8 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     @Override
-    public Single<FeedDetail> getNotEndedFeedDetail(@NonNull final String userId,
-                                                    @NonNull final String feedId) {
+    public Single<FeedDetail> getFeedDetail(@NonNull final String userId,
+                                            @NonNull final String feedId) {
         return Single.create(emitter -> firestore.collection(COLLECTION_FEED)
                 .document(feedId)
                 .get()
