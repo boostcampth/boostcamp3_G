@@ -1,12 +1,14 @@
 package com.boostcamp.dreampicker.extension.databinding;
 
 import android.annotation.SuppressLint;
+import android.view.View;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +48,9 @@ public class BindingUtil {
     public static void setTagItems(@NonNull final TagGroup tagGroup, @Nullable final List<String> tagList) {
         if(tagList != null) {
             tagGroup.setTags(tagList);
+            tagGroup.setVisibility(View.VISIBLE);
+        } else {
+            tagGroup.setVisibility(View.GONE);
         }
     }
 
