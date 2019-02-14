@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.Injection;
+import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 
@@ -67,15 +68,16 @@ public class ProfileActivity extends BaseActivity<FragmentProfileBinding> {
 
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.getVm().toggleVoteEnded(item, !item.isEnded()));
-        binding.rvProfileFeed.setAdapter(adapter);
+                binding.getVm().toggleVoteEnded(item, !item.isEnded()),
+                userId.equals(FirebaseManager.getCurrentUserId()));
 
-        // TODO. item 갱신
         binding.getVm().getIsLoading().observe(this, isLoading -> {
             if (!isLoading) {
                 adapter.notifyDataSetChanged();
             }
         });
+
+        binding.rvProfileFeed.setAdapter(adapter);
     }
 
     @Override

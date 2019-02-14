@@ -52,15 +52,16 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.getVm().toggleVoteEnded(item, !item.isEnded()));
-        binding.rvProfileFeed.setAdapter(adapter);
+                binding.getVm().toggleVoteEnded(item, !item.isEnded()),
+                userId.equals(FirebaseManager.getCurrentUserId()));
 
-        // TODO. item 갱신
         binding.getVm().getIsLoading().observe(this, isLoading -> {
             if (!isLoading) {
                 adapter.notifyDataSetChanged();
             }
         });
+
+        binding.rvProfileFeed.setAdapter(adapter);
     }
 
 }
