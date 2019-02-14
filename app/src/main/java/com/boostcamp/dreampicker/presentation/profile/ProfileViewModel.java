@@ -23,7 +23,7 @@ public class ProfileViewModel extends BaseViewModel {
     @NonNull
     private MutableLiveData<UserDetail> user = new MutableLiveData<>();
     @NonNull
-    public LiveData<PagedList<MyFeed>> myFeedListLiveData;
+    private LiveData<PagedList<MyFeed>> myFeedListLiveData;
     @NonNull
     private MutableLiveData<PagedList<MyFeed>> myFeedList = new MutableLiveData<>();
     @NonNull
@@ -49,6 +49,11 @@ public class ProfileViewModel extends BaseViewModel {
     }
 
     public void loadMyFeeds() {
+        if (Boolean.TRUE.equals(isLoading.getValue())) {
+            return;
+        }
+        this.isLoading.setValue(true);
+
         addDisposable(repository
                 .getFeedListByUserId(userId, PAGE_SIZE)
                 .subscribe(myFeedList -> {
@@ -87,15 +92,14 @@ public class ProfileViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public MutableLiveData<PagedList<MyFeed>> getMyFeedList() {
-        return myFeedList;
+    public LiveData<PagedList<MyFeed>> getMyFeedListLiveData() {
+        return myFeedListLiveData;
     }
 
     @NonNull
     LiveData<Throwable> getError() {
         return error;
     }
-
 
     @NonNull
     public LiveData<Boolean> getIsLoading() {
