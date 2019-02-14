@@ -16,6 +16,7 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatA
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, getLayoutId());
+        binding.setLifecycleOwner(this);
     }
 
     protected abstract int getLayoutId();
