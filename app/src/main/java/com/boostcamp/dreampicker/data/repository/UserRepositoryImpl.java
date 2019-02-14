@@ -6,14 +6,13 @@ import com.boostcamp.dreampicker.data.paging.MyFeedDataSourceFactory;
 import com.boostcamp.dreampicker.data.source.firestore.UserDataSource;
 import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
 
-import java.util.Date;
-
 import androidx.annotation.NonNull;
 import androidx.paging.PagedList;
 import androidx.paging.RxPagedListBuilder;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 public class UserRepositoryImpl implements UserRepository {
     private static volatile UserRepository INSTANCE = null;
@@ -45,7 +44,7 @@ public class UserRepositoryImpl implements UserRepository {
     @NonNull
     @Override
     public Observable<PagedList<MyFeed>> getFeedListByUserId(@NonNull final String userId,
-                                                         final int pageSize) {
+                                                             final int pageSize) {
         MyFeedDataSourceFactory factory =
                 new MyFeedDataSourceFactory(remoteDataSource, userId);
 
@@ -56,7 +55,9 @@ public class UserRepositoryImpl implements UserRepository {
                 .setEnablePlaceholders(false)
                 .build();
 
-        return new RxPagedListBuilder<>(factory, config).buildObservable();
+        return new RxPagedListBuilder<>(factory, config)
+                .buildObservable()
+                .subscribeOn(Schedulers.io());
     }
 
     @NonNull
@@ -70,7 +71,7 @@ public class UserRepositoryImpl implements UserRepository {
     @NonNull
     @Override
     public Completable insertNewUser(@NonNull final String userId,
-                                     @NonNull UserDetailRemoteData userDetail) {
+                                     @NonNull final UserDetailRemoteData userDetail) {
         return remoteDataSource.insertNewUser(userId, userDetail);
     }
 }

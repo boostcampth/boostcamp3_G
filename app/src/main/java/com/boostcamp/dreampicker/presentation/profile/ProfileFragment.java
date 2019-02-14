@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.Injection;
+import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
@@ -13,17 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
-    private static final String ARGUMENT_USER_ID = "ARGUMENT_USER_ID";
 
     public ProfileFragment() {
     }
 
-    public static ProfileFragment newInstance(@NonNull String userId) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARGUMENT_USER_ID, userId);
-        fragment.setArguments(args);
-        return fragment;
+    public static ProfileFragment newInstance() {
+        return new ProfileFragment();
     }
 
     private String userId;
@@ -36,14 +32,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            userId = savedInstanceState.getString(ARGUMENT_USER_ID);
-        } else {
-            final Bundle args = getArguments();
-            if (args != null) {
-                userId = args.getString(ARGUMENT_USER_ID);
-            }
-        }
+        userId = FirebaseManager.getCurrentUserId();
     }
 
     @Override
@@ -57,20 +46,21 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
         ProfileViewModel viewModel = ViewModelProviders.of(this,
                 new ProfileViewModelFactory(Injection.provideUserRepository(), userId))
                 .get(ProfileViewModel.class);
-        binding.setVm(viewModel);
+        binding.container.setVm(viewModel);
     }
 
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.getVm().toggleVoteEnded(item, !item.isEnded()));
-        binding.rvProfileFeed.setAdapter(adapter);
+                binding.container.getVm().toggleVoteEnded(item, !item.isEnded()),
+                userId.equals(FirebaseManager.getCurrentUserId()));
 
-        // TODO. item 갱신
-        binding.getVm().getIsLoading().observe(this, isLoading -> {
+        binding.container.getVm().getIsLoading().observe(this, isLoading -> {
             if (!isLoading) {
                 adapter.notifyDataSetChanged();
             }
         });
+
+        binding.container.rvProfileFeed.setAdapter(adapter);
     }
 
 }

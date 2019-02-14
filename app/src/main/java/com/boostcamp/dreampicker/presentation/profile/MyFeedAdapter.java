@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.presentation.profile;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
@@ -16,9 +17,13 @@ public class MyFeedAdapter extends PagedListAdapter<MyFeed, MyFeedItemViewHolder
     @Nullable
     private OnEndButtonClickListener onEndButtonClickListener;
 
-    MyFeedAdapter(@Nullable OnEndButtonClickListener onEndButtonClickListener) {
+    private boolean isMyProfile;
+
+    MyFeedAdapter(@Nullable OnEndButtonClickListener onEndButtonClickListener,
+                  boolean isMyProfile) {
         super(DIFF_CALLBACK);
         this.onEndButtonClickListener = onEndButtonClickListener;
+        this.isMyProfile = isMyProfile;
     }
 
     @NonNull
@@ -38,6 +43,8 @@ public class MyFeedAdapter extends PagedListAdapter<MyFeed, MyFeedItemViewHolder
                 onEndButtonClickListener.onEndedButtonClick(item);
             }
         });
+
+        holder.binding().btnEnd.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
     }
 
     interface OnEndButtonClickListener {
