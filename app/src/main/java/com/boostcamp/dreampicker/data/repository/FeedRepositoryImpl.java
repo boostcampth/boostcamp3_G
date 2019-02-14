@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.paging.DataSource;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -236,5 +237,10 @@ public class FeedRepositoryImpl implements FeedRepository {
                     }
                 })
                 .addOnFailureListener(emitter::onError));
+    }
+
+    @Override
+    public DataSource.Factory<Integer, VotedFeed> getMyVotedFeedList() {
+        return votedFeedDao.selectAll();
     }
 }

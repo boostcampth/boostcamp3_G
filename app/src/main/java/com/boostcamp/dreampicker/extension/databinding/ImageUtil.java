@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.databinding;
+package com.boostcamp.dreampicker.extension.databinding;
 
 import android.net.Uri;
 import android.widget.ImageView;

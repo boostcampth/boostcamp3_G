@@ -1,5 +1,6 @@
 package com.boostcamp.dreampicker.data.repository;
 
+import com.boostcamp.dreampicker.data.local.room.entity.VotedFeed;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.paging.DataSource;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -28,4 +30,6 @@ public interface FeedRepository {
     @NonNull
     Single<FeedDetail> getFeedDetail(@NonNull final String userId,
                                      @NonNull final String feedId);
+
+    DataSource.Factory<Integer, VotedFeed> getMyVotedFeedList();
 }
