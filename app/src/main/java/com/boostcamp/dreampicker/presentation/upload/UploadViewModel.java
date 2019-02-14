@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
+import com.boostcamp.dreampicker.extension.common.StringExt;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
 import java.util.List;
@@ -40,9 +41,9 @@ public class UploadViewModel extends BaseViewModel {
         isLoading.setValue(false);
     }
 
-    void upload(@Nullable final List<String> tagListA,
-                @Nullable final List<String> tagListB) {
-        if(Boolean.TRUE.equals(isLoading.getValue())) {
+    void upload(@Nullable final String[] tagStrA,
+                @Nullable final String[] tagStrB) {
+        if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
         final String userId = FirebaseManager.getCurrentUserId();
@@ -50,6 +51,9 @@ public class UploadViewModel extends BaseViewModel {
             error.setValue(new IllegalArgumentException());
             return;
         }
+        final List<String> tagListA = StringExt.toNoEndLineList(tagStrA);
+        final List<String> tagListB = StringExt.toNoEndLineList(tagStrB);
+
         if (!TextUtils.isEmpty(getContent().getValue()) &&
                 !TextUtils.isEmpty(getImagePathA().getValue()) &&
                 !TextUtils.isEmpty(getImagePathB().getValue())) {
@@ -67,7 +71,6 @@ public class UploadViewModel extends BaseViewModel {
             validate.setValue(false);
         }
     }
-
 
     @NonNull
     private FeedUploadRequest createFeedUploadRequest(@NonNull final String userId,
@@ -99,7 +102,7 @@ public class UploadViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public LiveData<Boolean> getIsLoading() {
+    LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 

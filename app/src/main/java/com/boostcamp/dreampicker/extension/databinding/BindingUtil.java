@@ -1,14 +1,10 @@
-package com.boostcamp.dreampicker.databinding;
+package com.boostcamp.dreampicker.extension.databinding;
 
 import android.annotation.SuppressLint;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
