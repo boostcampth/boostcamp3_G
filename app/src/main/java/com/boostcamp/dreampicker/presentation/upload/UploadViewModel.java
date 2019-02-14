@@ -20,13 +20,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class UploadViewModel extends BaseViewModel {
 
     @NonNull
-    private MutableLiveData<String> content = new MutableLiveData<>();
+    private final MutableLiveData<String> content = new MutableLiveData<>();
     @NonNull
-    private MutableLiveData<String> imagePathA = new MutableLiveData<>();
+    private final MutableLiveData<String> imagePathA = new MutableLiveData<>();
     @NonNull
-    private MutableLiveData<String> imagePathB = new MutableLiveData<>();
+    private final MutableLiveData<String> imagePathB = new MutableLiveData<>();
     @NonNull
-    private MutableLiveData<Boolean> validate = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> validate = new MutableLiveData<>();
     @NonNull
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     @NonNull
