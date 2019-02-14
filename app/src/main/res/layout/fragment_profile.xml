@@ -61,12 +61,12 @@
             android:id="@+id/swipe_refresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:onRefreshListener="@{vm::refreshMyFeeds}"
             android:background="@drawable/line_top"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_user_image"
+            app:onRefreshListener="@{vm::loadMyFeeds}"
             app:refreshing="@{safeUnbox(vm.isLoading)}">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:items="@{vm.myFeedList}"/>
+                app:pagedItems="@{vm.myFeedListLiveData}" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,15 +4,13 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.repository.UserRepositoryImpl;
+import com.boostcamp.dreampicker.data.Injection;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     private static final String ARGUMENT_USER_ID = "ARGUMENT_USER_ID";
@@ -57,25 +55,20 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private void initViewModel() {
         ProfileViewModel viewModel = ViewModelProviders.of(this,
-                new ProfileViewModelFactory(
-                        UserRepositoryImpl.getInstance(FirebaseFirestore.getInstance()),
-                        userId
-                )).get(ProfileViewModel.class);
+                new ProfileViewModelFactory(Injection.provideUserRepository(), userId))
+                .get(ProfileViewModel.class);
         binding.setVm(viewModel);
     }
 
     private void initRecyclerView() {
-        MyFeedAdapter adapter = new MyFeedAdapter(feed ->
-                binding.getVm().toggleVoteEnded(feed, !feed.isEnded()));
-
+        MyFeedAdapter adapter = new MyFeedAdapter(item ->
+                binding.getVm().toggleVoteEnded(item, !item.isEnded()));
         binding.rvProfileFeed.setAdapter(adapter);
-        binding.rvProfileFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!binding.rvProfileFeed.canScrollVertically(1)) {
-                    binding.getVm().addMyFeeds();
-                }
+
+        // TODO. item 갱신
+        binding.getVm().getIsLoading().observe(this, isLoading -> {
+            if (!isLoading) {
+                adapter.notifyDataSetChanged();
             }
         });
     }
