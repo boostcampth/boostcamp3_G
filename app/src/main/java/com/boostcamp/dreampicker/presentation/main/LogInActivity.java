@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.repository.UserRepositoryImpl;
+import com.boostcamp.dreampicker.data.Injection;
 import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
 import com.boostcamp.dreampicker.databinding.ActivityLogInBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
@@ -19,7 +19,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -99,8 +98,8 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
                                     user.getPhotoUrl() == null ? null : user.getPhotoUrl().toString(),
                                     0);
 
-                    disposable.add(UserRepositoryImpl.getInstance(FirebaseFirestore.getInstance())
-                            .addNewUser(user.getUid(), newUser)
+                    disposable.add(Injection.provideUserRepository()
+                            .insertNewUser(user.getUid(), newUser)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(this::startMainActivity));
                 })

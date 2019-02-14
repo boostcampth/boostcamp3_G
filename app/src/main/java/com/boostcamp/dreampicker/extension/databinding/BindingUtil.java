@@ -13,6 +13,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
+import androidx.paging.PagedList;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import me.gujun.android.taggroup.TagGroup;
@@ -26,6 +28,17 @@ public class BindingUtil {
         final ListAdapter<T, VH> adapter = (ListAdapter<T, VH>) recyclerView.getAdapter();
         if (adapter != null) {
             adapter.submitList(items == null ? null : new ArrayList<>(items));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @BindingAdapter({"pagedItems"})
+    public static <T, VH extends RecyclerView.ViewHolder> void setPagedItems(
+            @NonNull final RecyclerView recyclerView,
+            @Nullable final PagedList<T> items) {
+        final PagedListAdapter<T, VH> adapter = (PagedListAdapter<T, VH>) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.submitList(items);
         }
     }
 
