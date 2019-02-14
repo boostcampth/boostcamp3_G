@@ -12,11 +12,11 @@ import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
-import com.boostcamp.dreampicker.presentation.feed.main.FeedViewModel;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -33,13 +33,15 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         super.onCreate(savedInstanceState);
         initViewModel();
         initViews();
+        binding.getVm().loadFeedDetail(getIntent().getStringExtra(EXTRA_FEED_ID));
     }
+
     private void initViews() {
         initToolbar();
-        initViewPager();
-
-//        binding.tgFeedDetailTag.setTags("Assb", "SDS", "QQQQ","AASSDAS");
+        //fainitViewPager();
+        //binding.btnFeedDetailVote.setOnClickListener(__ ->binding.getVm().vote(getIntent().getStringExtra(EXTRA_FEED_ID), ));
     }
+
     private void initViewModel() {
         final FeedDetailViewModel vm = ViewModelProviders.of(this,
                 new FeedDetailViewModelFactory(FeedRepositoryImpl.getInstance(
@@ -48,33 +50,42 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
                         AppDatabase.getDatabase(getApplicationContext()).votedFeedDao())))
                 .get(FeedDetailViewModel.class);
 
+        binding.setLifecycleOwner(this);
         binding.setVm(vm);
+        binding.getVm().getFeedDetail().observe(this, this::initViewPager);
     }
+
     private void initToolbar() {
         binding.toolbar.rlToolbarBackground.setBackgroundColor(Color.parseColor(TOOLBAR_BG_COLOR));
-        binding.toolbar.btnLeft.setImageResource(R.drawable.ic_keyboard_arrow_left_white);
-        binding.toolbar.btnRight.setImageResource(R.drawable.ic_file_download_white);
 
-        binding.toolbar.btnLeft.setOnClickListener((v) -> finish());
+        binding.toolbar.btnLeft.setImageResource(R.drawable.ic_keyboard_arrow_left_white);
+        binding.toolbar.btnLeft.setOnClickListener(__ -> finish());
     }
 
-    private void initViewPager() {
-        final PagerAdapter pagerAdapter =  new FeedDetailPagerAdapter(getSupportFragmentManager());
+    private void initViewPager(FeedDetail feedDetail) {
+        final Fragment[] fragments = new Fragment[2];
+        fragments[0] = FeedDetailFragmentA.newInstance(feedDetail.getItemA().getImageUrl());
+        fragments[1] = FeedDetailFragmentB.newInstance(feedDetail.getItemA().getImageUrl());
+        final PagerAdapter pagerAdapter = new FeedDetailPagerAdapter(getSupportFragmentManager(), fragments);
         binding.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
+
             @Override
             public void onPageSelected(int position) {
-                if(position == 0) {
+                if (position == 0) {
                     binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_checked_white_8dp);
                     binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_unchecked_white_8dp);
+                    binding.getVm().changePosition();
                 } else {
                     binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_unchecked_white_8dp);
                     binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_checked_white_8dp);
+                    binding.getVm().changePosition();
                 }
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
 
@@ -84,7 +95,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     public void onTagToggleButtonClick(View view) {
-        if(isShowTag) {
+        if (isShowTag) {
             binding.tgFeedDetailTag.setVisibility(View.GONE);
             binding.tvDetailTagToggle.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_keyboard_arrow_up_white, 0, 0, 0);
@@ -98,7 +109,9 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
 
     @Override
-    protected int getLayoutId() { return R.layout.activity_feed_detail; }
+    protected int getLayoutId() {
+        return R.layout.activity_feed_detail;
+    }
 
     public static Intent getLaunchIntent(@NonNull Context context, @NonNull String feedId) {
         final Intent intent = new Intent(context, FeedDetailActivity.class);
