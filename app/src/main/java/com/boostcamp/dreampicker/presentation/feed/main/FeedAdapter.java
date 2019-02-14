@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.ListAdapter;
 
 public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     interface OnItemClickListener {
-        void onItemClick(@NonNull final String feedId);
+        void onItemClick(@NonNull final String feedId,
+                         @NonNull final String imageUrlA,
+                         @NonNull final String imageUrlB);
     }
 
     interface OnProfileClickListener {
@@ -63,14 +65,17 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
 
         holder.startVoteAnimation(feed.getItemA().getId(), feed.getItemB().getId(), feed.getSelectionId());
 
-        holder.itemView.setOnClickListener(__ -> onItemClickListener.onItemClick(feed.getId()));
-        if(feed.getSelectionId() != null) {
-            if(!holder.getBinding().cbFeedVoteCount.isChecked()) {
+        holder.itemView.setOnClickListener(__ ->
+                onItemClickListener.onItemClick(feed.getId(),
+                        feed.getItemA().getImageUrl(),
+                        feed.getItemB().getImageUrl()));
+        if (feed.getSelectionId() != null) {
+            if (!holder.getBinding().cbFeedVoteCount.isChecked()) {
                 holder.getBinding().cbFeedVoteCount.performClick();
             }
             holder.getBinding().voteResult.setVisibility(View.VISIBLE);
         } else {
-            if(holder.getBinding().cbFeedVoteCount.isChecked()) {
+            if (holder.getBinding().cbFeedVoteCount.isChecked()) {
                 holder.getBinding().cbFeedVoteCount.performClick();
             }
             holder.getBinding().voteResult.setVisibility(View.GONE);
@@ -80,14 +85,14 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
 
         holder.getBinding().ivFeedImageA.setOnDragListener(new VoteDragListener(
                 () -> {
-                    if(feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemA().getId())) {
+                    if (feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemA().getId())) {
                         onVoteListener.onVote(feed.getId(), feed.getItemA().getId());
                     }
                 }));
 
         holder.getBinding().ivFeedImageB.setOnDragListener(new VoteDragListener(
                 () -> {
-                    if(feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemB().getId())) {
+                    if (feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemB().getId())) {
                         onVoteListener.onVote(feed.getId(), feed.getItemB().getId());
                     }
                 }));

@@ -1,5 +1,7 @@
 package com.boostcamp.dreampicker.presentation.feed.detail;
 
+import android.util.Log;
+
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
@@ -90,13 +92,15 @@ public class FeedDetailViewModel extends BaseViewModel {
     }
 
     void changePosition() {
-        if (this.position.getValue() != null) {
-            if (Boolean.TRUE.equals(this.position.getValue())) {
-                this.position.setValue(false);
-            } else {
-                this.position.setValue(true);
-            }
+        Log.d("LEE",this.position.getValue().toString());
+        if (Boolean.TRUE.equals(this.position.getValue())) {
+            this.position.setValue(false);
+            Log.d("LEE"," -> " +this. position.getValue().toString());
+        } else {
+            this.position.setValue(true);
+            Log.d("LEE"," -> " +this. position.getValue().toString());
         }
+
     }
 
     @NonNull

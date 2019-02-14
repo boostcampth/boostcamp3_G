@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.util.Log;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.local.room.AppDatabase;
-import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
@@ -24,11 +22,12 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> {
+
     private static final int NUM_PAGES = 2;
 
     private static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
-
-    private boolean isShowTag = true;
+    private static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
+    private static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,8 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
     private void initViews() {
         initToolbar();
+        initViewPager(getIntent().getStringExtra(EXTRA_IMAGEURL_A),
+                getIntent().getStringExtra(EXTRA_IMAGEURL_B));
         binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote());
     }
 
@@ -54,23 +55,22 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
         binding.setLifecycleOwner(this);
         binding.setVm(vm);
-        binding.getVm().getFeedDetail().observe(this, this::initViewPager);
     }
 
     private void initToolbar() {
         setSupportActionBar(binding.toolbar);
         ActionBar toolbar = getSupportActionBar();
-        if(toolbar != null) {
+        if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white);
             toolbar.setDisplayShowTitleEnabled(false);
         }
     }
 
-    private void initViewPager(@NonNull final FeedDetail feedDetail) {
-        final Fragment[] fragments = new Fragment[2];
-        fragments[0] = FeedDetailFragmentA.newInstance(feedDetail.getItemA().getImageUrl());
-        fragments[1] = FeedDetailFragmentB.newInstance(feedDetail.getItemB().getImageUrl());
+    private void initViewPager(@NonNull String imageUrlA, @NonNull String imageUrlB) {
+        final Fragment[] fragments = new Fragment[NUM_PAGES];
+        fragments[0] = FeedDetailFragmentA.newInstance(imageUrlA);
+        fragments[1] = FeedDetailFragmentB.newInstance(imageUrlB);
         final PagerAdapter pagerAdapter = new FeedDetailPagerAdapter(getSupportFragmentManager(), fragments);
         binding.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -99,29 +99,17 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         binding.pager.setAdapter(pagerAdapter);
     }
 
-    public void onTagToggleButtonClick(View view) {
-        if (isShowTag) {
-            binding.tgFeedDetailTag.setVisibility(View.GONE);
-            binding.tvDetailTagToggle.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_keyboard_arrow_up_white, 0, 0, 0);
-        } else {
-            binding.tgFeedDetailTag.setVisibility(View.VISIBLE);
-            binding.tvDetailTagToggle.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_keyboard_arrow_down_white, 0, 0, 0);
-        }
-        isShowTag = !isShowTag;
-    }
-
     private void subscribeViewModel() {
         binding.getVm().getIsLoading().observe(this, isLoading -> {
-            if(isLoading) {
+            if (isLoading) {
                 binding.loading.setVisibility(View.VISIBLE);
             } else {
                 binding.loading.setVisibility(View.GONE);
             }
         });
     }
-    private void loadFeedDetail(){
+
+    private void loadFeedDetail() {
         binding.getVm().loadFeedDetail(getIntent().getStringExtra(EXTRA_FEED_ID));
     }
 
@@ -130,15 +118,21 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         return R.layout.activity_feed_detail;
     }
 
-    public static Intent getLaunchIntent(@NonNull Context context, @NonNull String feedId) {
+    public static Intent getLaunchIntent(@NonNull Context context,
+                                         @NonNull String feedId,
+                                         @NonNull String imageUrlA,
+                                         @NonNull String imageUrlB) {
+
         final Intent intent = new Intent(context, FeedDetailActivity.class);
         intent.putExtra(EXTRA_FEED_ID, feedId);
+        intent.putExtra(EXTRA_IMAGEURL_A, imageUrlA);
+        intent.putExtra(EXTRA_IMAGEURL_B, imageUrlB);
         return intent;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);

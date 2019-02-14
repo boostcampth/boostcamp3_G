@@ -112,9 +112,11 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         return R.layout.fragment_feed;
     }
 
-    private void startFeedDetailActivity(@NonNull String feedId) {
+    private void startFeedDetailActivity(@NonNull String feedId,
+                                         @NonNull String imageUrlA,
+                                         @NonNull String imageUrlB) {
         if (getContext() != null) {
-            startActivity(FeedDetailActivity.getLaunchIntent(getContext(), feedId));
+            startActivity(FeedDetailActivity.getLaunchIntent(getContext(), feedId, imageUrlA, imageUrlB));
         }
     }
 }
