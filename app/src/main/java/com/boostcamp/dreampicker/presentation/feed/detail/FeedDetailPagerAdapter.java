@@ -9,12 +9,13 @@ public class FeedDetailPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int NUM_PAGES = 2;
 
-    private Fragment[] fragments = new Fragment[NUM_PAGES];
+    private Fragment[] fragments;
 
-    FeedDetailPagerAdapter(@NonNull FragmentManager fm) {
+    FeedDetailPagerAdapter(@NonNull FragmentManager fm, Fragment[] fragments) {
         super(fm);
-        fragments[0] = FeedDetailLeftFragment.newInstance();
-        fragments[1] = FeedDetailRightFragment.newInstance();
+        this.fragments = fragments;
+//        fragments[0] = FeedDetailFragmentA.newInstance();
+//        fragments[1] = FeedDetailFragmentB.newInstance();
     }
 
     @NonNull
