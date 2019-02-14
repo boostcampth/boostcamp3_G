@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.Injection;
+import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
@@ -13,17 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
-    private static final String ARGUMENT_USER_ID = "ARGUMENT_USER_ID";
 
     public ProfileFragment() {
     }
 
-    public static ProfileFragment newInstance(@NonNull String userId) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARGUMENT_USER_ID, userId);
-        fragment.setArguments(args);
-        return fragment;
+    public static ProfileFragment newInstance() {
+        return new ProfileFragment();
     }
 
     private String userId;
@@ -36,14 +32,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            userId = savedInstanceState.getString(ARGUMENT_USER_ID);
-        } else {
-            final Bundle args = getArguments();
-            if (args != null) {
-                userId = args.getString(ARGUMENT_USER_ID);
-            }
-        }
+        userId = FirebaseManager.getCurrentUserId();
     }
 
     @Override
