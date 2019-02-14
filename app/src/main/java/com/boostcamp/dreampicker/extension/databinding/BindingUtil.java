@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.extension.databinding;
 
 import android.annotation.SuppressLint;
+import android.view.View;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
@@ -13,6 +14,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
+import androidx.paging.PagedList;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import me.gujun.android.taggroup.TagGroup;
@@ -29,10 +32,24 @@ public class BindingUtil {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @BindingAdapter({"pagedItems"})
+    public static <T, VH extends RecyclerView.ViewHolder> void setPagedItems(
+            @NonNull final RecyclerView recyclerView,
+            @Nullable final PagedList<T> items) {
+        final PagedListAdapter<T, VH> adapter = (PagedListAdapter<T, VH>) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.submitList(items);
+        }
+    }
+
     @BindingAdapter({"tagItems"})
     public static void setTagItems(@NonNull final TagGroup tagGroup, @Nullable final List<String> tagList) {
         if(tagList != null) {
             tagGroup.setTags(tagList);
+            tagGroup.setVisibility(View.VISIBLE);
+        } else {
+            tagGroup.setVisibility(View.GONE);
         }
     }
 

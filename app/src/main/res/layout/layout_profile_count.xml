@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{count}"
-            android:textSize="22sp"
+            android:textSize="@dimen/text_x_large"
             android:textStyle="bold"
             android:textColor="@color/colorBlack"/>
 
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{title}"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_small"
             android:textStyle="bold"/>
 
     </LinearLayout>

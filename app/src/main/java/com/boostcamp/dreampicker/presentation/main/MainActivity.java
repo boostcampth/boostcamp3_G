@@ -4,18 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
-import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.feed.voted.VotedFragment;
+import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -38,6 +39,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
 
     private void initToolbar() {
         setSupportActionBar(binding.toolbar);
+        ActionBar toolbar = getSupportActionBar();
+        if(toolbar != null) {
+            toolbar.setDisplayShowTitleEnabled(false);
+        }
     }
 
     private void initView() {
@@ -58,23 +63,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
             case R.id.navigation_home:
                 fragment = FeedFragment.newInstance();
                 break;
-            case R.id.navigation_search:
-                break;
-            case R.id.navigation_upload:
-                startActivity(UploadActivity.getLaunchIntent(this));
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                return true;
             case R.id.navigation_notifications:
                 fragment = VotedFragment.newInstance();
                 break;
             case R.id.navigation_profile:
-                final String userId = FirebaseManager.getCurrentUserId();
-                if (userId != null) {
-                    fragment = ProfileFragment.newInstance(userId);
-                } else {
-                    startActivity(LogInActivity.getLaunchIntent(this));
-                    finish();
-                }
+                fragment = ProfileFragment.newInstance();
                 break;
         }
 
@@ -84,5 +77,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 .commit();
 
         return true;
+    }
+
+    public void upload(View view) {
+        startActivity(UploadActivity.getLaunchIntent(this));
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

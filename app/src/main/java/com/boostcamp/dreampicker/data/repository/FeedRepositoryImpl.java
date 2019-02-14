@@ -101,9 +101,9 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @NonNull
     @Override
-    public Single<Feed> vote(@NonNull final String userId,
-                             @NonNull final String feedId,
-                             @NonNull final String selectionId) {
+    public Completable vote(@NonNull final String userId,
+                            @NonNull final String feedId,
+                            @NonNull final String selectionId) {
         final DocumentReference docRef = firestore.collection(COLLECTION_FEED).document(feedId);
 
         // 파이어스토어에서 Feed 업데이트 스트림
@@ -122,8 +122,24 @@ public class FeedRepositoryImpl implements FeedRepository {
                         .addOnSuccessListener(emitter::onSuccess)
                         .addOnFailureListener(emitter::onError));
 
+        return feedRemoteDataSingle.subscribeOn(Schedulers.io())
+                .map(data -> new VotedFeed(feedId,
+                        data.getWriter().getName(),
+                        data.getWriter().getProfileImageUrl(),
+                        data.getContent(),
+                        data.getItemA().getImageUrl(),
+                        data.getItemB().getImageUrl(),
+                        new Date()))
+                .flatMapCompletable(votedFeed ->
+                        votedFeedDao.insert(votedFeed).subscribeOn(Schedulers.io()));
+    }
+
+    @Override
+    public Single<Feed> getFeed(@NonNull String userId, @NonNull String feedId) {
         // 파이어스토어에서 Feed 가져오기 스트림
-        final Single<Feed> getFeedSingle = Single.create(emitter -> docRef.get()
+        final Single<Feed> single = Single.create(emitter -> firestore.collection(COLLECTION_FEED)
+                .document(feedId)
+                .get()
                 .addOnSuccessListener(snapshot -> {
                     if (snapshot != null) {
                         final FeedRemoteData data = snapshot.toObject(FeedRemoteData.class);
@@ -136,17 +152,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                     }
                 }).addOnFailureListener(emitter::onError));
 
-        return feedRemoteDataSingle.subscribeOn(Schedulers.io())
-                .map(data -> new VotedFeed(feedId,
-                        data.getWriter().getName(),
-                        data.getWriter().getProfileImageUrl(),
-                        data.getContent(),
-                        data.getItemA().getImageUrl(),
-                        data.getItemB().getImageUrl(),
-                        new Date()))
-                .flatMapCompletable(votedFeed ->
-                        votedFeedDao.insert(votedFeed).subscribeOn(Schedulers.io()))
-                .andThen(getFeedSingle.subscribeOn(Schedulers.io()));
+        return single.subscribeOn(Schedulers.io());
     }
 
     @NonNull

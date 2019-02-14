@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.presentation.feed.main.listener.VoteDragListener;
 import com.boostcamp.dreampicker.presentation.feed.main.listener.VoteIconTouchListener;
 
@@ -17,16 +18,23 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     interface OnItemClickListener {
         void onItemClick(@NonNull final String feedId);
     }
+
+    interface OnProfileClickListener {
+        void onProfileClick(User writer);
+    }
+
     interface OnVoteListener {
         void onVote(@NonNull final String feedId,
                     @NonNull final String selectionId);
     }
 
     FeedAdapter(@NonNull final OnVoteListener onVoteListener,
-                @NonNull final OnItemClickListener onItemClickListener) {
+                @NonNull final OnItemClickListener onItemClickListener,
+                @NonNull final OnProfileClickListener onProfileClickListener) {
         super(DIFF_CALLBACK);
         this.onVoteListener = onVoteListener;
         this.onItemClickListener = onItemClickListener;
+        this.onProfileClickListener = onProfileClickListener;
     }
 
     @NonNull
@@ -37,6 +45,9 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
 
     @NonNull
     private final View.OnTouchListener touchListener = new VoteIconTouchListener();
+
+    @NonNull
+    private final OnProfileClickListener onProfileClickListener;
 
     @NonNull
     @Override
@@ -80,6 +91,9 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
                         onVoteListener.onVote(feed.getId(), feed.getItemB().getId());
                     }
                 }));
+
+        holder.getBinding().ivWriterImg.setOnClickListener(v ->
+                onProfileClickListener.onProfileClick(feed.getWriter()));
     }
 
     private static final DiffUtil.ItemCallback<Feed> DIFF_CALLBACK =

@@ -2,8 +2,8 @@ package com.boostcamp.dreampicker.presentation.feed.detail;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.util.Log;
 import android.view.View;
 
@@ -17,14 +17,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> {
+    private static final int NUM_PAGES = 2;
 
-    private static final String TOOLBAR_BG_COLOR = "#99000000";
+    private static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
+
     private boolean isShowTag = true;
 
     private static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
@@ -57,10 +60,13 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     private void initToolbar() {
-        binding.toolbar.rlToolbarBackground.setBackgroundColor(Color.parseColor(TOOLBAR_BG_COLOR));
-
-        binding.toolbar.btnLeft.setImageResource(R.drawable.ic_keyboard_arrow_left_white);
-        binding.toolbar.btnLeft.setOnClickListener(__ -> finish());
+        setSupportActionBar(binding.toolbar);
+        ActionBar toolbar = getSupportActionBar();
+        if(toolbar != null) {
+            toolbar.setDisplayHomeAsUpEnabled(true);
+            toolbar.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white);
+            toolbar.setDisplayShowTitleEnabled(false);
+        }
     }
 
     private void initViewPager(@NonNull final FeedDetail feedDetail) {
@@ -130,5 +136,13 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         final Intent intent = new Intent(context, FeedDetailActivity.class);
         intent.putExtra(EXTRA_FEED_ID, feedId);
         return intent;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,7 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageButton;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
@@ -21,6 +22,7 @@ import com.gun0912.tedpermission.TedPermission;
 
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.lifecycle.ViewModelProviders;
 import gun0912.tedbottompicker.TedBottomPicker;
 
@@ -67,21 +69,18 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     }
 
     private void initToolbar() {
-        final ImageButton btnClose = binding.toolbar.btnLeft;
-        final ImageButton btnUpload = binding.toolbar.btnRight;
-
-        btnClose.setImageResource(R.drawable.btn_toolbar_close);
-        btnUpload.setImageResource(R.drawable.btn_toolbar_finger);
-
-        btnClose.setOnClickListener(__ -> finish());
-        btnUpload.setOnClickListener(__ -> binding.getVm().upload(
-                binding.tgUploadTagA.getTags(),
-                binding.tgUploadTagB.getTags()));
+        setSupportActionBar(binding.toolbar);
+        ActionBar toolbar = getSupportActionBar();
+        if(toolbar != null) {
+            toolbar.setDisplayHomeAsUpEnabled(true);
+            toolbar.setHomeAsUpIndicator(R.drawable.btn_toolbar_close);
+            toolbar.setDisplayShowTitleEnabled(false);
+        }
     }
 
     private void initImageViews() {
-        binding.ivUploadB.setOnClickListener(__ -> onImageClick(B));
         binding.ivUploadA.setOnClickListener(__ -> onImageClick(A));
+        binding.ivUploadB.setOnClickListener(__ -> onImageClick(B));
     }
 
     private void initDialog() {
@@ -143,5 +142,23 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
     public static Intent getLaunchIntent(Context context) {
         return new Intent(context, UploadActivity.class);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.upload_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+        } else if (item.getItemId() == R.id.menu_upload) {
+            binding.getVm().upload(
+                    binding.tgUploadTagA.getTags(),
+                    binding.tgUploadTagB.getTags());
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

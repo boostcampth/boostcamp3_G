@@ -4,28 +4,22 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.repository.UserRepositoryImpl;
+import com.boostcamp.dreampicker.data.Injection;
+import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
-    private static final String ARGUMENT_USER_ID = "ARGUMENT_USER_ID";
 
     public ProfileFragment() {
     }
 
-    public static ProfileFragment newInstance(@NonNull String userId) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARGUMENT_USER_ID, userId);
-        fragment.setArguments(args);
-        return fragment;
+    public static ProfileFragment newInstance() {
+        return new ProfileFragment();
     }
 
     private String userId;
@@ -38,14 +32,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            userId = savedInstanceState.getString(ARGUMENT_USER_ID);
-        } else {
-            final Bundle args = getArguments();
-            if (args != null) {
-                userId = args.getString(ARGUMENT_USER_ID);
-            }
-        }
+        userId = FirebaseManager.getCurrentUserId();
     }
 
     @Override
@@ -57,27 +44,23 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private void initViewModel() {
         ProfileViewModel viewModel = ViewModelProviders.of(this,
-                new ProfileViewModelFactory(
-                        UserRepositoryImpl.getInstance(FirebaseFirestore.getInstance()),
-                        userId
-                )).get(ProfileViewModel.class);
-        binding.setVm(viewModel);
+                new ProfileViewModelFactory(Injection.provideUserRepository(), userId))
+                .get(ProfileViewModel.class);
+        binding.container.setVm(viewModel);
     }
 
     private void initRecyclerView() {
-        MyFeedAdapter adapter = new MyFeedAdapter(feed ->
-                binding.getVm().toggleVoteEnded(feed, !feed.isEnded()));
+        MyFeedAdapter adapter = new MyFeedAdapter(item ->
+                binding.container.getVm().toggleVoteEnded(item, !item.isEnded()),
+                userId.equals(FirebaseManager.getCurrentUserId()));
 
-        binding.rvProfileFeed.setAdapter(adapter);
-        binding.rvProfileFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!binding.rvProfileFeed.canScrollVertically(1)) {
-                    binding.getVm().addMyFeeds();
-                }
+        binding.container.getVm().getIsLoading().observe(this, isLoading -> {
+            if (!isLoading) {
+                adapter.notifyDataSetChanged();
             }
         });
+
+        binding.container.rvProfileFeed.setAdapter(adapter);
     }
 
 }

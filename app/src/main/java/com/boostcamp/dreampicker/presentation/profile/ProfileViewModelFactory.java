@@ -11,10 +11,10 @@ public class ProfileViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final UserRepository repository;
     @NonNull
-    private String userId;
+    private final String userId;
 
     ProfileViewModelFactory(@NonNull UserRepository repository,
-            @NonNull String userId) {
+                            @NonNull String userId) {
         this.repository = repository;
         this.userId = userId;
     }
