@@ -35,4 +35,7 @@
 
     <!-- 피드 상세 화면 -->
     <string name="feed_detail_tag_toggle">TAG</string>
+
+    <!-- 투표 결과 화면 -->
+    <string name="voted_feed_empty_message">투표를 진행해 주세요!</string>
 </resources>
