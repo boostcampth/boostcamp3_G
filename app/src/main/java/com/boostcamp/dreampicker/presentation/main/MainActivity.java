@@ -11,7 +11,7 @@ import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
 import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
-import com.boostcamp.dreampicker.presentation.result.ResultFragment;
+import com.boostcamp.dreampicker.presentation.feed.voted.VotedFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 return true;
             case R.id.navigation_notifications:
-                fragment = ResultFragment.newInstance();
+                fragment = VotedFragment.newInstance();
                 break;
             case R.id.navigation_profile:
                 final String userId = FirebaseManager.getCurrentUserId();
