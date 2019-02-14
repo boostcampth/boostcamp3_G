@@ -26,7 +26,8 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private boolean isLastPage = false;
 
-    public FeedFragment() { }
+    public FeedFragment() {
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -56,16 +57,15 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private void initRecyclerView() {
         final FeedAdapter adapter = new FeedAdapter(
                 (feedId, selectionId) -> binding.getVm().vote(feedId, selectionId),
-                this::startFeedDetailActivity);
-                () -> Log.d("", ""), // Todo : 상세보기로 이동
+                this::startFeedDetailActivity,
                 writer -> startActivity(ProfileActivity.getLaunchIntent(getContext(), writer.getId())));
 
         binding.rvFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(!binding.rvFeed.canScrollVertically(RecyclerView.FOCUS_DOWN)){
-                    if(isLastPage) {
+                if (!binding.rvFeed.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
+                    if (isLastPage) {
                         showToast(TEXT_LAST_PAGE);
                     } else {
                         binding.getVm().loadFeedList();
@@ -86,7 +86,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private void subscribeViewModel() {
         binding.getVm().getIsLoading().observe(this, isLoading -> {
-            if(isLoading) {
+            if (isLoading) {
                 binding.loading.setVisibility(View.VISIBLE);
             } else {
                 binding.loading.setVisibility(View.GONE);
@@ -113,7 +113,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void startFeedDetailActivity(@NonNull String feedId) {
-        if(getContext() != null) {
+        if (getContext() != null) {
             startActivity(FeedDetailActivity.getLaunchIntent(getContext(), feedId));
         }
     }

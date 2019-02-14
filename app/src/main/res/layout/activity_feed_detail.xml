@@ -187,8 +187,8 @@
             android:background="@color/colorPrimary"
             android:textSize="20sp"
             android:textColor="@color/colorBlack"
-            android:text="@{safeUnbox(vm.feedDetail.isEnded) ? @string/feed_detail_vote_button : @string/feed_detail_ended_vote_button}"
-            android:clickable="@{vm.feedDetail.isEnded}"
+            android:text="@{safeUnbox(!vm.feedDetail.isEnded) ? @string/feed_detail_vote_button : @string/feed_detail_ended_vote_button}"
+            android:clickable="@{!vm.feedDetail.isEnded}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

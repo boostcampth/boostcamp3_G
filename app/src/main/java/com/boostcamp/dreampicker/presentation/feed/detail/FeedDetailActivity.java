@@ -30,8 +30,6 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
     private boolean isShowTag = true;
 
-    private static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

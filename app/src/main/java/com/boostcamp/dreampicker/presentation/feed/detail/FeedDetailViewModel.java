@@ -32,24 +32,16 @@ public class FeedDetailViewModel extends BaseViewModel {
     }
 
     void loadFeedDetail(@NonNull final String feedId) {
+        if (Boolean.TRUE.equals(isLoading.getValue())) {
+            return;
+        }
         final String userId = FirebaseManager.getCurrentUserId();
         if (userId == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
-        if (Boolean.TRUE.equals(isLoading.getValue())) {
-            return;
-        }
         isLoading.setValue(true);
-        addDisposable(repository.getFeedDetail(userId, feedId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(feed -> {
-                    this.feedDetail.setValue(feed);
-                    isLoading.setValue(false);
-                }, error -> {
-                    isLoading.setValue(false);
-                    this.error.setValue(error);
-                }));
+        load(userId, feedId);
     }
 
     void vote() {
@@ -78,13 +70,23 @@ public class FeedDetailViewModel extends BaseViewModel {
         addDisposable(repository.vote(userId, feedId, selectionId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(ERROR_REPEAT_COUNT)
-                .subscribe(feed -> {
-                            isLoading.setValue(false);
-                        },
+                .subscribe(() -> load(userId, feedId),
                         error -> {
                             isLoading.setValue(false);
                             this.error.setValue(error);
                         }));
+    }
+
+    private void load(@NonNull final String userId, @NonNull final String feedId) {
+        addDisposable(repository.getFeedDetail(userId, feedId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(feed -> {
+                    this.feedDetail.setValue(feed);
+                    isLoading.setValue(false);
+                }, e -> {
+                    isLoading.setValue(false);
+                    error.setValue(e);
+                }));
     }
 
     void changePosition() {
@@ -98,7 +100,9 @@ public class FeedDetailViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public LiveData<FeedDetail> getFeedDetail() { return feedDetail; }
+    public LiveData<FeedDetail> getFeedDetail() {
+        return feedDetail;
+    }
 
     @NonNull
     MutableLiveData<Boolean> getIsLoading() {
@@ -111,5 +115,7 @@ public class FeedDetailViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getPosition() { return position; }
+    public MutableLiveData<Boolean> getPosition() {
+        return position;
+    }
 }
