@@ -13,19 +13,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class FeedDetailFragmentA extends BaseFragment<FragmentFeedDetailImageBinding> {
+public class FeedDetailFragment extends BaseFragment<FragmentFeedDetailImageBinding> {
 
-    private static final String ARGUMENT_IMAGEURL_A = "ARGUMENT_IMAGEURL_A";
+    private static final String ARGUMENT_IMAGEURL = "ARGUMENT_IMAGEURL";
     private String imageUrlA;
 
-    public FeedDetailFragmentA() {
+    public FeedDetailFragment() {
 
     }
 
     static Fragment newInstance(@NonNull String imageUrl) {
-        FeedDetailFragmentA fragment = new FeedDetailFragmentA();
+        FeedDetailFragment fragment = new FeedDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARGUMENT_IMAGEURL_A, imageUrl);
+        args.putString(ARGUMENT_IMAGEURL, imageUrl);
         fragment.setArguments(args);
         return fragment;
     }
@@ -34,11 +34,11 @@ public class FeedDetailFragmentA extends BaseFragment<FragmentFeedDetailImageBin
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            imageUrlA = savedInstanceState.getString(ARGUMENT_IMAGEURL_A);
+            imageUrlA = savedInstanceState.getString(ARGUMENT_IMAGEURL);
         } else {
             final Bundle args = getArguments();
             if (args != null) {
-                imageUrlA = args.getString(ARGUMENT_IMAGEURL_A);
+                imageUrlA = args.getString(ARGUMENT_IMAGEURL);
             }
         }
     }

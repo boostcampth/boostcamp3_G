@@ -14,8 +14,6 @@ public class FeedDetailPagerAdapter extends FragmentStatePagerAdapter {
     FeedDetailPagerAdapter(@NonNull FragmentManager fm, Fragment[] fragments) {
         super(fm);
         this.fragments = fragments;
-//        fragments[0] = FeedDetailFragmentA.newInstance();
-//        fragments[1] = FeedDetailFragmentB.newInstance();
     }
 
     @NonNull

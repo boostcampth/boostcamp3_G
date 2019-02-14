@@ -69,8 +69,8 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
     private void initViewPager(@NonNull String imageUrlA, @NonNull String imageUrlB) {
         final Fragment[] fragments = new Fragment[NUM_PAGES];
-        fragments[0] = FeedDetailFragmentA.newInstance(imageUrlA);
-        fragments[1] = FeedDetailFragmentB.newInstance(imageUrlB);
+        fragments[0] = FeedDetailFragment.newInstance(imageUrlA);
+        fragments[1] = FeedDetailFragment.newInstance(imageUrlB);
         final PagerAdapter pagerAdapter = new FeedDetailPagerAdapter(getSupportFragmentManager(), fragments);
         binding.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
