@@ -4,15 +4,38 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.boostcamp.dreampicker.presentation.profile.ProfileViewModel" />
+
         <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorWhite"
+            android:elevation="3dp"
+            app:contentInsetStart="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                style="@style/ImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/space_x_small"
+                android:src="@drawable/img_logo" />
+
+        </androidx.appcompat.widget.Toolbar>
 
         <ImageView
             android:id="@+id/iv_user_image"
@@ -26,7 +49,7 @@
             app:circleImage="@{vm.user.profileImageUrl}"
             app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <TextView
             android:id="@+id/tv_name"
@@ -40,7 +63,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
             app:layout_constraintStart_toEndOf="@id/iv_user_image"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <include
             android:id="@+id/layout_following"
@@ -53,7 +76,7 @@
             android:scaleY="0.9"
             app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             bind:count="@{String.valueOf(vm.user.feedCount)}"
             bind:title="@{String.valueOf(@string/profile_feed_count)}" />
 

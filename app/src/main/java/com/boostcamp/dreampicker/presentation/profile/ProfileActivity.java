@@ -3,6 +3,7 @@ package com.boostcamp.dreampicker.presentation.profile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.Injection;
@@ -11,6 +12,7 @@ import com.boostcamp.dreampicker.presentation.BaseActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.lifecycle.ViewModelProviders;
 
 public class ProfileActivity extends BaseActivity<FragmentProfileBinding> {
@@ -42,8 +44,18 @@ public class ProfileActivity extends BaseActivity<FragmentProfileBinding> {
             }
         }
 
+        initToolbar();
         initViewModel();
         initRecyclerView();
+    }
+
+    private void initToolbar() {
+        setSupportActionBar(binding.toolbar);
+        ActionBar toolbar = getSupportActionBar();
+        if (toolbar != null) {
+            toolbar.setDisplayHomeAsUpEnabled(true);
+            toolbar.setDisplayShowTitleEnabled(false);
+        }
     }
 
     private void initViewModel() {
@@ -66,4 +78,11 @@ public class ProfileActivity extends BaseActivity<FragmentProfileBinding> {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
