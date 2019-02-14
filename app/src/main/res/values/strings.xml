@@ -12,6 +12,10 @@
     <!-- 프로필 화면에서 사용 -->
     <string name="profile_feed_count">내가 올린 투표</string>
     <string name="profile_voted_count">내가 한 투표</string>
+    <string name="profile_vote_not_ended">진행중인 투표</string>
+    <string name="profile_vote_ended">마감된 투표</string>
+    <string name="profile_request_end">마감하기</string>
+    <string name="profile_request_restart">재진행하기</string>
 
     <!-- 검색 화면에서 사용 -->
     <string name="search_text_hint">검색어를 입력하세요.</string>
@@ -27,7 +31,11 @@
     <string name="upload_fail_message">투표를 등록할 수 없습니다.</string>
     <string name="upload_success_message">투표 등록 완료</string>
     <string name="upload_backpress_denied_message">업로드 중 입니다.</string>
+    <string name="upload_error_message">업로드에 실패하였습니다.</string>
 
     <!-- 피드 상세 화면 -->
     <string name="feed_detail_tag_toggle">TAG</string>
+
+    <!-- 투표 결과 화면 -->
+    <string name="voted_feed_empty_message">투표를 진행해 주세요!</string>
 </resources>

@@ -21,4 +21,8 @@ public class MyFeedItemViewHolder extends RecyclerView.ViewHolder {
     void bindTo(MyFeed feed) {
         binding.setItem(feed);
     }
+
+    ItemMyFeedBinding binding(){
+        return binding;
+    }
 }

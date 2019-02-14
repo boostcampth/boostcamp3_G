@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
+import com.boostcamp.dreampicker.extension.common.StringExt;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
 import java.util.List;
@@ -19,13 +20,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class UploadViewModel extends BaseViewModel {
 
     @NonNull
-    private MutableLiveData<String> content = new MutableLiveData<>();
+    private final MutableLiveData<String> content = new MutableLiveData<>();
     @NonNull
-    private MutableLiveData<String> imagePathA = new MutableLiveData<>();
+    private final MutableLiveData<String> imagePathA = new MutableLiveData<>();
     @NonNull
-    private MutableLiveData<String> imagePathB = new MutableLiveData<>();
+    private final MutableLiveData<String> imagePathB = new MutableLiveData<>();
     @NonNull
-    private MutableLiveData<Boolean> validate = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> validate = new MutableLiveData<>();
     @NonNull
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     @NonNull
@@ -40,30 +41,36 @@ public class UploadViewModel extends BaseViewModel {
         isLoading.setValue(false);
     }
 
-    void upload(@Nullable final List<String> tagListA,
-                @Nullable final List<String> tagListB) {
-
+    void upload(@Nullable final String[] tagStrA,
+                @Nullable final String[] tagStrB) {
+        if (Boolean.TRUE.equals(isLoading.getValue())) {
+            return;
+        }
         final String userId = FirebaseManager.getCurrentUserId();
         if (userId == null) {
             error.setValue(new IllegalArgumentException());
             return;
         }
-        isLoading.setValue(true);
+        final List<String> tagListA = StringExt.toNoEndLineList(tagStrA);
+        final List<String> tagListB = StringExt.toNoEndLineList(tagStrB);
+
         if (!TextUtils.isEmpty(getContent().getValue()) &&
                 !TextUtils.isEmpty(getImagePathA().getValue()) &&
                 !TextUtils.isEmpty(getImagePathB().getValue())) {
+            isLoading.setValue(true);
             addDisposable(feedRepository.uploadFeed(createFeedUploadRequest(userId, tagListA, tagListB))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                                validate.setValue(true);
-                                isLoading.setValue(false);
-                            }, error::setValue));
+                        isLoading.setValue(false);
+                        validate.setValue(true);
+                    }, e -> {
+                        isLoading.setValue(false);
+                        error.setValue(e);
+                    }));
         } else {
             validate.setValue(false);
-            isLoading.setValue(false);
         }
     }
-
 
     @NonNull
     private FeedUploadRequest createFeedUploadRequest(@NonNull final String userId,
@@ -71,9 +78,9 @@ public class UploadViewModel extends BaseViewModel {
                                                       @Nullable final List<String> tagListB) {
 
         return new FeedUploadRequest(userId,
-                getContent().getValue(),
-                getImagePathA().getValue(),
-                getImagePathB().getValue(),
+                content.getValue(),
+                imagePathA.getValue(),
+                imagePathB.getValue(),
                 tagListA,
                 tagListB);
 
@@ -95,22 +102,21 @@ public class UploadViewModel extends BaseViewModel {
     }
 
     @NonNull
-    MutableLiveData<Boolean> getValidate() {
-        return validate;
-    }
-
-    @NonNull
-    public LiveData<Boolean> getIsLoading() {
+    LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 
     @NonNull
-    public LiveData<Throwable> getError() {
+    LiveData<Boolean> getValidate() {
+        return validate;
+    }
+
+    @NonNull
+    LiveData<Throwable> getError() {
         return error;
     }
 
-    public void setImagePath(@NonNull final Uri uri,
-                             final int flag) {
+    void setImagePath(@NonNull final Uri uri, final int flag) {
         if (flag == A) {
             imagePathA.setValue(uri.toString());
         } else {

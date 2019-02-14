@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.presentation.upload;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +13,12 @@ import com.boostcamp.dreampicker.data.local.room.AppDatabase;
 import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
+import com.boostcamp.dreampicker.utils.LoadingDialog;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import java.util.Arrays;
 import java.util.List;
 
 import androidx.lifecycle.ViewModelProviders;
@@ -31,6 +32,8 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private static final int A = 1;
     private static final int B = 2;
 
+    private Dialog loadingDialog;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_upload;
@@ -42,8 +45,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
         initViewModel();
         initViews();
-        subscribeValidate();
-
+        subscribeViewModel();
     }
 
     private void initViewModel() {
@@ -61,24 +63,30 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private void initViews() {
         initToolbar();
         initImageViews();
-    }
-
-    private void initImageViews() {
-        binding.ivUploadA.setOnClickListener(__ -> onImageClick(A));
-        binding.ivUploadB.setOnClickListener(__ -> onImageClick(B));
+        initDialog();
     }
 
     private void initToolbar() {
         final ImageButton btnClose = binding.toolbar.btnLeft;
         final ImageButton btnUpload = binding.toolbar.btnRight;
-        final List<String> tagListA = Arrays.asList(binding.tgUploadTagA.getTags());
-        final List<String> tagListB = Arrays.asList(binding.tgUploadTagB.getTags());
 
         btnClose.setImageResource(R.drawable.btn_toolbar_close);
         btnUpload.setImageResource(R.drawable.btn_toolbar_finger);
 
         btnClose.setOnClickListener(__ -> finish());
-        btnUpload.setOnClickListener(__ -> binding.getVm().upload(tagListA, tagListB));
+        btnUpload.setOnClickListener(__ -> binding.getVm().upload(
+                binding.tgUploadTagA.getTags(),
+                binding.tgUploadTagB.getTags()));
+    }
+
+    private void initImageViews() {
+        binding.ivUploadB.setOnClickListener(__ -> onImageClick(B));
+        binding.ivUploadA.setOnClickListener(__ -> onImageClick(A));
+    }
+
+    private void initDialog() {
+        loadingDialog = new LoadingDialog(this);
+        loadingDialog.setCancelable(false);
     }
 
     public void onImageClick(final int flag) {
@@ -107,8 +115,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
                 .show(getSupportFragmentManager());
     }
 
-
-    private void subscribeValidate() {
+    private void subscribeViewModel() {
         binding.getVm().getValidate().observe(this, v -> {
             if (v) {
                 showToast(getString(R.string.upload_success_message));
@@ -117,6 +124,17 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
                 showToast(getString(R.string.upload_fail_message));
             }
         });
+
+        binding.getVm().getIsLoading().observe(this, loading -> {
+            if (loading) {
+                loadingDialog.show();
+            } else {
+                loadingDialog.hide();
+            }
+        });
+
+        binding.getVm().getError().observe(this,
+                e -> showToast(getString(R.string.upload_error_message)));
     }
 
     private void showToast(String msg) {
@@ -125,16 +143,5 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
     public static Intent getLaunchIntent(Context context) {
         return new Intent(context, UploadActivity.class);
-    }
-
-    @Override
-    public void onBackPressed() {
-        binding.getVm().getIsLoading().observe(this, isLoading -> {
-            if (isLoading) {
-                showToast(getString(R.string.upload_backpress_denied_message));
-            } else {
-                super.onBackPressed();
-            }
-        });
     }
 }

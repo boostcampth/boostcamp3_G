@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.paging.DataSource;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -30,5 +31,5 @@ public interface FeedRepository {
     Single<FeedDetail> getFeedDetail(@NonNull final String userId,
                                      @NonNull final String feedId);
 
-    Single<List<VotedFeed>> getVotedFeedList();
+    DataSource.Factory<Integer, VotedFeed> getMyVotedFeedList();
 }

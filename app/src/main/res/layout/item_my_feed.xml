@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="item"
             type="com.boostcamp.dreampicker.data.model.MyFeed" />
@@ -12,15 +11,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_median"
+        android:layout_marginBottom="@dimen/space_median"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_median"
             android:layout_marginStart="@dimen/space_median"
-            android:layout_marginBottom="@dimen/space_x_small"
+            android:layout_marginEnd="@dimen/space_median"
+            android:layout_marginBottom="@dimen/space_xx_small"
             android:textSize="@dimen/text_small"
             app:date="@{item.date}" />
 
@@ -34,7 +35,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_median"
-                android:layout_marginEnd="@dimen/space_median"
                 android:layout_weight="2"
                 android:elevation="5dp"
                 app:cardCornerRadius="5dp">
@@ -65,24 +65,49 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/space_median"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/tv_content"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="false"
-                    android:text="@{item.content}"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_median" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_vote_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/space_median"
+                        android:textSize="@dimen/text_small" />
+
+                    <TextView
+                        android:id="@+id/tv_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="@dimen/space_median"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:text="@{item.content}"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/text_median" />
+
+                    <TextView
+                        android:id="@+id/btn_end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/space_xx_small"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_small" />
+
+                </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
-
     </LinearLayout>
-
 </layout>

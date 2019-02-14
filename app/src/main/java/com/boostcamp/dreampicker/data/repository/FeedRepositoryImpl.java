@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.paging.DataSource;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -141,15 +142,11 @@ public class FeedRepositoryImpl implements FeedRepository {
                         data.getWriter().getProfileImageUrl(),
                         data.getContent(),
                         data.getItemA().getImageUrl(),
-                        data.getItemB().getImageUrl()))
+                        data.getItemB().getImageUrl(),
+                        new Date()))
                 .flatMapCompletable(votedFeed ->
                         votedFeedDao.insert(votedFeed).subscribeOn(Schedulers.io()))
                 .andThen(getFeedSingle.subscribeOn(Schedulers.io()));
-    }
-
-    @Override
-    public Single<List<VotedFeed>> getVotedFeedList() {
-        return votedFeedDao.selectAll().subscribeOn(Schedulers.io());
     }
 
     @NonNull
@@ -173,7 +170,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                                 firestore.runTransaction((Transaction.Function<Void>) transaction -> {
                                     DocumentSnapshot documentSnapshot = transaction.get(userRef);
                                     final Double oldFeedCount = documentSnapshot.getDouble(FIELD_FEEDCOUNT);
-                                    final Double newFeedCount = oldFeedCount+1;
+                                    final Double newFeedCount = oldFeedCount + 1;
 
                                     transaction.update(userRef, FIELD_FEEDCOUNT, newFeedCount);
 
@@ -240,5 +237,10 @@ public class FeedRepositoryImpl implements FeedRepository {
                     }
                 })
                 .addOnFailureListener(emitter::onError));
+    }
+
+    @Override
+    public DataSource.Factory<Integer, VotedFeed> getMyVotedFeedList() {
+        return votedFeedDao.selectAll();
     }
 }

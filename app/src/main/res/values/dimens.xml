@@ -1,6 +1,7 @@
 <resources>
 
     <!-- margin/padding -->
+    <dimen name="space_xx_small">4dp</dimen>
     <dimen name="space_x_small">8dp</dimen>
     <dimen name="space_small">12dp</dimen>
     <dimen name="space_median">16dp</dimen>
@@ -37,7 +38,7 @@
     <!-- 특정 화면에서 쓰이는 dimen -->
     <dimen name="profile_tab_height">40dp</dimen>
     <dimen name="login_logo_size">280dp</dimen>
-    <dimen name="login_button_width">280dp</dimen>
+    <dimen name="login_button_width">300dp</dimen>
     <dimen name="splash_logo_size">240dp</dimen>
     <dimen name="vote_progress_height">10dp</dimen>
 
@@ -46,4 +47,8 @@
 
     <!-- 업로드 화면 -->
     <dimen name="upload_image_size">120dp</dimen>
+
+    <!-- 결과보기 화면 -->
+    <dimen name="voted_feed_container_size_height">100dp</dimen>
+    <dimen name="voted_feed_image_size">80dp</dimen>
 </resources>

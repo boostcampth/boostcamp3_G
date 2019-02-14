@@ -3,8 +3,7 @@ package com.boostcamp.dreampicker.data.repository;
 import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.UserDetailMapper;
-import com.boostcamp.dreampicker.data.source.firestore.model.MyFeedRemoteData;
-import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailEntity;
+import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,8 +54,8 @@ public class UserRepositoryImpl implements UserRepository {
                 firestore.collection(COLLECTION_USER).document(userId)
                         .get()
                         .addOnSuccessListener(document -> {
-                            final UserDetailEntity response = document.exists()
-                                    ? document.toObject(UserDetailEntity.class) : null;
+                            final UserDetailRemoteData response = document.exists()
+                                    ? document.toObject(UserDetailRemoteData.class) : null;
                             if (response != null) {
                                 emitter.onSuccess(UserDetailMapper
                                         .toUserDetail(document.getId(), response));
@@ -98,12 +97,13 @@ public class UserRepositoryImpl implements UserRepository {
         return single.subscribeOn(Schedulers.io());
     }
 
+    @NonNull
     @Override
     public Completable toggleVoteEnded(@NonNull final String userId,
                                        @NonNull final String feedId,
                                        final boolean isEnded) {
 
-        return Completable.create(emitter -> {
+        Completable completable = Completable.create(emitter -> {
 
             WriteBatch batch = firestore.batch(); // 일괄 수정
 
@@ -126,6 +126,21 @@ public class UserRepositoryImpl implements UserRepository {
                     .addOnSuccessListener(__ -> emitter.onComplete())
                     .addOnFailureListener(emitter::onError);
         });
+
+        return completable.subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Completable addNewUser(@NonNull final String userId, @NonNull UserDetailRemoteData userDetail) {
+        Completable completable = Completable.create(emitter ->
+                firestore.collection(COLLECTION_USER)
+                        .document(userId)
+                        .set(userDetail)
+                        .addOnSuccessListener(__ -> emitter.onComplete())
+                        .addOnFailureListener(emitter::onError));
+
+        return completable.subscribeOn(Schedulers.io());
     }
 
 }

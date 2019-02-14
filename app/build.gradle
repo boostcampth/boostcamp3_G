@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
@@ -56,12 +57,12 @@ dependencies {
     implementation "androidx.room:room-runtime:2.1.0-alpha04"
     annotationProcessor "androidx.room:room-compiler:2.1.0-alpha04"
 
+    // LiveData and ViewModel
+    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+
     // RxAndroid
     implementation "io.reactivex.rxjava2:rxjava:2.2.6"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-
-    // LiveData and ViewModel
-    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
@@ -74,11 +75,6 @@ dependencies {
     // Android-RoundCorner Progressbar
     implementation 'com.akexorcist:RoundCornerProgressBar:2.0.3'
 
-    // Firebase
-    implementation 'com.google.firebase:firebase-core:16.0.6'
-    implementation 'com.google.firebase:firebase-firestore:18.0.0'
-    implementation 'com.google.firebase:firebase-storage:16.0.5'
-
     // Tag Group
     implementation 'me.gujun.android.taggroup:library:1.4@aar'
 
@@ -88,10 +84,18 @@ dependencies {
     // Ted Bottom Picker
     implementation 'gun0912.ted:tedbottompicker:1.2.6'
 
+    // Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-firestore:18.0.1'
+    implementation 'com.google.firebase:firebase-storage:16.0.5'
+
     // Google Login
     implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+    // CrashLytics
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 }
 // Firebase
 apply plugin: 'com.google.gms.google-services'
