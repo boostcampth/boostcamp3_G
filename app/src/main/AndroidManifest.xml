@@ -28,6 +28,7 @@
             android:name=".presentation.upload.UploadActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".presentation.feed.detail.FeedDetailActivity" />
+        <activity android:name=".presentation.profile.ProfileActivity" />
     </application>
 
 </manifest>

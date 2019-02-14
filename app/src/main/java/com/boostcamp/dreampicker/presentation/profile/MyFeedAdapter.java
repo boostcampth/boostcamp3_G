@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.presentation.profile;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
@@ -8,17 +9,21 @@ import com.boostcamp.dreampicker.data.model.MyFeed;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
 
-public class MyFeedAdapter extends ListAdapter<MyFeed, MyFeedItemViewHolder> {
+public class MyFeedAdapter extends PagedListAdapter<MyFeed, MyFeedItemViewHolder> {
 
     @Nullable
     private OnEndButtonClickListener onEndButtonClickListener;
 
-    MyFeedAdapter(@Nullable OnEndButtonClickListener onEndButtonClickListener) {
+    private boolean isMyProfile;
+
+    MyFeedAdapter(@Nullable OnEndButtonClickListener onEndButtonClickListener,
+                  boolean isMyProfile) {
         super(DIFF_CALLBACK);
         this.onEndButtonClickListener = onEndButtonClickListener;
+        this.isMyProfile = isMyProfile;
     }
 
     @NonNull
@@ -39,17 +44,7 @@ public class MyFeedAdapter extends ListAdapter<MyFeed, MyFeedItemViewHolder> {
             }
         });
 
-        holder.binding().tvVoteState.setText(
-                item.isEnded() ? R.string.profile_vote_ended : R.string.profile_vote_not_ended
-        );
-
-        holder.binding().btnEnd.setBackgroundResource(
-                item.isEnded() ? R.drawable.line_round : R.drawable.line_round_red
-        );
-
-        holder.binding().btnEnd.setText(
-                item.isEnded() ? R.string.profile_request_restart : R.string.profile_request_end
-        );
+        holder.binding().btnEnd.setVisibility(isMyProfile ? View.VISIBLE : View.GONE);
     }
 
     interface OnEndButtonClickListener {

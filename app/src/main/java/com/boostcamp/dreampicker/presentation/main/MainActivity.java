@@ -7,12 +7,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.databinding.ActivityMainBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
-import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.feed.voted.VotedFragment;
+import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -68,13 +67,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
                 fragment = VotedFragment.newInstance();
                 break;
             case R.id.navigation_profile:
-                final String userId = FirebaseManager.getCurrentUserId();
-                if (userId != null) {
-                    fragment = ProfileFragment.newInstance(userId);
-                } else {
-                    startActivity(LogInActivity.getLaunchIntent(this));
-                    finish();
-                }
+                fragment = ProfileFragment.newInstance();
                 break;
         }
 

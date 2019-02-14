@@ -1,80 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-        <variable
-            name="vm"
-            type="com.boostcamp.dreampicker.presentation.profile.ProfileViewModel" />
-        <import type="android.view.View"/>
-    </data>
-
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutDescription="@xml/collapsing_user_profile">
-
-        <ImageView
-            android:id="@+id/iv_user_image"
-            android:layout_width="@dimen/profile_image_size_large"
-            android:layout_height="@dimen/profile_image_size_large"
-            android:layout_marginTop="@dimen/space_median"
-            app:circleImage="@{vm.user.profileImageUrl}"/>
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{vm.user.name}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_x_large"
-            android:textStyle="bold"
-            android:gravity="center"/>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
+        android:layout_height="match_parent">
 
         <include
-            android:id="@+id/layout_feed"
-            layout="@layout/layout_profile_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            bind:count="@{String.valueOf(vm.user.feedCount)}"
-            bind:title="@{String.valueOf(@string/profile_feed_count)}" />
+            android:id="@+id/container"
+            layout="@layout/layout_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-        <include
-            android:id="@+id/layout_following"
-            layout="@layout/layout_profile_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            bind:count="@{String.valueOf(vm.user.feedCount)}"
-            bind:title="@{String.valueOf(@string/profile_voted_count)}" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_count_bottom"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="horizontal"/>
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:refreshing="@{safeUnbox(vm.isLoading)}"
-            app:onRefreshListener="@{vm::refreshMyFeeds}"
-            android:background="@drawable/line_top">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_profile_feed"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:items="@{vm.myFeedList}"/>
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </LinearLayout>
 </layout>
