@@ -38,18 +38,6 @@ public class MyFeedAdapter extends PagedListAdapter<MyFeed, MyFeedItemViewHolder
                 onEndButtonClickListener.onEndedButtonClick(item);
             }
         });
-
-        holder.binding().tvVoteState.setText(
-                item.isEnded() ? R.string.profile_vote_ended : R.string.profile_vote_not_ended
-        );
-
-        holder.binding().btnEnd.setBackgroundResource(
-                item.isEnded() ? R.drawable.line_round : R.drawable.line_round_red
-        );
-
-        holder.binding().btnEnd.setText(
-                item.isEnded() ? R.string.profile_request_restart : R.string.profile_request_end
-        );
     }
 
     interface OnEndButtonClickListener {
