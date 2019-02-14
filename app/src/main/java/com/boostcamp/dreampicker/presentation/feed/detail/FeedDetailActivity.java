@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
@@ -33,13 +34,13 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         super.onCreate(savedInstanceState);
         initViewModel();
         initViews();
-        binding.getVm().loadFeedDetail(getIntent().getStringExtra(EXTRA_FEED_ID));
+        subscribeViewModel();
+        loadFeedDetail();
     }
 
     private void initViews() {
         initToolbar();
-        //fainitViewPager();
-        //binding.btnFeedDetailVote.setOnClickListener(__ ->binding.getVm().vote(getIntent().getStringExtra(EXTRA_FEED_ID), ));
+        binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote());
     }
 
     private void initViewModel() {
@@ -62,10 +63,10 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         binding.toolbar.btnLeft.setOnClickListener(__ -> finish());
     }
 
-    private void initViewPager(FeedDetail feedDetail) {
+    private void initViewPager(@NonNull final FeedDetail feedDetail) {
         final Fragment[] fragments = new Fragment[2];
         fragments[0] = FeedDetailFragmentA.newInstance(feedDetail.getItemA().getImageUrl());
-        fragments[1] = FeedDetailFragmentB.newInstance(feedDetail.getItemA().getImageUrl());
+        fragments[1] = FeedDetailFragmentB.newInstance(feedDetail.getItemB().getImageUrl());
         final PagerAdapter pagerAdapter = new FeedDetailPagerAdapter(getSupportFragmentManager(), fragments);
         binding.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -76,12 +77,12 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
-                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_checked_white_8dp);
-                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_unchecked_white_8dp);
+                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_checked_black_8dp);
+                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_unchecked_black_8dp);
                     binding.getVm().changePosition();
                 } else {
-                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_unchecked_white_8dp);
-                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_checked_white_8dp);
+                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_unchecked_black_8dp);
+                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_checked_black_8dp);
                     binding.getVm().changePosition();
                 }
             }
@@ -107,6 +108,18 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         isShowTag = !isShowTag;
     }
 
+    private void subscribeViewModel() {
+        binding.getVm().getIsLoading().observe(this, isLoading -> {
+            if(isLoading) {
+                binding.loading.setVisibility(View.VISIBLE);
+            } else {
+                binding.loading.setVisibility(View.GONE);
+            }
+        });
+    }
+    private void loadFeedDetail(){
+        binding.getVm().loadFeedDetail(getIntent().getStringExtra(EXTRA_FEED_ID));
+    }
 
     @Override
     protected int getLayoutId() {

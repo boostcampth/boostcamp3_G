@@ -16,7 +16,8 @@ import androidx.fragment.app.Fragment;
 public class FeedDetailFragmentB extends BaseFragment<FragmentFeedDetailImageBinding> {
 
 
-    private static final String ARGUMENT_IMAGEURL_B = "ARGUMENT_IMAGEURLB";
+    private static final String ARGUMENT_IMAGEURL_B = "ARGUMENT_IMAGEURL_B";
+    private String imageUrlB;
 
     public FeedDetailFragmentB() {
     }
@@ -30,23 +31,35 @@ public class FeedDetailFragmentB extends BaseFragment<FragmentFeedDetailImageBin
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            imageUrlB = savedInstanceState.getString(ARGUMENT_IMAGEURL_B);
+        } else {
+            final Bundle args = getArguments();
+            if (args != null) {
+                imageUrlB = args.getString(ARGUMENT_IMAGEURL_B);
+            }
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        // Todo
-        if ((savedInstanceState != null ? savedInstanceState.getString(ARGUMENT_IMAGEURL_B) : null) != null) {
+        if (imageUrlB != null) {
             GlideApp.with(this)
-                    .load(savedInstanceState.getString(ARGUMENT_IMAGEURL_B))
+                    .load(imageUrlB)
                     .transform(new RoundedCorners(20))
                     .into(binding.ivFeedDetailImage);
         } else {
             GlideApp.with(this)
-                    .load(R.drawable.skin)
+                    .load(R.drawable.ic_photo)
                     .transform(new RoundedCorners(20))
                     .into(binding.ivFeedDetailImage);
         }
     }
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_feed_detail_image;

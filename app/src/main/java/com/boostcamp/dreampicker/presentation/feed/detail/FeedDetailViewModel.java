@@ -13,6 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class FeedDetailViewModel extends BaseViewModel {
 
     private static final String ERROR_NOT_EXIST = "Not Exists user information";
+    private static final int ERROR_REPEAT_COUNT = 3;
     @NonNull
     private final MutableLiveData<Boolean> position = new MutableLiveData<>();
     @NonNull
@@ -43,16 +44,18 @@ public class FeedDetailViewModel extends BaseViewModel {
         addDisposable(repository.getFeedDetail(userId, feedId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(feed -> {
-                            this.feedDetail.setValue(feed);
-                            isLoading.setValue(false);
-                        },error->{
+                    this.feedDetail.setValue(feed);
+                    isLoading.setValue(false);
+                }, error -> {
                     isLoading.setValue(false);
                     this.error.setValue(error);
                 }));
     }
 
-    void vote(@NonNull final String feedId, @NonNull final String selectionId) {
+    void vote() {
         final String userId = FirebaseManager.getCurrentUserId();
+        final FeedDetail feedDetail = this.feedDetail.getValue();
+        final Boolean position = this.position.getValue();
         if (userId == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
@@ -60,28 +63,42 @@ public class FeedDetailViewModel extends BaseViewModel {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
+
+        if (feedDetail == null) {
+            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
+        }
         isLoading.setValue(true);
+        final String feedId = feedDetail.getId();
+        final String selectionId;
+        if (Boolean.TRUE.equals(position)) {
+            selectionId = feedDetail.getItemA().getId();
+        } else {
+            selectionId = feedDetail.getItemB().getId();
+        }
         addDisposable(repository.vote(userId, feedId, selectionId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(feed -> isLoading.setValue(false),
-                        error::setValue));
+                .retry(ERROR_REPEAT_COUNT)
+                .subscribe(feed -> {
+                            isLoading.setValue(false);
+                        },
+                        error -> {
+                            isLoading.setValue(false);
+                            this.error.setValue(error);
+                        }));
     }
 
-    void changePosition(){
-        if(this.position.getValue()!=null){
-            if(Boolean.TRUE.equals(this.position.getValue())){
+    void changePosition() {
+        if (this.position.getValue() != null) {
+            if (Boolean.TRUE.equals(this.position.getValue())) {
                 this.position.setValue(false);
-            } else{
-               this.position.setValue(true);
+            } else {
+                this.position.setValue(true);
             }
         }
     }
 
     @NonNull
-    public LiveData<FeedDetail> getFeedDetail() {
-        return feedDetail;
-    }
-
+    public LiveData<FeedDetail> getFeedDetail() { return feedDetail; }
 
     @NonNull
     MutableLiveData<Boolean> getIsLoading() {
@@ -94,7 +111,5 @@ public class FeedDetailViewModel extends BaseViewModel {
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getPosition() {
-        return position;
-    }
+    public MutableLiveData<Boolean> getPosition() { return position; }
 }
