@@ -40,6 +40,7 @@ public class ImageUtil {
             GlideApp.with(imageView)
                     .load(url)
                     .transform(new RoundedCorners(20))
+                    .placeholder(R.drawable.ic_photo)
                     .error(R.drawable.ic_photo)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(imageView);

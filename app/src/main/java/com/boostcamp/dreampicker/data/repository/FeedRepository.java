@@ -19,9 +19,11 @@ public interface FeedRepository {
                                            @NonNull final Date startAfter, final int pageSize);
 
     @NonNull
-    Single<Feed> vote(@NonNull final String userId,
+    Completable vote(@NonNull final String userId,
                      @NonNull final String feedId,
                      @NonNull final String selectionId);
+
+    Single<Feed> getFeed(@NonNull final String userId, @NonNull final String feedId);
 
     // [업로드] 사용자가 작성한 피드를 서버에 업로드한다.
     @NonNull
