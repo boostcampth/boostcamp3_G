@@ -24,7 +24,7 @@
 
 
     <!-- 업로드 화면에서 사용 -->
-    <string name="upload_et_content_hint">무슨 일이 일어나고 있나요?</string>
+    <string name="upload_et_content_hint">무슨 고민이 있나요?</string>
     <string name="upload_tag_hint">추가</string>
     <string name="permission_denied_message">권한이 없습니다.</string>
     <string name="upload_fail_message">투표를 등록할 수 없습니다.</string>
@@ -34,4 +34,7 @@
 
     <!-- 피드 상세 화면 -->
     <string name="feed_detail_tag_toggle">TAG</string>
+
+    <!-- 투표 결과 화면 -->
+    <string name="voted_feed_empty_message">투표를 진행해 주세요!</string>
 </resources>
