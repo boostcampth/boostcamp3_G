@@ -38,7 +38,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.toolbar.setVisibility(View.GONE);
         initViewModel();
         initRecyclerView();
     }
@@ -47,21 +46,21 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
         ProfileViewModel viewModel = ViewModelProviders.of(this,
                 new ProfileViewModelFactory(Injection.provideUserRepository(), userId))
                 .get(ProfileViewModel.class);
-        binding.setVm(viewModel);
+        binding.container.setVm(viewModel);
     }
 
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.getVm().toggleVoteEnded(item, !item.isEnded()),
+                binding.container.getVm().toggleVoteEnded(item, !item.isEnded()),
                 userId.equals(FirebaseManager.getCurrentUserId()));
 
-        binding.getVm().getIsLoading().observe(this, isLoading -> {
+        binding.container.getVm().getIsLoading().observe(this, isLoading -> {
             if (!isLoading) {
                 adapter.notifyDataSetChanged();
             }
         });
 
-        binding.rvProfileFeed.setAdapter(adapter);
+        binding.container.rvProfileFeed.setAdapter(adapter);
     }
 
 }

@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.Injection;
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
-import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
+import com.boostcamp.dreampicker.databinding.ActivityProfileBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 
 import androidx.annotation.NonNull;
@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.lifecycle.ViewModelProviders;
 
-public class ProfileActivity extends BaseActivity<FragmentProfileBinding> {
+public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     private static final String EXTRA_USER_ID = "EXTRA_USER_ID";
 
     public static Intent getLaunchIntent(@NonNull Context context,
@@ -30,7 +30,7 @@ public class ProfileActivity extends BaseActivity<FragmentProfileBinding> {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_profile;
+        return R.layout.activity_profile;
     }
 
     @Override
@@ -63,21 +63,21 @@ public class ProfileActivity extends BaseActivity<FragmentProfileBinding> {
         ProfileViewModel viewModel = ViewModelProviders.of(this,
                 new ProfileViewModelFactory(Injection.provideUserRepository(), userId))
                 .get(ProfileViewModel.class);
-        binding.setVm(viewModel);
+        binding.container.setVm(viewModel);
     }
 
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.getVm().toggleVoteEnded(item, !item.isEnded()),
+                binding.container.getVm().toggleVoteEnded(item, !item.isEnded()),
                 userId.equals(FirebaseManager.getCurrentUserId()));
 
-        binding.getVm().getIsLoading().observe(this, isLoading -> {
+        binding.container.getVm().getIsLoading().observe(this, isLoading -> {
             if (!isLoading) {
                 adapter.notifyDataSetChanged();
             }
         });
 
-        binding.rvProfileFeed.setAdapter(adapter);
+        binding.container.rvProfileFeed.setAdapter(adapter);
     }
 
     @Override

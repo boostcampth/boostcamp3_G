@@ -1,104 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-
-        <variable
-            name="vm"
-            type="com.boostcamp.dreampicker.presentation.profile.ProfileViewModel" />
-
-        <import type="android.view.View" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorWhite"
-            android:elevation="3dp"
-            app:contentInsetStart="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                style="@style/ImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="@dimen/space_x_small"
-                android:src="@drawable/img_logo" />
-
-        </androidx.appcompat.widget.Toolbar>
-
-        <ImageView
-            android:id="@+id/iv_user_image"
-            android:layout_width="@dimen/profile_image_size_median"
-            android:layout_height="@dimen/profile_image_size_median"
-            android:layout_marginStart="@dimen/space_median"
-            android:layout_marginTop="@dimen/space_median"
-            android:layout_marginBottom="@dimen/space_median"
-            android:scaleX="0.95"
-            android:scaleY="0.95"
-            app:circleImage="@{vm.user.profileImageUrl}"
-            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_small"
-            android:layout_marginEnd="@dimen/space_small"
-            android:text="@{vm.user.name}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_large"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
-            app:layout_constraintStart_toEndOf="@id/iv_user_image"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
         <include
-            android:id="@+id/layout_following"
-            layout="@layout/layout_profile_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_median"
-            android:layout_marginEnd="@dimen/space_median"
-            android:scaleX="0.9"
-            android:scaleY="0.9"
-            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            bind:count="@{String.valueOf(vm.user.feedCount)}"
-            bind:title="@{String.valueOf(@string/profile_feed_count)}" />
+            android:id="@+id/container"
+            layout="@layout/layout_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/line_top"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_user_image"
-            app:onRefreshListener="@{vm::loadMyFeeds}"
-            app:refreshing="@{safeUnbox(vm.isLoading)}">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_profile_feed"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:pagedItems="@{vm.myFeedListLiveData}" />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
