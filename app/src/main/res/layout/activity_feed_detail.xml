@@ -72,6 +72,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/space_x_small"
+                    app:tagItems="@{safeUnbox(vm.position) ? vm.feedDetail.itemA.tagList : vm.feedDetail.itemB.tagList}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_detail_tag_toggle"
                     app:layout_constraintStart_toStartOf="parent"/>
@@ -94,7 +95,7 @@
                     android:layout_margin="@dimen/space_x_small"
                     android:layout_width="@dimen/profile_image_size_small"
                     android:layout_height="@dimen/profile_image_size_small"
-                    android:src="@drawable/profile2"
+                    app:circleImage="@{vm.feedDetail.writer.profileImageUrl}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tg_feed_detail_tag"/>
 
@@ -116,7 +117,7 @@
                     android:layout_marginStart="@dimen/space_x_small"
                     android:textColor="@color/colorWhite"
                     android:textSize="14sp"
-                    android:text="2019.02.22"
+                    app:date="@{vm.feedDetail.date}"
                     app:layout_constraintBottom_toBottomOf="@id/iv_feed_detail_user_image"
                     app:layout_constraintStart_toEndOf="@id/iv_feed_detail_user_image"/>
 
@@ -163,7 +164,7 @@
             android:layout_margin="@dimen/space_x_small"
             android:textColor="@color/colorWhite"
             android:textSize="14sp"
-            android:text="10"
+            android:text="@{String.valueOf(safeUnbox(vm.position) ? vm.feedDetail.itemA.voteCount : vm.feedDetail.itemB.voteCount)}"
             app:layout_constraintBottom_toTopOf="@id/btn_feed_detail_vote"
             app:layout_constraintEnd_toEndOf="parent"/>
 

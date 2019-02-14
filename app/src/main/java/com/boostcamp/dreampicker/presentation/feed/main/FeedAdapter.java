@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.ListAdapter;
 
 public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     interface OnItemClickListener {
-        void onItemClick();
+        void onItemClick(@NonNull final String feedId);
     }
     interface OnVoteListener {
         void onVote(@NonNull final String feedId,
@@ -52,6 +52,7 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
 
         holder.startVoteAnimation(feed.getItemA().getId(), feed.getItemB().getId(), feed.getSelectionId());
 
+        holder.itemView.setOnClickListener(__ -> onItemClickListener.onItemClick(feed.getId()));
         if(feed.getSelectionId() != null) {
             if(!holder.getBinding().cbFeedVoteCount.isChecked()) {
                 holder.getBinding().cbFeedVoteCount.performClick();

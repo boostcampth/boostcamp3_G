@@ -55,7 +55,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private void initRecyclerView() {
         final FeedAdapter adapter = new FeedAdapter(
                 (feedId, selectionId) -> binding.getVm().vote(feedId, selectionId),
-                () -> startActivity(FeedDetailActivity.getLaunchIntent(getContext(),"0rqqmHzlvf0BXp4dhyC8"))); // Todo : 상세보기로 이동
+                this::startFeedDetailActivity);
 
         binding.rvFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -107,5 +107,11 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_feed;
+    }
+
+    private void startFeedDetailActivity(@NonNull String feedId) {
+        if(getContext() != null) {
+            startActivity(FeedDetailActivity.getLaunchIntent(getContext(), feedId));
+        }
     }
 }
