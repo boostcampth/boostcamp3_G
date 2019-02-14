@@ -19,7 +19,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import java.util.Arrays;
 import java.util.List;
 
 import androidx.lifecycle.ViewModelProviders;
@@ -70,14 +69,14 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private void initToolbar() {
         final ImageButton btnClose = binding.toolbar.btnLeft;
         final ImageButton btnUpload = binding.toolbar.btnRight;
-        final List<String> tagListA = Arrays.asList(binding.tgUploadTagA.getTags());
-        final List<String> tagListB = Arrays.asList(binding.tgUploadTagB.getTags());
 
         btnClose.setImageResource(R.drawable.btn_toolbar_close);
         btnUpload.setImageResource(R.drawable.btn_toolbar_finger);
 
         btnClose.setOnClickListener(__ -> finish());
-        btnUpload.setOnClickListener(__ -> binding.getVm().upload(tagListA, tagListB));
+        btnUpload.setOnClickListener(__ -> binding.getVm().upload(
+                binding.tgUploadTagA.getTags(),
+                binding.tgUploadTagB.getTags()));
     }
 
     private void initImageViews() {
@@ -127,7 +126,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         });
 
         binding.getVm().getIsLoading().observe(this, loading -> {
-            if(loading) {
+            if (loading) {
                 loadingDialog.show();
             } else {
                 loadingDialog.hide();

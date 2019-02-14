@@ -6,7 +6,6 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.databinding.ActivitySplashBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.concurrent.TimeUnit;
 
