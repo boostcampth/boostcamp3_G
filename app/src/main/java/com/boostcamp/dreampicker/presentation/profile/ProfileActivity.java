@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.Injection;
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
+import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.ActivityProfileBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 
@@ -61,8 +61,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
 
     private void initViewModel() {
         ProfileViewModel viewModel = ViewModelProviders.of(this,
-                new ProfileViewModelFactory(Injection.provideUserRepository(), userId))
-                .get(ProfileViewModel.class);
+                Injection.provideProfileViewModelFactory(userId)).get(ProfileViewModel.class);
         binding.container.setVm(viewModel);
     }
 

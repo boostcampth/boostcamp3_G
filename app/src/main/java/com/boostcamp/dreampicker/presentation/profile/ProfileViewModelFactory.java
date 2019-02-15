@@ -13,8 +13,8 @@ public class ProfileViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final String userId;
 
-    ProfileViewModelFactory(@NonNull UserRepository repository,
-                            @NonNull String userId) {
+    public ProfileViewModelFactory(@NonNull UserRepository repository,
+                                   @NonNull String userId) {
         this.repository = repository;
         this.userId = userId;
     }

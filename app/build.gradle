@@ -97,6 +97,9 @@ dependencies {
 
     // CrashLytics
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+
+    // TedRxOnActivityForResult
+    compile 'gun0912.ted:tedonactivityresult-rx2:1.0.6'
 }
 // Firebase
 apply plugin: 'com.google.gms.google-services'
