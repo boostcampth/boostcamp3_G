@@ -22,7 +22,7 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     }
 
     interface OnProfileClickListener {
-        void onProfileClick(User writer);
+        void onProfileClick(@NonNull String writer);
     }
 
     interface OnVoteListener {
@@ -69,6 +69,7 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
                 onItemClickListener.onItemClick(feed.getId(),
                         feed.getItemA().getImageUrl(),
                         feed.getItemB().getImageUrl()));
+
         if (feed.getSelectionId() != null) {
             if (!holder.getBinding().cbFeedVoteCount.isChecked()) {
                 holder.getBinding().cbFeedVoteCount.performClick();
@@ -98,7 +99,7 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
                 }));
 
         holder.getBinding().ivWriterImg.setOnClickListener(v ->
-                onProfileClickListener.onProfileClick(feed.getWriter()));
+                onProfileClickListener.onProfileClick(feed.getWriter().getId()));
     }
 
     private static final DiffUtil.ItemCallback<Feed> DIFF_CALLBACK =

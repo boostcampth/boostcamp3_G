@@ -36,7 +36,6 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
                             @NonNull final String itemBId,
                             @Nullable final String selectionId) {
         final Context context = binding.getRoot().getContext();
-
         final int size = context.getResources().getDimensionPixelSize(R.dimen.vote_icon_size);
 
         final ShineButton button = binding.sbSelector;

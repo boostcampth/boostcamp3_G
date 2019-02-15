@@ -4,10 +4,13 @@
 
     <!-- 메인화면에서 사용 -->
     <string name="main_navigation_home">홈</string>
-    <string name="main_navigation_search">검색</string>
     <string name="main_navigation_upload">업로드</string>
-    <string name="main_navigation_notification">결과</string>
+    <string name="main_navigation_notification">내투표</string>
     <string name="main_navigation_profile">프로필</string>
+
+    <!-- 메인 피드 -->
+    <string name="feed_last_page">마지막 페이지입니다.</string>
+    <string name="feed_error_message">에러가 발생했습니다.</string>
 
     <!-- 프로필 화면에서 사용 -->
     <string name="profile_feed_count">업로드</string>
@@ -16,12 +19,8 @@
     <string name="profile_request_end">마감하기</string>
     <string name="profile_request_restart">재진행하기</string>
 
-    <!-- 검색 화면에서 사용 -->
-    <string name="search_text_hint">검색어를 입력하세요.</string>
-
     <!-- 투표 결과에서 사용 -->
     <string name="vote_result_title">투표</string>
-
 
     <!-- 업로드 화면에서 사용 -->
     <string name="upload_et_content_hint">무슨 고민이 있나요?</string>
