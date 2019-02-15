@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.local.room.AppDatabase;
@@ -46,6 +47,9 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
                 feedId = intent.getStringExtra(EXTRA_FEED_ID);
                 imageUrlA = intent.getStringExtra(EXTRA_IMAGEURL_A);
                 imageUrlB = intent.getStringExtra(EXTRA_IMAGEURL_B);
+            }else{
+                showToast(getString(R.string.feed_detail_error_message));
+                finish();
             }
         }
         initViewModel();
@@ -131,6 +135,10 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_feed_detail;
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     public static Intent getLaunchIntent(@NonNull Context context,

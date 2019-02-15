@@ -34,6 +34,7 @@
 
     <!-- 피드 상세 화면 -->
     <string name="feed_detail_tag_toggle">TAG</string>
+    <string name="feed_detail_error_message">상세정보를 불러 올 수 없습니다.</string>
     <string name="feed_detail_vote_button">투표하기</string>
     <string name="feed_detail_ended_vote_button">마감된 투표입니다.</string>
 
