@@ -10,13 +10,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.local.room.AppDatabase;
-import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
+import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.utils.LoadingDialog;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -52,11 +49,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
     private void initViewModel() {
         final UploadViewModel vm = ViewModelProviders.of(this,
-                new UploadViewModelFactory(
-                        FeedRepositoryImpl.getInstance(FirebaseFirestore.getInstance(),
-                                FirebaseStorage.getInstance(),
-                                AppDatabase.getDatabase(this).votedFeedDao())))
-                .get(UploadViewModel.class);
+                Injection.provideUploadViewModelFactory(this)).get(UploadViewModel.class);
 
         binding.setVm(vm);
         binding.setLifecycleOwner(this);
@@ -71,7 +64,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private void initToolbar() {
         setSupportActionBar(binding.toolbar);
         ActionBar toolbar = getSupportActionBar();
-        if(toolbar != null) {
+        if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setHomeAsUpIndicator(R.drawable.btn_toolbar_close);
             toolbar.setDisplayShowTitleEnabled(false);
@@ -152,7 +145,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.menu_upload) {
             binding.getVm().upload(

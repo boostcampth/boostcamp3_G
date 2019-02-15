@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.Injection;
+import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
 import com.boostcamp.dreampicker.databinding.ActivityLogInBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;

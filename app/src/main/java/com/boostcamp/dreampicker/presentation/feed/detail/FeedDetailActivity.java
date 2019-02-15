@@ -7,12 +7,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.local.room.AppDatabase;
-import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
+import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -62,11 +59,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
     private void initViewModel() {
         final FeedDetailViewModel vm = ViewModelProviders.of(this,
-                new FeedDetailViewModelFactory(FeedRepositoryImpl.getInstance(
-                        FirebaseFirestore.getInstance(),
-                        FirebaseStorage.getInstance(),
-                        AppDatabase.getDatabase(getApplicationContext()).votedFeedDao())))
-                .get(FeedDetailViewModel.class);
+                Injection.provideFeedDetailViewModelFactory(this)).get(FeedDetailViewModel.class);
 
         binding.setVm(vm);
     }

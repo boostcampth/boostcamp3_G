@@ -1,19 +1,15 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.local.room.AppDatabase;
-import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
+import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
-import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
+import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,11 +36,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private void initViewModel() {
         final FeedViewModel vm = ViewModelProviders.of(this,
-                new FeedViewModelFactory(FeedRepositoryImpl.getInstance(
-                        FirebaseFirestore.getInstance(),
-                        FirebaseStorage.getInstance(),
-                        AppDatabase.getDatabase(getContext()).votedFeedDao())))
-                .get(FeedViewModel.class);
+                Injection.provideFeedViewModelFactory(getContext())).get(FeedViewModel.class);
 
         binding.setVm(vm);
     }
