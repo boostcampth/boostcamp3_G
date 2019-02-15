@@ -7,64 +7,105 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.data.local.room.AppDatabase;
+import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> {
+
     private static final int NUM_PAGES = 2;
 
     private static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
+    private static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
+    private static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
 
-    private boolean isShowTag = true;
+    private String feedId;
+    private String imageUrlA;
+    private String imageUrlB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            feedId = savedInstanceState.getString(EXTRA_FEED_ID);
+            imageUrlA = savedInstanceState.getString(EXTRA_IMAGEURL_A);
+            imageUrlB = savedInstanceState.getString(EXTRA_IMAGEURL_B);
+        } else {
+            final Intent intent = getIntent();
+            if (intent != null) {
+                feedId = intent.getStringExtra(EXTRA_FEED_ID);
+                imageUrlA = intent.getStringExtra(EXTRA_IMAGEURL_A);
+                imageUrlB = intent.getStringExtra(EXTRA_IMAGEURL_B);
+            }
+        }
+        initViewModel();
         initViews();
+        subscribeViewModel();
+        loadFeedDetail();
     }
 
     private void initViews() {
         initToolbar();
-        initViewPager();
+        initViewPager(imageUrlA, imageUrlB);
+        binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote());
+    }
 
-        binding.tgFeedDetailTag.setTags("Assb", "SDS", "QQQQ","AASSDAS");
+    private void initViewModel() {
+        final FeedDetailViewModel vm = ViewModelProviders.of(this,
+                new FeedDetailViewModelFactory(FeedRepositoryImpl.getInstance(
+                        FirebaseFirestore.getInstance(),
+                        FirebaseStorage.getInstance(),
+                        AppDatabase.getDatabase(getApplicationContext()).votedFeedDao())))
+                .get(FeedDetailViewModel.class);
+
+        binding.setVm(vm);
     }
 
     private void initToolbar() {
         setSupportActionBar(binding.toolbar);
         ActionBar toolbar = getSupportActionBar();
-        if(toolbar != null) {
+        if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white);
             toolbar.setDisplayShowTitleEnabled(false);
         }
     }
 
-    private void initViewPager() {
-        final PagerAdapter pagerAdapter =  new FeedDetailPagerAdapter(getSupportFragmentManager());
+
+    private void initViewPager(@NonNull String imageUrlA, @NonNull String imageUrlB) {
+        final Fragment[] fragments = new Fragment[NUM_PAGES];
+        fragments[0] = FeedDetailFragment.newInstance(imageUrlA);
+        fragments[1] = FeedDetailFragment.newInstance(imageUrlB);
+        final PagerAdapter pagerAdapter = new FeedDetailPagerAdapter(getSupportFragmentManager(), fragments);
         binding.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
+
             @Override
             public void onPageSelected(int position) {
-                if(position == 0) {
-                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_checked_white_8dp);
-                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_unchecked_white_8dp);
+                if (position == 0) {
+                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_checked_black_8dp);
+                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_unchecked_black_8dp);
+                    binding.getVm().changePosition();
                 } else {
-                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_unchecked_white_8dp);
-                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_checked_white_8dp);
+                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_unchecked_black_8dp);
+                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_checked_black_8dp);
+                    binding.getVm().changePosition();
                 }
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
 
@@ -73,17 +114,18 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         binding.pager.setAdapter(pagerAdapter);
     }
 
-    public void onTagToggleButtonClick(View view) {
-        if(isShowTag) {
-            binding.tgFeedDetailTag.setVisibility(View.GONE);
-            binding.tvDetailTagToggle.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_keyboard_arrow_up_white, 0, 0, 0);
-        } else {
-            binding.tgFeedDetailTag.setVisibility(View.VISIBLE);
-            binding.tvDetailTagToggle.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_keyboard_arrow_down_white, 0, 0, 0);
-        }
-        isShowTag = !isShowTag;
+    private void subscribeViewModel() {
+        binding.getVm().getIsLoading().observe(this, isLoading -> {
+            if (isLoading) {
+                binding.loading.setVisibility(View.VISIBLE);
+            } else {
+                binding.loading.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void loadFeedDetail() {
+        binding.getVm().loadFeedDetail(feedId);
     }
 
     @Override
@@ -91,36 +133,21 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         return R.layout.activity_feed_detail;
     }
 
-    private class FeedDetailPagerAdapter extends FragmentStatePagerAdapter {
-        private Fragment[] fragments = new Fragment[2];
+    public static Intent getLaunchIntent(@NonNull Context context,
+                                         @NonNull String feedId,
+                                         @NonNull String imageUrlA,
+                                         @NonNull String imageUrlB) {
 
-        FeedDetailPagerAdapter(@NonNull FragmentManager fm) {
-            super(fm);
-            fragments[0] = FeedDetailLeftFragment.newInstance();
-            fragments[1] = FeedDetailRightFragment.newInstance();
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            return fragments[position];
-        }
-
-        @Override
-        public int getCount() {
-            return NUM_PAGES;
-        }
-    }
-
-    public static Intent getLaunchIntent(@NonNull Context context, @NonNull String feedId) {
         final Intent intent = new Intent(context, FeedDetailActivity.class);
         intent.putExtra(EXTRA_FEED_ID, feedId);
+        intent.putExtra(EXTRA_IMAGEURL_A, imageUrlA);
+        intent.putExtra(EXTRA_IMAGEURL_B, imageUrlB);
         return intent;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);
