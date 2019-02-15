@@ -33,7 +33,9 @@ public class MyFeedDataSource extends PageKeyedDataSource<Date, MyFeed> {
                 .getFeedListByUserId(userId, date, params.requestedLoadSize)
                 .blockingGet();
 
-        callback.onResult(itemList, date, itemList.get(itemList.size() - 1).getDate());
+        if (itemList.size() > 0) {
+            callback.onResult(itemList, date, itemList.get(itemList.size() - 1).getDate());
+        }
 
         if (itemList.size() < params.requestedLoadSize) {
             isLastPage = true;
@@ -54,8 +56,10 @@ public class MyFeedDataSource extends PageKeyedDataSource<Date, MyFeed> {
                     .getFeedListByUserId(userId, params.key, params.requestedLoadSize)
                     .blockingGet();
 
-            callback.onResult(itemList,
-                    itemList.get(itemList.size() - 1).getDate());
+            if (itemList.size() > 0) {
+                callback.onResult(itemList,
+                        itemList.get(itemList.size() - 1).getDate());
+            }
 
             if (itemList.size() < params.requestedLoadSize) {
                 isLastPage = true;
