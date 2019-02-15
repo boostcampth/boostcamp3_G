@@ -7,6 +7,7 @@
         <variable
             name="vm"
             type="com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailViewModel"/>
+        <import type="android.view.View"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -160,6 +161,7 @@
             android:id="@+id/pb_feed_detail_progress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="@{safeUnbox(vm.votePosition == 3) ? View.GONE : View.VISIBLE}"
             android:max="@{vm.feedDetail.itemA.voteCount + vm.feedDetail.itemB.voteCount}"
             android:progress="@{safeUnbox(vm.position == 0) ? vm.feedDetail.itemA.voteCount : vm.feedDetail.itemB.voteCount}"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -171,6 +173,7 @@
             android:id="@+id/tv_feed_detail_vote_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="@{safeUnbox(vm.votePosition == 3) ? View.GONE : View.VISIBLE}"
             android:layout_margin="@dimen/space_x_small"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
@@ -182,11 +185,10 @@
             android:id="@+id/btn_feed_detail_vote"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
             android:textSize="20sp"
             android:textColor="@color/colorWhite"
-            android:text="@{safeUnbox(!vm.feedDetail.isEnded) ? @string/feed_detail_vote_button : @string/feed_detail_ended_vote_button}"
-            android:clickable="@{!vm.feedDetail.isEnded}"
+            app:isEnded="@{vm.feedDetail.isEnded}"
+            app:isVotePosition="@{(vm.position == vm.votePosition)}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
