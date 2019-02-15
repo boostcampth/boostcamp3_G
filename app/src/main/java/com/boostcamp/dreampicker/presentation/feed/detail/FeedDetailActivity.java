@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
+import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 
 import androidx.annotation.NonNull;
@@ -44,7 +44,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
                 feedId = intent.getStringExtra(EXTRA_FEED_ID);
                 imageUrlA = intent.getStringExtra(EXTRA_IMAGEURL_A);
                 imageUrlB = intent.getStringExtra(EXTRA_IMAGEURL_B);
-            }else{
+            } else {
                 showToast(getString(R.string.feed_detail_error_message));
                 finish();
             }
@@ -58,7 +58,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     private void initViews() {
         initToolbar();
         initViewPager(imageUrlA, imageUrlB);
-        binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote());
+        initVoteButton();
     }
 
     private void initViewModel() {
@@ -78,6 +78,9 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         }
     }
 
+    private void initVoteButton() {
+        binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote());
+    }
 
     private void initViewPager(@NonNull String imageUrlA, @NonNull String imageUrlB) {
         final Fragment[] fragments = new Fragment[NUM_PAGES];
@@ -117,11 +120,6 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         binding.getVm().loadFeedDetail(feedId);
     }
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_feed_detail;
-    }
-
     private void showToast(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
@@ -137,6 +135,12 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         intent.putExtra(EXTRA_IMAGEURL_B, imageUrlB);
         return intent;
     }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_feed_detail;
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
