@@ -71,6 +71,7 @@ public class FeedViewModel extends BaseViewModel {
             if (backupFeed == null) {
                 error.setValue(e);
             } else {
+                error.setValue(e);
                 updateFeedList(backupFeed);
             }
         }));
