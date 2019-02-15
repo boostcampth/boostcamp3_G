@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Toast;
 
@@ -54,7 +55,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private void initRecyclerView() {
         final FeedAdapter adapter = new FeedAdapter(
-                (feedId, selectionId) -> binding.getVm().vote(feedId, selectionId),
+                (feedId, selectionId) -> binding.getVm().getVoteSubject().onNext(new Pair<>(feedId, selectionId)),
                 this::startFeedDetailActivity,
                 writer -> startActivity(ProfileActivity.getLaunchIntent(getContext(), writer)));
 
