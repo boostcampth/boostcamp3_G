@@ -13,7 +13,7 @@ public class VoteSelectionItem {
     private final String imageUrl; // 이미지 URL
     @Nullable
     private final List<String> tagList; // 이미지 태그 리스트
-    private final int voteCount; // 해당 이미지 투표 유저 수
+    private int voteCount; // 해당 이미지 투표 유저 수
 
     public VoteSelectionItem(@NonNull String id,
                              @NonNull String imageUrl,
@@ -42,6 +42,10 @@ public class VoteSelectionItem {
 
     public int getVoteCount() {
         return voteCount;
+    }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
     }
 
     @Override

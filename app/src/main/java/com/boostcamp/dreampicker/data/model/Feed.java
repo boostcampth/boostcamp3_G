@@ -38,6 +38,16 @@ public class Feed {
         this.selectionId = selectionId;
     }
 
+    public Feed(@NonNull Feed feed) {
+        id = feed.id;
+        writer = feed.writer;
+        content = feed.content;
+        date = feed.date;
+        itemA = feed.itemA;
+        itemB = feed.itemB;
+        selectionId = feed.selectionId;
+    }
+
     @NonNull
     public String getId() {
         return id;
@@ -71,6 +81,10 @@ public class Feed {
     @Nullable
     public String getSelectionId() {
         return selectionId;
+    }
+
+    public void setSelectionId(@Nullable String selectionId) {
+        this.selectionId = selectionId;
     }
 
     @Override
