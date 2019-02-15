@@ -23,8 +23,7 @@ import io.reactivex.subjects.PublishSubject;
 public class FeedViewModel extends BaseViewModel {
     private static final int PAGE_SIZE = 4;
     private static final int ERROR_REPEAT_COUNT = 3;
-    private static final String ERROR_NOT_EXIST_USER = "Not exists user information";
-    private static final String ERROR_NOT_EXIST_FEED = "Not exists feed";
+    private static final String ERROR_NOT_EXIST = "Not exists user or feed";
 
     @NonNull
     private final MutableLiveData<List<Feed>> feedList = new MutableLiveData<>();
@@ -54,20 +53,19 @@ public class FeedViewModel extends BaseViewModel {
         isLastPage.setValue(false);
         userId = FirebaseManager.getCurrentUserId();
 
-        addDisposable(voteSubject.
-                switchMap(pair -> {
-                    final Feed oldFeed = findFeedById(pair.first);
-                    if (oldFeed == null || userId == null) {
-                        return Observable.error(new IllegalArgumentException(ERROR_NOT_EXIST_FEED));
-                    }
-                    final Feed newFeed = createVoteFeed(oldFeed, pair.second);
-                    if (newFeed == null) {
-                        return Observable.just(pair.first);
-                    } else {
-                        updateFeedList(newFeed);
-                        return repository.vote(userId, pair.first, pair.second).andThen(Observable.just(pair.first));
-                    }
-                }).subscribe(this::getFeed, e -> {
+        addDisposable(voteSubject.switchMap(pair -> {
+            final Feed oldFeed = findFeedById(pair.first);
+            if (oldFeed == null || userId == null) {
+                return Observable.error(new IllegalArgumentException(ERROR_NOT_EXIST));
+            }
+            final Feed newFeed = createVoteFeed(oldFeed, pair.second);
+            if (newFeed == null) {
+                return Observable.just(pair.first);
+            } else {
+                updateFeedList(newFeed);
+                return repository.vote(userId, pair.first, pair.second).andThen(Observable.just(pair.first));
+            }
+        }).subscribe(this::getFeed, e -> {
             if (backupFeed == null) {
                 error.setValue(e);
             } else {
@@ -79,7 +77,7 @@ public class FeedViewModel extends BaseViewModel {
 
     void loadFeedList() {
         if (userId == null) {
-            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST_USER));
+            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
         if (Boolean.TRUE.equals(isLoading.getValue()) || Boolean.TRUE.equals(isLastPage.getValue())) {
@@ -110,7 +108,7 @@ public class FeedViewModel extends BaseViewModel {
 
     void getFeed(@NonNull final String feedId) {
         if (userId == null) {
-            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST_USER));
+            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
         addDisposable(repository.getFeed(userId, feedId)
