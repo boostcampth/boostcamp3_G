@@ -99,15 +99,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 0) {
-                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_checked_black_8dp);
-                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_unchecked_black_8dp);
-                    binding.getVm().changePosition();
-                } else {
-                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_unchecked_black_8dp);
-                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_checked_black_8dp);
-                    binding.getVm().changePosition();
-                }
+                binding.getVm().changePosition();
             }
 
             @Override

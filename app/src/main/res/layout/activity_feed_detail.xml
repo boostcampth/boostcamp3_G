@@ -54,7 +54,7 @@
             android:id="@+id/view_detail_page_1"
             android:layout_width="8dp"
             android:layout_height="8dp"
-            android:background="@drawable/ic_radio_button_checked_black_8dp"
+            android:background="@{safeUnbox(vm.position == 0) ? @drawable/ic_radio_button_checked_black_8dp : @drawable/ic_radio_button_unchecked_black_8dp}"
             app:layout_constraintBottom_toBottomOf="@id/pager"
             app:layout_constraintEnd_toStartOf="@id/guideline_center_vertical"/>
 
@@ -62,7 +62,7 @@
             android:id="@+id/view_detail_page_2"
             android:layout_width="8dp"
             android:layout_height="8dp"
-            android:background="@drawable/ic_radio_button_unchecked_black_8dp"
+            android:background="@{safeUnbox(vm.position == 0) ? @drawable/ic_radio_button_unchecked_black_8dp : @drawable/ic_radio_button_checked_black_8dp}"
             app:layout_constraintStart_toEndOf="@id/guideline_center_vertical"
             app:layout_constraintBottom_toBottomOf="@id/pager"/>
 
