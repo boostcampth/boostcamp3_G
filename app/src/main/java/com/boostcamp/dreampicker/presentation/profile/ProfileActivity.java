@@ -71,13 +71,13 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
                 binding.container.getVm().toggleVoteEnded(item, !item.isEnded()),
                 userId.equals(FirebaseManager.getCurrentUserId()));
 
+        binding.container.rvProfileFeed.setAdapter(adapter);
+
         binding.container.getVm().getIsLoading().observe(this, isLoading -> {
             if (!isLoading) {
                 adapter.notifyDataSetChanged();
             }
         });
-
-        binding.container.rvProfileFeed.setAdapter(adapter);
     }
 
     @Override
