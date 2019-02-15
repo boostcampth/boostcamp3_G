@@ -12,7 +12,7 @@ public class UploadViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final FeedRepository feedRepository;
 
-    UploadViewModelFactory(@NonNull final FeedRepository feedRepository) {
+    public UploadViewModelFactory(@NonNull final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
     }
 

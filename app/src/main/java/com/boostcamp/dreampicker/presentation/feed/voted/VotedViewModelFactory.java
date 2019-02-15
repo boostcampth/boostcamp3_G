@@ -10,7 +10,7 @@ public class VotedViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final FeedRepository repository;
 
-    VotedViewModelFactory(@NonNull FeedRepository repository) {
+    public VotedViewModelFactory(@NonNull FeedRepository repository) {
         this.repository = repository;
     }
 

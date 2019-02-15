@@ -2,20 +2,16 @@ package com.boostcamp.dreampicker.presentation.feed.voted;
 
 
 import android.os.Bundle;
+import android.view.View;
+
+import com.boostcamp.dreampicker.R;
+import com.boostcamp.dreampicker.di.Injection;
+import com.boostcamp.dreampicker.databinding.FragmentVotedBinding;
+import com.boostcamp.dreampicker.presentation.BaseFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-
-import android.view.View;
-
-import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.local.room.AppDatabase;
-import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
-import com.boostcamp.dreampicker.databinding.FragmentVotedBinding;
-import com.boostcamp.dreampicker.presentation.BaseFragment;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 
 public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
 
@@ -35,11 +31,7 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
 
     private void initViewModel() {
         final VotedViewModel viewModel = ViewModelProviders.of(this,
-                new VotedViewModelFactory(FeedRepositoryImpl.getInstance(
-                        FirebaseFirestore.getInstance(),
-                        FirebaseStorage.getInstance(),
-                        AppDatabase.getDatabase(getContext()).votedFeedDao())))
-                .get(VotedViewModel.class);
+                Injection.provideVotedViewModelFactory(getContext())).get(VotedViewModel.class);
 
         binding.setVm(viewModel);
     }
