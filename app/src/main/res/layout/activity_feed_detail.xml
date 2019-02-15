@@ -3,10 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="vm"
+            type="com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailViewModel"/>
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorBlack">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_horizontal"
@@ -40,16 +44,17 @@
             android:id="@+id/pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="0dp"
             app:layout_constraintBottom_toTopOf="@id/guideline_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <View
             android:id="@+id/view_detail_page_1"
             android:layout_width="8dp"
             android:layout_height="8dp"
-            android:background="@drawable/ic_radio_button_checked_white_8dp"
+            android:background="@drawable/ic_radio_button_checked_black_8dp"
             app:layout_constraintBottom_toBottomOf="@id/pager"
             app:layout_constraintEnd_toStartOf="@id/guideline_center_vertical"/>
 
@@ -57,7 +62,7 @@
             android:id="@+id/view_detail_page_2"
             android:layout_width="8dp"
             android:layout_height="8dp"
-            android:background="@drawable/ic_radio_button_unchecked_white_8dp"
+            android:background="@drawable/ic_radio_button_unchecked_black_8dp"
             app:layout_constraintStart_toEndOf="@id/guideline_center_vertical"
             app:layout_constraintBottom_toBottomOf="@id/pager"/>
 
@@ -72,13 +77,14 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorBlack">
+                android:background="@color/colorWhite">
 
                 <me.gujun.android.taggroup.TagGroup
                     android:id="@+id/tg_feed_detail_tag"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/space_x_small"
+                    app:tagItems="@{safeUnbox(vm.position) ? vm.feedDetail.itemA.tagList : vm.feedDetail.itemB.tagList}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_detail_tag_toggle"
                     app:layout_constraintStart_toStartOf="parent"/>
@@ -88,9 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/space_x_small"
-                    android:onClick="onTagToggleButtonClick"
-                    android:drawableStart="@drawable/ic_keyboard_arrow_down_white"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorBlack"
                     android:text="@string/feed_detail_tag_toggle"
                     android:elevation="5dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -101,7 +105,7 @@
                     android:layout_margin="@dimen/space_x_small"
                     android:layout_width="@dimen/profile_image_size_small"
                     android:layout_height="@dimen/profile_image_size_small"
-                    android:src="@drawable/profile2"
+                    app:circleImage="@{vm.feedDetail.writer.profileImageUrl}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tg_feed_detail_tag"/>
 
@@ -109,10 +113,10 @@
                     android:id="@+id/tv_feed_detail_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorBlack"
                     android:layout_marginStart="@dimen/space_x_small"
                     android:textSize="14sp"
-                    android:text="공유"
+                    android:text="@{vm.feedDetail.writer.name}"
                     app:layout_constraintTop_toTopOf="@id/iv_feed_detail_user_image"
                     app:layout_constraintStart_toEndOf="@id/iv_feed_detail_user_image"/>
 
@@ -121,9 +125,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_x_small"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorBlack"
                     android:textSize="14sp"
-                    android:text="2019-00-00"
+                    app:date="@{vm.feedDetail.date}"
                     app:layout_constraintBottom_toBottomOf="@id/iv_feed_detail_user_image"
                     app:layout_constraintStart_toEndOf="@id/iv_feed_detail_user_image"/>
 
@@ -132,9 +136,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/space_x_small"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorBlack"
                     android:textSize="14sp"
-                    android:text="졸리당!!!!!!!!!!!!! 심심하다. 놀고싶다??"
+                    android:text="@{vm.feedDetail.content}"
                     app:layout_constraintTop_toBottomOf="@id/iv_feed_detail_user_image"
                     app:layout_constraintVertical_bias="0.0"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -156,8 +160,8 @@
             android:id="@+id/pb_feed_detail_progress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:max="10"
-            android:progress="6"
+            android:max="@{vm.feedDetail.itemA.voteCount + vm.feedDetail.itemB.voteCount}"
+            android:progress="@{safeUnbox(vm.position) ? vm.feedDetail.itemA.voteCount : vm.feedDetail.itemB.voteCount}"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_feed_detail_vote_count"
@@ -168,9 +172,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space_x_small"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlack"
             android:textSize="14sp"
-            android:text="10"
+            android:text="@{String.valueOf(safeUnbox(vm.position) ? vm.feedDetail.itemA.voteCount : vm.feedDetail.itemB.voteCount)}"
             app:layout_constraintBottom_toTopOf="@id/btn_feed_detail_vote"
             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -178,13 +182,22 @@
             android:id="@+id/btn_feed_detail_vote"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#AAAAAA"
+            android:background="@color/colorPrimary"
             android:textSize="20sp"
-            android:textColor="@color/colorWhite"
-            android:text="투표하기"
+            android:textColor="@color/colorBlack"
+            android:text="@{safeUnbox(!vm.feedDetail.isEnded) ? @string/feed_detail_vote_button : @string/feed_detail_ended_vote_button}"
+            android:clickable="@{!vm.feedDetail.isEnded}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
-
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
