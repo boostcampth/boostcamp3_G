@@ -15,23 +15,24 @@ import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
-
-    public static Intent getLaunchIntent(Context context) {
-        return new Intent(context, MainActivity.class);
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_main;
-    }
+public class MainActivity extends BaseActivity<ActivityMainBinding>
+        implements BottomNavigationView.OnNavigationItemSelectedListener, HasSupportFragmentInjector {
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         initToolbar();
         initView();
@@ -40,7 +41,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
     private void initToolbar() {
         setSupportActionBar(binding.toolbar);
         ActionBar toolbar = getSupportActionBar();
-        if(toolbar != null) {
+        if (toolbar != null) {
             toolbar.setDisplayShowTitleEnabled(false);
         }
     }
@@ -82,5 +83,19 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
     public void upload(View view) {
         startActivity(UploadActivity.getLaunchIntent(this));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    public static Intent getLaunchIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
     }
 }

@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:name=".App">
         <activity android:name=".presentation.main.LogInActivity" />
         <activity android:name=".presentation.main.SplashActivity">
             <intent-filter>
