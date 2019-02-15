@@ -1,14 +1,12 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
+import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;
@@ -24,8 +22,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import static android.app.Activity.RESULT_OK;
 
 public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
-    private static final String TEXT_LAST_PAGE = "마지막 페이지입니다.";
-    private static final String ERROR_MESSAGE = "에러가 발생했습니다.";
 
     private boolean isLastPage = false;
 
@@ -68,7 +64,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (!binding.rvFeed.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
                     if (isLastPage) {
-                        showToast(TEXT_LAST_PAGE);
+                        showToast(getString(R.string.feed_last_page));
                     } else {
                         binding.getVm().loadFeedList();
                     }
@@ -98,7 +94,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         // Todo : Swipe 막기 처리 필요
         binding.getVm().getIsLastPage().observe(this, isLastPage -> this.isLastPage = isLastPage);
 
-        binding.getVm().getError().observe(this, e -> showToast(ERROR_MESSAGE));
+        binding.getVm().getError().observe(this, e -> showToast(getString(R.string.feed_error_message)));
     }
 
     private void showToast(String msg) {
