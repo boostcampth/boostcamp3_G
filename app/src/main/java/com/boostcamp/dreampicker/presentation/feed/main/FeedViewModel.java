@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -29,15 +31,17 @@ public class FeedViewModel extends BaseViewModel {
     @NonNull
     private final FeedRepository repository;
     private Date startAfter;
+    @Nullable
+    private String userId;
 
     FeedViewModel(@NonNull final FeedRepository repository) {
         this.repository = repository;
         isLoading.setValue(false);
         isLastPage.setValue(false);
+        userId = FirebaseManager.getCurrentUserId();
     }
 
     void loadFeedList() {
-        final String userId = FirebaseManager.getCurrentUserId();
         if (userId == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
@@ -81,14 +85,18 @@ public class FeedViewModel extends BaseViewModel {
         addDisposable(repository.vote(userId, feedId, selectionId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(ERROR_REPEAT_COUNT)
-                .subscribe(() -> getFeed(userId, feedId),
+                .subscribe(() -> getFeed(feedId),
                         e -> {
                             isLoading.setValue(false);
                             error.setValue(e);
                         }));
     }
 
-    private void getFeed(@NonNull final String userId, @NonNull final String feedId) {
+    void getFeed(@NonNull final String feedId) {
+        if(userId == null) {
+            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
+            return;
+        }
         addDisposable(repository.getFeed(userId, feedId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(ERROR_REPEAT_COUNT)
@@ -137,7 +145,7 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     @NonNull
-    MutableLiveData<Boolean> getIsLastPage() {
+    LiveData<Boolean> getIsLastPage() {
         return isLastPage;
     }
 

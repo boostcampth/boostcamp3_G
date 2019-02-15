@@ -1,6 +1,8 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -10,11 +12,16 @@ import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;
+import com.tedpark.tedonactivityresult.rx2.TedRxOnActivityResult;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+
+import static android.app.Activity.RESULT_OK;
 
 public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private static final String TEXT_LAST_PAGE = "마지막 페이지입니다.";
@@ -22,7 +29,10 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private boolean isLastPage = false;
 
+    private CompositeDisposable disposable = new CompositeDisposable();
+
     public FeedFragment() {
+
     }
 
     @Override
@@ -50,7 +60,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         final FeedAdapter adapter = new FeedAdapter(
                 (feedId, selectionId) -> binding.getVm().vote(feedId, selectionId),
                 this::startFeedDetailActivity,
-                writer -> startActivity(ProfileActivity.getLaunchIntent(getContext(), writer.getId())));
+                writer -> startActivity(ProfileActivity.getLaunchIntent(getContext(), writer)));
 
         binding.rvFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -108,7 +118,21 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
                                          @NonNull String imageUrlA,
                                          @NonNull String imageUrlB) {
         if (getContext() != null) {
-            startActivity(FeedDetailActivity.getLaunchIntent(getContext(), feedId, imageUrlA, imageUrlB));
+            disposable.add(TedRxOnActivityResult.with(getContext())
+                    .startActivityForResult(
+                            FeedDetailActivity.getLaunchIntent(getContext(), feedId, imageUrlA, imageUrlB))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(result -> {
+                        if (result.getResultCode() == RESULT_OK) {
+                            binding.getVm().getFeed(feedId);
+                        }
+                    }));
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
     }
 }

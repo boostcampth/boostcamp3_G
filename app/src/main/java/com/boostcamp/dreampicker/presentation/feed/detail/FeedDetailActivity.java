@@ -121,9 +121,10 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         binding.getVm().loadFeedDetail(feedId);
     }
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_feed_detail;
+    private void closeActivity() {
+        final Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     public static Intent getLaunchIntent(@NonNull Context context,
@@ -139,10 +140,20 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     @Override
+    protected int getLayoutId() {
+        return R.layout.activity_feed_detail;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            closeActivity();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        closeActivity();
     }
 }
