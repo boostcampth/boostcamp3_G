@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 public class FeedDetailFragment extends BaseFragment<FragmentFeedDetailImageBinding> {
 
     private static final String ARGUMENT_IMAGEURL = "ARGUMENT_IMAGEURL";
-    private String imageUrlA;
+    private String imageUrl;
 
     public FeedDetailFragment() {
 
@@ -34,11 +34,11 @@ public class FeedDetailFragment extends BaseFragment<FragmentFeedDetailImageBind
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            imageUrlA = savedInstanceState.getString(ARGUMENT_IMAGEURL);
+            imageUrl = savedInstanceState.getString(ARGUMENT_IMAGEURL);
         } else {
             final Bundle args = getArguments();
             if (args != null) {
-                imageUrlA = args.getString(ARGUMENT_IMAGEURL);
+                imageUrl = args.getString(ARGUMENT_IMAGEURL);
             }
         }
     }
@@ -47,17 +47,12 @@ public class FeedDetailFragment extends BaseFragment<FragmentFeedDetailImageBind
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (imageUrlA != null) {
             GlideApp.with(this)
-                    .load(imageUrlA)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.ic_photo)
+                    .error(R.drawable.ic_broken_image_black)
                     .transform(new RoundedCorners(20))
                     .into(binding.ivFeedDetailImage);
-        } else {
-            GlideApp.with(this)
-                    .load(R.drawable.ic_photo)
-                    .transform(new RoundedCorners(20))
-                    .into(binding.ivFeedDetailImage);
-        }
 
     }
 

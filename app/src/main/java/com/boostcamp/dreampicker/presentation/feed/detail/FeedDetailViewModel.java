@@ -16,6 +16,7 @@ public class FeedDetailViewModel extends BaseViewModel {
 
     private static final String ERROR_NOT_EXIST = "Not Exists user information";
     private static final int ERROR_REPEAT_COUNT = 3;
+    // true itemA, false itemB
     @NonNull
     private final MutableLiveData<Boolean> position = new MutableLiveData<>();
     @NonNull
@@ -30,6 +31,7 @@ public class FeedDetailViewModel extends BaseViewModel {
     FeedDetailViewModel(@NonNull final FeedRepository feedRepository) {
         this.repository = feedRepository;
         isLoading.setValue(false);
+        // itemA로 초기값 설정
         position.setValue(true);
     }
 
@@ -92,13 +94,10 @@ public class FeedDetailViewModel extends BaseViewModel {
     }
 
     void changePosition() {
-        Log.d("LEE",this.position.getValue().toString());
         if (Boolean.TRUE.equals(this.position.getValue())) {
             this.position.setValue(false);
-            Log.d("LEE"," -> " +this. position.getValue().toString());
         } else {
             this.position.setValue(true);
-            Log.d("LEE"," -> " +this. position.getValue().toString());
         }
 
     }
@@ -109,7 +108,7 @@ public class FeedDetailViewModel extends BaseViewModel {
     }
 
     @NonNull
-    MutableLiveData<Boolean> getIsLoading() {
+    LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 

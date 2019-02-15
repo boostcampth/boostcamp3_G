@@ -29,9 +29,25 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     private static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
     private static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
 
+    private String feedId;
+    private String imageUrlA;
+    private String imageUrlB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            feedId = savedInstanceState.getString(EXTRA_FEED_ID);
+            imageUrlA = savedInstanceState.getString(EXTRA_IMAGEURL_A);
+            imageUrlB = savedInstanceState.getString(EXTRA_IMAGEURL_B);
+        } else {
+            final Intent intent = getIntent();
+            if (intent != null) {
+                feedId = intent.getStringExtra(EXTRA_FEED_ID);
+                imageUrlA = intent.getStringExtra(EXTRA_IMAGEURL_A);
+                imageUrlB = intent.getStringExtra(EXTRA_IMAGEURL_B);
+            }
+        }
         initViewModel();
         initViews();
         subscribeViewModel();
@@ -40,8 +56,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
     private void initViews() {
         initToolbar();
-        initViewPager(getIntent().getStringExtra(EXTRA_IMAGEURL_A),
-                getIntent().getStringExtra(EXTRA_IMAGEURL_B));
+        initViewPager(imageUrlA, imageUrlB);
         binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote());
     }
 
@@ -53,7 +68,6 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
                         AppDatabase.getDatabase(getApplicationContext()).votedFeedDao())))
                 .get(FeedDetailViewModel.class);
 
-        binding.setLifecycleOwner(this);
         binding.setVm(vm);
     }
 
@@ -66,6 +80,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
             toolbar.setDisplayShowTitleEnabled(false);
         }
     }
+
 
     private void initViewPager(@NonNull String imageUrlA, @NonNull String imageUrlB) {
         final Fragment[] fragments = new Fragment[NUM_PAGES];
@@ -110,7 +125,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     private void loadFeedDetail() {
-        binding.getVm().loadFeedDetail(getIntent().getStringExtra(EXTRA_FEED_ID));
+        binding.getVm().loadFeedDetail(feedId);
     }
 
     @Override
