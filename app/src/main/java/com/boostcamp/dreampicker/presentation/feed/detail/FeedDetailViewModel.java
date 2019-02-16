@@ -26,35 +26,37 @@ public class FeedDetailViewModel extends BaseViewModel {
     private final FeedRepository repository;
     @NonNull
     private final String userId;
+    @NonNull
+    private final String feedId;
 
     FeedDetailViewModel(@NonNull final FeedRepository feedRepository,
-                        @NonNull final String userId) {
+                        @NonNull final String userId,
+                        @NonNull final String feedId) {
         this.repository = feedRepository;
         this.userId = userId;
+        this.feedId = feedId;
         isLoading.setValue(false);
-        // itemA로 초기값 설정
-        position.setValue(true);
+        position.setValue(true); // itemA로 초기값 설정
     }
 
-    void loadFeedDetail(@NonNull final String feedId) {
+    void loadFeedDetail() {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
         isLoading.setValue(true);
-        load(feedId);
+        load();
     }
 
     void vote() {
-        final FeedDetail feedDetail = this.feedDetail.getValue();
-        final Boolean position = this.position.getValue();
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
+        final FeedDetail feedDetail = this.feedDetail.getValue();
+        final Boolean position = this.position.getValue();
         if (feedDetail == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
         }
         isLoading.setValue(true);
-        final String feedId = feedDetail.getId();
         final String selectionId;
         if (Boolean.TRUE.equals(position)) {
             selectionId = feedDetail.getItemA().getId();
@@ -64,14 +66,14 @@ public class FeedDetailViewModel extends BaseViewModel {
         addDisposable(repository.vote(userId, feedId, selectionId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(ERROR_REPEAT_COUNT)
-                .subscribe(() -> load(feedId),
+                .subscribe(this::load,
                         error -> {
                             isLoading.setValue(false);
                             this.error.setValue(error);
                         }));
     }
 
-    private void load(@NonNull final String feedId) {
+    private void load() {
         addDisposable(repository.getFeedDetail(userId, feedId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(feed -> {

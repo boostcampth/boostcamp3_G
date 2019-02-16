@@ -23,11 +23,10 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
     private static final int NUM_PAGES = 2;
 
-    private static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
-    private static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
-    private static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
+    public static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
+    public static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
+    public static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
 
-    private String feedId;
     private String imageUrlA;
     private String imageUrlB;
 
@@ -38,13 +37,11 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            feedId = savedInstanceState.getString(EXTRA_FEED_ID);
             imageUrlA = savedInstanceState.getString(EXTRA_IMAGEURL_A);
             imageUrlB = savedInstanceState.getString(EXTRA_IMAGEURL_B);
         } else {
             final Intent intent = getIntent();
             if (intent != null) {
-                feedId = intent.getStringExtra(EXTRA_FEED_ID);
                 imageUrlA = intent.getStringExtra(EXTRA_IMAGEURL_A);
                 imageUrlB = intent.getStringExtra(EXTRA_IMAGEURL_B);
             }
@@ -120,7 +117,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     private void loadFeedDetail() {
-        binding.getVm().loadFeedDetail(feedId);
+        binding.getVm().loadFeedDetail();
     }
 
     private void closeActivity() {
