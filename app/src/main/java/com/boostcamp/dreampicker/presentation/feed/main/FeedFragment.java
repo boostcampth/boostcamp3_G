@@ -33,6 +33,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     @Inject
     FeedViewModelFactory factory;
 
+    @Inject
     public FeedFragment() {
 
     }
@@ -47,9 +48,6 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void initViewModel() {
-        /*final FeedViewModel vm = ViewModelProviders.of(this,
-                Injection.provideFeedViewModelFactory(getContext())).get(FeedViewModel.class);
-*/
         final FeedViewModel vm = ViewModelProviders.of(this, factory).get(FeedViewModel.class);
         binding.setVm(vm);
     }

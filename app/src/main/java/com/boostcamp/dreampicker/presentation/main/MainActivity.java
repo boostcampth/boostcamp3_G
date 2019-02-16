@@ -38,6 +38,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
         initView();
     }
 
+    @Inject
+    FeedFragment feedFragment;
+    @Inject
+    VotedFragment votedFragment;
+
     private void initToolbar() {
         setSupportActionBar(binding.toolbar);
         ActionBar toolbar = getSupportActionBar();
@@ -58,14 +63,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        Fragment fragment = FeedFragment.newInstance();
+        Fragment fragment = feedFragment;
 
         switch (menuItem.getItemId()) {
             case R.id.navigation_home:
-                fragment = FeedFragment.newInstance();
+                fragment = feedFragment;
                 break;
-            case R.id.navigation_notifications:
-                fragment = VotedFragment.newInstance();
+            case R.id.navigation_voted:
+                fragment = votedFragment;
                 break;
             case R.id.navigation_profile:
                 fragment = ProfileFragment.newInstance();

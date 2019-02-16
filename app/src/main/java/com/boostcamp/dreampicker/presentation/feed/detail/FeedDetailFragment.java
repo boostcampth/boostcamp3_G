@@ -57,13 +57,5 @@ public class FeedDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.setImageUrl(imageUrl);
-
-            /*GlideApp.with(this)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.ic_photo)
-                    .error(R.drawable.ic_broken_image_black)
-                    .transform(new RoundedCorners(20))
-                    .into(binding.ivFeedDetailImage);*/
-
     }
 }

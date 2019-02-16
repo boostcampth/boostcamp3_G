@@ -20,6 +20,7 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
     @Inject
     VotedViewModelFactory factory;
 
+    @Inject
     public VotedFragment() {
     }
 
