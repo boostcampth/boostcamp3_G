@@ -1,8 +1,5 @@
 package com.boostcamp.dreampicker.presentation.feed.detail;
 
-import android.util.Log;
-
-import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
@@ -27,9 +24,13 @@ public class FeedDetailViewModel extends BaseViewModel {
     private final MutableLiveData<Throwable> error = new MutableLiveData<>();
     @NonNull
     private final FeedRepository repository;
+    @NonNull
+    private final String userId;
 
-    FeedDetailViewModel(@NonNull final FeedRepository feedRepository) {
+    FeedDetailViewModel(@NonNull final FeedRepository feedRepository,
+                        @NonNull final String userId) {
         this.repository = feedRepository;
+        this.userId = userId;
         isLoading.setValue(false);
         // itemA로 초기값 설정
         position.setValue(true);
@@ -39,27 +40,16 @@ public class FeedDetailViewModel extends BaseViewModel {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
-        final String userId = FirebaseManager.getCurrentUserId();
-        if (userId == null) {
-            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
-            return;
-        }
         isLoading.setValue(true);
-        load(userId, feedId);
+        load(feedId);
     }
 
     void vote() {
-        final String userId = FirebaseManager.getCurrentUserId();
         final FeedDetail feedDetail = this.feedDetail.getValue();
         final Boolean position = this.position.getValue();
-        if (userId == null) {
-            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
-            return;
-        }
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
-
         if (feedDetail == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
         }
@@ -74,14 +64,14 @@ public class FeedDetailViewModel extends BaseViewModel {
         addDisposable(repository.vote(userId, feedId, selectionId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(ERROR_REPEAT_COUNT)
-                .subscribe(() -> load(userId, feedId),
+                .subscribe(() -> load(feedId),
                         error -> {
                             isLoading.setValue(false);
                             this.error.setValue(error);
                         }));
     }
 
-    private void load(@NonNull final String userId, @NonNull final String feedId) {
+    private void load(@NonNull final String feedId) {
         addDisposable(repository.getFeedDetail(userId, feedId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(feed -> {

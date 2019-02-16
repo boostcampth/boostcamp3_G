@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.FragmentVotedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
@@ -24,10 +23,6 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
     public VotedFragment() {
     }
 
-    public static VotedFragment newInstance() {
-        return new VotedFragment();
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -36,7 +31,8 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
     }
 
     private void initViewModel() {
-        final VotedViewModel viewModel = ViewModelProviders.of(this,factory).get(VotedViewModel.class);
+        final VotedViewModel viewModel =
+                ViewModelProviders.of(this,factory).get(VotedViewModel.class);
         binding.setVm(viewModel);
     }
 
@@ -48,7 +44,6 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
                 binding.ivVotedFeedEmptyFinger.setVisibility(View.VISIBLE);
                 binding.tvVotedFeedEmptyText.setVisibility(View.VISIBLE);
             }
-            adapter.submitList(list);
         });
     }
 

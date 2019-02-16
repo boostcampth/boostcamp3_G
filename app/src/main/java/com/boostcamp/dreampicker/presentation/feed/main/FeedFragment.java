@@ -48,7 +48,8 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void initViewModel() {
-        final FeedViewModel vm = ViewModelProviders.of(this, factory).get(FeedViewModel.class);
+        final FeedViewModel vm =
+                ViewModelProviders.of(this, factory).get(FeedViewModel.class);
         binding.setVm(vm);
     }
 
@@ -104,10 +105,6 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private void showToast(String msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    public static FeedFragment newInstance() {
-        return new FeedFragment();
     }
 
     @Override

@@ -23,7 +23,7 @@ import io.reactivex.subjects.PublishSubject;
 public class FeedViewModel extends BaseViewModel {
     private static final int PAGE_SIZE = 4;
     private static final int ERROR_REPEAT_COUNT = 3;
-    private static final String ERROR_NOT_EXIST = "Not exists user or feed";
+    private static final String ERROR_NOT_EXIST = "Not exists feed";
 
     @NonNull
     private final MutableLiveData<List<Feed>> feedList = new MutableLiveData<>();
@@ -33,29 +33,30 @@ public class FeedViewModel extends BaseViewModel {
     private final MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
     @NonNull
     private final MutableLiveData<Throwable> error = new MutableLiveData<>();
+    private Date startAfter;
+    @NonNull
+    private final String userId;
     @NonNull
     private final FeedRepository repository;
-    private Date startAfter;
-    @Nullable
-    private String userId;
     @NonNull
     private final PublishSubject<Pair<String, String>> voteSubject = PublishSubject.create();
     @Nullable
     private Feed backupFeed;
 
-    FeedViewModel(@NonNull final FeedRepository repository) {
+    FeedViewModel(@NonNull final FeedRepository repository,
+                  @NonNull final String userId) {
         this.repository = repository;
+        this.userId = userId;
         init();
     }
 
     private void init() {
         isLoading.setValue(false);
         isLastPage.setValue(false);
-        userId = FirebaseManager.getCurrentUserId();
 
         addDisposable(voteSubject.switchMap(pair -> {
             final Feed oldFeed = findFeedById(pair.first);
-            if (oldFeed == null || userId == null) {
+            if (oldFeed == null) {
                 return Observable.error(new IllegalArgumentException(ERROR_NOT_EXIST));
             }
             final Feed newFeed = createVoteFeed(oldFeed, pair.second);
@@ -76,10 +77,6 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     void loadFeedList() {
-        if (userId == null) {
-            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
-            return;
-        }
         if (Boolean.TRUE.equals(isLoading.getValue()) || Boolean.TRUE.equals(isLastPage.getValue())) {
             return;
         }
@@ -107,10 +104,6 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     void getFeed(@NonNull final String feedId) {
-        if (userId == null) {
-            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
-            return;
-        }
         addDisposable(repository.getFeed(userId, feedId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(ERROR_REPEAT_COUNT)

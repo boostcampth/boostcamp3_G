@@ -12,10 +12,14 @@ public class FeedDetailViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
     private final FeedRepository repository;
+    @NonNull
+    private final String userId;
 
     @Inject
-    public FeedDetailViewModelFactory(@NonNull FeedRepository repository) {
+    public FeedDetailViewModelFactory(@NonNull FeedRepository repository,
+                                      @NonNull String userId) {
         this.repository = repository;
+        this.userId = userId;
     }
 
     @NonNull
@@ -23,7 +27,7 @@ public class FeedDetailViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(FeedDetailViewModel.class)) {
             //noinspection unchecked
-            return (T) new FeedDetailViewModel(repository);
+            return (T) new FeedDetailViewModel(repository, userId);
         } else {
             throw new IllegalArgumentException("ViewModel Not Found");
         }

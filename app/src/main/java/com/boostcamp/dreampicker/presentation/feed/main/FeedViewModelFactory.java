@@ -11,10 +11,14 @@ import androidx.lifecycle.ViewModelProvider;
 public class FeedViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final FeedRepository repository;
+    @NonNull
+    private final String userId;
 
     @Inject
-    public FeedViewModelFactory(@NonNull FeedRepository repository) {
+    public FeedViewModelFactory(@NonNull FeedRepository repository,
+                                @NonNull String userId) {
         this.repository = repository;
+        this.userId = userId;
     }
 
     @NonNull
@@ -22,7 +26,7 @@ public class FeedViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if(modelClass.isAssignableFrom(FeedViewModel.class)) {
             //noinspection unchecked
-            return (T) new FeedViewModel(repository);
+            return (T) new FeedViewModel(repository, userId);
         } else {
             throw new IllegalArgumentException("ViewModel Not Found");
         }

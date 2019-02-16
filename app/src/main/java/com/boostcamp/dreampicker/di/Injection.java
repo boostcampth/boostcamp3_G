@@ -21,18 +21,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import androidx.annotation.NonNull;
 
 public class Injection {
-    public static FeedViewModelFactory provideFeedViewModelFactory(@NonNull Context context) {
-        return new FeedViewModelFactory(provideFeedRepository(context));
-    }
-
-    public static FeedDetailViewModelFactory provideFeedDetailViewModelFactory(@NonNull Context context) {
-        return new FeedDetailViewModelFactory(provideFeedRepository(context));
-    }
-
-    public static VotedViewModelFactory provideVotedViewModelFactory(@NonNull Context context) {
-        return new VotedViewModelFactory(provideFeedRepository(context));
-    }
-
     public static ProfileViewModelFactory provideProfileViewModelFactory(@NonNull String userId) {
         return new ProfileViewModelFactory(provideUserRepository(), userId);
     }
