@@ -96,7 +96,6 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
             }
         });
 
-        // Todo : Swipe 막기 처리 필요
         binding.getVm().getIsLastPage().observe(this, isLastPage -> this.isLastPage = isLastPage);
 
         binding.getVm().getError().observe(this, e -> showToast(getString(R.string.feed_error_message)));
