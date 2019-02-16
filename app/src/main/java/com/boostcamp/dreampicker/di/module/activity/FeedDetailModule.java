@@ -1,10 +1,9 @@
 package com.boostcamp.dreampicker.di.module.activity;
 
 import com.boostcamp.dreampicker.di.scope.FeedDetail;
+import com.boostcamp.dreampicker.di.scope.FeedId;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailViewModelFactory;
-
-import javax.inject.Named;
 
 import androidx.lifecycle.ViewModelProvider;
 import dagger.Binds;
@@ -19,7 +18,7 @@ abstract class FeedDetailModule {
 
     @FeedDetail
     @Provides
-    @Named("feed")
+    @FeedId
     static String provideFeedId(FeedDetailActivity activity) {
         return activity.getIntent().getStringExtra(FeedDetailActivity.EXTRA_FEED_ID);
     }
