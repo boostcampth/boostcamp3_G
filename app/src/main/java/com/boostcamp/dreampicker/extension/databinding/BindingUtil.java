@@ -1,10 +1,13 @@
 package com.boostcamp.dreampicker.extension.databinding;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+import com.boostcamp.dreampicker.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -87,5 +90,26 @@ public class BindingUtil {
             }
         }
         textView.setText(displayString);
+    }
+
+
+    @SuppressLint("ResourceAsColor")
+    @BindingAdapter(value = {"isEnded", "isVotePosition"})
+    public static void setVoteButton(@NonNull final Button button, final boolean isEnded, final boolean isVotePosition) {
+        if (isEnded){
+            button.setBackgroundResource(R.color.colorGray);
+            button.setClickable(false);
+            button.setText(R.string.feed_detail_ended_vote_button);
+        }else{
+            button.setText(R.string.feed_detail_vote_button);
+            if (isVotePosition){
+                button.setBackgroundResource(R.color.colorGray);
+                button.setClickable(false);
+            }else{
+                button.setBackgroundResource(R.color.colorPrimaryDark);
+                button.setClickable(true);
+            }
+        }
+
     }
 }
