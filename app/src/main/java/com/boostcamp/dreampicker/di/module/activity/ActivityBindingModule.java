@@ -6,6 +6,7 @@ import com.boostcamp.dreampicker.presentation.main.LogInActivity;
 import com.boostcamp.dreampicker.presentation.main.MainActivity;
 import com.boostcamp.dreampicker.presentation.main.SplashActivity;
 import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;
+import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -29,4 +30,8 @@ public abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = ProfileActivityModule.class)
     abstract ProfileActivity profileActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = UploadModule.class)
+    abstract UploadActivity uploadActivity();
 }

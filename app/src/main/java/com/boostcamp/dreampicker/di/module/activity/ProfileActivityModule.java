@@ -10,7 +10,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public abstract class ProfileActivityModule {
+abstract class ProfileActivityModule {
     @ActivityScoped
     @Binds
     abstract ViewModelProvider.Factory profileViewModelFactory(ProfileViewModelFactory factory);
