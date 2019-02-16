@@ -59,18 +59,13 @@ public class FeedDetailViewModel extends BaseViewModel {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
-
-        final String userId = FirebaseManager.getCurrentUserId();
         final FeedDetail feedDetail = this.feedDetail.getValue();
         final Integer position = this.position.getValue();
 
-        if (userId == null ||
-                feedDetail == null ||
-                position == null) {
+        if (feedDetail == null || position == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
-
         isLoading.setValue(true);
 
         final String feedId = feedDetail.getId();

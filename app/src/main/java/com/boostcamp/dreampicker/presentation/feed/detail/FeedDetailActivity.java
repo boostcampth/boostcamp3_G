@@ -25,8 +25,8 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     private static final int NUM_PAGES = 2;
 
     public static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
-    public static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
-    public static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
+    private static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
+    private static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
 
     private String imageUrlA;
     private String imageUrlB;

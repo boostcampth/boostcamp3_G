@@ -1,7 +1,6 @@
 package com.boostcamp.dreampicker.extension.databinding;
 
 import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -48,7 +47,7 @@ public class BindingUtil {
 
     @BindingAdapter({"tagItems"})
     public static void setTagItems(@NonNull final TagGroup tagGroup, @Nullable final List<String> tagList) {
-        if(tagList != null) {
+        if (tagList != null) {
             tagGroup.setTags(tagList);
             tagGroup.setVisibility(View.VISIBLE);
         } else {
@@ -66,7 +65,7 @@ public class BindingUtil {
     @BindingAdapter({"date"})
     public static void convertDateToDisplayText(@NonNull final TextView textView,
                                                 @Nullable final Date inputDate) {
-        if(inputDate == null){
+        if (inputDate == null) {
             return;
         }
 
@@ -96,16 +95,16 @@ public class BindingUtil {
     @SuppressLint("ResourceAsColor")
     @BindingAdapter(value = {"isEnded", "isVotePosition"})
     public static void setVoteButton(@NonNull final Button button, final boolean isEnded, final boolean isVotePosition) {
-        if (isEnded){
+        if (isEnded) {
             button.setBackgroundResource(R.color.colorGray);
             button.setClickable(false);
             button.setText(R.string.feed_detail_ended_vote_button);
-        }else{
+        } else {
             button.setText(R.string.feed_detail_vote_button);
-            if (isVotePosition){
+            if (isVotePosition) {
                 button.setBackgroundResource(R.color.colorGray);
                 button.setClickable(false);
-            }else{
+            } else {
                 button.setBackgroundResource(R.color.colorPrimaryDark);
                 button.setClickable(true);
             }
