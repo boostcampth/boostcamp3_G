@@ -32,7 +32,7 @@ public class UserRemoteDataSource implements UserDataSource {
 
 
     @Inject
-    public UserRemoteDataSource(@NonNull final FirebaseFirestore firestore) {
+    UserRemoteDataSource(@NonNull final FirebaseFirestore firestore) {
         this.firestore = firestore;
     }
 

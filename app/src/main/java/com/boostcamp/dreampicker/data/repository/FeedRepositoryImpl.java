@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
 import androidx.paging.DataSource;
@@ -34,6 +35,7 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
+@Singleton
 public class FeedRepositoryImpl implements FeedRepository {
     private static final String COLLECTION_FEED = "feed";
     private static final String COLLECTION_USER = "user";
@@ -51,27 +53,13 @@ public class FeedRepositoryImpl implements FeedRepository {
     @NonNull
     private final VotedFeedDao votedFeedDao;
 
-    private static volatile FeedRepositoryImpl INSTANCE = null;
-
-    public FeedRepositoryImpl(@NonNull final FirebaseFirestore firestore,
-                               @NonNull final FirebaseStorage storage,
-                               @NonNull final VotedFeedDao votedFeedDao) {
+    @Inject
+    FeedRepositoryImpl(@NonNull final FirebaseFirestore firestore,
+                              @NonNull final FirebaseStorage storage,
+                              @NonNull final VotedFeedDao votedFeedDao) {
         this.firestore = firestore;
         this.storage = storage;
         this.votedFeedDao = votedFeedDao;
-    }
-
-    public static FeedRepositoryImpl getInstance(@NonNull final FirebaseFirestore firestore,
-                                                 @NonNull final FirebaseStorage storage,
-                                                 @NonNull final VotedFeedDao votedFeedDao) {
-        if (INSTANCE == null) {
-            synchronized (FeedRepositoryImpl.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new FeedRepositoryImpl(firestore, storage, votedFeedDao);
-                }
-            }
-        }
-        return INSTANCE;
     }
 
     @NonNull

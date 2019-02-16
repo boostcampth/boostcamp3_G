@@ -6,28 +6,30 @@ import com.boostcamp.dreampicker.data.local.room.AppDatabase;
 import com.boostcamp.dreampicker.data.local.room.dao.VotedFeedDao;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.data.repository.FeedRepositoryImpl;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 
+import javax.inject.Singleton;
+
+import androidx.room.Room;
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class FeedRepositoryModule {
+public abstract class FeedRepositoryModule {
+    @Singleton
+    @Binds
+    abstract FeedRepository provideFeedRepository(FeedRepositoryImpl feedRepository);
+
+    @Singleton
     @Provides
-    FeedRepository provideRepository(FirebaseFirestore firestore,
-                                            FirebaseStorage storage,
-                                            VotedFeedDao votedFeedDao) {
-        return FeedRepositoryImpl.getInstance(firestore, storage, votedFeedDao);
+    static AppDatabase provideDb(Application context) {
+        return Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,"app_database")
+                .build();
     }
 
+    @Singleton
     @Provides
-    AppDatabase provideDb(Application context) {
-        return AppDatabase.getDatabase(context);
-    }
-
-    @Provides
-    VotedFeedDao provideVotedFeedDao(AppDatabase db) {
+    static VotedFeedDao provideVotedFeedDao(AppDatabase db) {
         return db.votedFeedDao();
     }
 }

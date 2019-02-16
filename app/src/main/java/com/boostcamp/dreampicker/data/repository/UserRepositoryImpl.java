@@ -23,7 +23,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserDataSource remoteDataSource;
 
     @Inject
-    public UserRepositoryImpl(@NonNull final UserDataSource remoteDataSource) {
+    UserRepositoryImpl(@NonNull final UserDataSource remoteDataSource) {
         this.remoteDataSource = remoteDataSource;
     }
 
