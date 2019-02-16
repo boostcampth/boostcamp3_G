@@ -1,11 +1,10 @@
 package com.boostcamp.dreampicker.presentation.feed.detail;
 
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
-import com.boostcamp.dreampicker.di.scope.FeedId;
-import com.boostcamp.dreampicker.di.scope.UserId;
+import com.boostcamp.dreampicker.di.scope.qualifier.FeedId;
+import com.boostcamp.dreampicker.di.scope.qualifier.UserId;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

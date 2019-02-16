@@ -1,11 +1,7 @@
 package com.boostcamp.dreampicker.di.module;
 
-import com.boostcamp.dreampicker.data.common.FirebaseManager;
-import com.boostcamp.dreampicker.di.scope.UserId;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -20,17 +16,5 @@ public class FirebaseModule {
     @Provides
     FirebaseStorage provideFirebaseStorage() {
         return FirebaseStorage.getInstance();
-    }
-
-    @Singleton
-    @Provides
-    @UserId
-    static String provideUserId() {
-        final String userId = FirebaseManager.getCurrentUserId();
-        if (userId != null) {
-            return userId;
-        } else {
-            throw new IllegalArgumentException("Not user information");
-        }
     }
 }

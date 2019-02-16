@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.di.scope;
+package com.boostcamp.dreampicker.di.scope.qualifier;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

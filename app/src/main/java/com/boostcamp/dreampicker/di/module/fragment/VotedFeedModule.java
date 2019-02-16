@@ -11,5 +11,5 @@ import dagger.Module;
 public abstract class VotedFeedModule {
     @FragmentScoped
     @Binds
-    abstract ViewModelProvider.Factory feedViewModelFactory(VotedViewModelFactory factory);
+    abstract ViewModelProvider.Factory votedFeedViewModelFactory(VotedViewModelFactory factory);
 }
