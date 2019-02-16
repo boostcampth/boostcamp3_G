@@ -12,6 +12,7 @@ import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -25,31 +26,21 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     private static final int NUM_PAGES = 2;
 
     public static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
-    private static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
-    private static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
+    public static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
+    public static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
 
-    private String imageUrlA;
-    private String imageUrlB;
-
+    @Inject
+    @Named("imageA")
+    String imageUrlA;
+    @Inject
+    @Named("imageB")
+    String imageUrlB;
     @Inject
     FeedDetailViewModelFactory factory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            imageUrlA = savedInstanceState.getString(EXTRA_IMAGEURL_A);
-            imageUrlB = savedInstanceState.getString(EXTRA_IMAGEURL_B);
-        } else {
-            final Intent intent = getIntent();
-            if (intent != null) {
-                imageUrlA = intent.getStringExtra(EXTRA_IMAGEURL_A);
-                imageUrlB = intent.getStringExtra(EXTRA_IMAGEURL_B);
-            } else {
-                showToast(getString(R.string.feed_detail_error_message));
-                finish();
-            }
-        }
         initViewModel();
         initViews();
         subscribeViewModel();

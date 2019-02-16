@@ -1,6 +1,5 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -126,12 +125,6 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
                         }
                     }));
         }
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        // AndroidSupportInjection.inject(this);
-        super.onAttach(context);
     }
 
     @Override

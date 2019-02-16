@@ -7,6 +7,8 @@ import com.boostcamp.dreampicker.di.scope.qualifier.UserId;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailViewModelFactory;
 
+import javax.inject.Named;
+
 import androidx.lifecycle.ViewModelProvider;
 import dagger.Binds;
 import dagger.Module;
@@ -35,5 +37,17 @@ abstract class FeedDetailModule {
     @Provides
     static String provideFeedId(FeedDetailActivity activity) {
         return activity.getIntent().getStringExtra(FeedDetailActivity.EXTRA_FEED_ID);
+    }
+
+    @Provides
+    @Named("imageA")
+    static String provideImageUrlA(FeedDetailActivity activity) {
+        return activity.getIntent().getStringExtra(FeedDetailActivity.EXTRA_IMAGEURL_A);
+    }
+
+    @Provides
+    @Named("imageB")
+    static String provideImageUrlB(FeedDetailActivity activity) {
+        return activity.getIntent().getStringExtra(FeedDetailActivity.EXTRA_IMAGEURL_B);
     }
 }
