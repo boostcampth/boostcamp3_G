@@ -14,25 +14,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 public class UserRemoteDataSource implements UserDataSource {
-    private static volatile UserDataSource INSTANCE = null;
-
-    public static UserDataSource getInstance(@NonNull final FirebaseFirestore firestore) {
-        if (INSTANCE == null) {
-            synchronized (UserRemoteDataSource.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new UserRemoteDataSource(firestore);
-                }
-            }
-        }
-        return INSTANCE;
-    }
-
     @NonNull
     private final FirebaseFirestore firestore;
     private final String COLLECTION_USER = "user";
@@ -42,7 +31,8 @@ public class UserRemoteDataSource implements UserDataSource {
     private final String FIELD_ENDED = "ended";
 
 
-    private UserRemoteDataSource(@NonNull final FirebaseFirestore firestore) {
+    @Inject
+    public UserRemoteDataSource(@NonNull final FirebaseFirestore firestore) {
         this.firestore = firestore;
     }
 
