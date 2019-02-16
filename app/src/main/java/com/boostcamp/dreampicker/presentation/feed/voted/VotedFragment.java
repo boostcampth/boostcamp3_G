@@ -9,11 +9,16 @@ import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.FragmentVotedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
+
+    @Inject
+    VotedViewModelFactory factory;
 
     public VotedFragment() {
     }
@@ -30,9 +35,7 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
     }
 
     private void initViewModel() {
-        final VotedViewModel viewModel = ViewModelProviders.of(this,
-                Injection.provideVotedViewModelFactory(getContext())).get(VotedViewModel.class);
-
+        final VotedViewModel viewModel = ViewModelProviders.of(this,factory).get(VotedViewModel.class);
         binding.setVm(viewModel);
     }
 

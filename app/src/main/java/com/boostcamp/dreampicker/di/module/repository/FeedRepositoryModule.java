@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.di.module;
+package com.boostcamp.dreampicker.di.module.repository;
 
 import android.app.Application;
 

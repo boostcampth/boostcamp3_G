@@ -3,7 +3,7 @@ package com.boostcamp.dreampicker.di.component;
 import android.app.Application;
 
 import com.boostcamp.dreampicker.App;
-import com.boostcamp.dreampicker.di.module.FeedRepositoryModule;
+import com.boostcamp.dreampicker.di.module.repository.FeedRepositoryModule;
 import com.boostcamp.dreampicker.di.module.FirebaseModule;
 import com.boostcamp.dreampicker.di.module.activity.ActivityBindingModule;
 import com.boostcamp.dreampicker.di.module.AppModule;

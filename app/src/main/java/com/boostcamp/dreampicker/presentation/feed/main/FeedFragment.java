@@ -31,7 +31,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
-    public FeedViewModelFactory factory;
+    FeedViewModelFactory factory;
 
     public FeedFragment() {
 
