@@ -11,6 +11,8 @@ import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
@@ -29,6 +31,9 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     private String feedId;
     private String imageUrlA;
     private String imageUrlB;
+
+    @Inject
+    FeedDetailViewModelFactory factory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +63,8 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     private void initViewModel() {
-        final FeedDetailViewModel vm = ViewModelProviders.of(this,
-                Injection.provideFeedDetailViewModelFactory(this)).get(FeedDetailViewModel.class);
-
+        final FeedDetailViewModel vm =
+                ViewModelProviders.of(this, factory).get(FeedDetailViewModel.class);
         binding.setVm(vm);
     }
 
@@ -73,7 +77,6 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
             toolbar.setDisplayShowTitleEnabled(false);
         }
     }
-
 
     private void initViewPager(@NonNull String imageUrlA, @NonNull String imageUrlB) {
         final Fragment[] fragments = new Fragment[NUM_PAGES];

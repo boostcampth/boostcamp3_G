@@ -1,8 +1,7 @@
 package com.boostcamp.dreampicker.di.module.activity;
 
 import com.boostcamp.dreampicker.di.module.fragment.ProfileActivityModule;
-import com.boostcamp.dreampicker.di.module.fragment.ProfileModule;
-import com.boostcamp.dreampicker.di.scope.ActivityScope;
+import com.boostcamp.dreampicker.di.scope.ActivityScoped;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.main.LogInActivity;
 import com.boostcamp.dreampicker.presentation.main.MainActivity;
@@ -14,23 +13,23 @@ import dagger.android.ContributesAndroidInjector;
 
 @Module
 public abstract class ActivityBindingModule {
-    @ActivityScope
+    @ActivityScoped
     @ContributesAndroidInjector
     abstract SplashActivity splashActivity();
 
-    @ActivityScope
+    @ActivityScoped
     @ContributesAndroidInjector
     abstract LogInActivity logInActivity();
 
-    @ActivityScope
+    @ActivityScoped
     @ContributesAndroidInjector(modules = MainModule.class)
     abstract MainActivity mainActivity();
 
-    @ActivityScope
-    @ContributesAndroidInjector
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = FeedDetailModule.class)
     abstract FeedDetailActivity feedDetailActivity();
 
-    @ActivityScope
+    @ActivityScoped
     @ContributesAndroidInjector(modules = ProfileActivityModule.class)
     abstract ProfileActivity profileActivity();
 }
