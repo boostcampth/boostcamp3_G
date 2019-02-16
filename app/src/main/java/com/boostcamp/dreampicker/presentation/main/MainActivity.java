@@ -42,6 +42,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     FeedFragment feedFragment;
     @Inject
     VotedFragment votedFragment;
+    @Inject
+    ProfileFragment profileFragment;
 
     private void initToolbar() {
         setSupportActionBar(binding.toolbar);
@@ -73,7 +75,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
                 fragment = votedFragment;
                 break;
             case R.id.navigation_profile:
-                fragment = ProfileFragment.newInstance();
+                fragment = profileFragment;
                 break;
         }
 

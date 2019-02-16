@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
@@ -18,14 +17,9 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     @Inject
     ProfileViewModelFactory factory;
+
     @Inject
-    String userId;
-
     public ProfileFragment() {
-    }
-
-    public static ProfileFragment newInstance() {
-        return new ProfileFragment();
     }
 
     @Override
@@ -53,8 +47,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.container.getVm().toggleVoteEnded(item, !item.isEnded()),
-                userId.equals(FirebaseManager.getCurrentUserId()));
+                binding.container.getVm().toggleVoteEnded(item, !item.isEnded()), true);
 
         binding.container.rvProfileFeed.setAdapter(adapter);
 
