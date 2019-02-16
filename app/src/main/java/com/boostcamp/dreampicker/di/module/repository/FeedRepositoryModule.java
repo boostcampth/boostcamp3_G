@@ -15,19 +15,19 @@ import dagger.Provides;
 @Module
 public class FeedRepositoryModule {
     @Provides
-    public FeedRepository provideRepository(FirebaseFirestore firestore,
+    FeedRepository provideRepository(FirebaseFirestore firestore,
                                             FirebaseStorage storage,
                                             VotedFeedDao votedFeedDao) {
         return FeedRepositoryImpl.getInstance(firestore, storage, votedFeedDao);
     }
 
     @Provides
-    public AppDatabase provideDb(Application context) {
+    AppDatabase provideDb(Application context) {
         return AppDatabase.getDatabase(context);
     }
 
     @Provides
-    public VotedFeedDao provideVotedFeedDao(AppDatabase db) {
+    VotedFeedDao provideVotedFeedDao(AppDatabase db) {
         return db.votedFeedDao();
     }
 }

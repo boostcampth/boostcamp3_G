@@ -5,9 +5,10 @@ import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
-import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,14 +16,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
+    @Inject
+    ProfileViewModelFactory factory;
+    @Inject
+    String userId;
+
     public ProfileFragment() {
     }
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
-
-    private String userId;
 
     @Override
     protected int getLayoutId() {
@@ -32,7 +36,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userId = FirebaseManager.getCurrentUserId();
     }
 
     @Override
@@ -43,8 +46,8 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     }
 
     private void initViewModel() {
-        ProfileViewModel viewModel = ViewModelProviders.of(this,
-                Injection.provideProfileViewModelFactory(userId)).get(ProfileViewModel.class);
+        final ProfileViewModel viewModel =
+                ViewModelProviders.of(this, factory).get(ProfileViewModel.class);
         binding.container.setVm(viewModel);
     }
 

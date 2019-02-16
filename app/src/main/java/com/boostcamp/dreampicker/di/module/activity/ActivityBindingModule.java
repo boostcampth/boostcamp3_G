@@ -1,5 +1,7 @@
 package com.boostcamp.dreampicker.di.module.activity;
 
+import com.boostcamp.dreampicker.di.module.fragment.ProfileActivityModule;
+import com.boostcamp.dreampicker.di.module.fragment.ProfileModule;
 import com.boostcamp.dreampicker.di.scope.ActivityScope;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.main.LogInActivity;
@@ -29,6 +31,6 @@ public abstract class ActivityBindingModule {
     abstract FeedDetailActivity feedDetailActivity();
 
     @ActivityScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = ProfileActivityModule.class)
     abstract ProfileActivity profileActivity();
 }

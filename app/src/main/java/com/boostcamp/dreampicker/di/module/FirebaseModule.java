@@ -9,12 +9,12 @@ import dagger.Provides;
 @Module
 public class FirebaseModule {
     @Provides
-    public FirebaseFirestore provideFirestore() {
+    FirebaseFirestore provideFirestore() {
         return FirebaseFirestore.getInstance();
     }
 
     @Provides
-    public FirebaseStorage provideFirebaseStorage() {
+    FirebaseStorage provideFirebaseStorage() {
         return FirebaseStorage.getInstance();
     }
 }
