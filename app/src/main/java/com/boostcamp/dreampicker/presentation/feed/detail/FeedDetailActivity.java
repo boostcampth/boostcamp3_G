@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
@@ -44,6 +45,9 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
             if (intent != null) {
                 imageUrlA = intent.getStringExtra(EXTRA_IMAGEURL_A);
                 imageUrlB = intent.getStringExtra(EXTRA_IMAGEURL_B);
+            } else {
+                showToast(getString(R.string.feed_detail_error_message));
+                finish();
             }
         }
         initViewModel();
@@ -55,7 +59,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     private void initViews() {
         initToolbar();
         initViewPager(imageUrlA, imageUrlB);
-        binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote());
+        initVoteButton();
     }
 
     private void initViewModel() {
@@ -74,6 +78,10 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         }
     }
 
+    private void initVoteButton() {
+        binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote());
+    }
+
     private void initViewPager(@NonNull String imageUrlA, @NonNull String imageUrlB) {
         final Fragment[] fragments = new Fragment[NUM_PAGES];
         fragments[0] = FeedDetailFragment.newInstance(imageUrlA);
@@ -87,15 +95,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 0) {
-                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_checked_black_8dp);
-                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_unchecked_black_8dp);
-                    binding.getVm().changePosition();
-                } else {
-                    binding.viewDetailPage1.setBackgroundResource(R.drawable.ic_radio_button_unchecked_black_8dp);
-                    binding.viewDetailPage2.setBackgroundResource(R.drawable.ic_radio_button_checked_black_8dp);
-                    binding.getVm().changePosition();
-                }
+                binding.getVm().changePosition();
             }
 
             @Override
@@ -120,6 +120,10 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         binding.getVm().loadFeedDetail();
     }
 
+    private void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
     private void closeActivity() {
         final Intent intent = new Intent();
         setResult(RESULT_OK, intent);
@@ -142,6 +146,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     protected int getLayoutId() {
         return R.layout.activity_feed_detail;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

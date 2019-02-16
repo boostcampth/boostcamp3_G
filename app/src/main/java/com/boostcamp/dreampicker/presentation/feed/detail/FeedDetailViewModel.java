@@ -13,9 +13,16 @@ public class FeedDetailViewModel extends BaseViewModel {
 
     private static final String ERROR_NOT_EXIST = "Not Exists user information";
     private static final int ERROR_REPEAT_COUNT = 3;
-    // true itemA, false itemB
+    private static final int positionA = 0;
+    private static final int positionB = 1;
+    private static final int positionNotVoted = 3;
+
+    // 0 : itemA, 1 : itemB
     @NonNull
-    private final MutableLiveData<Boolean> position = new MutableLiveData<>();
+    private final MutableLiveData<Integer> position = new MutableLiveData<>();
+    // 투표한 위치
+    @NonNull
+    private final MutableLiveData<Integer> votePosition = new MutableLiveData<>();
     @NonNull
     private final MutableLiveData<FeedDetail> feedDetail = new MutableLiveData<>();
     @NonNull
@@ -36,7 +43,8 @@ public class FeedDetailViewModel extends BaseViewModel {
         this.userId = userId;
         this.feedId = feedId;
         isLoading.setValue(false);
-        position.setValue(true); // itemA로 초기값 설정
+        // itemA로 초기값 설정
+        position.setValue(positionA);
     }
 
     void loadFeedDetail() {
@@ -51,14 +59,24 @@ public class FeedDetailViewModel extends BaseViewModel {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
+
+        final String userId = FirebaseManager.getCurrentUserId();
         final FeedDetail feedDetail = this.feedDetail.getValue();
-        final Boolean position = this.position.getValue();
-        if (feedDetail == null) {
+        final Integer position = this.position.getValue();
+
+        if (userId == null ||
+                feedDetail == null ||
+                position == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
+            return;
         }
+
         isLoading.setValue(true);
+
+        final String feedId = feedDetail.getId();
         final String selectionId;
-        if (Boolean.TRUE.equals(position)) {
+
+        if (position == positionA) {
             selectionId = feedDetail.getItemA().getId();
         } else {
             selectionId = feedDetail.getItemB().getId();
@@ -78,6 +96,7 @@ public class FeedDetailViewModel extends BaseViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(feed -> {
                     this.feedDetail.setValue(feed);
+                    setVotePosition(feed);
                     isLoading.setValue(false);
                 }, e -> {
                     isLoading.setValue(false);
@@ -85,13 +104,29 @@ public class FeedDetailViewModel extends BaseViewModel {
                 }));
     }
 
-    void changePosition() {
-        if (Boolean.TRUE.equals(this.position.getValue())) {
-            this.position.setValue(false);
-        } else {
-            this.position.setValue(true);
-        }
+    private void setVotePosition(@NonNull final FeedDetail feedDetail) {
+        final String selectionId = feedDetail.getSelectionId();
+        final String imageAId = feedDetail.getItemA().getId();
 
+        if (selectionId == null) {
+            votePosition.setValue(positionNotVoted);
+        } else {
+            if (selectionId.equals(imageAId)) {
+                votePosition.setValue(positionA);
+            } else {
+                votePosition.setValue(positionB);
+            }
+        }
+    }
+
+    void changePosition() {
+        final Integer position = this.position.getValue();
+        if (position == null) return;
+        if (position == positionA) {
+            this.position.setValue(positionB);
+        } else {
+            this.position.setValue(positionA);
+        }
     }
 
     @NonNull
@@ -105,12 +140,13 @@ public class FeedDetailViewModel extends BaseViewModel {
     }
 
     @NonNull
-    MutableLiveData<Throwable> getError() {
-        return error;
+    public MutableLiveData<Integer> getPosition() {
+        return position;
     }
 
     @NonNull
-    public MutableLiveData<Boolean> getPosition() {
-        return position;
+    public LiveData<Integer> getVotePosition() {
+        return votePosition;
     }
+
 }
