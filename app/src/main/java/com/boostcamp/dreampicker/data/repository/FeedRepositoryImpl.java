@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.paging.DataSource;
 import io.reactivex.Completable;
@@ -51,7 +53,7 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     private static volatile FeedRepositoryImpl INSTANCE = null;
 
-    private FeedRepositoryImpl(@NonNull final FirebaseFirestore firestore,
+    public FeedRepositoryImpl(@NonNull final FirebaseFirestore firestore,
                                @NonNull final FirebaseStorage storage,
                                @NonNull final VotedFeedDao votedFeedDao) {
         this.firestore = firestore;

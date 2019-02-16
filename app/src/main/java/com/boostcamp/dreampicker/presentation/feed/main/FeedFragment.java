@@ -8,17 +8,17 @@ import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
-import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;
 import com.tedpark.tedonactivityresult.rx2.TedRxOnActivityResult;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -29,6 +29,9 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private boolean isLastPage = false;
 
     private CompositeDisposable disposable = new CompositeDisposable();
+
+    @Inject
+    public FeedViewModelFactory factory;
 
     public FeedFragment() {
 
@@ -44,9 +47,10 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void initViewModel() {
-        final FeedViewModel vm = ViewModelProviders.of(this,
+        /*final FeedViewModel vm = ViewModelProviders.of(this,
                 Injection.provideFeedViewModelFactory(getContext())).get(FeedViewModel.class);
-
+*/
+        final FeedViewModel vm = ViewModelProviders.of(this, factory).get(FeedViewModel.class);
         binding.setVm(vm);
     }
 
@@ -131,7 +135,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     @Override
     public void onAttach(@NonNull Context context) {
-        AndroidSupportInjection.inject(this);
+        // AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
 
