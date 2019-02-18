@@ -13,6 +13,7 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.utils.LoadingDialog;
+import com.boostcamp.dreampicker.utils.NetworkUtil;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -152,9 +153,14 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.menu_upload) {
-            binding.getVm().upload(
-                    binding.tgUploadTagA.getTags(),
-                    binding.tgUploadTagB.getTags());
+            if (NetworkUtil.isNetworkConnected(getApplicationContext())) {
+                binding.getVm().upload(
+                        binding.tgUploadTagA.getTags(),
+                        binding.tgUploadTagB.getTags());
+            } else {
+                showToast(getString(R.string.network_connection_state_notification));
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }

@@ -11,6 +11,7 @@ import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;
+import com.boostcamp.dreampicker.utils.NetworkUtil;
 import com.tedpark.tedonactivityresult.rx2.TedRxOnActivityResult;
 
 import javax.inject.Inject;
@@ -71,11 +72,16 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (!binding.rvFeed.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
-                    if (isLastPage) {
-                        showToast(getString(R.string.feed_last_page));
+                    if (NetworkUtil.isNetworkConnected(getContext())) {
+                        if (isLastPage) {
+                            showToast(getString(R.string.feed_last_page));
+                        } else {
+                            binding.getVm().loadFeedList();
+                        }
                     } else {
-                        binding.getVm().loadFeedList();
+                        showToast(getString(R.string.network_connection_state_notification));
                     }
+
                 }
             }
         });
@@ -85,8 +91,13 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private void initSwipeRefreshLayout() {
         binding.swipe.setOnRefreshListener(() -> {
-            binding.getVm().refresh();
-            binding.swipe.setRefreshing(false);
+            if (NetworkUtil.isNetworkConnected(getContext())) {
+                binding.getVm().refresh();
+                binding.swipe.setRefreshing(false);
+            } else {
+                showToast(getString(R.string.network_connection_state_notification));
+            }
+
         });
     }
 
