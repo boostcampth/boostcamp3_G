@@ -74,4 +74,12 @@ public class FeedUploadRequest {
     public List<String> getTagListB() {
         return tagListB;
     }
+
+    public void setTagListA(@Nullable List<String> tagListA) {
+        this.tagListA = tagListA;
+    }
+
+    public void setTagListB(@Nullable List<String> tagListB) {
+        this.tagListB = tagListB;
+    }
 }

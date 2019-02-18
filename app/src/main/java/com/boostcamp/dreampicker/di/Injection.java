@@ -10,6 +10,7 @@ import com.boostcamp.dreampicker.data.repository.UserRepository;
 import com.boostcamp.dreampicker.data.repository.UserRepositoryImpl;
 import com.boostcamp.dreampicker.data.source.firestore.UserDataSource;
 import com.boostcamp.dreampicker.data.source.firestore.UserRemoteDataSource;
+import com.boostcamp.dreampicker.data.source.firestore.vision.RetrofitClient;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailViewModelFactory;
 import com.boostcamp.dreampicker.presentation.feed.main.FeedViewModelFactory;
 import com.boostcamp.dreampicker.presentation.feed.voted.VotedViewModelFactory;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import androidx.annotation.NonNull;
+import retrofit2.Retrofit;
 
 public class Injection {
     public static FeedViewModelFactory provideFeedViewModelFactory(@NonNull Context context) {
@@ -45,7 +47,8 @@ public class Injection {
         return FeedRepositoryImpl.getInstance(
                 provideFirebaseFirestore(),
                 provideFirebaseStorage(),
-                provideVotedFeedDao(context));
+                provideVotedFeedDao(context),
+                provideRetrofit());
     }
 
     public static UserRepository provideUserRepository() {
@@ -66,5 +69,9 @@ public class Injection {
 
     private static VotedFeedDao provideVotedFeedDao(@NonNull Context context) {
         return AppDatabase.getDatabase(context).votedFeedDao();
+    }
+
+    private static Retrofit provideRetrofit() {
+        return RetrofitClient.getInstance();
     }
 }

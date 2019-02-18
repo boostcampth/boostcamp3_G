@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.data.repository;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.local.room.dao.VotedFeedDao;
@@ -12,6 +13,8 @@ import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedRequestMapper;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firestore.model.MyFeedRemoteData;
+import com.boostcamp.dreampicker.data.source.firestore.vision.TagListApi;
+import com.boostcamp.dreampicker.data.source.firestore.vision.model.getTagListResponse;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,8 +34,10 @@ import androidx.paging.DataSource;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
 
 public class FeedRepositoryImpl implements FeedRepository {
+
     private static final String COLLECTION_FEED = "feed";
     private static final String COLLECTION_USER = "user";
     private static final String SUBCOLLECTION_MYFEEDS = "myFeeds";
@@ -48,24 +53,29 @@ public class FeedRepositoryImpl implements FeedRepository {
     private final FirebaseStorage storage;
     @NonNull
     private final VotedFeedDao votedFeedDao;
+    @NonNull
+    private final Retrofit retrofit;
 
     private static volatile FeedRepositoryImpl INSTANCE = null;
 
     private FeedRepositoryImpl(@NonNull final FirebaseFirestore firestore,
                                @NonNull final FirebaseStorage storage,
-                               @NonNull final VotedFeedDao votedFeedDao) {
+                               @NonNull final VotedFeedDao votedFeedDao,
+                               @NonNull final Retrofit retrofit) {
         this.firestore = firestore;
         this.storage = storage;
         this.votedFeedDao = votedFeedDao;
+        this.retrofit = retrofit;
     }
 
     public static FeedRepositoryImpl getInstance(@NonNull final FirebaseFirestore firestore,
                                                  @NonNull final FirebaseStorage storage,
-                                                 @NonNull final VotedFeedDao votedFeedDao) {
+                                                 @NonNull final VotedFeedDao votedFeedDao,
+                                                 @NonNull final Retrofit retrofit) {
         if (INSTANCE == null) {
             synchronized (FeedRepositoryImpl.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new FeedRepositoryImpl(firestore, storage, votedFeedDao);
+                    INSTANCE = new FeedRepositoryImpl(firestore, storage, votedFeedDao, retrofit);
                 }
             }
         }
@@ -162,7 +172,21 @@ public class FeedRepositoryImpl implements FeedRepository {
         return Single
                 .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())),
                         uploadImageStorage(Uri.parse(uploadFeed.getImagePathB()))
-                        , (imageUrlA, imageUrlB) -> FeedRequestMapper.toFeed(uploadFeed, imageUrlA, imageUrlB))
+                        , (imageUrlA, imageUrlB) -> {
+//                            getTagListResponse(imageUrlA);
+//                            getTagListResponse(imageUrlB);
+//                            Single.zip(getTagListResponse(imageUrlA),
+//                                            getTagListResponse(imageUrlB),
+//                                            (A, B) -> {
+//                                                uploadFeed.setTagListA(A.getResult().getTagListKr());
+//                                                Log.d("LEE","tagListA"+A.getResult().getTagListKr());
+//                                                uploadFeed.setTagListB(B.getResult().getTagListKr());
+//                                                Log.d("LEE","tagListB"+B.getResult().getTagListKr());
+//                                                return uploadFeed;
+//                                            });
+
+                             return FeedRequestMapper.toFeed(uploadFeed, imageUrlA, imageUrlB);
+                        })
                 .flatMapCompletable(feedRemoteData ->
                         Completable.create(emitter -> {
                             final String writerId = FirebaseManager.getCurrentUserId();
@@ -248,5 +272,12 @@ public class FeedRepositoryImpl implements FeedRepository {
     @Override
     public DataSource.Factory<Integer, VotedFeed> getMyVotedFeedList() {
         return votedFeedDao.selectAll();
+    }
+
+    @NonNull
+    private Single<getTagListResponse> getTagListResponse(String imageUrl) {
+        Log.d("LEE", "getTagListResponse");
+        return retrofit.create(TagListApi.class)
+                .getTagList(imageUrl);
     }
 }

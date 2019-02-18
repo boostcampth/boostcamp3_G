@@ -2,6 +2,7 @@ package com.boostcamp.dreampicker.presentation.upload;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
@@ -122,5 +123,6 @@ public class UploadViewModel extends BaseViewModel {
         } else {
             imagePathB.setValue(uri.toString());
         }
+        Log.d("LEE"," uri.toString() "+ uri.toString());
     }
 }
