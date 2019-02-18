@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -34,7 +35,8 @@
                 app:circleImage="@{feed.writer.profileImageUrl}"
                 app:layout_constraintBottom_toTopOf="@+id/guideline_feed_top_ver"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tv_feed_writer_name"
@@ -134,7 +136,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline_feed_image_horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_feed_content"
-                app:recImage="@{feed.itemA.imageUrl}" />
+                app:recImage="@{feed.itemA.imageUrl}"
+                tools:ignore="ContentDescription" />
 
             <me.gujun.android.taggroup.TagGroup
                 android:id="@+id/tv_feed_tag_a"
@@ -157,7 +160,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guideline_feed_image_horizontal"
                 app:layout_constraintTop_toBottomOf="@id/tv_feed_content"
-                app:recImage="@{feed.itemB.imageUrl}" />
+                app:recImage="@{feed.itemB.imageUrl}"
+                tools:ignore="ContentDescription" />
 
             <me.gujun.android.taggroup.TagGroup
                 android:id="@+id/tv_feed_tag_b"

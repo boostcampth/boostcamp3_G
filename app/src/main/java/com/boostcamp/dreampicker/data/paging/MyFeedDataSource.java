@@ -9,7 +9,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.paging.PageKeyedDataSource;
 
-public class MyFeedDataSource extends PageKeyedDataSource<Date, MyFeed> {
+class MyFeedDataSource extends PageKeyedDataSource<Date, MyFeed> {
 
     @NonNull
     private final UserDataSource remoteDataSource;
@@ -18,7 +18,7 @@ public class MyFeedDataSource extends PageKeyedDataSource<Date, MyFeed> {
 
     private boolean isLastPage = false;
 
-    public MyFeedDataSource(@NonNull UserDataSource remoteDataSource,
+    MyFeedDataSource(@NonNull UserDataSource remoteDataSource,
                             @NonNull String userId) {
         this.remoteDataSource = remoteDataSource;
         this.userId = userId;

@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-public class FeedDetailFragment extends Fragment {
+class FeedDetailFragment extends Fragment {
     private static final String ARGUMENT_IMAGE_URL = "ARGUMENT_IMAGE_URL";
     private String imageUrl;
     private FragmentFeedDetailImageBinding binding;

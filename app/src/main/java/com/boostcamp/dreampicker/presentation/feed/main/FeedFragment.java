@@ -60,7 +60,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private void initRecyclerView() {
         final Context context = getContext();
-        if(context == null) {
+        if (context == null) {
             throw new IllegalStateException("Activity is null");
         }
         final FeedAdapter adapter = new FeedAdapter(
@@ -107,7 +107,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void showToast(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

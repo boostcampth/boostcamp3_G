@@ -61,7 +61,7 @@
             android:layout_height="8dp"
             android:layout_marginTop="@dimen/space_xx_small"
             android:layout_marginBottom="@dimen/space_xx_small"
-            android:background="@{safeUnbox(vm.position == 0) ? @drawable/ic_radio_button_checked_black_8dp : @drawable/ic_radio_button_unchecked_black_8dp}"
+            android:background="@{safeUnbox(vm.position) == 0 ? @drawable/ic_radio_button_checked_black_8dp : @drawable/ic_radio_button_unchecked_black_8dp}"
             app:layout_constraintEnd_toStartOf="@id/guideline_center_vertical"
             app:layout_constraintTop_toBottomOf="@id/pager" />
 
@@ -71,7 +71,7 @@
             android:layout_height="8dp"
             android:layout_marginTop="@dimen/space_xx_small"
             android:layout_marginBottom="@dimen/space_xx_small"
-            android:background="@{safeUnbox(vm.position == 0) ? @drawable/ic_radio_button_unchecked_black_8dp : @drawable/ic_radio_button_checked_black_8dp}"
+            android:background="@{safeUnbox(vm.position) == 0 ? @drawable/ic_radio_button_unchecked_black_8dp : @drawable/ic_radio_button_checked_black_8dp}"
             app:layout_constraintStart_toEndOf="@id/guideline_center_vertical"
             app:layout_constraintTop_toBottomOf="@id/pager" />
 
@@ -117,7 +117,7 @@
                     android:layout_margin="@dimen/space_x_small"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tagItems="@{safeUnbox(vm.position == 0) ? vm.feedDetail.itemA.tagList : vm.feedDetail.itemB.tagList}" />
+                    app:tagItems="@{safeUnbox(vm.position) == 0 ? vm.feedDetail.itemA.tagList : vm.feedDetail.itemB.tagList}" />
 
                 <ImageView
                     android:id="@+id/iv_feed_detail_user_image"
@@ -182,8 +182,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:max="@{vm.feedDetail.itemA.voteCount + vm.feedDetail.itemB.voteCount}"
-            android:progress="@{safeUnbox(vm.position == 0) ? vm.feedDetail.itemA.voteCount : vm.feedDetail.itemB.voteCount}"
-            android:visibility="@{safeUnbox(vm.votePosition == 3) ? View.GONE : View.VISIBLE}"
+            android:progress="@{safeUnbox(vm.position) == 0 ? vm.feedDetail.itemA.voteCount : vm.feedDetail.itemB.voteCount}"
+            android:visibility="@{safeUnbox(vm.votePosition) == 3 ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/btn_feed_detail_vote"
             app:layout_constraintEnd_toStartOf="@id/tv_feed_detail_vote_count"
             app:layout_constraintStart_toStartOf="parent" />
@@ -193,10 +193,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space_x_small"
-            android:text="@{String.valueOf(safeUnbox(vm.position == 0) ? vm.feedDetail.itemA.voteCount : vm.feedDetail.itemB.voteCount)}"
+            android:text="@{String.valueOf(safeUnbox(vm.position) == 0 ? vm.feedDetail.itemA.voteCount : vm.feedDetail.itemB.voteCount)}"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
-            android:visibility="@{safeUnbox(vm.votePosition == 3) ? View.GONE : View.VISIBLE}"
+            android:visibility="@{safeUnbox(vm.votePosition) == 3 ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/btn_feed_detail_vote"
             app:layout_constraintEnd_toEndOf="parent" />
 

@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
-public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
+class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     interface OnItemClickListener {
         void onItemClick(@NonNull final String feedId,
                          @NonNull final String imageUrlA,
