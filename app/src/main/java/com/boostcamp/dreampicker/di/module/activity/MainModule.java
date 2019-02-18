@@ -34,18 +34,6 @@ abstract class MainModule {
     abstract ProfileFragment profileFragment();
 
     @ActivityScoped
-    @Provides
-    @UserId
-    static String provideMyId() {
-        final String userId = FirebaseManager.getCurrentUserId();
-        if (userId != null) {
-            return userId;
-        } else {
-            throw new IllegalArgumentException("Not user information");
-        }
-    }
-
-    @ActivityScoped
     @Binds
     abstract Activity bindActivity(Activity activity);
 }

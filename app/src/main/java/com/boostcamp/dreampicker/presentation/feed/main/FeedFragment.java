@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
+import com.boostcamp.dreampicker.di.scope.qualifier.UserId;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;
@@ -36,6 +37,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     @Inject
     Context context;
     @Inject
+    @UserId
     String userId;
 
     @Inject

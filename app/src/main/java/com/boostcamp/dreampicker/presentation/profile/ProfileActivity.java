@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityProfileBinding;
+import com.boostcamp.dreampicker.di.scope.qualifier.UserId;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 
 import javax.inject.Inject;
@@ -18,6 +19,10 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     public static final String EXTRA_USER_ID = "EXTRA_USER_ID";
+
+    @Inject
+    @UserId
+    String userId;
 
     public static Intent getLaunchIntent(@NonNull Context context,
                                          @NonNull String userId) {
@@ -59,7 +64,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
 
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.container.getVm().toggleVoteEnded(item, !item.isEnded()), false);
+                binding.container.getVm().toggleVoteEnded(userId, item, !item.isEnded()), false);
 
         binding.container.rvProfileFeed.setAdapter(adapter);
 

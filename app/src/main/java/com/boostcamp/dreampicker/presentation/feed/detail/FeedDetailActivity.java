@@ -8,10 +8,10 @@ import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
+import com.boostcamp.dreampicker.di.scope.qualifier.UserId;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -24,22 +24,28 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
     private static final int NUM_PAGES = 2;
 
-    public static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
-    public static final String EXTRA_IMAGE_URL_A = "EXTRA_IMAGE_URL_A";
-    public static final String EXTRA_IMAGE_URL_B = "EXTRA_IMAGE_URL_B";
+    private static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
+    private static final String EXTRA_IMAGE_URL_A = "EXTRA_IMAGE_URL_A";
+    private static final String EXTRA_IMAGE_URL_B = "EXTRA_IMAGE_URL_B";
+
+    private String imageUrlA, imageUrlB;
+    private String feedId;
 
     @Inject
-    @Named("imageA")
-    String imageUrlA;
-    @Inject
-    @Named("imageB")
-    String imageUrlB;
-    @Inject
     FeedDetailViewModelFactory factory;
+    @Inject
+    @UserId
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        feedId = intent.getStringExtra(EXTRA_FEED_ID);
+        imageUrlA = intent.getStringExtra(EXTRA_IMAGE_URL_A);
+        imageUrlB = intent.getStringExtra(EXTRA_IMAGE_URL_B);
+
         initViewModel();
         initViews();
         subscribeViewModel();
@@ -69,7 +75,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     private void initVoteButton() {
-        binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote());
+        binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote(userId));
     }
 
     private void initViewPager(@NonNull String imageUrlA, @NonNull String imageUrlB) {
@@ -107,7 +113,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     private void loadFeedDetail() {
-        binding.getVm().loadFeedDetail();
+        binding.getVm().loadFeedDetail(userId, feedId);
     }
 
     private void closeActivity() {

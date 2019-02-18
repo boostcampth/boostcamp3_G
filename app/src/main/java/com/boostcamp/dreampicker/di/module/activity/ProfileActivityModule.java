@@ -15,10 +15,4 @@ abstract class ProfileActivityModule {
     @ActivityScoped
     @Binds
     abstract ViewModelProvider.Factory profileViewModelFactory(ProfileViewModelFactory factory);
-
-    @ActivityScoped
-    @Provides
-    static String provideUserId(ProfileActivity activity) {
-        return activity.getIntent().getStringExtra(ProfileActivity.EXTRA_USER_ID);
-    }
 }

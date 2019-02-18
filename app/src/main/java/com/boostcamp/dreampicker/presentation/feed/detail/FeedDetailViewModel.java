@@ -31,31 +31,24 @@ public class FeedDetailViewModel extends BaseViewModel {
     private final MutableLiveData<Throwable> error = new MutableLiveData<>();
     @NonNull
     private final FeedRepository repository;
-    @NonNull
-    private final String userId;
-    @NonNull
-    private final String feedId;
 
-    FeedDetailViewModel(@NonNull final FeedRepository feedRepository,
-                        @NonNull final String userId,
-                        @NonNull final String feedId) {
+    FeedDetailViewModel(@NonNull final FeedRepository feedRepository) {
         this.repository = feedRepository;
-        this.userId = userId;
-        this.feedId = feedId;
         isLoading.setValue(false);
         // itemA로 초기값 설정
         position.setValue(positionA);
     }
 
-    void loadFeedDetail() {
+    void loadFeedDetail(@NonNull final String userId,
+                        @NonNull final String feedId) {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
         isLoading.setValue(true);
-        load();
+        load(userId, feedId);
     }
 
-    void vote() {
+    void vote(@NonNull final String userId) {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
@@ -79,14 +72,15 @@ public class FeedDetailViewModel extends BaseViewModel {
         addDisposable(repository.vote(userId, feedId, selectionId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(ERROR_REPEAT_COUNT)
-                .subscribe(this::load,
-                        error -> {
+                .subscribe(() -> load(userId, feedId),
+                        e -> {
                             isLoading.setValue(false);
-                            this.error.setValue(error);
+                            this.error.setValue(e);
                         }));
     }
 
-    private void load() {
+    private void load(@NonNull final String userId,
+                      @NonNull final String feedId) {
         addDisposable(repository.getFeedDetail(userId, feedId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(feed -> {
