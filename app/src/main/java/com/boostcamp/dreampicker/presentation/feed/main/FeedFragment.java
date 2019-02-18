@@ -1,5 +1,6 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -27,7 +28,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private boolean isLastPage = false;
 
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
     FeedViewModelFactory factory;
@@ -58,10 +59,14 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void initRecyclerView() {
+        final Context context = getContext();
+        if(context == null) {
+            throw new IllegalStateException("Activity is null");
+        }
         final FeedAdapter adapter = new FeedAdapter(
                 (feedId, selectionId) -> binding.getVm().getVoteSubject().onNext(new Pair<>(feedId, selectionId)),
                 this::startFeedDetailActivity,
-                writer -> startActivity(ProfileActivity.getLaunchIntent(getContext(), writer)));
+                writer -> startActivity(ProfileActivity.getLaunchIntent(context, writer)));
 
         binding.rvFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

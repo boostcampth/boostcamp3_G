@@ -7,6 +7,7 @@ public class FeedItemRemoteData {
     private String imageUrl;
     private List<String> tagList;
 
+    @SuppressWarnings("unused")
     public FeedItemRemoteData() { }
 
     public FeedItemRemoteData(String id,

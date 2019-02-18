@@ -14,7 +14,7 @@ import io.reactivex.Completable;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     protected int getLayoutId() {
@@ -41,13 +41,8 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
     }
 
     @Override
-    public void onBackPressed() {
-        // disable back button
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        disposable.clear();
+        disposable.dispose();
     }
 }

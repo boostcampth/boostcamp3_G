@@ -12,7 +12,7 @@ import androidx.paging.PagedList;
 public class VotedViewModel extends BaseViewModel {
     private static final int PAGE_SIZE = 5;
     @NonNull
-    private LiveData<PagedList<VotedFeed>> votedFeedList;
+    private final LiveData<PagedList<VotedFeed>> votedFeedList;
 
     VotedViewModel(@NonNull final FeedRepository repository) {
         this.votedFeedList =

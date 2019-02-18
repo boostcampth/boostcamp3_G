@@ -32,15 +32,11 @@ public class UploadViewModel extends BaseViewModel {
     private final MutableLiveData<Throwable> error = new MutableLiveData<>();
     @NonNull
     private final FeedRepository feedRepository;
-    @NonNull
-    private final String userId;
 
     private static final int A = 1;
 
-    UploadViewModel(@NonNull final FeedRepository feedRepository,
-                    @NonNull final String userId) {
+    UploadViewModel(@NonNull final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
-        this.userId = userId;
         isLoading.setValue(false);
     }
 
@@ -74,7 +70,7 @@ public class UploadViewModel extends BaseViewModel {
     private FeedUploadRequest createFeedUploadRequest(@Nullable final List<String> tagListA,
                                                       @Nullable final List<String> tagListB) {
 
-        return new FeedUploadRequest(userId,
+        return new FeedUploadRequest(
                 content.getValue(),
                 imagePathA.getValue(),
                 imagePathB.getValue(),

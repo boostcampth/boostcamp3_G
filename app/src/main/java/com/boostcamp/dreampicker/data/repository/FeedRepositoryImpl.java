@@ -35,6 +35,7 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
+@SuppressWarnings("SpellCheckingInspection")
 @Singleton
 public class FeedRepositoryImpl implements FeedRepository {
     private static final String COLLECTION_FEED = "feed";
@@ -55,8 +56,8 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @Inject
     FeedRepositoryImpl(@NonNull final FirebaseFirestore firestore,
-                              @NonNull final FirebaseStorage storage,
-                              @NonNull final VotedFeedDao votedFeedDao) {
+                       @NonNull final FirebaseStorage storage,
+                       @NonNull final VotedFeedDao votedFeedDao) {
         this.firestore = firestore;
         this.storage = storage;
         this.votedFeedDao = votedFeedDao;
@@ -166,6 +167,10 @@ public class FeedRepositoryImpl implements FeedRepository {
                                 firestore.runTransaction((Transaction.Function<Void>) transaction -> {
                                     DocumentSnapshot documentSnapshot = transaction.get(userRef);
                                     final Double oldFeedCount = documentSnapshot.getDouble(FIELD_FEEDCOUNT);
+                                    if (oldFeedCount == null) {
+                                        emitter.onError(new IllegalArgumentException("Not exists olFeedCount"));
+                                        return null;
+                                    }
                                     final Double newFeedCount = oldFeedCount + 1;
 
                                     transaction.update(userRef, FIELD_FEEDCOUNT, newFeedCount);
@@ -200,7 +205,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                         if (task.isSuccessful()) {
                             return feedImages.getDownloadUrl();
                         } else {
-                            throw task.getException();
+                            return null;
                         }
                     }).addOnCompleteListener(result -> {
                 if (result.isSuccessful()) {

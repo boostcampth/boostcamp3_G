@@ -4,9 +4,11 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.boostcamp.dreampicker.presentation.profile.ProfileViewModel" />
+
         <import type="android.view.View" />
     </data>
 
@@ -26,7 +28,8 @@
             app:circleImage="@{vm.user.profileImageUrl}"
             app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            bind:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tv_name"

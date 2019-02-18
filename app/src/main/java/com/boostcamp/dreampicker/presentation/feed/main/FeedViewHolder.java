@@ -17,7 +17,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 class FeedViewHolder extends RecyclerView.ViewHolder {
-    private ItemFeedBinding binding;
+    private final ItemFeedBinding binding;
 
     FeedViewHolder(@NonNull View itemView) {
         super(itemView);

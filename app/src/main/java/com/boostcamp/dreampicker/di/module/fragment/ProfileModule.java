@@ -9,6 +9,7 @@ import dagger.Module;
 
 @Module
 public abstract class ProfileModule {
+    @SuppressWarnings("unused")
     @FragmentScoped
     @Binds
     abstract ViewModelProvider.Factory feedViewModelFactory(ProfileViewModelFactory factory);

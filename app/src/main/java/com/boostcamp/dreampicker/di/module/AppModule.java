@@ -8,6 +8,7 @@ import dagger.Module;
 
 @Module
 public abstract class AppModule {
+    @SuppressWarnings("unused")
     @Binds
     abstract Context bindContext(Application application);
 }

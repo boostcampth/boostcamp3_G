@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
-import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.presentation.feed.main.listener.VoteDragListener;
 import com.boostcamp.dreampicker.presentation.feed.main.listener.VoteIconTouchListener;
 

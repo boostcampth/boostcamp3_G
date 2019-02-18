@@ -13,7 +13,7 @@ import androidx.paging.PagedList;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ProfileViewModel extends BaseViewModel {
-    private final int PAGE_SIZE = 4;
+    private static final int PAGE_SIZE = 4;
 
     @NonNull
     private final UserRepository repository;
@@ -21,16 +21,16 @@ public class ProfileViewModel extends BaseViewModel {
     private final String userId;
 
     @NonNull
-    private MutableLiveData<UserDetail> user = new MutableLiveData<>();
+    private final MutableLiveData<UserDetail> user = new MutableLiveData<>();
     @NonNull
-    private LiveData<PagedList<MyFeed>> myFeedListLiveData;
+    private final LiveData<PagedList<MyFeed>> myFeedListLiveData;
     @NonNull
-    private MutableLiveData<PagedList<MyFeed>> myFeedList = new MutableLiveData<>();
+    private final MutableLiveData<PagedList<MyFeed>> myFeedList = new MutableLiveData<>();
     @NonNull
-    private MutableLiveData<Throwable> error = new MutableLiveData<>();
+    private final MutableLiveData<Throwable> error = new MutableLiveData<>();
 
     @NonNull
-    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
     ProfileViewModel(@NonNull UserRepository repository,
                      @NonNull String userId) {

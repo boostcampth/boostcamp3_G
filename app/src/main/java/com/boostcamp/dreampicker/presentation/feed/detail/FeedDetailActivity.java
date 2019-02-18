@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
@@ -26,8 +25,8 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     private static final int NUM_PAGES = 2;
 
     public static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
-    public static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
-    public static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
+    public static final String EXTRA_IMAGE_URL_A = "EXTRA_IMAGE_URL_A";
+    public static final String EXTRA_IMAGE_URL_B = "EXTRA_IMAGE_URL_B";
 
     @Inject
     @Named("imageA")
@@ -111,10 +110,6 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         binding.getVm().loadFeedDetail();
     }
 
-    private void showToast(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-
     private void closeActivity() {
         final Intent intent = new Intent();
         setResult(RESULT_OK, intent);
@@ -128,8 +123,8 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
         final Intent intent = new Intent(context, FeedDetailActivity.class);
         intent.putExtra(EXTRA_FEED_ID, feedId);
-        intent.putExtra(EXTRA_IMAGEURL_A, imageUrlA);
-        intent.putExtra(EXTRA_IMAGEURL_B, imageUrlB);
+        intent.putExtra(EXTRA_IMAGE_URL_A, imageUrlA);
+        intent.putExtra(EXTRA_IMAGE_URL_B, imageUrlB);
         return intent;
     }
 

@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 import dagger.Binds;
 import dagger.Module;
 
+@SuppressWarnings("unused")
 @Module
 public abstract class UserRepositoryModule {
     @Singleton

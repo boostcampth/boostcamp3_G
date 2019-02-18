@@ -3,6 +3,8 @@ package com.boostcamp.dreampicker.data.model;
 import java.util.Date;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+
 public class MyFeed {
     private String id; // 피드 ID
     private String content; // 내용
@@ -60,6 +62,7 @@ public class MyFeed {
         isEnded = ended;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "MyFeed{" + '\n' +

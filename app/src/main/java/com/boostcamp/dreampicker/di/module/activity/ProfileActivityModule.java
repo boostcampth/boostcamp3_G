@@ -11,6 +11,7 @@ import dagger.Provides;
 
 @Module
 abstract class ProfileActivityModule {
+    @SuppressWarnings("unused")
     @ActivityScoped
     @Binds
     abstract ViewModelProvider.Factory profileViewModelFactory(ProfileViewModelFactory factory);

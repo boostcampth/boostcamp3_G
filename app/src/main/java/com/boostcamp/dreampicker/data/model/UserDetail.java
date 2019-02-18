@@ -10,7 +10,7 @@ public class UserDetail {
     private final String name; // 유저 이름
     @Nullable
     private final String profileImageUrl; // 유저 프로필 url
-    private int feedCount; // 올린 피드 수
+    private final int feedCount; // 올린 피드 수
 
     public UserDetail(@NonNull String id,
                       @NonNull String name,
@@ -41,6 +41,7 @@ public class UserDetail {
         return feedCount;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "UserDetail{" + '\n' +

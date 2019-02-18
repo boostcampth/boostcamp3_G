@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.Nullable;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class FirebaseManager {
     @Nullable
     public static String getCurrentUserId() {

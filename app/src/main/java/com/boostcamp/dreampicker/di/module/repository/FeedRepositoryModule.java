@@ -16,6 +16,7 @@ import dagger.Provides;
 
 @Module
 public abstract class FeedRepositoryModule {
+    @SuppressWarnings("unused")
     @Singleton
     @Binds
     abstract FeedRepository provideFeedRepository(FeedRepositoryImpl feedRepository);

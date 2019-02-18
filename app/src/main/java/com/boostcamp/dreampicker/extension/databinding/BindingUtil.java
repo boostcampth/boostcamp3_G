@@ -3,7 +3,6 @@ package com.boostcamp.dreampicker.extension.databinding;
 import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
@@ -57,7 +56,7 @@ public class BindingUtil {
         }
     }
 
-    @BindingAdapter(value = {"rcProgress", "rcMax"}, requireAll = true)
+    @BindingAdapter(value = {"rcProgress", "rcMax"})
     public static void setProgress(@NonNull final RoundCornerProgressBar progressBar, final int progress, final int max) {
         progressBar.setMax(max);
         progressBar.setProgress(progress);
@@ -115,7 +114,7 @@ public class BindingUtil {
 
     @BindingAdapter({"isVotePosition"})
     public static void setVoteImage(@NonNull ShineButton button, final boolean isVotePosition) {
-        if(isVotePosition) {
+        if (isVotePosition) {
             button.setVisibility(View.VISIBLE);
             button.showAnim();
         } else {
