@@ -34,22 +34,15 @@ public class FeedViewModel extends BaseViewModel {
     private final MutableLiveData<Throwable> error = new MutableLiveData<>();
     private Date startAfter;
     @NonNull
-    private final String userId;
-    @NonNull
     private final FeedRepository repository;
     @NonNull
     private final PublishSubject<Pair<String, String>> voteSubject = PublishSubject.create();
-    @Nullable
-    private Feed backupFeed;
 
-    FeedViewModel(@NonNull final FeedRepository repository,
-                  @NonNull final String userId) {
+    FeedViewModel(@NonNull final FeedRepository repository) {
         this.repository = repository;
-        this.userId = userId;
-        init();
     }
 
-    private void init() {
+    void init(@NonNull final String userId) {
         isLoading.setValue(false);
         isLastPage.setValue(false);
 
@@ -58,6 +51,7 @@ public class FeedViewModel extends BaseViewModel {
             if (oldFeed == null) {
                 return Observable.error(new IllegalArgumentException(ERROR_NOT_EXIST));
             }
+
             final Feed newFeed = createVoteFeed(oldFeed, pair.second);
             if (newFeed == null) {
                 return Observable.just(pair.first);
@@ -65,17 +59,10 @@ public class FeedViewModel extends BaseViewModel {
                 updateFeedList(newFeed);
                 return repository.vote(userId, pair.first, pair.second).andThen(Observable.just(pair.first));
             }
-        }).subscribe(this::getFeed, e -> {
-            if (backupFeed == null) {
-                error.setValue(e);
-            } else {
-                error.setValue(e);
-                updateFeedList(backupFeed);
-            }
-        }));
+        }).subscribe(feedId -> getFeed(userId, feedId), error::setValue));
     }
 
-    void loadFeedList() {
+    void loadFeedList(@NonNull final String userId) {
         if (Boolean.TRUE.equals(isLoading.getValue()) || Boolean.TRUE.equals(isLastPage.getValue())) {
             return;
         }
@@ -102,7 +89,7 @@ public class FeedViewModel extends BaseViewModel {
                 }));
     }
 
-    void getFeed(@NonNull final String feedId) {
+    void getFeed(@NonNull final String userId, @NonNull final String feedId) {
         addDisposable(repository.getFeed(userId, feedId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(ERROR_REPEAT_COUNT)
@@ -143,19 +130,18 @@ public class FeedViewModel extends BaseViewModel {
         return null;
     }
 
-    void refresh() {
+    void refresh(@NonNull final String userId) {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
         feedList.setValue(new ArrayList<>());
         startAfter = null;
         isLastPage.setValue(false);
-        loadFeedList();
+        loadFeedList(userId);
     }
 
     @Nullable
     private Feed createVoteFeed(@NonNull final Feed oldFeed, @NonNull final String selectionId) {
-        backupFeed = new Feed(oldFeed);
         final Feed feed = new Feed(oldFeed);
         if (feed.getSelectionId() == null) {
             if (selectionId.equals(feed.getItemA().getId())) {
@@ -173,7 +159,6 @@ public class FeedViewModel extends BaseViewModel {
                     feed.getItemA().setVoteCount(feed.getItemA().getVoteCount() - 1);
                 }
             } else {
-                backupFeed = null;
                 return null;
             }
         }

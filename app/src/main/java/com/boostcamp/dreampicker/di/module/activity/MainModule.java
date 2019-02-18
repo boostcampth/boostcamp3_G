@@ -8,6 +8,7 @@ import com.boostcamp.dreampicker.di.module.fragment.ProfileModule;
 import com.boostcamp.dreampicker.di.module.fragment.VotedFeedModule;
 import com.boostcamp.dreampicker.di.scope.ActivityScoped;
 import com.boostcamp.dreampicker.di.scope.FragmentScoped;
+import com.boostcamp.dreampicker.di.scope.qualifier.UserId;
 import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
 import com.boostcamp.dreampicker.presentation.feed.voted.VotedFragment;
 import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
@@ -34,6 +35,7 @@ abstract class MainModule {
 
     @ActivityScoped
     @Provides
+    @UserId
     static String provideMyId() {
         final String userId = FirebaseManager.getCurrentUserId();
         if (userId != null) {
