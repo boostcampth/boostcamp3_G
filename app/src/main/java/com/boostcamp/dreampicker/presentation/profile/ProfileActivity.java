@@ -54,16 +54,16 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     private void initViewModel() {
         ProfileViewModel viewModel =
                 ViewModelProviders.of(this, factory).get(ProfileViewModel.class);
-        binding.container.setVm(viewModel);
+        binding.setVm(viewModel);
     }
 
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.container.getVm().toggleVoteEnded(item, !item.isEnded()), false);
+                binding.getVm().toggleVoteEnded(item, !item.isEnded()), false);
 
-        binding.container.rvProfileFeed.setAdapter(adapter);
+        binding.rvProfileFeed.setAdapter(adapter);
 
-        binding.container.getVm().getIsLoading().observe(this, isLoading -> {
+        binding.getVm().getIsLoading().observe(this, isLoading -> {
             if (!isLoading) {
                 adapter.notifyDataSetChanged();
             }
