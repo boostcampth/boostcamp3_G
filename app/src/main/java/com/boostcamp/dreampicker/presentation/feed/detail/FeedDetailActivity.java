@@ -64,7 +64,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         ActionBar toolbar = getSupportActionBar();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white);
+            toolbar.setHomeAsUpIndicator(R.drawable.btn_toolbar_close);
             toolbar.setDisplayShowTitleEnabled(false);
         }
     }

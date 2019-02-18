@@ -3,10 +3,12 @@ package com.boostcamp.dreampicker.extension.databinding;
 import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.boostcamp.dreampicker.R;
+import com.sackcentury.shinebuttonlib.ShineButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -109,6 +111,15 @@ public class BindingUtil {
                 button.setClickable(true);
             }
         }
+    }
 
+    @BindingAdapter({"isVotePosition"})
+    public static void setVoteImage(@NonNull ShineButton button, final boolean isVotePosition) {
+        if(isVotePosition) {
+            button.setVisibility(View.VISIBLE);
+            button.showAnim();
+        } else {
+            button.setVisibility(View.GONE);
+        }
     }
 }
