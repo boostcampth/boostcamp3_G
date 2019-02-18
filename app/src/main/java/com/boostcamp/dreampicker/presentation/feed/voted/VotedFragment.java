@@ -32,7 +32,7 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
 
     private void initViewModel() {
         final VotedViewModel viewModel =
-                ViewModelProviders.of(this,factory).get(VotedViewModel.class);
+                ViewModelProviders.of(this, factory).get(VotedViewModel.class);
         binding.setVm(viewModel);
     }
 
@@ -50,5 +50,13 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_voted;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            binding.rvVotedFeed.smoothScrollToPosition(0);
+        }
     }
 }
