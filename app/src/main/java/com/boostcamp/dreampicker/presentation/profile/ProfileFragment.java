@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
-import com.boostcamp.dreampicker.di.scope.qualifier.UserId;
+import com.boostcamp.dreampicker.di.scope.UserId;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
 import javax.inject.Inject;

@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
-import com.boostcamp.dreampicker.di.scope.qualifier.UserId;
+import com.boostcamp.dreampicker.di.scope.UserId;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 
 import javax.inject.Inject;

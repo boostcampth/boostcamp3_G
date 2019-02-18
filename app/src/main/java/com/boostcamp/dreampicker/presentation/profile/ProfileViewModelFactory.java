@@ -1,7 +1,6 @@
 package com.boostcamp.dreampicker.presentation.profile;
 
 import com.boostcamp.dreampicker.data.repository.UserRepository;
-import com.boostcamp.dreampicker.di.scope.qualifier.UserId;
 
 import javax.inject.Inject;
 

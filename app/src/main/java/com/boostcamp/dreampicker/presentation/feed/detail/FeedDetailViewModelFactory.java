@@ -1,8 +1,6 @@
 package com.boostcamp.dreampicker.presentation.feed.detail;
 
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
-import com.boostcamp.dreampicker.di.scope.qualifier.FeedId;
-import com.boostcamp.dreampicker.di.scope.qualifier.UserId;
 
 import javax.inject.Inject;
 
