@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/navigation_voted"
-        android:icon="@drawable/btn_result_selected"
+        android:icon="@drawable/btn_voted_selected"
         android:title="@string/main_navigation_notification" />
 
     <item
