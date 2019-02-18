@@ -101,13 +101,18 @@ dependencies {
     // CrashLytics
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
-
     // Dagger
     implementation 'com.google.dagger:dagger:2.21'
     implementation 'com.google.dagger:dagger-android:2.21'
     implementation 'com.google.dagger:dagger-android-support:2.21'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.21'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
+
+    // leakcanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    // for support library fragments
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 }
 // Firebase
 apply plugin: 'com.google.gms.google-services'
