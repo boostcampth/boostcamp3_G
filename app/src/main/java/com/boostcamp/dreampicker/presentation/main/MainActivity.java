@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding>
         implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -27,7 +28,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initToolbar();
-        initView();
+        initNavigation();
     }
 
     @Inject
@@ -37,6 +38,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     @Inject
     ProfileFragment profileFragment;
 
+    private FragmentManager fm = getSupportFragmentManager();
     private Fragment fragment;
 
     private void initToolbar() {
@@ -47,35 +49,34 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
         }
     }
 
-    private void initView() {
+    private void initNavigation() {
 
         // 내비게이션 바 생성
         binding.navigation.setOnNavigationItemSelectedListener(this);
 
-        // 시작 position home 으로 설정
-        binding.navigation.setSelectedItemId(R.id.navigation_home);
+        fragment = feedFragment;
+        fm.beginTransaction().add(R.id.frame, profileFragment, "3").hide(profileFragment).commit();
+        fm.beginTransaction().add(R.id.frame, votedFragment, "2").hide(votedFragment).commit();
+        fm.beginTransaction().add(R.id.frame, feedFragment, "1").commit();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.navigation_home:
+                fm.beginTransaction().hide(fragment).show(feedFragment).commit();
                 fragment = feedFragment;
-                break;
+                return true;
             case R.id.navigation_voted:
+                fm.beginTransaction().hide(fragment).show(votedFragment).commit();
                 fragment = votedFragment;
-                break;
+                return true;
             case R.id.navigation_profile:
+                fm.beginTransaction().hide(fragment).show(profileFragment).commit();
                 fragment = profileFragment;
-                break;
+                return true;
         }
-
-        // 프래그먼트 전환
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame, fragment)
-                .commit();
-
-        return true;
+        return false;
     }
 
     public void upload(View view) {
