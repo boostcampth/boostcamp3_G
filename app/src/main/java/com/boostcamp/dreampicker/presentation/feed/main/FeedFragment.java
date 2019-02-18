@@ -32,6 +32,8 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     @Inject
     FeedViewModelFactory factory;
+    @Inject
+    Context context;
 
     @Inject
     public FeedFragment() {
@@ -59,10 +61,6 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void initRecyclerView() {
-        final Context context = getContext();
-        if (context == null) {
-            throw new IllegalStateException("Activity is null");
-        }
         final FeedAdapter adapter = new FeedAdapter(
                 (feedId, selectionId) -> binding.getVm().getVoteSubject().onNext(new Pair<>(feedId, selectionId)),
                 this::startFeedDetailActivity,
@@ -107,7 +105,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void showToast(String msg) {
-        Toast.makeText(getContext().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -118,17 +116,15 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private void startFeedDetailActivity(@NonNull String feedId,
                                          @NonNull String imageUrlA,
                                          @NonNull String imageUrlB) {
-        if (getContext() != null) {
-            disposable.add(TedRxOnActivityResult.with(getContext())
-                    .startActivityForResult(
-                            FeedDetailActivity.getLaunchIntent(getContext(), feedId, imageUrlA, imageUrlB))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(result -> {
-                        if (result.getResultCode() == RESULT_OK) {
-                            binding.getVm().getFeed(feedId);
-                        }
-                    }));
-        }
+        disposable.add(TedRxOnActivityResult.with(context)
+                .startActivityForResult(
+                        FeedDetailActivity.getLaunchIntent(context, feedId, imageUrlA, imageUrlB))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        binding.getVm().getFeed(feedId);
+                    }
+                }));
     }
 
     @Override
