@@ -17,13 +17,13 @@ public class ImageUtil {
 
         if (uri == null) {
             GlideApp.with(imageView)
-                    .load(R.drawable.ic_photo)
+                    .load(R.drawable.ic_add_to_photos)
                     .into(imageView);
         } else {
             GlideApp.with(imageView)
                     .load(uri)
                     .transform(new RoundedCorners(20))
-                    .error(R.drawable.ic_photo)
+                    .error(R.drawable.ic_broken_image_black)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(imageView);
         }
@@ -33,14 +33,14 @@ public class ImageUtil {
     public static void loadImage(ImageView imageView, String url) {
         if (url == null) {
             GlideApp.with(imageView)
-                    .load(R.drawable.ic_photo)
+                    .load(R.drawable.ic_add_to_photos)
                     .into(imageView);
         } else {
             GlideApp.with(imageView)
                     .load(url)
                     .transform(new RoundedCorners(20))
                     .placeholder(R.drawable.ic_photo)
-                    .error(R.drawable.ic_photo)
+                    .error(R.drawable.ic_broken_image_black)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(imageView);
         }
