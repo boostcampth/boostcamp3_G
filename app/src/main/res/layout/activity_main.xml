@@ -47,7 +47,6 @@
             android:backgroundTint="@color/colorAccent"
             android:onClick="upload"
             android:src="@drawable/ic_add_white"
-            app:layout_anchor="@+id/frame"
             app:layout_constraintBottom_toTopOf="@id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:rippleColor="@color/colorWhite" />
