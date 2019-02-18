@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     ProfileFragment profileFragment;
 
     private FragmentManager fm = getSupportFragmentManager();
-    private Fragment fragment;
+    private Fragment active;
 
     private void initToolbar() {
         setSupportActionBar(binding.toolbar);
@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
         // 내비게이션 바 생성
         binding.navigation.setOnNavigationItemSelectedListener(this);
 
-        fragment = feedFragment;
+        active = feedFragment;
         fm.beginTransaction().add(R.id.frame, profileFragment, "3").hide(profileFragment).commit();
         fm.beginTransaction().add(R.id.frame, votedFragment, "2").hide(votedFragment).commit();
         fm.beginTransaction().add(R.id.frame, feedFragment, "1").commit();
@@ -64,16 +64,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.navigation_home:
-                fm.beginTransaction().hide(fragment).show(feedFragment).commit();
-                fragment = feedFragment;
+                fm.beginTransaction().hide(active).show(feedFragment).commit();
+                active = feedFragment;
                 return true;
             case R.id.navigation_voted:
-                fm.beginTransaction().hide(fragment).show(votedFragment).commit();
-                fragment = votedFragment;
+                fm.beginTransaction().hide(active).show(votedFragment).commit();
+                active = votedFragment;
                 return true;
             case R.id.navigation_profile:
-                fm.beginTransaction().hide(fragment).show(profileFragment).commit();
-                fragment = profileFragment;
+                fm.beginTransaction().hide(active).show(profileFragment).commit();
+                active = profileFragment;
                 return true;
         }
         return false;
