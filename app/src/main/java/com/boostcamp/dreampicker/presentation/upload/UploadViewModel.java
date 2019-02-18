@@ -3,7 +3,6 @@ package com.boostcamp.dreampicker.presentation.upload;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.extension.common.StringExt;
@@ -33,22 +32,21 @@ public class UploadViewModel extends BaseViewModel {
     private final MutableLiveData<Throwable> error = new MutableLiveData<>();
     @NonNull
     private final FeedRepository feedRepository;
+    @NonNull
+    private final String userId;
 
     private static final int A = 1;
 
-    UploadViewModel(@NonNull final FeedRepository feedRepository) {
+    UploadViewModel(@NonNull final FeedRepository feedRepository,
+                    @NonNull final String userId) {
         this.feedRepository = feedRepository;
+        this.userId = userId;
         isLoading.setValue(false);
     }
 
     void upload(@Nullable final String[] tagStrA,
                 @Nullable final String[] tagStrB) {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
-            return;
-        }
-        final String userId = FirebaseManager.getCurrentUserId();
-        if (userId == null) {
-            error.setValue(new IllegalArgumentException());
             return;
         }
         final List<String> tagListA = StringExt.toNoEndLineList(tagStrA);
@@ -58,7 +56,7 @@ public class UploadViewModel extends BaseViewModel {
                 !TextUtils.isEmpty(getImagePathA().getValue()) &&
                 !TextUtils.isEmpty(getImagePathB().getValue())) {
             isLoading.setValue(true);
-            addDisposable(feedRepository.uploadFeed(createFeedUploadRequest(userId, tagListA, tagListB))
+            addDisposable(feedRepository.uploadFeed(createFeedUploadRequest(tagListA, tagListB))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
                         isLoading.setValue(false);
@@ -73,8 +71,7 @@ public class UploadViewModel extends BaseViewModel {
     }
 
     @NonNull
-    private FeedUploadRequest createFeedUploadRequest(@NonNull final String userId,
-                                                      @Nullable final List<String> tagListA,
+    private FeedUploadRequest createFeedUploadRequest(@Nullable final List<String> tagListA,
                                                       @Nullable final List<String> tagListB) {
 
         return new FeedUploadRequest(userId,

@@ -1,6 +1,5 @@
 package com.boostcamp.dreampicker.presentation.feed.detail;
 
-import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
@@ -32,43 +31,41 @@ public class FeedDetailViewModel extends BaseViewModel {
     private final MutableLiveData<Throwable> error = new MutableLiveData<>();
     @NonNull
     private final FeedRepository repository;
+    @NonNull
+    private final String userId;
+    @NonNull
+    private final String feedId;
 
-    FeedDetailViewModel(@NonNull final FeedRepository feedRepository) {
+    FeedDetailViewModel(@NonNull final FeedRepository feedRepository,
+                        @NonNull final String userId,
+                        @NonNull final String feedId) {
         this.repository = feedRepository;
+        this.userId = userId;
+        this.feedId = feedId;
         isLoading.setValue(false);
         // itemA로 초기값 설정
         position.setValue(positionA);
     }
 
-    void loadFeedDetail(@NonNull final String feedId) {
+    void loadFeedDetail() {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
-        final String userId = FirebaseManager.getCurrentUserId();
-        if (userId == null) {
-            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
-            return;
-        }
         isLoading.setValue(true);
-        load(userId, feedId);
+        load();
     }
 
     void vote() {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
-
-        final String userId = FirebaseManager.getCurrentUserId();
         final FeedDetail feedDetail = this.feedDetail.getValue();
         final Integer position = this.position.getValue();
 
-        if (userId == null ||
-                feedDetail == null ||
-                position == null) {
+        if (feedDetail == null || position == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
-
         isLoading.setValue(true);
 
         final String feedId = feedDetail.getId();
@@ -82,15 +79,14 @@ public class FeedDetailViewModel extends BaseViewModel {
         addDisposable(repository.vote(userId, feedId, selectionId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(ERROR_REPEAT_COUNT)
-                .subscribe(() -> load(userId, feedId),
+                .subscribe(this::load,
                         error -> {
                             isLoading.setValue(false);
                             this.error.setValue(error);
                         }));
     }
 
-    private void load(@NonNull final String userId,
-                      @NonNull final String feedId) {
+    private void load() {
         addDisposable(repository.getFeedDetail(userId, feedId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(feed -> {

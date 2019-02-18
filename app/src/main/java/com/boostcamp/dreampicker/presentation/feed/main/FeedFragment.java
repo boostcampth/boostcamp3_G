@@ -7,11 +7,12 @@ import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
-import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;
 import com.tedpark.tedonactivityresult.rx2.TedRxOnActivityResult;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,10 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
+    @Inject
+    FeedViewModelFactory factory;
+
+    @Inject
     public FeedFragment() {
 
     }
@@ -42,9 +47,8 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void initViewModel() {
-        final FeedViewModel vm = ViewModelProviders.of(this,
-                Injection.provideFeedViewModelFactory(getContext())).get(FeedViewModel.class);
-
+        final FeedViewModel vm =
+                ViewModelProviders.of(this, factory).get(FeedViewModel.class);
         binding.setVm(vm);
     }
 
@@ -92,7 +96,6 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
             }
         });
 
-        // Todo : Swipe 막기 처리 필요
         binding.getVm().getIsLastPage().observe(this, isLastPage -> this.isLastPage = isLastPage);
 
         binding.getVm().getError().observe(this, e -> showToast(getString(R.string.feed_error_message)));
@@ -100,10 +103,6 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private void showToast(String msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    public static FeedFragment newInstance() {
-        return new FeedFragment();
     }
 
     @Override

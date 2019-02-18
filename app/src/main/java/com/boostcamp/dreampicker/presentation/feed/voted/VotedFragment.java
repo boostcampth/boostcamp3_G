@@ -5,9 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.FragmentVotedBinding;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,11 +16,11 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
 
-    public VotedFragment() {
-    }
+    @Inject
+    VotedViewModelFactory factory;
 
-    public static VotedFragment newInstance() {
-        return new VotedFragment();
+    @Inject
+    public VotedFragment() {
     }
 
     @Override
@@ -30,9 +31,8 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
     }
 
     private void initViewModel() {
-        final VotedViewModel viewModel = ViewModelProviders.of(this,
-                Injection.provideVotedViewModelFactory(getContext())).get(VotedViewModel.class);
-
+        final VotedViewModel viewModel =
+                ViewModelProviders.of(this,factory).get(VotedViewModel.class);
         binding.setVm(viewModel);
     }
 
@@ -44,7 +44,6 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
                 binding.ivVotedFeedEmptyFinger.setVisibility(View.VISIBLE);
                 binding.tvVotedFeedEmptyText.setVisibility(View.VISIBLE);
             }
-            adapter.submitList(list);
         });
     }
 

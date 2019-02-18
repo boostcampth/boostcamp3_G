@@ -9,8 +9,10 @@ import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
-import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -23,32 +25,22 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
     private static final int NUM_PAGES = 2;
 
-    private static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
-    private static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
-    private static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
+    public static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
+    public static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
+    public static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
 
-    private String feedId;
-    private String imageUrlA;
-    private String imageUrlB;
+    @Inject
+    @Named("imageA")
+    String imageUrlA;
+    @Inject
+    @Named("imageB")
+    String imageUrlB;
+    @Inject
+    FeedDetailViewModelFactory factory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            feedId = savedInstanceState.getString(EXTRA_FEED_ID);
-            imageUrlA = savedInstanceState.getString(EXTRA_IMAGEURL_A);
-            imageUrlB = savedInstanceState.getString(EXTRA_IMAGEURL_B);
-        } else {
-            final Intent intent = getIntent();
-            if (intent != null) {
-                feedId = intent.getStringExtra(EXTRA_FEED_ID);
-                imageUrlA = intent.getStringExtra(EXTRA_IMAGEURL_A);
-                imageUrlB = intent.getStringExtra(EXTRA_IMAGEURL_B);
-            } else {
-                showToast(getString(R.string.feed_detail_error_message));
-                finish();
-            }
-        }
         initViewModel();
         initViews();
         subscribeViewModel();
@@ -62,9 +54,8 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     private void initViewModel() {
-        final FeedDetailViewModel vm = ViewModelProviders.of(this,
-                Injection.provideFeedDetailViewModelFactory(this)).get(FeedDetailViewModel.class);
-
+        final FeedDetailViewModel vm =
+                ViewModelProviders.of(this, factory).get(FeedDetailViewModel.class);
         binding.setVm(vm);
     }
 
@@ -117,7 +108,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     private void loadFeedDetail() {
-        binding.getVm().loadFeedDetail(feedId);
+        binding.getVm().loadFeedDetail();
     }
 
     private void showToast(String msg) {

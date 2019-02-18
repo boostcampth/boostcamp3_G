@@ -9,9 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
+import dagger.android.support.DaggerFragment;
 
-public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
+public abstract class BaseFragment<B extends ViewDataBinding> extends DaggerFragment {
     protected B binding;
 
     @Nullable

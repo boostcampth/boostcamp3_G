@@ -3,11 +3,11 @@ package com.boostcamp.dreampicker.presentation;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import dagger.android.support.DaggerAppCompatActivity;
 
-public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatActivity {
+public abstract class BaseActivity<B extends ViewDataBinding> extends DaggerAppCompatActivity {
 
     protected B binding;
 

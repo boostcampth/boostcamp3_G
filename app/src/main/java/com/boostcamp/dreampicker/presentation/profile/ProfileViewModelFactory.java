@@ -2,6 +2,8 @@ package com.boostcamp.dreampicker.presentation.profile;
 
 import com.boostcamp.dreampicker.data.repository.UserRepository;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +15,7 @@ public class ProfileViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final String userId;
 
+    @Inject
     public ProfileViewModelFactory(@NonNull UserRepository repository,
                                    @NonNull String userId) {
         this.repository = repository;

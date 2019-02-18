@@ -42,7 +42,7 @@ public class ProfileViewModel extends BaseViewModel {
         loadMyFeeds();
     }
 
-    void loadUserDetail() {
+    private void loadUserDetail() {
         addDisposable(repository.getUserDetail(userId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this.user::setValue, this.error::setValue));

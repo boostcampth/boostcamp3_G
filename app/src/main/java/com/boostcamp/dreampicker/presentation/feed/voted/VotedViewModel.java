@@ -20,7 +20,7 @@ public class VotedViewModel extends BaseViewModel {
     }
 
     @NonNull
-    LiveData<PagedList<VotedFeed>> getVotedFeedList() {
+    public LiveData<PagedList<VotedFeed>> getVotedFeedList() {
         return votedFeedList;
     }
 }

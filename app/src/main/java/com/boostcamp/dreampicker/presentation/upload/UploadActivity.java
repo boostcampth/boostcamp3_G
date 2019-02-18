@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
 import com.boostcamp.dreampicker.utils.LoadingDialog;
@@ -18,6 +17,8 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.lifecycle.ViewModelProviders;
@@ -32,6 +33,9 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private static final int B = 2;
 
     private Dialog loadingDialog;
+
+    @Inject
+    UploadViewModelFactory factory;
 
     @Override
     protected int getLayoutId() {
@@ -48,8 +52,8 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     }
 
     private void initViewModel() {
-        final UploadViewModel vm = ViewModelProviders.of(this,
-                Injection.provideUploadViewModelFactory(this)).get(UploadViewModel.class);
+        final UploadViewModel vm =
+                ViewModelProviders.of(this, factory).get(UploadViewModel.class);
 
         binding.setVm(vm);
         binding.setLifecycleOwner(this);

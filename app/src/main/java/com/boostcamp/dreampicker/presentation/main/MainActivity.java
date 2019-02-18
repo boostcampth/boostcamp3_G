@@ -15,21 +15,14 @@ import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding> implements BottomNavigationView.OnNavigationItemSelectedListener {
-
-    public static Intent getLaunchIntent(Context context) {
-        return new Intent(context, MainActivity.class);
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_main;
-    }
-
+public class MainActivity extends BaseActivity<ActivityMainBinding>
+        implements BottomNavigationView.OnNavigationItemSelectedListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +30,19 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
         initView();
     }
 
+    @Inject
+    FeedFragment feedFragment;
+    @Inject
+    VotedFragment votedFragment;
+    @Inject
+    ProfileFragment profileFragment;
+
+    private Fragment fragment;
+
     private void initToolbar() {
         setSupportActionBar(binding.toolbar);
         ActionBar toolbar = getSupportActionBar();
-        if(toolbar != null) {
+        if (toolbar != null) {
             toolbar.setDisplayShowTitleEnabled(false);
         }
     }
@@ -56,18 +58,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-        Fragment fragment = FeedFragment.newInstance();
-
         switch (menuItem.getItemId()) {
             case R.id.navigation_home:
-                fragment = FeedFragment.newInstance();
+                fragment = feedFragment;
                 break;
-            case R.id.navigation_notifications:
-                fragment = VotedFragment.newInstance();
+            case R.id.navigation_voted:
+                fragment = votedFragment;
                 break;
             case R.id.navigation_profile:
-                fragment = ProfileFragment.newInstance();
+                fragment = profileFragment;
                 break;
         }
 
@@ -82,5 +81,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements B
     public void upload(View view) {
         startActivity(UploadActivity.getLaunchIntent(this));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    public static Intent getLaunchIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
     }
 }
