@@ -63,24 +63,17 @@ public class ImageUtil {
         }
     }
 
-    @BindingAdapter({"image"})
-    public static void loadImage(ImageView imageView, int resourceId) {
-
-        GlideApp.with(imageView).load(resourceId).into(imageView);
-    }
-
-    @BindingAdapter({"circleImage"})
-    public static void loadCircleImage(ImageView imageView, int resourceId) {
-
-        GlideApp.with(imageView).load(resourceId).circleCrop().into(imageView);
-    }
-
     @BindingAdapter({"circleImage"})
     public static void loadCircleImage(ImageView imageView, String url) {
         if (url == null) {
-            return;
+            GlideApp.with(imageView)
+                    .load(R.drawable.ic_photo)
+                    .into(imageView);
+        } else {
+            GlideApp.with(imageView)
+                    .load(url)
+                    .circleCrop()
+                    .into(imageView);
         }
-
-        GlideApp.with(imageView).load(url).circleCrop().into(imageView);
     }
 }

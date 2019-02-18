@@ -86,7 +86,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
         loadingDialog.setCancelable(false);
     }
 
-    public void onImageClick(final int flag) {
+    private void onImageClick(final int flag) {
         TedPermission.with(this)
                 .setPermissionListener(new PermissionListener() {
                     @Override
@@ -103,7 +103,7 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
                 .check();
     }
 
-    public void showBottomPicker(final int flag) {
+    private void showBottomPicker(final int flag) {
         new TedBottomPicker.Builder(this)
                 .setOnImageSelectedListener(uri -> binding.getVm().setImagePath(uri, flag))
                 .setPeekHeight(800)

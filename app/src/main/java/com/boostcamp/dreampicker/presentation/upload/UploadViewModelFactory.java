@@ -13,14 +13,10 @@ public class UploadViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
     private final FeedRepository feedRepository;
-    @NonNull
-    private final String userId;
 
     @Inject
-    public UploadViewModelFactory(@NonNull final FeedRepository feedRepository,
-                                  @NonNull final String userId) {
+    public UploadViewModelFactory(@NonNull final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
-        this.userId = userId;
     }
 
     @NonNull
@@ -28,7 +24,7 @@ public class UploadViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if(modelClass.isAssignableFrom(UploadViewModel.class)) {
             //noinspection unchecked
-            return (T) new UploadViewModel(feedRepository, userId);
+            return (T) new UploadViewModel(feedRepository);
         } else {
             throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
         }

@@ -6,48 +6,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class FeedUploadRequest {
+    @NonNull
+    private final String content; // 작성글
 
     @NonNull
-    private String userId; // 업로더 정보
+    private final String imagePathA; // 1번 이미지 Path
 
     @NonNull
-    private String content; // 작성글
-
-    @NonNull
-    private String imagePathA; // 1번 이미지 Path
-
-    @NonNull
-    private String imagePathB; // 2번 이미지 Path
+    private final String imagePathB; // 2번 이미지 Path
 
     @Nullable
-    private List<String> tagListA; // 1번 이미지 태그 리스트
+    private final List<String> tagListA; // 1번 이미지 태그 리스트
 
     @Nullable
-    private List<String> tagListB; // 2번 이미지 태그 리스트
+    private final List<String> tagListB; // 2번 이미지 태그 리스트
 
-    public FeedUploadRequest(@NonNull String userId,
-                             @NonNull String content,
+    public FeedUploadRequest(@NonNull String content,
                              @NonNull String imagePathA,
                              @NonNull String imagePathB,
                              @Nullable List<String> tagListA,
                              @Nullable List<String> tagListB) {
-
-        this.userId = userId;
         this.content = content;
         this.imagePathA = imagePathA;
         this.imagePathB = imagePathB;
         this.tagListA = tagListA;
         this.tagListB = tagListB;
-    }
-
-    @NonNull
-    public String getUserId() {
-        return userId;
-    }
-
-    @NonNull
-    public String getUser() {
-        return userId;
     }
 
     @NonNull

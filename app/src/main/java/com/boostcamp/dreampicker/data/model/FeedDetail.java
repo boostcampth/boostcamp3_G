@@ -20,8 +20,8 @@ public class FeedDetail {
     @NonNull
     private final VoteSelectionItem itemB; // 2번 이미지 정보
     @Nullable
-    private String selectionId; // 본인 투표 위치
-    private boolean isEnded; // 투표마감 유무
+    private final String selectionId; // 본인 투표 위치
+    private final boolean isEnded; // 투표마감 유무
 
     public FeedDetail(@NonNull String id,
                       @NonNull User writer,

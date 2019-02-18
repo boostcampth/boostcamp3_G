@@ -16,6 +16,7 @@ import dagger.Provides;
 
 @Module
 abstract class FeedDetailModule {
+    @SuppressWarnings("unused")
     @ActivityScoped
     @Binds
     abstract ViewModelProvider.Factory feedDetailViewModelFactory(FeedDetailViewModelFactory factory);
@@ -42,12 +43,12 @@ abstract class FeedDetailModule {
     @Provides
     @Named("imageA")
     static String provideImageUrlA(FeedDetailActivity activity) {
-        return activity.getIntent().getStringExtra(FeedDetailActivity.EXTRA_IMAGEURL_A);
+        return activity.getIntent().getStringExtra(FeedDetailActivity.EXTRA_IMAGE_URL_A);
     }
 
     @Provides
     @Named("imageB")
     static String provideImageUrlB(FeedDetailActivity activity) {
-        return activity.getIntent().getStringExtra(FeedDetailActivity.EXTRA_IMAGEURL_B);
+        return activity.getIntent().getStringExtra(FeedDetailActivity.EXTRA_IMAGE_URL_B);
     }
 }

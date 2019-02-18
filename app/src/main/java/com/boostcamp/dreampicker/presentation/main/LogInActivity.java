@@ -27,7 +27,7 @@ import io.reactivex.disposables.CompositeDisposable;
 
 
 public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     private static final int REQUEST_SIGN_IN = 200;
 

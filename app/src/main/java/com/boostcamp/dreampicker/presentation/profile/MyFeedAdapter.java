@@ -12,12 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 
-public class MyFeedAdapter extends PagedListAdapter<MyFeed, MyFeedItemViewHolder> {
+class MyFeedAdapter extends PagedListAdapter<MyFeed, MyFeedItemViewHolder> {
 
     @Nullable
-    private OnEndButtonClickListener onEndButtonClickListener;
+    private final OnEndButtonClickListener onEndButtonClickListener;
 
-    private boolean isMyProfile;
+    private final boolean isMyProfile;
 
     MyFeedAdapter(@Nullable OnEndButtonClickListener onEndButtonClickListener,
                   boolean isMyProfile) {

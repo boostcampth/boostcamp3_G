@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyFeedItemViewHolder extends RecyclerView.ViewHolder {
+class MyFeedItemViewHolder extends RecyclerView.ViewHolder {
 
-    private ItemMyFeedBinding binding;
+    private final ItemMyFeedBinding binding;
 
-    public MyFeedItemViewHolder(@NonNull View itemView) {
+    MyFeedItemViewHolder(@NonNull View itemView) {
         super(itemView);
         binding = DataBindingUtil.bind(itemView);
     }

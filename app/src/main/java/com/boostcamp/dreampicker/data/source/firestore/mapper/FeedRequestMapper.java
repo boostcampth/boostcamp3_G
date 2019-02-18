@@ -6,7 +6,6 @@ import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedItemRemoteData;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
 
-import java.util.Date;
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;

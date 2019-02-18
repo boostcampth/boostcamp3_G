@@ -7,6 +7,7 @@ public class User {
     private String name; // 유저 이름
     private String profileImageUrl; // 유저 프로필 사진 url
 
+    @SuppressWarnings("unused")
     public User() { }
 
     public User(String id, String name, String profileImageUrl) {

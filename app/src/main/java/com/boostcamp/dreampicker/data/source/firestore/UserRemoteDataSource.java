@@ -22,15 +22,16 @@ import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 public class UserRemoteDataSource implements UserDataSource {
+    @SuppressWarnings("SpellCheckingInspection")
     @NonNull
     private final FirebaseFirestore firestore;
     private final String COLLECTION_USER = "user";
     private final String COLLECTION_FEED = "feed";
-    private final String SUBCOLLECTION_MYFEEDS = "myFeeds";
+    private final String SUB_COLLECTION_MY_FEEDS = "myFeeds";
     private final String FIELD_DATE = "date";
     private final String FIELD_ENDED = "ended";
 
-
+    @SuppressWarnings("SpellCheckingInspection")
     @Inject
     UserRemoteDataSource(@NonNull final FirebaseFirestore firestore) {
         this.firestore = firestore;
@@ -66,7 +67,7 @@ public class UserRemoteDataSource implements UserDataSource {
 
         Single<List<MyFeed>> single = Single.create(emitter ->
                 firestore.collection(COLLECTION_USER).document(userId)
-                        .collection(SUBCOLLECTION_MYFEEDS)
+                        .collection(SUB_COLLECTION_MY_FEEDS)
                         .orderBy(FIELD_DATE, Query.Direction.DESCENDING)
                         .startAfter(startAfter)
                         .limit(pageSize)
@@ -106,7 +107,7 @@ public class UserRemoteDataSource implements UserDataSource {
             DocumentReference myFeedDocRef =
                     firestore.collection(COLLECTION_USER)
                             .document(userId)
-                            .collection(SUBCOLLECTION_MYFEEDS)
+                            .collection(SUB_COLLECTION_MY_FEEDS)
                             .document(feedId);
 
             batch.update(feedDocRef, FIELD_ENDED, isEnded);

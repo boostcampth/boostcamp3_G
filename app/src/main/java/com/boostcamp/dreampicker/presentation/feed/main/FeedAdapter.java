@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
-import com.boostcamp.dreampicker.data.model.User;
 import com.boostcamp.dreampicker.presentation.feed.main.listener.VoteDragListener;
 import com.boostcamp.dreampicker.presentation.feed.main.listener.VoteIconTouchListener;
 
@@ -14,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
-public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
+class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     interface OnItemClickListener {
         void onItemClick(@NonNull final String feedId,
                          @NonNull final String imageUrlA,

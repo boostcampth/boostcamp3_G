@@ -1,5 +1,6 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -28,10 +29,12 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private boolean isLastPage = false;
 
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
     FeedViewModelFactory factory;
+    @Inject
+    Context context;
 
     @Inject
     public FeedFragment() {
@@ -62,7 +65,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         final FeedAdapter adapter = new FeedAdapter(
                 (feedId, selectionId) -> binding.getVm().getVoteSubject().onNext(new Pair<>(feedId, selectionId)),
                 this::startFeedDetailActivity,
-                writer -> startActivity(ProfileActivity.getLaunchIntent(getContext(), writer)));
+                writer -> startActivity(ProfileActivity.getLaunchIntent(context, writer)));
 
         binding.rvFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -113,7 +116,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void showToast(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -124,17 +127,15 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private void startFeedDetailActivity(@NonNull String feedId,
                                          @NonNull String imageUrlA,
                                          @NonNull String imageUrlB) {
-        if (getContext() != null) {
-            disposable.add(TedRxOnActivityResult.with(getContext())
-                    .startActivityForResult(
-                            FeedDetailActivity.getLaunchIntent(getContext(), feedId, imageUrlA, imageUrlB))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(result -> {
-                        if (result.getResultCode() == RESULT_OK) {
-                            binding.getVm().getFeed(feedId);
-                        }
-                    }));
-        }
+        disposable.add(TedRxOnActivityResult.with(context)
+                .startActivityForResult(
+                        FeedDetailActivity.getLaunchIntent(context, feedId, imageUrlA, imageUrlB))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        binding.getVm().getFeed(feedId);
+                    }
+                }));
     }
 
     @Override

@@ -25,7 +25,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="@dimen/space_x_small"
-                android:src="@drawable/img_logo" />
+                android:src="@drawable/img_logo"
+                tools:ignore="ContentDescription" />
 
         </androidx.appcompat.widget.Toolbar>
 

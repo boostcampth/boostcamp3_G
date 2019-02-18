@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class FeedDetailPagerAdapter extends FragmentStatePagerAdapter {
+class FeedDetailPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int NUM_PAGES = 2;
 
-    private Fragment[] fragments;
+    private final Fragment[] fragments;
 
     FeedDetailPagerAdapter(@NonNull FragmentManager fm, Fragment[] fragments) {
         super(fm);

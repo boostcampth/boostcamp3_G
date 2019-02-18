@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-public class FeedDetailFragment extends Fragment {
-    private static final String ARGUMENT_IMAGEURL = "ARGUMENT_IMAGEURL";
+class FeedDetailFragment extends Fragment {
+    private static final String ARGUMENT_IMAGE_URL = "ARGUMENT_IMAGE_URL";
     private String imageUrl;
     private FragmentFeedDetailImageBinding binding;
 
@@ -25,7 +25,7 @@ public class FeedDetailFragment extends Fragment {
     static Fragment newInstance(@NonNull String imageUrl) {
         final FeedDetailFragment fragment = new FeedDetailFragment();
         final Bundle args = new Bundle();
-        args.putString(ARGUMENT_IMAGEURL, imageUrl);
+        args.putString(ARGUMENT_IMAGE_URL, imageUrl);
         fragment.setArguments(args);
         return fragment;
     }
@@ -34,11 +34,11 @@ public class FeedDetailFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            imageUrl = savedInstanceState.getString(ARGUMENT_IMAGEURL);
+            imageUrl = savedInstanceState.getString(ARGUMENT_IMAGE_URL);
         } else {
             final Bundle args = getArguments();
             if (args != null) {
-                imageUrl = args.getString(ARGUMENT_IMAGEURL);
+                imageUrl = args.getString(ARGUMENT_IMAGE_URL);
             }
         }
     }
