@@ -13,7 +13,7 @@ public class VotedViewModelFactory implements ViewModelProvider.Factory {
     private final FeedRepository repository;
 
     @Inject
-    public VotedViewModelFactory(@NonNull FeedRepository repository) {
+    VotedViewModelFactory(@NonNull FeedRepository repository) {
         this.repository = repository;
     }
 

@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 
-class VotedAdapter extends PagedListAdapter<VotedFeed, VotedViewHolder> {
+public class VotedAdapter extends PagedListAdapter<VotedFeed, VotedViewHolder> {
     // Todo : 상세보기 이동
     interface OnitemClickListener {
         void onClick(@NonNull String feedId);
