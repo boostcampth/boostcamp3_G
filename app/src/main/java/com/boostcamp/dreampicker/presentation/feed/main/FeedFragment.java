@@ -72,7 +72,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (!binding.rvFeed.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
-                    if (NetworkUtil.isNetworkConnected(getContext())) {
+                    if (NetworkUtil.isNetworkConnected(context)) {
                         if (isLastPage) {
                             showToast(getString(R.string.feed_last_page));
                         } else {
@@ -91,7 +91,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private void initSwipeRefreshLayout() {
         binding.swipe.setOnRefreshListener(() -> {
-            if (NetworkUtil.isNetworkConnected(getContext())) {
+            if (NetworkUtil.isNetworkConnected(context)) {
                 binding.getVm().refresh();
                 binding.swipe.setRefreshing(false);
             } else {
