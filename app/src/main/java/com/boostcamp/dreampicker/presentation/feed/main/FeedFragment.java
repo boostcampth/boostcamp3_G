@@ -19,7 +19,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -33,7 +32,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private final CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
-    FeedViewModelFactory factory;
+    FeedViewModel viewModel;
     @Inject
     Context context;
     @Inject
@@ -56,9 +55,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     }
 
     private void initViewModel() {
-        final FeedViewModel vm =
-                ViewModelProviders.of(this, factory).get(FeedViewModel.class);
-        binding.setVm(vm);
+        binding.setVm(viewModel);
     }
 
     private void initViews() {

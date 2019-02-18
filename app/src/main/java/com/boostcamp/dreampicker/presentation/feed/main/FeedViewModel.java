@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -38,6 +39,7 @@ public class FeedViewModel extends BaseViewModel {
     @NonNull
     private final PublishSubject<Pair<String, String>> voteSubject = PublishSubject.create();
 
+    @Inject
     FeedViewModel(@NonNull final FeedRepository repository) {
         this.repository = repository;
     }

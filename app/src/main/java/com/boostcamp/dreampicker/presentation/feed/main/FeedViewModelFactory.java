@@ -13,7 +13,7 @@ public class FeedViewModelFactory implements ViewModelProvider.Factory {
     private final FeedRepository repository;
 
     @Inject
-    public FeedViewModelFactory(@NonNull FeedRepository repository) {
+    FeedViewModelFactory(@NonNull FeedRepository repository) {
         this.repository = repository;
     }
 
