@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
-            type="com.boostcamp.dreampicker.presentation.upload.UploadViewModel"/>
-        <import type="android.view.View"/>
+            type="com.boostcamp.dreampicker.presentation.upload.UploadViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
@@ -24,10 +26,10 @@
             app:contentInsetStart="0dp">
 
             <ImageView
+                style="@style/ImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                style="@style/ImageView"
                 android:padding="@dimen/space_x_small"
                 android:src="@drawable/img_logo"
                 tools:ignore="ContentDescription" />
@@ -51,7 +53,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="ContentDescription" />
 
-                <androidx.core.widget.NestedScrollView
+                <ScrollView
                     style="@style/UploadTagScrollView"
                     app:layout_constraintBottom_toTopOf="@+id/guideline1"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +67,7 @@
                         app:atg_inputHint="@string/upload_tag_hint"
                         app:atg_isAppendMode="true" />
 
-                </androidx.core.widget.NestedScrollView>
+                </ScrollView>
 
                 <!-- 왼쪽, 오른쪽 투표 구분선 -->
                 <View
@@ -84,8 +86,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/guideline1"
                     tools:ignore="ContentDescription" />
 
-
-                <androidx.core.widget.NestedScrollView
+                <ScrollView
                     style="@style/UploadTagScrollView"
                     app:layout_constraintBottom_toTopOf="@+id/guideline2"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +100,7 @@
                         android:layout_margin="@dimen/space_x_small"
                         app:atg_inputHint="@string/upload_tag_hint"
                         app:atg_isAppendMode="true" />
-                </androidx.core.widget.NestedScrollView>
+                </ScrollView>
 
 
                 <!-- 이미지(태그), 내용 구분선 -->
@@ -119,10 +120,10 @@
                     android:background="@null"
                     android:hint="@string/upload_et_content_hint"
                     android:text="@={vm.content}"
-                    app:layout_constraintTop_toBottomOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline2"
                     tools:ignore="Autofill,TextFields" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
