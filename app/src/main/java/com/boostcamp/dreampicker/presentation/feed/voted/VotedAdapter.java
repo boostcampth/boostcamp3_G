@@ -12,10 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 
-class VotedAdapter extends PagedListAdapter<VotedFeed, VotedViewHolder> {
+public class VotedAdapter extends PagedListAdapter<VotedFeed, VotedViewHolder> {
     // Todo : 상세보기 이동
-    interface OnitemClickListener {
-        void onClick(@NonNull String feedId);
+    interface OnItemClickListener {
+        void onClick(@NonNull VotedFeed feed);
     }
 
     VotedAdapter() {
@@ -23,7 +23,7 @@ class VotedAdapter extends PagedListAdapter<VotedFeed, VotedViewHolder> {
     }
 
     @Nullable
-    private AdapterView.OnItemClickListener onItemClickListener;
+    private OnItemClickListener onItemClickListener;
 
     @NonNull
     @Override
@@ -37,10 +37,13 @@ class VotedAdapter extends PagedListAdapter<VotedFeed, VotedViewHolder> {
         final VotedFeed feed = getItem(holder.getAdapterPosition());
         if (feed != null) {
             holder.bindTo(feed);
+            if (onItemClickListener != null) {
+                holder.itemView.setOnClickListener(v -> onItemClickListener.onClick(feed));
+            }
         }
     }
 
-    public void setOnItemClickListener(@Nullable final AdapterView.OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(@Nullable final OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 

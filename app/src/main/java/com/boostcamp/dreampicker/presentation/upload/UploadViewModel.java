@@ -10,6 +10,8 @@ import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -35,6 +37,7 @@ public class UploadViewModel extends BaseViewModel {
 
     private static final int A = 1;
 
+    @Inject
     UploadViewModel(@NonNull final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
         isLoading.setValue(false);

@@ -5,6 +5,8 @@ import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.repository.UserRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -17,9 +19,6 @@ public class ProfileViewModel extends BaseViewModel {
 
     @NonNull
     private final UserRepository repository;
-    @NonNull
-    private final String userId;
-
     @NonNull
     private final MutableLiveData<UserDetail> user = new MutableLiveData<>();
     @NonNull
@@ -35,24 +34,21 @@ public class ProfileViewModel extends BaseViewModel {
     @NonNull
     private MutableLiveData<Boolean> isLoggedOut = new MutableLiveData<>();
 
-    ProfileViewModel(@NonNull UserRepository repository,
-                     @NonNull String userId) {
+    @Inject
+    ProfileViewModel(@NonNull UserRepository repository) {
         this.repository = repository;
-        this.userId = userId;
         this.isLoading.setValue(false);
         this.isLoggedOut.setValue(false);
         myFeedListLiveData = Transformations.map(myFeedList, input -> myFeedList.getValue());
-        loadUserDetail();
-        loadMyFeeds();
     }
 
-    private void loadUserDetail() {
+    void loadUserDetail(@NonNull final String userId) {
         addDisposable(repository.getUserDetail(userId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this.user::setValue, this.error::setValue));
     }
 
-    public void loadMyFeeds() {
+    void loadMyFeeds(@NonNull final String userId) {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
@@ -69,7 +65,8 @@ public class ProfileViewModel extends BaseViewModel {
                 }));
     }
 
-    void toggleVoteEnded(@NonNull final MyFeed item,
+    void toggleVoteEnded(@NonNull final String userId,
+                         @NonNull final MyFeed item,
                          final boolean newEnded) {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;

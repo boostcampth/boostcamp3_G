@@ -14,9 +14,11 @@ import dagger.android.ContributesAndroidInjector;
 @SuppressWarnings("unused")
 @Module
 public abstract class ActivityBindingModule {
+    @ActivityScoped
     @ContributesAndroidInjector
     abstract SplashActivity splashActivity();
 
+    @ActivityScoped
     @ContributesAndroidInjector
     abstract LogInActivity logInActivity();
 
@@ -25,14 +27,14 @@ public abstract class ActivityBindingModule {
     abstract MainActivity mainActivity();
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = FeedDetailModule.class)
+    @ContributesAndroidInjector
     abstract FeedDetailActivity feedDetailActivity();
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = ProfileActivityModule.class)
+    @ContributesAndroidInjector
     abstract ProfileActivity profileActivity();
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = UploadModule.class)
+    @ContributesAndroidInjector
     abstract UploadActivity uploadActivity();
 }
