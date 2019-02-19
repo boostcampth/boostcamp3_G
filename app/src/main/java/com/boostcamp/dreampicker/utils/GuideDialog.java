@@ -48,7 +48,6 @@ public class GuideDialog extends Dialog {
 
     public GuideDialog(@NonNull Context context) {
         super(context);
-        setCancelable(false);
     }
 
     @Override
