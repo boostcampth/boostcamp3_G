@@ -15,6 +15,7 @@
 
     <!-- 프로필 화면에서 사용 -->
     <string name="profile_logout">로그아웃</string>
+    <string name="profile_feed_versus">vs</string>
     <string name="profile_feed_count">업로드</string>
     <string name="profile_vote_not_ended">진행중인 투표</string>
     <string name="profile_vote_ended">마감된 투표</string>

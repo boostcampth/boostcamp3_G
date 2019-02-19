@@ -50,6 +50,7 @@
             android:layout_marginEnd="@dimen/space_small"
             android:text="@string/profile_logout"
             android:textSize="@dimen/text_small"
+            android:onClick="@{__ -> vm.signOut()}"
             app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
             app:layout_constraintStart_toEndOf="@id/iv_user_image"
             app:layout_constraintTop_toBottomOf="@id/tv_name" />
