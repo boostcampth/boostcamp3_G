@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityProfileBinding;
@@ -20,10 +21,6 @@ import androidx.lifecycle.ViewModelProviders;
 public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     public static final String EXTRA_USER_ID = "EXTRA_USER_ID";
 
-    @Inject
-    @UserId
-    String userId;
-
     public static Intent getLaunchIntent(@NonNull Context context,
                                          @NonNull String userId) {
         Intent intent = new Intent(context, ProfileActivity.class);
@@ -32,7 +29,12 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     }
 
     @Inject
+    Context context;
+
+    @Inject
     ProfileViewModelFactory factory;
+
+    private String userId;
 
     @Override
     protected int getLayoutId() {
@@ -42,8 +44,24 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initToolbar();
+        if(savedInstanceState != null){
+            userId = savedInstanceState.getString(EXTRA_USER_ID);
+        } else if(getIntent() != null){
+            userId = getIntent().getStringExtra(EXTRA_USER_ID);
+        }
         initViewModel();
+        initViews();
+        observeError();
+    }
+
+    private void initViewModel() {
+        binding.setVm(ViewModelProviders.of(this, factory).get(ProfileViewModel.class));
+        binding.getVm().loadUserDetail(userId);
+        binding.getVm().loadMyFeeds(userId);
+    }
+
+    private void initViews() {
+        initToolbar();
         initRecyclerView();
     }
 
@@ -56,26 +74,28 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
         }
     }
 
-    private void initViewModel() {
-        ProfileViewModel viewModel =
-                ViewModelProviders.of(this, factory).get(ProfileViewModel.class);
-        binding.setVm(viewModel);
-    }
-
     private void initRecyclerView() {
-        MyFeedAdapter adapter = new MyFeedAdapter(item ->
+        final MyFeedAdapter adapter = new MyFeedAdapter(item ->
                 binding.getVm().toggleVoteEnded(userId, item, !item.isEnded()), false);
 
         binding.rvProfileFeed.setAdapter(adapter);
+        binding.swipeRefresh.setOnRefreshListener(() ->
+                binding.getVm().loadMyFeeds(userId));
 
         binding.getVm().getIsLoading().observe(this, isLoading -> {
             if (!isLoading) {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
 
-        binding.swipeRefresh.setOnRefreshListener(() ->
-                binding.getVm().loadMyFeeds(userId));
+    private void observeError(){
+        binding.getVm().getError().observe(this, error ->
+                showToast(getString(R.string.comment_error_message, error.getMessage())));
+    }
+
+    private void showToast(String message){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -37,23 +37,10 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_large"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/btn_logout"
+            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
             app:layout_constraintStart_toEndOf="@id/iv_user_image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/btn_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_small"
-            android:layout_marginEnd="@dimen/space_small"
-            android:text="@string/profile_logout"
-            android:textSize="@dimen/text_small"
-            android:onClick="@{__ -> vm.signOut()}"
-            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
-            app:layout_constraintStart_toEndOf="@id/iv_user_image"
-            app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
         <TextView
             android:id="@+id/tv_count"
@@ -65,7 +52,7 @@
             android:textSize="@dimen/text_small"
             android:textColor="@color/colorBlack"
             app:layout_constraintBottom_toTopOf="@id/tv_count_title"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 
@@ -80,8 +67,36 @@
             android:textSize="@dimen/text_x_large"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintTop_toBottomOf="@id/tv_count" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.88" />
+
+        <View
+            android:id="@+id/bg_logout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorDivider"
+            android:onClick="@{__ -> vm.signOut()}"
+            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btn_logout"
+            style="@style/ImageButton.Small"
+            app:srcCompat="@drawable/ic_log_out"
+            android:onClick="@{__ -> vm.signOut()}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/swipe_refresh" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
@@ -104,5 +119,6 @@
                 app:pagedItems="@{vm.myFeedListLiveData}" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

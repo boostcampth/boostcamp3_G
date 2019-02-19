@@ -42,7 +42,6 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     @Inject
     public FeedFragment() {
-
     }
 
     @Override
@@ -51,14 +50,12 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         initViewModel();
         initViews();
         subscribeViewModel();
-        binding.getVm().init(userId);
-        binding.getVm().loadFeedList(userId);
     }
 
     private void initViewModel() {
-        final FeedViewModel viewModel =
-                ViewModelProviders.of(this, factory).get(FeedViewModel.class);
-        binding.setVm(viewModel);
+        binding.setVm(ViewModelProviders.of(this, factory).get(FeedViewModel.class));
+        binding.getVm().init(userId);
+        binding.getVm().loadFeedList(userId);
     }
 
     private void initViews() {
