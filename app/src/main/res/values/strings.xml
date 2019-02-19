@@ -45,4 +45,6 @@
 
     <!-- 투표 결과 화면 -->
     <string name="voted_feed_empty_message">투표를 진행해 주세요!</string>
+
+    <string name="dialog_tip_message">끌어다 놓으면 투표가 됩니다</string>
 </resources>
