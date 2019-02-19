@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.data.source.firestore.model;
+package com.boostcamp.dreampicker.data.remote.firestore.model;
 
 public class UserDetailRemoteData {
     private String name; // 유저 이름

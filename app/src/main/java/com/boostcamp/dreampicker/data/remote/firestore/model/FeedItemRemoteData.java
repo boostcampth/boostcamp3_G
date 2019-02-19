@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.data.source.firestore.model;
+package com.boostcamp.dreampicker.data.remote.firestore.model;
 
 import java.util.List;
 
