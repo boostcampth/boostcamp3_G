@@ -47,15 +47,4 @@ public class GoogleAccountClient implements AccountApi {
                     .addOnFailureListener(emitter::onError);
         });
     }
-
-    @NonNull
-    @Override
-    public Completable removeUser() {
-        return Completable.create(emitter ->
-                firebaseAuth.getCurrentUser()
-                        .delete()
-                        .addOnSuccessListener(__ -> emitter.onComplete())
-                        .addOnFailureListener(emitter::onError)
-        );
-    }
 }
