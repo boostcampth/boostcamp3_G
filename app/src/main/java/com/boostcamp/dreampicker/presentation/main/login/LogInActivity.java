@@ -3,6 +3,7 @@ package com.boostcamp.dreampicker.presentation.main.login;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.repository.UserRepository;
@@ -18,7 +19,7 @@ import com.tedpark.tedonactivityresult.rx2.TedRxOnActivityResult;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProviders;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -32,7 +33,11 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
 
     @Inject
     GoogleSignInClient googleSignInClient;
+    @Inject
+    Context context;
 
+    @Inject
+    LoginViewModelFactory factory;
     @Inject
     UserRepository repository;
 
@@ -44,7 +49,18 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initViewModel();
         initView();
+        observeError();
+    }
+
+    private void initViewModel() {
+        binding.setVm(ViewModelProviders.of(this, factory).get(LoginViewModel.class));
+        binding.getVm().getIsLoggedIn().observe(this, isLoggedIn -> {
+            if(isLoggedIn){
+                startMainActivityAndFinish();
+            }
+        });
     }
 
     private void initView() {
@@ -56,32 +72,35 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
         disposable.add(TedRxOnActivityResult.with(this)
                 .startActivityForResult(googleSignInClient.getSignInIntent())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    try {
-                        final GoogleSignInAccount account = GoogleSignIn
-                                .getSignedInAccountFromIntent(result.getData())
-                                .getResult(ApiException.class);
-                        if (account != null && account.getIdToken() != null) {
-                            getUserIdToken(account.getIdToken());
-                        }
-                    } catch (ApiException e) {
-                        e.printStackTrace();
-                    }
-                }, error -> {
-                })
-        );
+                .subscribe(result -> processSignInResultIntent(result.getData()),
+                        error -> Toast.makeText(context, R.string.sign_in_fail, Toast.LENGTH_SHORT).show()));
     }
 
-    private void getUserIdToken(String idToken){
-        repository.signIn(idToken)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> startMainActivity(),
-                        error -> error.printStackTrace());
+    private void processSignInResultIntent(Intent intent){
+        try {
+            final GoogleSignInAccount account = GoogleSignIn
+                    .getSignedInAccountFromIntent(intent)
+                    .getResult(ApiException.class);
+            if (account != null && account.getIdToken() != null) {
+                binding.getVm().processLogin(account.getIdToken());
+            }
+        } catch (ApiException e) {
+            Toast.makeText(context, R.string.sign_in_fail, Toast.LENGTH_SHORT).show();
+        }
     }
-    
-    private void startMainActivity() {
+
+    private void startMainActivityAndFinish() {
         startActivity(MainActivity.getLaunchIntent(this));
         finish();
+    }
+
+    private void observeError(){
+        binding.getVm().getError().observe(this, error ->
+                showToast(getString(R.string.comment_error_message, error.getMessage())));
+    }
+
+    private void showToast(String message){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

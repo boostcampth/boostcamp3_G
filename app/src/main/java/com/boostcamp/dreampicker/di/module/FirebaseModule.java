@@ -31,7 +31,7 @@ public class FirebaseModule {
         if (userId != null) {
             return userId;
         } else {
-            throw new IllegalArgumentException("Not user information");
+            throw new IllegalStateException("Current user NOT exists");
         }
     }
 }

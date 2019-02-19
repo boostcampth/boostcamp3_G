@@ -3,12 +3,15 @@ package com.boostcamp.dreampicker.presentation.profile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.di.scope.UserId;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
+import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.main.MainActivity;
 import com.boostcamp.dreampicker.presentation.main.SplashActivity;
 
@@ -25,6 +28,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     Context context;
     @Inject
     MainActivity activity;
+    @Inject
     @UserId
     String userId;
 
@@ -42,16 +46,14 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
         super.onViewCreated(view, savedInstanceState);
         initViewModel();
         initRecyclerView();
-        binding.getVm().loadMyFeeds(userId);
-        binding.getVm().loadUserDetail(userId);
+        observeError();
     }
 
     private void initViewModel() {
-        final ProfileViewModel viewModel =
-                ViewModelProviders.of(this, factory).get(ProfileViewModel.class);
-        binding.setVm(viewModel);
-
-        viewModel.getIsLoggedOut().observe(this, isLoggedOut -> {
+        binding.setVm(ViewModelProviders.of(this, factory).get(ProfileViewModel.class));
+        binding.getVm().loadUserDetail(userId);
+        binding.getVm().loadMyFeeds(userId);
+        binding.getVm().getIsLoggedOut().observe(this, isLoggedOut -> {
             if (isLoggedOut) {
                 startActivity(new Intent(context, SplashActivity.class));
                 activity.finish();
@@ -60,19 +62,32 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     }
 
     private void initRecyclerView() {
-        MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.getVm().toggleVoteEnded(userId, item, !item.isEnded()), true);
+        MyFeedAdapter adapter = new MyFeedAdapter(
+                item -> binding.getVm().toggleVoteEnded(userId, item, !item.isEnded()),
+                this::startFeedDetailActivity,
+                true);
 
-        binding.rvProfileFeed.setAdapter(adapter);
+        binding.content.rvProfileFeed.setAdapter(adapter);
+        binding.content.swipeRefresh.setOnRefreshListener(() ->
+                binding.getVm().loadMyFeeds(userId));
 
         binding.getVm().getIsLoading().observe(this, isLoading -> {
             if (!isLoading) {
                 adapter.notifyDataSetChanged();
             }
         });
-
-        binding.swipeRefresh.setOnRefreshListener(() ->
-                binding.getVm().loadMyFeeds(userId));
     }
 
+    private void startFeedDetailActivity(String feedId, String imageUrlA, String imageUrlB) {
+        startActivity(FeedDetailActivity.getLaunchIntent(context, feedId, imageUrlA, imageUrlB));
+    }
+
+    private void observeError(){
+        binding.getVm().getError().observe(this, error ->
+                showToast(getString(R.string.comment_error_message, error.getMessage())));
+    }
+
+    private void showToast(String message){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
 }

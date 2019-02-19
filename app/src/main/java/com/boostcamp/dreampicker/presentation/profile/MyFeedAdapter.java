@@ -17,12 +17,17 @@ class MyFeedAdapter extends PagedListAdapter<MyFeed, MyFeedItemViewHolder> {
     @Nullable
     private final OnEndButtonClickListener onEndButtonClickListener;
 
+    @Nullable
+    private final OnItemClickListener onItemClickListener;
+
     private final boolean isMyProfile;
 
     MyFeedAdapter(@Nullable OnEndButtonClickListener onEndButtonClickListener,
+                  @Nullable OnItemClickListener onItemClickListener,
                   boolean isMyProfile) {
         super(DIFF_CALLBACK);
         this.onEndButtonClickListener = onEndButtonClickListener;
+        this.onItemClickListener = onItemClickListener;
         this.isMyProfile = isMyProfile;
     }
 
@@ -38,6 +43,12 @@ class MyFeedAdapter extends PagedListAdapter<MyFeed, MyFeedItemViewHolder> {
         final MyFeed item = getItem(holder.getAdapterPosition());
         holder.bindTo(item);
 
+        holder.itemView.setOnClickListener(v -> {
+            if(onItemClickListener != null){
+                onItemClickListener.onItemClick(item.getId(), item.getImageUrlA(), item.getImageUrlB());
+            }
+        });
+
         holder.binding().btnEnd.setOnClickListener(v -> {
             if (onEndButtonClickListener != null) {
                 onEndButtonClickListener.onEndedButtonClick(item);
@@ -49,6 +60,12 @@ class MyFeedAdapter extends PagedListAdapter<MyFeed, MyFeedItemViewHolder> {
 
     interface OnEndButtonClickListener {
         void onEndedButtonClick(MyFeed item);
+    }
+
+    interface OnItemClickListener {
+        void onItemClick(@NonNull final String feedId,
+                         @NonNull final String imageUrlA,
+                         @NonNull final String imageUrlB);
     }
 
     private static final DiffUtil.ItemCallback<MyFeed> DIFF_CALLBACK =

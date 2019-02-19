@@ -69,7 +69,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Completable signIn(@NonNull final String userIdToken) {
         return accountApi.signIn(userIdToken)
-                .subscribeOn(Schedulers.io())
                 .flatMapCompletable(user -> remoteDataSource.insertNewUser(
                         user.getUid(),
                         new UserDetailRemoteData(
@@ -77,7 +76,7 @@ public class UserRepositoryImpl implements UserRepository {
                                 user.getPhotoUrl() == null
                                         ? null : user.getPhotoUrl().toString(),
                                 0
-                        )));
+                        )).subscribeOn(Schedulers.io()));
     }
 
     @NonNull
