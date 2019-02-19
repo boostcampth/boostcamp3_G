@@ -1,5 +1,7 @@
 package com.boostcamp.dreampicker.data.remote.firestore;
 
+import android.util.Log;
+
 import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.remote.firestore.mapper.UserDetailMapper;
@@ -127,17 +129,19 @@ public class UserRemoteDataSource implements UserDataSource {
                                      @NonNull final UserDetailRemoteData userDetail) {
 
         Completable completable = Completable.create(emitter -> {
-            // 유저정보 존재하는지 확인
-            DocumentReference reference =
+            final DocumentReference reference =
                     firestore.collection(COLLECTION_USER).document(userId);
 
             firestore.runTransaction(transaction -> {
                         DocumentSnapshot snapshot = transaction.get(reference);
                         if (!snapshot.exists()) {
                             transaction.set(reference, userDetail);
+                        } else {
+                            transaction.update(reference,
+                                    "profileImageUrl",
+                                    userDetail.getProfileImageUrl());
                         }
-                        // Success
-                        return null;
+                        return true;
                     })
                     .addOnSuccessListener(__ -> emitter.onComplete())
                     .addOnFailureListener(emitter::onError);
