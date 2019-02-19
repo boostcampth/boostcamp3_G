@@ -123,6 +123,5 @@ public class UploadViewModel extends BaseViewModel {
         } else {
             imagePathB.setValue(uri.toString());
         }
-        Log.d("LEE"," uri.toString() "+ uri.toString());
     }
 }

@@ -7,19 +7,27 @@ import java.util.List;
 
 public class Result {
 
-    @SerializedName("label")
+    @SerializedName("normal")
     @Expose
-    private List<String> tagList;
+    private float normal;
 
-    @SerializedName("label_kr")
+    @SerializedName("soft")
     @Expose
-    private List<String> tagListKr;
+    private float soft;
 
-    public List<String> getTagList() {
-        return tagList;
+    @SerializedName("adult")
+    @Expose
+    private float adult;
+
+    public float getNormal() {
+        return normal;
     }
 
-    public List<String> getTagListKr() {
-        return tagListKr;
+    public float getSoft() {
+        return soft;
+    }
+
+    public float getAdult() {
+        return adult;
     }
 }

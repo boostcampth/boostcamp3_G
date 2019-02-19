@@ -75,11 +75,11 @@ public class FeedUploadRequest {
         return tagListB;
     }
 
-    public void setTagListA(@Nullable List<String> tagListA) {
-        this.tagListA = tagListA;
+    public void setImagePathA(@NonNull String imagePathA) {
+        this.imagePathA = imagePathA;
     }
 
-    public void setTagListB(@Nullable List<String> tagListB) {
-        this.tagListB = tagListB;
+    public void setImagePathB(@NonNull String imagePathB) {
+        this.imagePathB = imagePathB;
     }
 }

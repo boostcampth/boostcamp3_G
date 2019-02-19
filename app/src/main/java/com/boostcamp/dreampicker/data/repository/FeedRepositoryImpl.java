@@ -1,7 +1,6 @@
 package com.boostcamp.dreampicker.data.repository;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.local.room.dao.VotedFeedDao;
@@ -13,8 +12,8 @@ import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedRequestMapper;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firestore.model.MyFeedRemoteData;
-import com.boostcamp.dreampicker.data.source.firestore.vision.TagListApi;
-import com.boostcamp.dreampicker.data.source.firestore.vision.model.getTagListResponse;
+import com.boostcamp.dreampicker.data.source.firestore.vision.AdultDetectApi;
+import com.boostcamp.dreampicker.data.source.firestore.vision.model.getAdultDetectResponse;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,7 +40,6 @@ public class FeedRepositoryImpl implements FeedRepository {
     private static final String COLLECTION_FEED = "feed";
     private static final String COLLECTION_USER = "user";
     private static final String SUBCOLLECTION_MYFEEDS = "myFeeds";
-    private static final String STORAGE_FEED_IMAGE_PATH = "feedImages";
     private static final String FIELD_FEEDCOUNT = "feedCount";
 
     private static final String FIELD_DATE = "date";
@@ -170,25 +168,27 @@ public class FeedRepositoryImpl implements FeedRepository {
     public Completable uploadFeed(@NonNull final FeedUploadRequest uploadFeed) {
 
         return Single
-                .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())),
-                        uploadImageStorage(Uri.parse(uploadFeed.getImagePathB()))
-                        , (imageUrlA, imageUrlB) -> {
-//                            getTagListResponse(imageUrlA);
-//                            getTagListResponse(imageUrlB);
-//                            Single.zip(getTagListResponse(imageUrlA),
-//                                            getTagListResponse(imageUrlB),
-//                                            (A, B) -> {
-//                                                uploadFeed.setTagListA(A.getResult().getTagListKr());
-//                                                Log.d("LEE","tagListA"+A.getResult().getTagListKr());
-//                                                uploadFeed.setTagListB(B.getResult().getTagListKr());
-//                                                Log.d("LEE","tagListB"+B.getResult().getTagListKr());
-//                                                return uploadFeed;
-//                                            });
+                .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())).flatMap(imageUrlA->{
+                            uploadFeed.setImagePathA(imageUrlA);
+                            return getTagListResponse(imageUrlA);
+                        }),
+                        uploadImageStorage(Uri.parse(uploadFeed.getImagePathB())).flatMap(imageUrlB->{
+                            uploadFeed.setImagePathB(imageUrlB);
+                            return getTagListResponse(imageUrlB);
+                        }),
+                        (resultA, resultB) -> {
+                            final float adultA = resultA.getResult().getAdult();
+                            final float adultB = resultB.getResult().getAdult();
+                            if (adultA > 0.7 || adultB > 0.7){
+                             return null;
+                            }else{
+                                return FeedRequestMapper.toFeed(uploadFeed,uploadFeed.getImagePathA(),uploadFeed.getImagePathB());
+                            }
 
-                             return FeedRequestMapper.toFeed(uploadFeed, imageUrlA, imageUrlB);
                         })
                 .flatMapCompletable(feedRemoteData ->
                         Completable.create(emitter -> {
+                            if (feedRemoteData == null) emitter.onError(new IllegalArgumentException("image error"));
                             final String writerId = FirebaseManager.getCurrentUserId();
                             if (writerId == null) {
                                 emitter.onError(new IllegalArgumentException("no User error"));
@@ -226,8 +226,7 @@ public class FeedRepositoryImpl implements FeedRepository {
     private Single<String> uploadImageStorage(final Uri uri) {
         return Single.create(emitter -> {
             StorageReference feedImages = storage.getReference()
-                    .child(STORAGE_FEED_IMAGE_PATH + "/" + uri.getLastPathSegment());
-
+                    .child(uri.getLastPathSegment());
             feedImages
                     .putFile(uri)
                     .continueWithTask(task -> {
@@ -275,9 +274,9 @@ public class FeedRepositoryImpl implements FeedRepository {
     }
 
     @NonNull
-    private Single<getTagListResponse> getTagListResponse(String imageUrl) {
-        Log.d("LEE", "getTagListResponse");
-        return retrofit.create(TagListApi.class)
-                .getTagList(imageUrl);
+    private Single<getAdultDetectResponse> getTagListResponse(String imageUrl) {
+        return retrofit.create(AdultDetectApi.class)
+                .getTagList(imageUrl)
+                .subscribeOn(Schedulers.newThread());
     }
 }

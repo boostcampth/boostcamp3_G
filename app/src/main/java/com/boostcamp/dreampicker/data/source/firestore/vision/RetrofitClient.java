@@ -11,9 +11,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    private static final String BASE_URL = "https://kapi.kakao.com/v1/";
+    private static final String BASE_URL = "https://kapi.kakao.com";
 
-    private static final String AUTHORIZTION = "84f0b51c106fe7410014a24ec2eca7cf";
+    private static final String AUTHORIZATION_KEY = "KakaoAK 84f0b51c106fe7410014a24ec2eca7cf";
+    private static final String AUTHORIZATION = "Authorization";
 
     private static Retrofit retrofit = null;
 
@@ -24,7 +25,7 @@ public class RetrofitClient {
         if (retrofit == null ) {
             Interceptor interceptor = chain -> {
                 final Request.Builder builder = chain.request().newBuilder()
-                        .header("Authorization", AUTHORIZTION);
+                        .header(AUTHORIZATION, AUTHORIZATION_KEY);
 
                 return chain.proceed(builder.build());
             };
