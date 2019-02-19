@@ -3,7 +3,9 @@ package com.boostcamp.dreampicker.di.module;
 import android.app.Application;
 import android.content.Context;
 
-import com.boostcamp.dreampicker.data.source.firestore.vision.RetrofitClient;
+import com.boostcamp.dreampicker.data.source.vision.RetrofitClient;
+
+import javax.inject.Singleton;
 
 import dagger.Binds;
 import dagger.Module;
@@ -17,7 +19,8 @@ public abstract class AppModule {
     abstract Context bindContext(Application application);
 
     @Provides
-    static Retrofit provideRetrofit() {
-        return RetrofitClient.getInstance();
+    @Singleton
+    static RetrofitClient provideRetrofit() {
+        return new RetrofitClient();
     }
 }

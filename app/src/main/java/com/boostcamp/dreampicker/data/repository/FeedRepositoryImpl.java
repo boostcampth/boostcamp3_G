@@ -12,8 +12,7 @@ import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedRequestMapper;
 import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
 import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
 import com.boostcamp.dreampicker.data.source.firestore.model.MyFeedRemoteData;
-import com.boostcamp.dreampicker.data.source.firestore.vision.AdultDetectApi;
-import com.boostcamp.dreampicker.data.source.firestore.vision.model.getAdultDetectResponse;
+import com.boostcamp.dreampicker.data.source.vision.RetrofitClient;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,7 +35,6 @@ import androidx.paging.DataSource;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
 
 @SuppressWarnings("SpellCheckingInspection")
 @Singleton
@@ -49,6 +47,7 @@ public class FeedRepositoryImpl implements FeedRepository {
     private static final String FIELD_DATE = "date";
     private static final String FIELD_ENDED = "ended";
 
+    private static final float ADULT_DETECT_RATE = (float) 0.7;
     @NonNull
     private final FirebaseFirestore firestore;
     @NonNull
@@ -56,18 +55,18 @@ public class FeedRepositoryImpl implements FeedRepository {
     @NonNull
     private final VotedFeedDao votedFeedDao;
     @NonNull
-    private final Retrofit retrofit;
+    private RetrofitClient client;
 
 
     @Inject
     FeedRepositoryImpl(@NonNull final FirebaseFirestore firestore,
                        @NonNull final FirebaseStorage storage,
                        @NonNull final VotedFeedDao votedFeedDao,
-                       @NonNull final Retrofit retrofit) {
+                       @NonNull final RetrofitClient client) {
         this.firestore = firestore;
         this.storage = storage;
         this.votedFeedDao = votedFeedDao;
-        this.retrofit = retrofit;
+        this.client = client;
     }
 
     @NonNull
@@ -160,16 +159,17 @@ public class FeedRepositoryImpl implements FeedRepository {
         return Single
                 .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())).flatMap(imageUrlA -> {
                             uploadFeed.setImagePathA(imageUrlA);
-                            return getTagListResponse(imageUrlA);
+                            return client.getAdultDetectResult(imageUrlA);
                         }),
                         uploadImageStorage(Uri.parse(uploadFeed.getImagePathB())).flatMap(imageUrlB -> {
                             uploadFeed.setImagePathB(imageUrlB);
-                            return getTagListResponse(imageUrlB);
+                            return client.getAdultDetectResult(imageUrlB);
                         }),
                         (resultA, resultB) -> {
+
                             final float adultA = resultA.getResult().getAdult();
                             final float adultB = resultB.getResult().getAdult();
-                            if (adultA > 0.7 || adultB > 0.7) {
+                            if (adultA >= ADULT_DETECT_RATE || adultB >= ADULT_DETECT_RATE) {
                                 return null;
                             } else {
                                 return FeedRequestMapper.toFeed(uploadFeed, uploadFeed.getImagePathA(), uploadFeed.getImagePathB());
@@ -178,6 +178,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                         })
                 .flatMapCompletable(feedRemoteData ->
                         Completable.create(emitter -> {
+
                             final String writerId = FirebaseManager.getCurrentUserId();
                             if (writerId == null) {
                                 emitter.onError(new IllegalArgumentException("no User error"));
@@ -190,7 +191,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                                     DocumentSnapshot documentSnapshot = transaction.get(userRef);
                                     final Double oldFeedCount = documentSnapshot.getDouble(FIELD_FEEDCOUNT);
                                     if (oldFeedCount == null) {
-                                        emitter.onError(new IllegalArgumentException("Not exists olFeedCount"));
+                                        emitter.onError(new IllegalArgumentException("Not exists oldFeedCount"));
                                         return null;
                                     }
                                     final Double newFeedCount = oldFeedCount + 1;
@@ -218,6 +219,9 @@ public class FeedRepositoryImpl implements FeedRepository {
     @NonNull
     private Single<String> uploadImageStorage(final Uri uri) {
         return Single.create(emitter -> {
+            if (uri.getLastPathSegment() == null) {
+                emitter.onError(new IllegalArgumentException("Not exists uri"));
+            }
             StorageReference feedImages = storage.getReference()
                     .child(uri.getLastPathSegment());
             feedImages
@@ -266,10 +270,4 @@ public class FeedRepositoryImpl implements FeedRepository {
         return votedFeedDao.selectAll();
     }
 
-    @NonNull
-    private Single<getAdultDetectResponse> getTagListResponse(String imageUrl) {
-        return retrofit.create(AdultDetectApi.class)
-                .getTagList(imageUrl)
-                .subscribeOn(Schedulers.newThread());
-    }
 }

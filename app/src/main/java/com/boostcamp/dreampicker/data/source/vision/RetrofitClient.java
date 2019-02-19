@@ -1,14 +1,20 @@
-package com.boostcamp.dreampicker.data.source.firestore.vision;
+package com.boostcamp.dreampicker.data.source.vision;
 
+import com.boostcamp.dreampicker.data.source.vision.model.getAdultDetectResponse;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import androidx.annotation.NonNull;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@Singleton
 public class RetrofitClient {
 
     private static final String BASE_URL = "https://kapi.kakao.com";
@@ -18,11 +24,9 @@ public class RetrofitClient {
 
     private static Retrofit retrofit = null;
 
-    private RetrofitClient() { }
-
-    public static Retrofit getInstance() {
-
-        if (retrofit == null ) {
+    @Inject
+    public RetrofitClient() {
+        if (retrofit == null) {
             Interceptor interceptor = chain -> {
                 final Request.Builder builder = chain.request().newBuilder()
                         .header(AUTHORIZATION, AUTHORIZATION_KEY);
@@ -41,9 +45,12 @@ public class RetrofitClient {
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
+    }
 
-        return retrofit;
-
+    public Single<getAdultDetectResponse> getAdultDetectResult(String imageUrl) {
+        return retrofit.create(AdultDetectApi.class)
+                .getAdultDetectResult(imageUrl)
+                .subscribeOn(Schedulers.newThread());
     }
 
 }
