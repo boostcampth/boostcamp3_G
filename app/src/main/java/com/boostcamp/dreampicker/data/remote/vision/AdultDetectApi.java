@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.data.remote.vision;
 
-import com.boostcamp.dreampicker.data.remote.vision.model.getAdultDetectResponse;
+import com.boostcamp.dreampicker.data.remote.vision.model.AdultDetectResponse;
 
 import io.reactivex.Single;
 import retrofit2.http.Field;
@@ -11,6 +11,6 @@ public interface AdultDetectApi {
 
     @FormUrlEncoded
     @POST("/v1/vision/adult/detect")
-    Single<getAdultDetectResponse> getAdultDetectResult(@Field("image_url") String imageUrl);
+    Single<AdultDetectResponse> getAdultDetectResult(@Field("image_url") String imageUrl);
 
 }

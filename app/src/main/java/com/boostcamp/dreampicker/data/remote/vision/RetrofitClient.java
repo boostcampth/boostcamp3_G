@@ -1,6 +1,6 @@
 package com.boostcamp.dreampicker.data.remote.vision;
 
-import com.boostcamp.dreampicker.data.remote.vision.model.getAdultDetectResponse;
+import com.boostcamp.dreampicker.data.remote.vision.model.AdultDetectResponse;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import javax.inject.Inject;
@@ -47,7 +47,7 @@ public class RetrofitClient {
         }
     }
 
-    public Single<getAdultDetectResponse> getAdultDetectResult(String imageUrl) {
+    public Single<AdultDetectResponse> getAdultDetectResult(String imageUrl) {
         return retrofit.create(AdultDetectApi.class)
                 .getAdultDetectResult(imageUrl)
                 .subscribeOn(Schedulers.newThread());
