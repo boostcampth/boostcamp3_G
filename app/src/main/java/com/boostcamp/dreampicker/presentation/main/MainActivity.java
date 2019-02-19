@@ -13,6 +13,7 @@ import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
 import com.boostcamp.dreampicker.presentation.feed.voted.VotedFragment;
 import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
+import com.boostcamp.dreampicker.utils.GuideDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import javax.inject.Inject;
@@ -24,22 +25,24 @@ import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding>
         implements BottomNavigationView.OnNavigationItemSelectedListener {
+    @Inject
+    FeedFragment feedFragment;
+
+    @Inject
+    VotedFragment votedFragment;
+    @Inject
+    ProfileFragment profileFragment;
+    private FragmentManager fm = getSupportFragmentManager();
+
+    private Fragment active;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initToolbar();
         initNavigation();
+        showTutorial();
     }
-
-    @Inject
-    FeedFragment feedFragment;
-    @Inject
-    VotedFragment votedFragment;
-    @Inject
-    ProfileFragment profileFragment;
-
-    private FragmentManager fm = getSupportFragmentManager();
-    private Fragment active;
 
     private void initToolbar() {
         setSupportActionBar(binding.toolbar);
@@ -77,6 +80,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
                 return true;
         }
         return false;
+    }
+
+    private void showTutorial() {
+        final GuideDialog dialog = new GuideDialog(this);
+        dialog.show();
     }
 
     public void upload(View view) {

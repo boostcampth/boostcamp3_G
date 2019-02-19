@@ -127,7 +127,6 @@ public class FeedRepositoryImpl implements FeedRepository {
 
     @Override
     public Single<Feed> getFeed(@NonNull String userId, @NonNull String feedId) {
-        // 파이어스토어에서 Feed 가져오기 스트림
         final Single<Feed> single = Single.create(emitter -> firestore.collection(COLLECTION_FEED)
                 .document(feedId)
                 .get()
