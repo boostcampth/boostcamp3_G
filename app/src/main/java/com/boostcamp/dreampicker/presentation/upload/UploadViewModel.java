@@ -2,6 +2,7 @@ package com.boostcamp.dreampicker.presentation.upload;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
