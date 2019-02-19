@@ -178,7 +178,6 @@ public class FeedRepositoryImpl implements FeedRepository {
                         })
                 .flatMapCompletable(feedRemoteData ->
                         Completable.create(emitter -> {
-                            if (feedRemoteData == null) emitter.onError(new IllegalArgumentException("image error"));
                             final String writerId = FirebaseManager.getCurrentUserId();
                             if (writerId == null) {
                                 emitter.onError(new IllegalArgumentException("no User error"));

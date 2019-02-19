@@ -10,10 +10,10 @@ public class FeedUploadRequest {
     private final String content; // 작성글
 
     @NonNull
-    private final String imagePathA; // 1번 이미지 Path
+    private String imagePathA; // 1번 이미지 Path
 
     @NonNull
-    private final String imagePathB; // 2번 이미지 Path
+    private String imagePathB; // 2번 이미지 Path
 
     @Nullable
     private final List<String> tagListA; // 1번 이미지 태그 리스트
