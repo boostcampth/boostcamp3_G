@@ -64,8 +64,8 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
         MyFeedAdapter adapter = new MyFeedAdapter(item ->
                 binding.getVm().toggleVoteEnded(userId, item, !item.isEnded()), true);
 
-        binding.rvProfileFeed.setAdapter(adapter);
-        binding.swipeRefresh.setOnRefreshListener(() ->
+        binding.content.rvProfileFeed.setAdapter(adapter);
+        binding.content.swipeRefresh.setOnRefreshListener(() ->
                 binding.getVm().loadMyFeeds(userId));
 
         binding.getVm().getIsLoading().observe(this, isLoading -> {

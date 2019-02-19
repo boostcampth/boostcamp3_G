@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -9,116 +9,14 @@
         <import type="android.view.View" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_user_image"
-            android:layout_width="@dimen/profile_image_size_median"
-            android:layout_height="@dimen/profile_image_size_median"
-            android:layout_marginStart="@dimen/space_median"
-            android:layout_marginTop="@dimen/space_median"
-            android:layout_marginBottom="@dimen/space_median"
-            android:scaleX="0.95"
-            android:scaleY="0.95"
-            app:circleImage="@{vm.user.profileImageUrl}"
-            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <include
+            android:id="@+id/content"
+            layout="@layout/layout_profile"
+            bind:vm="@{vm}" />
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_small"
-            android:layout_marginEnd="@dimen/space_small"
-            android:text="@{vm.user.name}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_large"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
-            app:layout_constraintStart_toEndOf="@id/iv_user_image"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/tv_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_median"
-            android:layout_marginEnd="@dimen/space_median"
-            android:text="@string/profile_feed_count"
-            android:textSize="@dimen/text_small"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintBottom_toTopOf="@id/tv_count_title"
-            app:layout_constraintEnd_toStartOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/tv_count_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_median"
-            android:layout_marginEnd="@dimen/space_median"
-            android:text="@{String.valueOf(vm.user.feedCount)}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_x_large"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
-            app:layout_constraintEnd_toStartOf="@id/guideline"
-            app:layout_constraintTop_toBottomOf="@id/tv_count" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.88" />
-
-        <View
-            android:id="@+id/bg_logout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/colorDivider"
-            android:onClick="@{__ -> vm.signOut()}"
-            app:layout_constraintBottom_toTopOf="@id/swipe_refresh"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/btn_logout"
-            style="@style/ImageButton.Small"
-            app:srcCompat="@drawable/ic_log_out"
-            android:onClick="@{__ -> vm.signOut()}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/swipe_refresh" />
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/line_top"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_user_image"
-            app:refreshing="@{safeUnbox(vm.isLoading)}">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_profile_feed"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="@dimen/space_x_small"
-                android:paddingEnd="@dimen/space_x_small"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:pagedItems="@{vm.myFeedListLiveData}" />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
