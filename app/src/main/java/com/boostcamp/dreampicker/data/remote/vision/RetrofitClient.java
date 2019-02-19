@@ -1,6 +1,6 @@
-package com.boostcamp.dreampicker.data.source.vision;
+package com.boostcamp.dreampicker.data.remote.vision;
 
-import com.boostcamp.dreampicker.data.source.vision.model.getAdultDetectResponse;
+import com.boostcamp.dreampicker.data.remote.vision.model.getAdultDetectResponse;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import javax.inject.Inject;

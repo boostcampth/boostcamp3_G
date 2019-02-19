@@ -1,6 +1,6 @@
-package com.boostcamp.dreampicker.data.source.vision;
+package com.boostcamp.dreampicker.data.remote.vision;
 
-import com.boostcamp.dreampicker.data.source.vision.model.getAdultDetectResponse;
+import com.boostcamp.dreampicker.data.remote.vision.model.getAdultDetectResponse;
 
 import io.reactivex.Single;
 import retrofit2.http.Field;
