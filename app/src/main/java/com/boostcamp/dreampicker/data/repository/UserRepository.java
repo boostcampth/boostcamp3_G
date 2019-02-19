@@ -2,7 +2,6 @@ package com.boostcamp.dreampicker.data.repository;
 
 import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.UserDetail;
-import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagedList;
@@ -29,6 +28,8 @@ public interface UserRepository {
 
     // 새로운 유저 정보 등록
     @NonNull
-    Completable insertNewUser(@NonNull final String userId,
-                              @NonNull final UserDetailRemoteData userDetail);
+    Completable signIn(@NonNull final String userIdToken);
+
+    @NonNull
+    Completable signOut();
 }
