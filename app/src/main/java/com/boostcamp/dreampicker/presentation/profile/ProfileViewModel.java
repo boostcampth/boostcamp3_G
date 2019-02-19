@@ -31,10 +31,14 @@ public class ProfileViewModel extends BaseViewModel {
     @NonNull
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
+    @NonNull
+    private MutableLiveData<Boolean> isLoggedOut = new MutableLiveData<>();
+
     @Inject
     ProfileViewModel(@NonNull UserRepository repository) {
         this.repository = repository;
         this.isLoading.setValue(false);
+        this.isLoggedOut.setValue(false);
         myFeedListLiveData = Transformations.map(myFeedList, input -> myFeedList.getValue());
     }
 
@@ -83,6 +87,12 @@ public class ProfileViewModel extends BaseViewModel {
                         }));
     }
 
+    public void signOut() {
+        addDisposable(repository.signOut()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> isLoggedOut.setValue(true)));
+    }
+
     @NonNull
     public LiveData<UserDetail> getUser() {
         return user;
@@ -101,5 +111,10 @@ public class ProfileViewModel extends BaseViewModel {
     @NonNull
     public LiveData<Boolean> getIsLoading() {
         return isLoading;
+    }
+
+    @NonNull
+    public MutableLiveData<Boolean> getIsLoggedOut() {
+        return isLoggedOut;
     }
 }

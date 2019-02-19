@@ -1,9 +1,9 @@
-package com.boostcamp.dreampicker.data.source.firestore;
+package com.boostcamp.dreampicker.data.remote.firestore;
 
 import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.UserDetail;
-import com.boostcamp.dreampicker.data.source.firestore.mapper.UserDetailMapper;
-import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
+import com.boostcamp.dreampicker.data.remote.firestore.mapper.UserDetailMapper;
+import com.boostcamp.dreampicker.data.remote.firestore.model.UserDetailRemoteData;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -125,14 +125,24 @@ public class UserRemoteDataSource implements UserDataSource {
     @Override
     public Completable insertNewUser(@NonNull final String userId,
                                      @NonNull final UserDetailRemoteData userDetail) {
-        Completable completable = Completable.create(emitter ->
-                firestore.collection(COLLECTION_USER)
-                        .document(userId)
-                        .set(userDetail)
-                        .addOnSuccessListener(__ -> emitter.onComplete())
-                        .addOnFailureListener(emitter::onError));
+
+        Completable completable = Completable.create(emitter -> {
+            // 유저정보 존재하는지 확인
+            DocumentReference reference =
+                    firestore.collection(COLLECTION_USER).document(userId);
+
+            firestore.runTransaction(transaction -> {
+                        DocumentSnapshot snapshot = transaction.get(reference);
+                        if (!snapshot.exists()) {
+                            transaction.set(reference, userDetail);
+                        }
+                        // Success
+                        return null;
+                    })
+                    .addOnSuccessListener(__ -> emitter.onComplete())
+                    .addOnFailureListener(emitter::onError);
+        });
 
         return completable.subscribeOn(Schedulers.io());
     }
-
 }

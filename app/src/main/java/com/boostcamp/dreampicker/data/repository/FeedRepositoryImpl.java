@@ -269,5 +269,4 @@ public class FeedRepositoryImpl implements FeedRepository {
     public DataSource.Factory<Integer, VotedFeed> getMyVotedFeedList() {
         return votedFeedDao.selectAll();
     }
-
 }

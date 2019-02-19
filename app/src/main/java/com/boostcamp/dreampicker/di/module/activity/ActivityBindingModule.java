@@ -2,7 +2,7 @@ package com.boostcamp.dreampicker.di.module.activity;
 
 import com.boostcamp.dreampicker.di.scope.ActivityScoped;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
-import com.boostcamp.dreampicker.presentation.main.LogInActivity;
+import com.boostcamp.dreampicker.presentation.main.login.LogInActivity;
 import com.boostcamp.dreampicker.presentation.main.MainActivity;
 import com.boostcamp.dreampicker.presentation.main.SplashActivity;
 import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;

@@ -1,10 +1,10 @@
-package com.boostcamp.dreampicker.data.source.firestore.mapper;
+package com.boostcamp.dreampicker.data.remote.firestore.mapper;
 
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.model.VoteSelectionItem;
-import com.boostcamp.dreampicker.data.source.firestore.model.FeedItemRemoteData;
-import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
+import com.boostcamp.dreampicker.data.remote.firestore.model.FeedItemRemoteData;
+import com.boostcamp.dreampicker.data.remote.firestore.model.FeedRemoteData;
 
 import java.util.Map;
 
