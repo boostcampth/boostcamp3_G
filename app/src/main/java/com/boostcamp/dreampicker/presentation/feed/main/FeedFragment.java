@@ -1,5 +1,6 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -7,11 +8,14 @@ import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
-import com.boostcamp.dreampicker.di.Injection;
+import com.boostcamp.dreampicker.di.scope.UserId;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;
+import com.boostcamp.dreampicker.utils.NetworkUtil;
 import com.tedpark.tedonactivityresult.rx2.TedRxOnActivityResult;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,8 +30,17 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private boolean isLastPage = false;
 
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
+    @Inject
+    FeedViewModelFactory factory;
+    @Inject
+    Context context;
+    @Inject
+    @UserId
+    String userId;
+
+    @Inject
     public FeedFragment() {
 
     }
@@ -38,14 +51,14 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         initViewModel();
         initViews();
         subscribeViewModel();
-        binding.getVm().loadFeedList();
+        binding.getVm().init(userId);
+        binding.getVm().loadFeedList(userId);
     }
 
     private void initViewModel() {
-        final FeedViewModel vm = ViewModelProviders.of(this,
-                Injection.provideFeedViewModelFactory(getContext())).get(FeedViewModel.class);
-
-        binding.setVm(vm);
+        final FeedViewModel viewModel =
+                ViewModelProviders.of(this, factory).get(FeedViewModel.class);
+        binding.setVm(viewModel);
     }
 
     private void initViews() {
@@ -57,18 +70,23 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         final FeedAdapter adapter = new FeedAdapter(
                 (feedId, selectionId) -> binding.getVm().getVoteSubject().onNext(new Pair<>(feedId, selectionId)),
                 this::startFeedDetailActivity,
-                writer -> startActivity(ProfileActivity.getLaunchIntent(getContext(), writer)));
+                writer -> startActivity(ProfileActivity.getLaunchIntent(context, writer)));
 
         binding.rvFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (!binding.rvFeed.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
-                    if (isLastPage) {
-                        showToast(getString(R.string.feed_last_page));
+                    if (NetworkUtil.isNetworkConnected(context)) {
+                        if (isLastPage) {
+                            showToast(getString(R.string.feed_last_page));
+                        } else {
+                            binding.getVm().loadFeedList(userId);
+                        }
                     } else {
-                        binding.getVm().loadFeedList();
+                        showToast(getString(R.string.network_connection_state_notification));
                     }
+
                 }
             }
         });
@@ -78,8 +96,13 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private void initSwipeRefreshLayout() {
         binding.swipe.setOnRefreshListener(() -> {
-            binding.getVm().refresh();
-            binding.swipe.setRefreshing(false);
+            if (NetworkUtil.isNetworkConnected(context)) {
+                binding.getVm().refresh(userId);
+                binding.swipe.setRefreshing(false);
+            } else {
+                showToast(getString(R.string.network_connection_state_notification));
+            }
+
         });
     }
 
@@ -92,18 +115,13 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
             }
         });
 
-        // Todo : Swipe 막기 처리 필요
         binding.getVm().getIsLastPage().observe(this, isLastPage -> this.isLastPage = isLastPage);
 
         binding.getVm().getError().observe(this, e -> showToast(getString(R.string.feed_error_message)));
     }
 
     private void showToast(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    public static FeedFragment newInstance() {
-        return new FeedFragment();
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -114,17 +132,15 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private void startFeedDetailActivity(@NonNull String feedId,
                                          @NonNull String imageUrlA,
                                          @NonNull String imageUrlB) {
-        if (getContext() != null) {
-            disposable.add(TedRxOnActivityResult.with(getContext())
-                    .startActivityForResult(
-                            FeedDetailActivity.getLaunchIntent(getContext(), feedId, imageUrlA, imageUrlB))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(result -> {
-                        if (result.getResultCode() == RESULT_OK) {
-                            binding.getVm().getFeed(feedId);
-                        }
-                    }));
-        }
+        disposable.add(TedRxOnActivityResult.with(context)
+                .startActivityForResult(
+                        FeedDetailActivity.getLaunchIntent(context, feedId, imageUrlA, imageUrlB))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        binding.getVm().getFeed(userId, feedId);
+                    }
+                }));
     }
 
     @Override

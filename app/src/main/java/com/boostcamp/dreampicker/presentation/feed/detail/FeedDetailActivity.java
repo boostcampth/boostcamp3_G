@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityFeedDetailBinding;
-import com.boostcamp.dreampicker.di.Injection;
+import com.boostcamp.dreampicker.di.scope.UserId;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -24,31 +25,27 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     private static final int NUM_PAGES = 2;
 
     private static final String EXTRA_FEED_ID = "EXTRA_FEED_ID";
-    private static final String EXTRA_IMAGEURL_A = "EXTRA_IMAGEURL_A";
-    private static final String EXTRA_IMAGEURL_B = "EXTRA_IMAGEURL_B";
+    private static final String EXTRA_IMAGE_URL_A = "EXTRA_IMAGE_URL_A";
+    private static final String EXTRA_IMAGE_URL_B = "EXTRA_IMAGE_URL_B";
 
+    private String imageUrlA, imageUrlB;
     private String feedId;
-    private String imageUrlA;
-    private String imageUrlB;
+
+    @Inject
+    FeedDetailViewModelFactory factory;
+    @Inject
+    @UserId
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            feedId = savedInstanceState.getString(EXTRA_FEED_ID);
-            imageUrlA = savedInstanceState.getString(EXTRA_IMAGEURL_A);
-            imageUrlB = savedInstanceState.getString(EXTRA_IMAGEURL_B);
-        } else {
-            final Intent intent = getIntent();
-            if (intent != null) {
-                feedId = intent.getStringExtra(EXTRA_FEED_ID);
-                imageUrlA = intent.getStringExtra(EXTRA_IMAGEURL_A);
-                imageUrlB = intent.getStringExtra(EXTRA_IMAGEURL_B);
-            } else {
-                showToast(getString(R.string.feed_detail_error_message));
-                finish();
-            }
-        }
+
+        Intent intent = getIntent();
+        feedId = intent.getStringExtra(EXTRA_FEED_ID);
+        imageUrlA = intent.getStringExtra(EXTRA_IMAGE_URL_A);
+        imageUrlB = intent.getStringExtra(EXTRA_IMAGE_URL_B);
+
         initViewModel();
         initViews();
         subscribeViewModel();
@@ -62,9 +59,8 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     private void initViewModel() {
-        final FeedDetailViewModel vm = ViewModelProviders.of(this,
-                Injection.provideFeedDetailViewModelFactory(this)).get(FeedDetailViewModel.class);
-
+        final FeedDetailViewModel vm =
+                ViewModelProviders.of(this, factory).get(FeedDetailViewModel.class);
         binding.setVm(vm);
     }
 
@@ -73,13 +69,13 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
         ActionBar toolbar = getSupportActionBar();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white);
+            toolbar.setHomeAsUpIndicator(R.drawable.btn_toolbar_close);
             toolbar.setDisplayShowTitleEnabled(false);
         }
     }
 
     private void initVoteButton() {
-        binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote());
+        binding.btnFeedDetailVote.setOnClickListener(__ -> binding.getVm().vote(userId));
     }
 
     private void initViewPager(@NonNull String imageUrlA, @NonNull String imageUrlB) {
@@ -117,11 +113,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
     }
 
     private void loadFeedDetail() {
-        binding.getVm().loadFeedDetail(feedId);
-    }
-
-    private void showToast(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        binding.getVm().loadFeedDetail(userId, feedId);
     }
 
     private void closeActivity() {
@@ -137,8 +129,8 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
 
         final Intent intent = new Intent(context, FeedDetailActivity.class);
         intent.putExtra(EXTRA_FEED_ID, feedId);
-        intent.putExtra(EXTRA_IMAGEURL_A, imageUrlA);
-        intent.putExtra(EXTRA_IMAGEURL_B, imageUrlB);
+        intent.putExtra(EXTRA_IMAGE_URL_A, imageUrlA);
+        intent.putExtra(EXTRA_IMAGE_URL_B, imageUrlB);
         return intent;
     }
 

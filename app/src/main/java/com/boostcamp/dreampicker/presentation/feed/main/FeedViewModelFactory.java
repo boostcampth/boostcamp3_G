@@ -1,16 +1,21 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
+import com.boostcamp.dreampicker.di.scope.ActivityScoped;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+@ActivityScoped
 public class FeedViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final FeedRepository repository;
 
-    public FeedViewModelFactory(@NonNull FeedRepository repository) {
+    @Inject
+    FeedViewModelFactory(@NonNull FeedRepository repository) {
         this.repository = repository;
     }
 

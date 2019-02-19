@@ -6,29 +6,42 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".presentation.main.LogInActivity" />
-        <activity android:name=".presentation.main.SplashActivity">
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity
+            android:name=".presentation.main.LogInActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.main.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.main.MainActivity" />
+        <activity
+            android:name=".presentation.main.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.upload.UploadActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".presentation.feed.detail.FeedDetailActivity" />
-        <activity android:name=".presentation.profile.ProfileActivity" />
+        <activity
+            android:name=".presentation.feed.detail.FeedDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.profile.ProfileActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

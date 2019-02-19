@@ -28,6 +28,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import androidx.annotation.NonNull;
 import androidx.paging.DataSource;
 import io.reactivex.Completable;
@@ -35,8 +38,9 @@ import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
+@SuppressWarnings("SpellCheckingInspection")
+@Singleton
 public class FeedRepositoryImpl implements FeedRepository {
-
     private static final String COLLECTION_FEED = "feed";
     private static final String COLLECTION_USER = "user";
     private static final String SUBCOLLECTION_MYFEEDS = "myFeeds";
@@ -54,30 +58,16 @@ public class FeedRepositoryImpl implements FeedRepository {
     @NonNull
     private final Retrofit retrofit;
 
-    private static volatile FeedRepositoryImpl INSTANCE = null;
 
-    private FeedRepositoryImpl(@NonNull final FirebaseFirestore firestore,
-                               @NonNull final FirebaseStorage storage,
-                               @NonNull final VotedFeedDao votedFeedDao,
-                               @NonNull final Retrofit retrofit) {
+    @Inject
+    FeedRepositoryImpl(@NonNull final FirebaseFirestore firestore,
+                       @NonNull final FirebaseStorage storage,
+                       @NonNull final VotedFeedDao votedFeedDao,
+                       @NonNull final Retrofit retrofit) {
         this.firestore = firestore;
         this.storage = storage;
         this.votedFeedDao = votedFeedDao;
         this.retrofit = retrofit;
-    }
-
-    public static FeedRepositoryImpl getInstance(@NonNull final FirebaseFirestore firestore,
-                                                 @NonNull final FirebaseStorage storage,
-                                                 @NonNull final VotedFeedDao votedFeedDao,
-                                                 @NonNull final Retrofit retrofit) {
-        if (INSTANCE == null) {
-            synchronized (FeedRepositoryImpl.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new FeedRepositoryImpl(firestore, storage, votedFeedDao, retrofit);
-                }
-            }
-        }
-        return INSTANCE;
     }
 
     @NonNull
@@ -168,21 +158,21 @@ public class FeedRepositoryImpl implements FeedRepository {
     public Completable uploadFeed(@NonNull final FeedUploadRequest uploadFeed) {
 
         return Single
-                .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())).flatMap(imageUrlA->{
+                .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())).flatMap(imageUrlA -> {
                             uploadFeed.setImagePathA(imageUrlA);
                             return getTagListResponse(imageUrlA);
                         }),
-                        uploadImageStorage(Uri.parse(uploadFeed.getImagePathB())).flatMap(imageUrlB->{
+                        uploadImageStorage(Uri.parse(uploadFeed.getImagePathB())).flatMap(imageUrlB -> {
                             uploadFeed.setImagePathB(imageUrlB);
                             return getTagListResponse(imageUrlB);
                         }),
                         (resultA, resultB) -> {
                             final float adultA = resultA.getResult().getAdult();
                             final float adultB = resultB.getResult().getAdult();
-                            if (adultA > 0.7 || adultB > 0.7){
-                             return null;
-                            }else{
-                                return FeedRequestMapper.toFeed(uploadFeed,uploadFeed.getImagePathA(),uploadFeed.getImagePathB());
+                            if (adultA > 0.7 || adultB > 0.7) {
+                                return null;
+                            } else {
+                                return FeedRequestMapper.toFeed(uploadFeed, uploadFeed.getImagePathA(), uploadFeed.getImagePathB());
                             }
 
                         })
@@ -200,6 +190,10 @@ public class FeedRepositoryImpl implements FeedRepository {
                                 firestore.runTransaction((Transaction.Function<Void>) transaction -> {
                                     DocumentSnapshot documentSnapshot = transaction.get(userRef);
                                     final Double oldFeedCount = documentSnapshot.getDouble(FIELD_FEEDCOUNT);
+                                    if (oldFeedCount == null) {
+                                        emitter.onError(new IllegalArgumentException("Not exists olFeedCount"));
+                                        return null;
+                                    }
                                     final Double newFeedCount = oldFeedCount + 1;
 
                                     transaction.update(userRef, FIELD_FEEDCOUNT, newFeedCount);
@@ -233,7 +227,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                         if (task.isSuccessful()) {
                             return feedImages.getDownloadUrl();
                         } else {
-                            throw task.getException();
+                            return null;
                         }
                     }).addOnCompleteListener(result -> {
                 if (result.isSuccessful()) {

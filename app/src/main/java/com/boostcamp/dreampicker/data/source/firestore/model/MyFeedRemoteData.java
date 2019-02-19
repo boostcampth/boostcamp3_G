@@ -13,6 +13,7 @@ public class MyFeedRemoteData {
     private String imageUrlB;
     private boolean isEnded;
 
+    @SuppressWarnings("unused")
     public MyFeedRemoteData() {
     }
 

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
-            type="com.boostcamp.dreampicker.presentation.upload.UploadViewModel"/>
-        <import type="android.view.View"/>
+            type="com.boostcamp.dreampicker.presentation.upload.UploadViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
@@ -23,12 +26,13 @@
             app:contentInsetStart="0dp">
 
             <ImageView
+                style="@style/ImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                style="@style/ImageView"
                 android:padding="@dimen/space_x_small"
-                android:src="@drawable/img_logo"/>
+                android:src="@drawable/img_logo"
+                tools:ignore="ContentDescription" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -46,14 +50,16 @@
                     style="@style/ImageView.UploadImage"
                     app:image='@{vm.imagePathA}'
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
                 <ScrollView
                     style="@style/UploadTagScrollView"
                     app:layout_constraintBottom_toTopOf="@+id/guideline1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/iv_upload_a"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="NestedScrolling">
 
                     <me.gujun.android.taggroup.TagGroup
                         android:id="@+id/tg_upload_tag_a"
@@ -78,15 +84,16 @@
                     style="@style/ImageView.UploadImage"
                     app:image='@{vm.imagePathB}'
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/guideline1" />
-
+                    app:layout_constraintTop_toBottomOf="@+id/guideline1"
+                    tools:ignore="ContentDescription" />
 
                 <ScrollView
                     style="@style/UploadTagScrollView"
                     app:layout_constraintBottom_toTopOf="@+id/guideline2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/iv_upload_b"
-                    app:layout_constraintTop_toBottomOf="@+id/guideline1">
+                    app:layout_constraintTop_toBottomOf="@+id/guideline1"
+                    tools:ignore="NestedScrolling">
 
                     <me.gujun.android.taggroup.TagGroup
                         android:id="@+id/tg_upload_tag_b"
@@ -115,10 +122,11 @@
                     android:background="@null"
                     android:hint="@string/upload_et_content_hint"
                     android:text="@={vm.content}"
-                    app:layout_constraintTop_toBottomOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline2"
+                    tools:ignore="Autofill,TextFields" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

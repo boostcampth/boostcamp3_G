@@ -1,9 +1,10 @@
 package com.boostcamp.dreampicker.presentation.feed.detail;
 
-import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -33,6 +34,7 @@ public class FeedDetailViewModel extends BaseViewModel {
     @NonNull
     private final FeedRepository repository;
 
+    @Inject
     FeedDetailViewModel(@NonNull final FeedRepository feedRepository) {
         this.repository = feedRepository;
         isLoading.setValue(false);
@@ -40,35 +42,26 @@ public class FeedDetailViewModel extends BaseViewModel {
         position.setValue(positionA);
     }
 
-    void loadFeedDetail(@NonNull final String feedId) {
+    void loadFeedDetail(@NonNull final String userId,
+                        @NonNull final String feedId) {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
-            return;
-        }
-        final String userId = FirebaseManager.getCurrentUserId();
-        if (userId == null) {
-            error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
         isLoading.setValue(true);
         load(userId, feedId);
     }
 
-    void vote() {
+    void vote(@NonNull final String userId) {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
-
-        final String userId = FirebaseManager.getCurrentUserId();
         final FeedDetail feedDetail = this.feedDetail.getValue();
         final Integer position = this.position.getValue();
 
-        if (userId == null ||
-                feedDetail == null ||
-                position == null) {
+        if (feedDetail == null || position == null) {
             error.setValue(new IllegalArgumentException(ERROR_NOT_EXIST));
             return;
         }
-
         isLoading.setValue(true);
 
         final String feedId = feedDetail.getId();
@@ -83,9 +76,9 @@ public class FeedDetailViewModel extends BaseViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(ERROR_REPEAT_COUNT)
                 .subscribe(() -> load(userId, feedId),
-                        error -> {
+                        e -> {
                             isLoading.setValue(false);
-                            this.error.setValue(error);
+                            this.error.setValue(e);
                         }));
     }
 

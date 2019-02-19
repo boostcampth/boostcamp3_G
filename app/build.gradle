@@ -30,9 +30,10 @@ android {
     }
 }
 
+//noinspection SpellCheckingInspection
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
@@ -85,6 +86,9 @@ dependencies {
     // Ted Bottom Picker
     implementation 'gun0912.ted:tedbottompicker:1.2.6'
 
+    // TedRxOnActivityForResult
+    implementation 'gun0912.ted:tedonactivityresult-rx2:1.0.6'
+
     // Firebase
     implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.google.firebase:firebase-firestore:18.0.1'
@@ -98,8 +102,18 @@ dependencies {
     // CrashLytics
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
-    // TedRxOnActivityForResult
-    compile 'gun0912.ted:tedonactivityresult-rx2:1.0.6'
+    // Dagger
+    implementation 'com.google.dagger:dagger:2.21'
+    implementation 'com.google.dagger:dagger-android:2.21'
+    implementation 'com.google.dagger:dagger-android-support:2.21'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.21'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
+
+    // leakcanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    // for support library fragments
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'

@@ -16,6 +16,7 @@ public class FeedRemoteData {
     private Map<String, String> votedUserMap;
     private boolean isEnded;
 
+    @SuppressWarnings("unused")
     public FeedRemoteData() { }
 
     public FeedRemoteData(FeedItemRemoteData itemA,

@@ -15,6 +15,6 @@
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/space_median"
         android:textColor="@android:color/black"
-        android:text="@string/upload_backpress_denied_message"
+        android:text="@string/upload_back_press_denied_message"
         android:gravity="center"/>
 </LinearLayout>

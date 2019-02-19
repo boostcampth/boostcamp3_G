@@ -4,13 +4,14 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.extension.common.StringExt;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +38,7 @@ public class UploadViewModel extends BaseViewModel {
 
     private static final int A = 1;
 
+    @Inject
     UploadViewModel(@NonNull final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
         isLoading.setValue(false);
@@ -47,11 +49,6 @@ public class UploadViewModel extends BaseViewModel {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
-        final String userId = FirebaseManager.getCurrentUserId();
-        if (userId == null) {
-            error.setValue(new IllegalArgumentException());
-            return;
-        }
         final List<String> tagListA = StringExt.toNoEndLineList(tagStrA);
         final List<String> tagListB = StringExt.toNoEndLineList(tagStrB);
 
@@ -59,7 +56,7 @@ public class UploadViewModel extends BaseViewModel {
                 !TextUtils.isEmpty(getImagePathA().getValue()) &&
                 !TextUtils.isEmpty(getImagePathB().getValue())) {
             isLoading.setValue(true);
-            addDisposable(feedRepository.uploadFeed(createFeedUploadRequest(userId, tagListA, tagListB))
+            addDisposable(feedRepository.uploadFeed(createFeedUploadRequest(tagListA, tagListB))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
                         isLoading.setValue(false);
@@ -74,11 +71,10 @@ public class UploadViewModel extends BaseViewModel {
     }
 
     @NonNull
-    private FeedUploadRequest createFeedUploadRequest(@NonNull final String userId,
-                                                      @Nullable final List<String> tagListA,
+    private FeedUploadRequest createFeedUploadRequest(@Nullable final List<String> tagListA,
                                                       @Nullable final List<String> tagListB) {
 
-        return new FeedUploadRequest(userId,
+        return new FeedUploadRequest(
                 content.getValue(),
                 imagePathA.getValue(),
                 imagePathB.getValue(),

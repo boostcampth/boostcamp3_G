@@ -22,8 +22,7 @@ public class MyFeedDataSourceFactory extends DataSource.Factory<Date, MyFeed> {
         this.userId = userId;
     }
 
-    private MutableLiveData<MyFeedDataSource> sourceLiveData =
-            new MutableLiveData<>();
+    private final MutableLiveData<MyFeedDataSource> sourceLiveData = new MutableLiveData<>();
 
     @NonNull
     @Override

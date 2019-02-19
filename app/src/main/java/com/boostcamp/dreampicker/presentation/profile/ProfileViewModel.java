@@ -5,6 +5,8 @@ import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.repository.UserRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -13,42 +15,36 @@ import androidx.paging.PagedList;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ProfileViewModel extends BaseViewModel {
-    private final int PAGE_SIZE = 4;
+    private static final int PAGE_SIZE = 4;
 
     @NonNull
     private final UserRepository repository;
     @NonNull
-    private final String userId;
+    private final MutableLiveData<UserDetail> user = new MutableLiveData<>();
+    @NonNull
+    private final LiveData<PagedList<MyFeed>> myFeedListLiveData;
+    @NonNull
+    private final MutableLiveData<PagedList<MyFeed>> myFeedList = new MutableLiveData<>();
+    @NonNull
+    private final MutableLiveData<Throwable> error = new MutableLiveData<>();
 
     @NonNull
-    private MutableLiveData<UserDetail> user = new MutableLiveData<>();
-    @NonNull
-    private LiveData<PagedList<MyFeed>> myFeedListLiveData;
-    @NonNull
-    private MutableLiveData<PagedList<MyFeed>> myFeedList = new MutableLiveData<>();
-    @NonNull
-    private MutableLiveData<Throwable> error = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
-    @NonNull
-    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-
-    ProfileViewModel(@NonNull UserRepository repository,
-                     @NonNull String userId) {
+    @Inject
+    ProfileViewModel(@NonNull UserRepository repository) {
         this.repository = repository;
-        this.userId = userId;
         this.isLoading.setValue(false);
         myFeedListLiveData = Transformations.map(myFeedList, input -> myFeedList.getValue());
-        loadUserDetail();
-        loadMyFeeds();
     }
 
-    void loadUserDetail() {
+    void loadUserDetail(@NonNull final String userId) {
         addDisposable(repository.getUserDetail(userId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this.user::setValue, this.error::setValue));
     }
 
-    public void loadMyFeeds() {
+    void loadMyFeeds(@NonNull final String userId) {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;
         }
@@ -65,7 +61,8 @@ public class ProfileViewModel extends BaseViewModel {
                 }));
     }
 
-    void toggleVoteEnded(@NonNull final MyFeed item,
+    void toggleVoteEnded(@NonNull final String userId,
+                         @NonNull final MyFeed item,
                          final boolean newEnded) {
         if (Boolean.TRUE.equals(isLoading.getValue())) {
             return;

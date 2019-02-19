@@ -25,7 +25,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="@dimen/space_x_small"
-                android:src="@drawable/img_logo" />
+                android:src="@drawable/img_logo"
+                tools:ignore="ContentDescription" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -45,8 +46,7 @@
             android:layout_margin="@dimen/space_s_large"
             android:backgroundTint="@color/colorAccent"
             android:onClick="upload"
-            android:src="@drawable/ic_finger_white"
-            app:layout_anchor="@+id/frame"
+            android:src="@drawable/ic_add_white"
             app:layout_constraintBottom_toTopOf="@id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:rippleColor="@color/colorWhite" />

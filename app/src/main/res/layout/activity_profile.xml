@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -21,7 +22,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="@dimen/space_x_small"
-                android:src="@drawable/img_logo" />
+                android:src="@drawable/img_logo"
+                tools:ignore="ContentDescription" />
 
         </androidx.appcompat.widget.Toolbar>
 

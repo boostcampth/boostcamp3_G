@@ -10,7 +10,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class VotedViewHolder extends RecyclerView.ViewHolder {
-    private ItemVotedFeedBinding binding;
+    private final ItemVotedFeedBinding binding;
+
     VotedViewHolder(@NonNull View itemView) {
         super(itemView);
         binding = DataBindingUtil.bind(itemView);

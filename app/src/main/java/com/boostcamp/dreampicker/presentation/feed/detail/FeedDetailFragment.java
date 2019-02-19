@@ -1,31 +1,31 @@
 package com.boostcamp.dreampicker.presentation.feed.detail;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentFeedDetailImageBinding;
-import com.boostcamp.dreampicker.presentation.BaseFragment;
-import com.boostcamp.dreampicker.utils.GlideApp;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-public class FeedDetailFragment extends BaseFragment<FragmentFeedDetailImageBinding> {
-
-    private static final String ARGUMENT_IMAGEURL = "ARGUMENT_IMAGEURL";
+public class FeedDetailFragment extends Fragment {
+    private static final String ARGUMENT_IMAGE_URL = "ARGUMENT_IMAGE_URL";
     private String imageUrl;
+    private FragmentFeedDetailImageBinding binding;
 
     public FeedDetailFragment() {
 
     }
 
     static Fragment newInstance(@NonNull String imageUrl) {
-        FeedDetailFragment fragment = new FeedDetailFragment();
-        Bundle args = new Bundle();
-        args.putString(ARGUMENT_IMAGEURL, imageUrl);
+        final FeedDetailFragment fragment = new FeedDetailFragment();
+        final Bundle args = new Bundle();
+        args.putString(ARGUMENT_IMAGE_URL, imageUrl);
         fragment.setArguments(args);
         return fragment;
     }
@@ -34,30 +34,28 @@ public class FeedDetailFragment extends BaseFragment<FragmentFeedDetailImageBind
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            imageUrl = savedInstanceState.getString(ARGUMENT_IMAGEURL);
+            imageUrl = savedInstanceState.getString(ARGUMENT_IMAGE_URL);
         } else {
             final Bundle args = getArguments();
             if (args != null) {
-                imageUrl = args.getString(ARGUMENT_IMAGEURL);
+                imageUrl = args.getString(ARGUMENT_IMAGE_URL);
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_feed_detail_image, container, false);
+        binding.setLifecycleOwner(this);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-            GlideApp.with(this)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.ic_photo)
-                    .error(R.drawable.ic_broken_image_black)
-                    .transform(new RoundedCorners(20))
-                    .into(binding.ivFeedDetailImage);
-
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_feed_detail_image;
+        binding.setImageUrl(imageUrl);
     }
 }

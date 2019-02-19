@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,7 +13,8 @@
             android:paddingBottom="@dimen/space_x_large"
             android:layout_centerInParent="true"
             android:src="@drawable/img_logo"
-            style="@style/ImageView"/>
+            style="@style/ImageView"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="match_parent"

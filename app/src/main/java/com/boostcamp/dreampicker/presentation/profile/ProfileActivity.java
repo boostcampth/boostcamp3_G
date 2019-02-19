@@ -6,10 +6,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.boostcamp.dreampicker.R;
-import com.boostcamp.dreampicker.data.common.FirebaseManager;
-import com.boostcamp.dreampicker.di.Injection;
 import com.boostcamp.dreampicker.databinding.ActivityProfileBinding;
+import com.boostcamp.dreampicker.di.scope.UserId;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +18,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.lifecycle.ViewModelProviders;
 
 public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
-    private static final String EXTRA_USER_ID = "EXTRA_USER_ID";
+    public static final String EXTRA_USER_ID = "EXTRA_USER_ID";
+
+    @Inject
+    @UserId
+    String userId;
 
     public static Intent getLaunchIntent(@NonNull Context context,
                                          @NonNull String userId) {
@@ -26,7 +31,8 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
         return intent;
     }
 
-    private String userId;
+    @Inject
+    ProfileViewModelFactory factory;
 
     @Override
     protected int getLayoutId() {
@@ -36,15 +42,6 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            userId = savedInstanceState.getString(EXTRA_USER_ID);
-        } else {
-            final Intent intent = getIntent();
-            if (intent != null) {
-                userId = intent.getStringExtra(EXTRA_USER_ID);
-            }
-        }
-
         initToolbar();
         initViewModel();
         initRecyclerView();
@@ -60,15 +57,14 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     }
 
     private void initViewModel() {
-        ProfileViewModel viewModel = ViewModelProviders.of(this,
-                Injection.provideProfileViewModelFactory(userId)).get(ProfileViewModel.class);
+        ProfileViewModel viewModel =
+                ViewModelProviders.of(this, factory).get(ProfileViewModel.class);
         binding.container.setVm(viewModel);
     }
 
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.container.getVm().toggleVoteEnded(item, !item.isEnded()),
-                userId.equals(FirebaseManager.getCurrentUserId()));
+                binding.container.getVm().toggleVoteEnded(userId, item, !item.isEnded()), false);
 
         binding.container.rvProfileFeed.setAdapter(adapter);
 

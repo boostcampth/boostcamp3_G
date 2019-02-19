@@ -6,6 +6,9 @@ import com.boostcamp.dreampicker.data.paging.MyFeedDataSourceFactory;
 import com.boostcamp.dreampicker.data.source.firestore.UserDataSource;
 import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import androidx.annotation.NonNull;
 import androidx.paging.PagedList;
 import androidx.paging.RxPagedListBuilder;
@@ -14,24 +17,13 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
+@Singleton
 public class UserRepositoryImpl implements UserRepository {
-    private static volatile UserRepository INSTANCE = null;
-
-    public static UserRepository getInstance(@NonNull final UserDataSource remoteDataSource) {
-        if (INSTANCE == null) {
-            synchronized (UserRepositoryImpl.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new UserRepositoryImpl(remoteDataSource);
-                }
-            }
-        }
-        return INSTANCE;
-    }
-
     @NonNull
     private final UserDataSource remoteDataSource;
 
-    private UserRepositoryImpl(@NonNull final UserDataSource remoteDataSource) {
+    @Inject
+    UserRepositoryImpl(@NonNull final UserDataSource remoteDataSource) {
         this.remoteDataSource = remoteDataSource;
     }
 
