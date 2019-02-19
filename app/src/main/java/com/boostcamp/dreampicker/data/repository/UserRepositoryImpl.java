@@ -3,8 +3,9 @@ package com.boostcamp.dreampicker.data.repository;
 import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.paging.MyFeedDataSourceFactory;
-import com.boostcamp.dreampicker.data.source.firestore.UserDataSource;
-import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
+import com.boostcamp.dreampicker.data.remote.firestore.UserDataSource;
+import com.boostcamp.dreampicker.data.remote.firestore.model.UserDetailRemoteData;
+import com.boostcamp.dreampicker.data.remote.google.AccountApi;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -21,10 +22,14 @@ import io.reactivex.schedulers.Schedulers;
 public class UserRepositoryImpl implements UserRepository {
     @NonNull
     private final UserDataSource remoteDataSource;
+    @NonNull
+    private final AccountApi accountApi;
 
     @Inject
-    UserRepositoryImpl(@NonNull final UserDataSource remoteDataSource) {
+    UserRepositoryImpl(@NonNull final UserDataSource remoteDataSource,
+                       @NonNull final AccountApi accountApi) {
         this.remoteDataSource = remoteDataSource;
+        this.accountApi = accountApi;
     }
 
     @NonNull
@@ -62,8 +67,22 @@ public class UserRepositoryImpl implements UserRepository {
 
     @NonNull
     @Override
-    public Completable insertNewUser(@NonNull final String userId,
-                                     @NonNull final UserDetailRemoteData userDetail) {
-        return remoteDataSource.insertNewUser(userId, userDetail);
+    public Completable signIn(@NonNull final String userIdToken) {
+        return accountApi.signIn(userIdToken)
+                .flatMapCompletable(user -> remoteDataSource.insertNewUser(
+                        user.getUid(),
+                        new UserDetailRemoteData(
+                                user.getDisplayName(),
+                                user.getPhotoUrl() == null
+                                        ? null : user.getPhotoUrl().toString(),
+                                0
+                        )).subscribeOn(Schedulers.io()));
     }
+
+    @NonNull
+    @Override
+    public Completable signOut() {
+        return accountApi.signOut();
+    }
+
 }

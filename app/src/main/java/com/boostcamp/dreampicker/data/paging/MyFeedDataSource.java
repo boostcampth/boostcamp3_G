@@ -1,7 +1,7 @@
 package com.boostcamp.dreampicker.data.paging;
 
 import com.boostcamp.dreampicker.data.model.MyFeed;
-import com.boostcamp.dreampicker.data.source.firestore.UserDataSource;
+import com.boostcamp.dreampicker.data.remote.firestore.UserDataSource;
 
 import java.util.Date;
 import java.util.List;

@@ -8,109 +8,125 @@
             type="com.boostcamp.dreampicker.data.model.MyFeed" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_median"
-        android:layout_marginBottom="@dimen/space_median"
-        android:orientation="vertical">
+        android:padding="@dimen/space_x_small">
 
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_median"
-            android:layout_marginEnd="@dimen/space_median"
             android:layout_marginBottom="@dimen/space_xx_small"
             android:textSize="@dimen/text_small"
-            app:date="@{item.date}" />
+            app:date="@{item.date}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_image"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            app:cardCornerRadius="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/gl_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_date">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_weight="2"
-                android:elevation="5dp"
-                app:cardCornerRadius="5dp">
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/iv_image_a"
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:image="@{item.imageUrlA}" />
 
-                    <ImageView
-                        android:id="@+id/iv_image_a"
-                        android:layout_width="0dp"
-                        android:layout_height="100dp"
-                        android:layout_weight="1"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        app:image="@{item.imageUrlA}" />
+                <ImageView
+                    android:id="@+id/iv_image_b"
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:image="@{item.imageUrlB}" />
 
-                    <ImageView
-                        android:id="@+id/iv_image_b"
-                        android:layout_width="0dp"
-                        android:layout_height="100dp"
-                        android:layout_weight="1"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        app:image="@{item.imageUrlB}" />
+            </LinearLayout>
 
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:background="@color/colorDivider" />
 
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/line_circle"
+                android:gravity="center"
+                android:text="@string/profile_feed_versus"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_small" />
+        </androidx.cardview.widget.CardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/space_median"
-                    android:layout_marginEnd="@dimen/space_median"
-                    android:orientation="vertical">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.66" />
 
-                    <TextView
-                        android:id="@+id/tv_vote_state"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/space_median"
-                        android:text="@{item.isEnded ? @string/profile_vote_ended : @string/profile_vote_not_ended}"
-                        android:textSize="@dimen/text_small" />
+        <TextView
+            android:id="@+id/tv_vote_state"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_small"
+            android:layout_marginTop="@dimen/space_xx_small"
+            android:text="@{item.isEnded ? @string/profile_vote_ended : @string/profile_vote_not_ended}"
+            android:textSize="@dimen/text_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/gl_image"
+            app:layout_constraintTop_toBottomOf="@id/tv_date" />
 
-                    <TextView
-                        android:id="@+id/tv_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:layout_marginBottom="@dimen/space_median"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:minLines="1"
-                        android:text="@{item.content}"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/text_median" />
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_small"
+            android:layout_marginTop="@dimen/space_xx_small"
+            android:ellipsize="end"
+            android:lineSpacingExtra="@dimen/space_xx_small"
+            android:maxLines="2"
+            android:minLines="2"
+            android:text="@{item.content}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_median"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/gl_image"
+            app:layout_constraintTop_toBottomOf="@id/tv_vote_state" />
 
-                    <TextView
-                        android:id="@+id/btn_end"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="@dimen/space_xx_small"
-                        android:background="@{item.isEnded ? @drawable/line_round : @drawable/line_round_red}"
-                        android:text="@{item.isEnded ? @string/profile_request_restart : @string/profile_request_end}"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/text_small" />
+        <TextView
+            android:id="@+id/btn_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_small"
+            android:layout_marginBottom="@dimen/space_xx_small"
+            android:background="@{item.isEnded ? @drawable/line_round : @drawable/line_round_red}"
+            android:gravity="center"
+            android:padding="@dimen/space_xx_small"
+            android:text="@{item.isEnded ? @string/profile_request_restart : @string/profile_request_end}"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/gl_image" />
 
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

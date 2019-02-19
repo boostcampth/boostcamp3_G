@@ -8,10 +8,11 @@ import com.boostcamp.dreampicker.data.local.room.entity.VotedFeed;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
-import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedRequestMapper;
-import com.boostcamp.dreampicker.data.source.firestore.mapper.FeedResponseMapper;
-import com.boostcamp.dreampicker.data.source.firestore.model.FeedRemoteData;
-import com.boostcamp.dreampicker.data.source.firestore.model.MyFeedRemoteData;
+import com.boostcamp.dreampicker.data.remote.firestore.mapper.FeedRequestMapper;
+import com.boostcamp.dreampicker.data.remote.firestore.mapper.FeedResponseMapper;
+import com.boostcamp.dreampicker.data.remote.firestore.model.FeedRemoteData;
+import com.boostcamp.dreampicker.data.remote.firestore.model.MyFeedRemoteData;
+import com.boostcamp.dreampicker.data.remote.vision.RetrofitClient;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,26 +42,31 @@ public class FeedRepositoryImpl implements FeedRepository {
     private static final String COLLECTION_FEED = "feed";
     private static final String COLLECTION_USER = "user";
     private static final String SUBCOLLECTION_MYFEEDS = "myFeeds";
-    private static final String STORAGE_FEED_IMAGE_PATH = "feedImages";
     private static final String FIELD_FEEDCOUNT = "feedCount";
 
     private static final String FIELD_DATE = "date";
     private static final String FIELD_ENDED = "ended";
 
+    private static final float ADULT_DETECT_RATE = (float) 0.7;
     @NonNull
     private final FirebaseFirestore firestore;
     @NonNull
     private final FirebaseStorage storage;
     @NonNull
     private final VotedFeedDao votedFeedDao;
+    @NonNull
+    private RetrofitClient client;
+
 
     @Inject
     FeedRepositoryImpl(@NonNull final FirebaseFirestore firestore,
                        @NonNull final FirebaseStorage storage,
-                       @NonNull final VotedFeedDao votedFeedDao) {
+                       @NonNull final VotedFeedDao votedFeedDao,
+                       @NonNull final RetrofitClient client) {
         this.firestore = firestore;
         this.storage = storage;
         this.votedFeedDao = votedFeedDao;
+        this.client = client;
     }
 
     @NonNull
@@ -150,11 +156,28 @@ public class FeedRepositoryImpl implements FeedRepository {
     public Completable uploadFeed(@NonNull final FeedUploadRequest uploadFeed) {
 
         return Single
-                .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())),
-                        uploadImageStorage(Uri.parse(uploadFeed.getImagePathB()))
-                        , (imageUrlA, imageUrlB) -> FeedRequestMapper.toFeed(uploadFeed, imageUrlA, imageUrlB))
+                .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())).flatMap(imageUrlA -> {
+                            uploadFeed.setImagePathA(imageUrlA);
+                            return client.getAdultDetectResult(imageUrlA);
+                        }),
+                        uploadImageStorage(Uri.parse(uploadFeed.getImagePathB())).flatMap(imageUrlB -> {
+                            uploadFeed.setImagePathB(imageUrlB);
+                            return client.getAdultDetectResult(imageUrlB);
+                        }),
+                        (resultA, resultB) -> {
+
+                            final float adultA = resultA.getResult().getAdult();
+                            final float adultB = resultB.getResult().getAdult();
+                            if (adultA >= ADULT_DETECT_RATE || adultB >= ADULT_DETECT_RATE) {
+                                return null;
+                            } else {
+                                return FeedRequestMapper.toFeed(uploadFeed, uploadFeed.getImagePathA(), uploadFeed.getImagePathB());
+                            }
+
+                        })
                 .flatMapCompletable(feedRemoteData ->
                         Completable.create(emitter -> {
+
                             final String writerId = FirebaseManager.getCurrentUserId();
                             if (writerId == null) {
                                 emitter.onError(new IllegalArgumentException("no User error"));
@@ -167,7 +190,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                                     DocumentSnapshot documentSnapshot = transaction.get(userRef);
                                     final Double oldFeedCount = documentSnapshot.getDouble(FIELD_FEEDCOUNT);
                                     if (oldFeedCount == null) {
-                                        emitter.onError(new IllegalArgumentException("Not exists olFeedCount"));
+                                        emitter.onError(new IllegalArgumentException("Not exists oldFeedCount"));
                                         return null;
                                     }
                                     final Double newFeedCount = oldFeedCount + 1;
@@ -195,9 +218,11 @@ public class FeedRepositoryImpl implements FeedRepository {
     @NonNull
     private Single<String> uploadImageStorage(final Uri uri) {
         return Single.create(emitter -> {
+            if (uri.getLastPathSegment() == null) {
+                emitter.onError(new IllegalArgumentException("Not exists uri"));
+            }
             StorageReference feedImages = storage.getReference()
-                    .child(STORAGE_FEED_IMAGE_PATH + "/" + uri.getLastPathSegment());
-
+                    .child(uri.getLastPathSegment());
             feedImages
                     .putFile(uri)
                     .continueWithTask(task -> {
