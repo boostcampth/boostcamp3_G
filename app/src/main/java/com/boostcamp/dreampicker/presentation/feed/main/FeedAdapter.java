@@ -1,5 +1,6 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,7 @@ class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     }
 
     interface OnVoteListener {
-        void onVote(@NonNull final String feedId,
-                    @NonNull final String selectionId);
+        void onVote(@NonNull final Pair<String, String> pair);
     }
 
     FeedAdapter(@NonNull final OnVoteListener onVoteListener,
@@ -86,14 +86,14 @@ class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
         holder.getBinding().ivFeedImageA.setOnDragListener(new VoteDragListener(
                 () -> {
                     if (feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemA().getId())) {
-                        onVoteListener.onVote(feed.getId(), feed.getItemA().getId());
+                        onVoteListener.onVote(new Pair<>(feed.getId(), feed.getItemA().getId()));
                     }
                 }));
 
         holder.getBinding().ivFeedImageB.setOnDragListener(new VoteDragListener(
                 () -> {
                     if (feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemB().getId())) {
-                        onVoteListener.onVote(feed.getId(), feed.getItemB().getId());
+                        onVoteListener.onVote(new Pair<>(feed.getId(), feed.getItemB().getId()));
                     }
                 }));
 
