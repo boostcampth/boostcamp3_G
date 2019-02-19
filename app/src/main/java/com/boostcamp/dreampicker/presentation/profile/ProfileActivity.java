@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityProfileBinding;
-import com.boostcamp.dreampicker.di.scope.UserId;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
+import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 
 import javax.inject.Inject;
 
@@ -44,9 +44,9 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             userId = savedInstanceState.getString(EXTRA_USER_ID);
-        } else if(getIntent() != null){
+        } else if (getIntent() != null) {
             userId = getIntent().getStringExtra(EXTRA_USER_ID);
         }
         initViewModel();
@@ -75,8 +75,10 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     }
 
     private void initRecyclerView() {
-        final MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.getVm().toggleVoteEnded(userId, item, !item.isEnded()), false);
+        final MyFeedAdapter adapter = new MyFeedAdapter(
+                item -> binding.getVm().toggleVoteEnded(userId, item, !item.isEnded()),
+                this::startFeedDetailActivity,
+                false);
 
         binding.content.rvProfileFeed.setAdapter(adapter);
         binding.content.swipeRefresh.setOnRefreshListener(() ->
@@ -89,12 +91,16 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
         });
     }
 
-    private void observeError(){
+    private void startFeedDetailActivity(String feedId, String imageUrlA, String imageUrlB) {
+        startActivity(FeedDetailActivity.getLaunchIntent(context, feedId, imageUrlA, imageUrlB));
+    }
+
+    private void observeError() {
         binding.getVm().getError().observe(this, error ->
                 showToast(getString(R.string.comment_error_message, error.getMessage())));
     }
 
-    private void showToast(String message){
+    private void showToast(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 

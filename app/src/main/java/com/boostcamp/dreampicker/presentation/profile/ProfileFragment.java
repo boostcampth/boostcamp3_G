@@ -11,6 +11,7 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.di.scope.UserId;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
+import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.main.MainActivity;
 import com.boostcamp.dreampicker.presentation.main.SplashActivity;
 
@@ -61,8 +62,10 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     }
 
     private void initRecyclerView() {
-        MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.getVm().toggleVoteEnded(userId, item, !item.isEnded()), true);
+        MyFeedAdapter adapter = new MyFeedAdapter(
+                item -> binding.getVm().toggleVoteEnded(userId, item, !item.isEnded()),
+                this::startFeedDetailActivity,
+                true);
 
         binding.content.rvProfileFeed.setAdapter(adapter);
         binding.content.swipeRefresh.setOnRefreshListener(() ->
@@ -73,6 +76,10 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private void startFeedDetailActivity(String feedId, String imageUrlA, String imageUrlB) {
+        startActivity(FeedDetailActivity.getLaunchIntent(context, feedId, imageUrlA, imageUrlB));
     }
 
     private void observeError(){
