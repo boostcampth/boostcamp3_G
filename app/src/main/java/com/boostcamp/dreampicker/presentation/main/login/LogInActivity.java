@@ -87,6 +87,6 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        disposable.clear();
+        disposable.dispose();
     }
 }
