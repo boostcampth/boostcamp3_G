@@ -1,5 +1,8 @@
 package com.boostcamp.dreampicker.presentation.profile;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -7,6 +10,8 @@ import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
 import com.boostcamp.dreampicker.di.scope.UserId;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
+import com.boostcamp.dreampicker.presentation.main.MainActivity;
+import com.boostcamp.dreampicker.presentation.main.SplashActivity;
 
 import javax.inject.Inject;
 
@@ -18,6 +23,9 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
     @Inject
     ProfileViewModelFactory factory;
     @Inject
+    Context context;
+    @Inject
+    MainActivity activity;
     @UserId
     String userId;
 
@@ -63,6 +71,9 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
                 adapter.notifyDataSetChanged();
             }
         });
+
+        binding.swipeRefresh.setOnRefreshListener(() ->
+                binding.getVm().loadMyFeeds(userId));
     }
 
 }

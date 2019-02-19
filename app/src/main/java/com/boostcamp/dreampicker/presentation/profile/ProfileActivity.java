@@ -73,6 +73,9 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
                 adapter.notifyDataSetChanged();
             }
         });
+
+        binding.swipeRefresh.setOnRefreshListener(() ->
+                binding.getVm().loadMyFeeds(userId));
     }
 
     @Override
