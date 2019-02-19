@@ -1,7 +1,5 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
-import android.util.Log;
-
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.di.scope.ActivityScoped;
 
