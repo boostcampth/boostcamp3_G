@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class VotedViewHolder extends RecyclerView.ViewHolder {
     private final ItemVotedFeedBinding binding;
+
     VotedViewHolder(@NonNull View itemView) {
         super(itemView);
         binding = DataBindingUtil.bind(itemView);

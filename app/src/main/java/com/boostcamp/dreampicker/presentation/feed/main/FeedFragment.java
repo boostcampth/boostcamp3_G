@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentFeedBinding;
+import com.boostcamp.dreampicker.di.scope.UserId;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 import com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailActivity;
 import com.boostcamp.dreampicker.presentation.profile.ProfileActivity;
@@ -35,6 +36,9 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     FeedViewModelFactory factory;
     @Inject
     Context context;
+    @Inject
+    @UserId
+    String userId;
 
     @Inject
     public FeedFragment() {
@@ -47,13 +51,14 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         initViewModel();
         initViews();
         subscribeViewModel();
-        binding.getVm().loadFeedList();
+        binding.getVm().init(userId);
+        binding.getVm().loadFeedList(userId);
     }
 
     private void initViewModel() {
-        final FeedViewModel vm =
+        final FeedViewModel viewModel =
                 ViewModelProviders.of(this, factory).get(FeedViewModel.class);
-        binding.setVm(vm);
+        binding.setVm(viewModel);
     }
 
     private void initViews() {
@@ -76,7 +81,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
                         if (isLastPage) {
                             showToast(getString(R.string.feed_last_page));
                         } else {
-                            binding.getVm().loadFeedList();
+                            binding.getVm().loadFeedList(userId);
                         }
                     } else {
                         showToast(getString(R.string.network_connection_state_notification));
@@ -92,7 +97,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private void initSwipeRefreshLayout() {
         binding.swipe.setOnRefreshListener(() -> {
             if (NetworkUtil.isNetworkConnected(context)) {
-                binding.getVm().refresh();
+                binding.getVm().refresh(userId);
                 binding.swipe.setRefreshing(false);
             } else {
                 showToast(getString(R.string.network_connection_state_notification));
@@ -133,7 +138,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result.getResultCode() == RESULT_OK) {
-                        binding.getVm().getFeed(feedId);
+                        binding.getVm().getFeed(userId, feedId);
                     }
                 }));
     }

@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.FragmentProfileBinding;
+import com.boostcamp.dreampicker.di.scope.UserId;
 import com.boostcamp.dreampicker.presentation.BaseFragment;
 
 import javax.inject.Inject;
@@ -14,9 +15,11 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
-
     @Inject
     ProfileViewModelFactory factory;
+    @Inject
+    @UserId
+    String userId;
 
     @Inject
     public ProfileFragment() {
@@ -32,6 +35,8 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
         super.onViewCreated(view, savedInstanceState);
         initViewModel();
         initRecyclerView();
+        binding.container.getVm().loadMyFeeds(userId);
+        binding.container.getVm().loadUserDetail(userId);
     }
 
     private void initViewModel() {
@@ -42,7 +47,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter(item ->
-                binding.container.getVm().toggleVoteEnded(item, !item.isEnded()), true);
+                binding.container.getVm().toggleVoteEnded(userId, item, !item.isEnded()), true);
 
         binding.container.rvProfileFeed.setAdapter(adapter);
 

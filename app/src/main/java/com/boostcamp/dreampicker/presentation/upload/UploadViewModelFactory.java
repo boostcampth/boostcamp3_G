@@ -2,6 +2,7 @@ package com.boostcamp.dreampicker.presentation.upload;
 
 
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
+import com.boostcamp.dreampicker.di.scope.ActivityScoped;
 
 import javax.inject.Inject;
 
@@ -9,13 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+@ActivityScoped
 public class UploadViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
     private final FeedRepository feedRepository;
 
     @Inject
-    public UploadViewModelFactory(@NonNull final FeedRepository feedRepository) {
+    UploadViewModelFactory(@NonNull final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
     }
 

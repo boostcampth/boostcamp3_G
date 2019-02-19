@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.di.scope.qualifier;
+package com.boostcamp.dreampicker.di.scope;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,4 +7,4 @@ import javax.inject.Qualifier;
 
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FeedId { }
+public @interface UserId { }
