@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.data.source.firestore.model;
+package com.boostcamp.dreampicker.data.remote.firestore.model;
 
 import com.google.firebase.firestore.ServerTimestamp;
 

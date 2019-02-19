@@ -1,8 +1,8 @@
-package com.boostcamp.dreampicker.data.source.firestore;
+package com.boostcamp.dreampicker.data.remote.firestore;
 
 import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.UserDetail;
-import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
+import com.boostcamp.dreampicker.data.remote.firestore.model.UserDetailRemoteData;
 
 import java.util.Date;
 import java.util.List;

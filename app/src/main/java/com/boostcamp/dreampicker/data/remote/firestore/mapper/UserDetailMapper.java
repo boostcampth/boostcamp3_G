@@ -1,7 +1,7 @@
-package com.boostcamp.dreampicker.data.source.firestore.mapper;
+package com.boostcamp.dreampicker.data.remote.firestore.mapper;
 
 import com.boostcamp.dreampicker.data.model.UserDetail;
-import com.boostcamp.dreampicker.data.source.firestore.model.UserDetailRemoteData;
+import com.boostcamp.dreampicker.data.remote.firestore.model.UserDetailRemoteData;
 
 import androidx.annotation.NonNull;
 

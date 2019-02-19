@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-            android:name=".presentation.main.LogInActivity"
+            android:name=".presentation.main.login.LogInActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.main.SplashActivity"
