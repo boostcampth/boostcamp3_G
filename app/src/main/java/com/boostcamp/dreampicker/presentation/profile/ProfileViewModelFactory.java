@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.presentation.profile;
 
 import com.boostcamp.dreampicker.data.repository.UserRepository;
+import com.boostcamp.dreampicker.di.scope.ActivityScoped;
 
 import javax.inject.Inject;
 
@@ -8,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+@ActivityScoped
 public class ProfileViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull

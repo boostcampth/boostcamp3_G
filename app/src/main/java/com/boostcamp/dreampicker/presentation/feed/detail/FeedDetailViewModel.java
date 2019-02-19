@@ -4,6 +4,8 @@ import com.boostcamp.dreampicker.data.model.FeedDetail;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -32,6 +34,7 @@ public class FeedDetailViewModel extends BaseViewModel {
     @NonNull
     private final FeedRepository repository;
 
+    @Inject
     FeedDetailViewModel(@NonNull final FeedRepository feedRepository) {
         this.repository = feedRepository;
         isLoading.setValue(false);

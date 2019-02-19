@@ -5,6 +5,8 @@ import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.repository.UserRepository;
 import com.boostcamp.dreampicker.presentation.BaseViewModel;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -29,6 +31,7 @@ public class ProfileViewModel extends BaseViewModel {
     @NonNull
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
+    @Inject
     ProfileViewModel(@NonNull UserRepository repository) {
         this.repository = repository;
         this.isLoading.setValue(false);

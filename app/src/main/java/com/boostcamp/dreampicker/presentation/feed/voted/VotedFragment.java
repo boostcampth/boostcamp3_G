@@ -12,11 +12,12 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
 
     @Inject
-    VotedViewModel viewModel;
+    VotedViewModelFactory factory;
 
     @Inject
     public VotedFragment() {
@@ -30,6 +31,8 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
     }
 
     private void initViewModel() {
+        final VotedViewModel viewModel =
+                ViewModelProviders.of(this, factory).get(VotedViewModel.class);
         binding.setVm(viewModel);
     }
 
