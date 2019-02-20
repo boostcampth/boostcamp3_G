@@ -285,7 +285,7 @@ public class SelectionGroup extends ConstraintLayout {
 
     private void setTypeArray(TypedArray typedArray) {
         setSelectorBackgroundResource(typedArray.getResourceId(R.styleable.SelectionGroup_selector, 0));
-        setSelectorSize(typedArray.getResourceId(R.styleable.SelectionGroup_selectorSize, DEFAULT_SIZE));
+        setSelectorSize(typedArray.getInt(R.styleable.SelectionGroup_selectorSize, DEFAULT_SIZE));
 
         setContainerImageResource(left, typedArray.getResourceId(R.styleable.SelectionGroup_leftImage, 0));
         setContainerBackgroundColor(left, typedArray.getColor(R.styleable.SelectionGroup_leftBgColor, 0));
