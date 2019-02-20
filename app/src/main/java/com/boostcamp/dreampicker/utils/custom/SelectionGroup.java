@@ -42,7 +42,7 @@ public class SelectionGroup extends ConstraintLayout {
     private @interface Position {
     }
 
-    private int position;
+    private int position = NONE;
 
     protected int GUIDELINE;
     protected int CONTAINER_LEFT;
@@ -61,12 +61,15 @@ public class SelectionGroup extends ConstraintLayout {
 
     @Nullable
     private OnDropListener onDropListener;
+    @NonNull
     private OnTouchListener onTouchListener = new OnTouchListener();
 
+    // This sends callback to outer.
     public interface OnDropListener {
         void onDrop(@Position final int position);
     }
 
+    // This catches drop event
     private interface OnDropCallback {
         void onDrop();
     }
@@ -104,6 +107,7 @@ public class SelectionGroup extends ConstraintLayout {
         SELECTOR = View.generateViewId();
     }
 
+    // Default guideline as vertically
     private void initGuideline() {
         final LayoutParams params = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         params.orientation = VERTICAL;
@@ -169,6 +173,7 @@ public class SelectionGroup extends ConstraintLayout {
             if (onDropListener != null && getPosition() != LEFT) {
                 onDropListener.onDrop(LEFT);
             }
+            setPosition(LEFT);
         }));
 
         right.setOnDragListener(new OnDragListener(() -> {
@@ -176,6 +181,7 @@ public class SelectionGroup extends ConstraintLayout {
             if (onDropListener != null && getPosition() != RIGHT) {
                 onDropListener.onDrop(RIGHT);
             }
+            setPosition(RIGHT);
         }));
     }
 
@@ -205,12 +211,10 @@ public class SelectionGroup extends ConstraintLayout {
     }
 
     public void dropLeft() {
-        setPosition(LEFT);
         dropAnimation(LEFT);
     }
 
     public void dropRight() {
-        setPosition(RIGHT);
         dropAnimation(RIGHT);
     }
 
