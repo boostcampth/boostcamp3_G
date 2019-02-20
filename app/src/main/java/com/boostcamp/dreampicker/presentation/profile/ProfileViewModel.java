@@ -1,7 +1,5 @@
 package com.boostcamp.dreampicker.presentation.profile;
 
-import android.util.Pair;
-
 import com.boostcamp.dreampicker.data.model.MyFeed;
 import com.boostcamp.dreampicker.data.model.UserDetail;
 import com.boostcamp.dreampicker.data.repository.UserRepository;
@@ -15,7 +13,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.paging.PagedList;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.subjects.PublishSubject;
 
 public class ProfileViewModel extends BaseViewModel {
     private static final int PAGE_SIZE = 4;
