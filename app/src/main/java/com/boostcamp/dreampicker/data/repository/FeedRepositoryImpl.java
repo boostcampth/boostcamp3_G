@@ -1,7 +1,6 @@
 package com.boostcamp.dreampicker.data.repository;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.local.room.dao.VotedFeedDao;
@@ -158,28 +157,23 @@ public class FeedRepositoryImpl implements FeedRepository {
     public Completable uploadFeed(@NonNull final FeedUploadRequest uploadFeed) {
         return Single
                 .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())).flatMap(imageUrlA -> {
-                            return client.getAdultDetectResult(imageUrlA).map(resultA -> {
-                                final float adultA = resultA.getResult().getNormal();
-                                if (adultA >= ADULT_DETECT_RATE) {
-                                    Log.d("LEE", "getImagePathA");
-                                    //deleteAdultImageStorage(uploadFeed.getImagePathA());
-                                    throw new AdultException("Adult Error");
-                                }
-                                return imageUrlA;
-                            });
+                            uploadFeed.setImagePathA(imageUrlA);
+                            return client.getAdultDetectResult(imageUrlA);
                         }),
                         uploadImageStorage(Uri.parse(uploadFeed.getImagePathB())).flatMap(imageUrlB -> {
-                            return client.getAdultDetectResult(imageUrlB).map(resultB -> {
-                                final float adultB = resultB.getResult().getNormal();
-                                if (adultB >= ADULT_DETECT_RATE) {
-                                    Log.d("LEE", "getImagePathB");
-                                    //deleteAdultImageStorage(uploadFeed.getImagePathB());
-                                    throw new AdultException("Adult Error");
-                                }
-                                return imageUrlB;
-                            });
+                            uploadFeed.setImagePathB(imageUrlB);
+                            return client.getAdultDetectResult(imageUrlB);
                         }),
-                        (resultA, resultB) -> FeedRequestMapper.toFeed(uploadFeed, resultA, resultB))
+                        (resultA, resultB) -> {
+                            final float adultA = resultA.getResult().getNormal();
+                            final float adultB = resultB.getResult().getNormal();
+                            if (adultA >= ADULT_DETECT_RATE || adultB >= ADULT_DETECT_RATE) {
+                                throw new AdultException("Adult Error");
+                            } else {
+                                return FeedRequestMapper.toFeed(uploadFeed, uploadFeed.getImagePathA(), uploadFeed.getImagePathB());
+                            }
+
+                        })
                 .flatMapCompletable(feedRemoteData ->
                         Completable.create(emitter -> {
 
@@ -248,10 +242,8 @@ public class FeedRepositoryImpl implements FeedRepository {
         });
     }
 
+    // TODO : 이미지 삭제
     public void deleteAdultImageStorage(@NonNull final String imageUrl) {
-        //return Completable.create(emitter ->
-        Log.d("LEE", imageUrl);
-        Log.d("LEE", Uri.parse(imageUrl).getLastPathSegment());
         final String filename = Uri.parse(imageUrl).getLastPathSegment();
         if (filename != null) {
             storage.getReference()
