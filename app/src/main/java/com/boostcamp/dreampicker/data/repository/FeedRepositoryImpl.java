@@ -165,8 +165,8 @@ public class FeedRepositoryImpl implements FeedRepository {
                             return client.getAdultDetectResult(imageUrlB);
                         }),
                         (resultA, resultB) -> {
-                            final float adultA = resultA.getResult().getNormal();
-                            final float adultB = resultB.getResult().getNormal();
+                            final float adultA = resultA.getResult().getAdult();
+                            final float adultB = resultB.getResult().getAdult();
                             if (adultA >= ADULT_DETECT_RATE || adultB >= ADULT_DETECT_RATE) {
                                 throw new AdultException("Adult Error");
                             } else {
