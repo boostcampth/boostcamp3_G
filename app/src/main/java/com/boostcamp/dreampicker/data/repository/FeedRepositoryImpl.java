@@ -158,24 +158,28 @@ public class FeedRepositoryImpl implements FeedRepository {
     public Completable uploadFeed(@NonNull final FeedUploadRequest uploadFeed) {
         return Single
                 .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())).flatMap(imageUrlA -> {
-                            uploadFeed.setImagePathA(imageUrlA);
-                            return client.getAdultDetectResult(imageUrlA);
+                            return client.getAdultDetectResult(imageUrlA).map(resultA -> {
+                                final float adultA = resultA.getResult().getNormal();
+                                if (adultA >= ADULT_DETECT_RATE) {
+                                    Log.d("LEE", "getImagePathA");
+                                    //deleteAdultImageStorage(uploadFeed.getImagePathA());
+                                    throw new AdultException("Adult Error");
+                                }
+                                return imageUrlA;
+                            });
                         }),
                         uploadImageStorage(Uri.parse(uploadFeed.getImagePathB())).flatMap(imageUrlB -> {
-                            uploadFeed.setImagePathB(imageUrlB);
-                            return client.getAdultDetectResult(imageUrlB);
+                            return client.getAdultDetectResult(imageUrlB).map(resultB -> {
+                                final float adultB = resultB.getResult().getNormal();
+                                if (adultB >= ADULT_DETECT_RATE) {
+                                    Log.d("LEE", "getImagePathB");
+                                    //deleteAdultImageStorage(uploadFeed.getImagePathB());
+                                    throw new AdultException("Adult Error");
+                                }
+                                return imageUrlB;
+                            });
                         }),
-                        (resultA, resultB) -> {
-
-                            final float adultA = resultA.getResult().getNormal();
-                            final float adultB = resultB.getResult().getNormal();
-                            if (adultA >= ADULT_DETECT_RATE || adultB >= ADULT_DETECT_RATE) {
-                                throw new AdultException("Adult Error");
-                            } else {
-                                return FeedRequestMapper.toFeed(uploadFeed, uploadFeed.getImagePathA(), uploadFeed.getImagePathB());
-                            }
-
-                        })
+                        (resultA, resultB) -> FeedRequestMapper.toFeed(uploadFeed, resultA, resultB))
                 .flatMapCompletable(feedRemoteData ->
                         Completable.create(emitter -> {
 
@@ -244,15 +248,18 @@ public class FeedRepositoryImpl implements FeedRepository {
         });
     }
 
-    @NonNull
-    public Completable deleteAdultImageStorage(@NonNull final String imageUrl) {
-        Log.d("LEE", "deleteAdultImageStorage");
-        return Completable.create(emitter ->
-                storage.getReference()
-                        .child(imageUrl)
-                        .delete()
-                        .addOnSuccessListener(__ -> emitter.onComplete())
-                        .addOnFailureListener(emitter::onError));
+    public void deleteAdultImageStorage(@NonNull final String imageUrl) {
+        //return Completable.create(emitter ->
+        Log.d("LEE", imageUrl);
+        Log.d("LEE", Uri.parse(imageUrl).getLastPathSegment());
+        final String filename = Uri.parse(imageUrl).getLastPathSegment();
+        if (filename != null) {
+            storage.getReference()
+                    .child(filename)
+                    .delete()
+                    .addOnFailureListener(IllegalArgumentException::new);
+
+        }
     }
 
     @NonNull

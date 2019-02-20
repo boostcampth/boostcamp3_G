@@ -2,7 +2,6 @@ package com.boostcamp.dreampicker.presentation.upload;
 
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.boostcamp.dreampicker.data.model.FeedUploadRequest;
 import com.boostcamp.dreampicker.data.repository.FeedRepository;
@@ -65,7 +64,7 @@ public class UploadViewModel extends BaseViewModel {
                         isLoading.setValue(false);
                         validate.setValue(true);
                     }, e -> {
-                        if(e instanceof AdultException) {
+                        if (e instanceof AdultException) {
                             adultImageError.setValue(e);
                         } else {
                             error.setValue(e);
@@ -122,7 +121,9 @@ public class UploadViewModel extends BaseViewModel {
     }
 
     @NonNull
-    LiveData<Throwable> getAdultImageError() { return adultImageError; }
+    LiveData<Throwable> getAdultImageError() {
+        return adultImageError;
+    }
 
     void setImagePath(@NonNull final Uri uri, final int flag) {
         if (flag == A) {
