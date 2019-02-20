@@ -13,6 +13,7 @@ import com.boostcamp.dreampicker.data.remote.firestore.mapper.FeedResponseMapper
 import com.boostcamp.dreampicker.data.remote.firestore.model.FeedRemoteData;
 import com.boostcamp.dreampicker.data.remote.firestore.model.MyFeedRemoteData;
 import com.boostcamp.dreampicker.data.remote.vision.RetrofitClient;
+import com.boostcamp.dreampicker.utils.AdultException;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -154,7 +155,6 @@ public class FeedRepositoryImpl implements FeedRepository {
     @NonNull
     @Override
     public Completable uploadFeed(@NonNull final FeedUploadRequest uploadFeed) {
-
         return Single
                 .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())).flatMap(imageUrlA -> {
                             uploadFeed.setImagePathA(imageUrlA);
@@ -165,11 +165,10 @@ public class FeedRepositoryImpl implements FeedRepository {
                             return client.getAdultDetectResult(imageUrlB);
                         }),
                         (resultA, resultB) -> {
-
                             final float adultA = resultA.getResult().getAdult();
                             final float adultB = resultB.getResult().getAdult();
                             if (adultA >= ADULT_DETECT_RATE || adultB >= ADULT_DETECT_RATE) {
-                                return null;
+                                throw new AdultException("Adult Error");
                             } else {
                                 return FeedRequestMapper.toFeed(uploadFeed, uploadFeed.getImagePathA(), uploadFeed.getImagePathB());
                             }
