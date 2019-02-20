@@ -1,6 +1,7 @@
 package com.boostcamp.dreampicker.data.repository;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.boostcamp.dreampicker.data.common.FirebaseManager;
 import com.boostcamp.dreampicker.data.local.room.dao.VotedFeedDao;
@@ -13,6 +14,7 @@ import com.boostcamp.dreampicker.data.remote.firestore.mapper.FeedResponseMapper
 import com.boostcamp.dreampicker.data.remote.firestore.model.FeedRemoteData;
 import com.boostcamp.dreampicker.data.remote.firestore.model.MyFeedRemoteData;
 import com.boostcamp.dreampicker.data.remote.vision.RetrofitClient;
+import com.boostcamp.dreampicker.utils.AdultException;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -154,7 +156,6 @@ public class FeedRepositoryImpl implements FeedRepository {
     @NonNull
     @Override
     public Completable uploadFeed(@NonNull final FeedUploadRequest uploadFeed) {
-
         return Single
                 .zip(uploadImageStorage(Uri.parse(uploadFeed.getImagePathA())).flatMap(imageUrlA -> {
                             uploadFeed.setImagePathA(imageUrlA);
@@ -166,10 +167,10 @@ public class FeedRepositoryImpl implements FeedRepository {
                         }),
                         (resultA, resultB) -> {
 
-                            final float adultA = resultA.getResult().getAdult();
-                            final float adultB = resultB.getResult().getAdult();
+                            final float adultA = resultA.getResult().getNormal();
+                            final float adultB = resultB.getResult().getNormal();
                             if (adultA >= ADULT_DETECT_RATE || adultB >= ADULT_DETECT_RATE) {
-                                return null;
+                                throw new AdultException("Adult Error");
                             } else {
                                 return FeedRequestMapper.toFeed(uploadFeed, uploadFeed.getImagePathA(), uploadFeed.getImagePathB());
                             }
@@ -241,6 +242,17 @@ public class FeedRepositoryImpl implements FeedRepository {
                 }
             });
         });
+    }
+
+    @NonNull
+    public Completable deleteAdultImageStorage(@NonNull final String imageUrl) {
+        Log.d("LEE", "deleteAdultImageStorage");
+        return Completable.create(emitter ->
+                storage.getReference()
+                        .child(imageUrl)
+                        .delete()
+                        .addOnSuccessListener(__ -> emitter.onComplete())
+                        .addOnFailureListener(emitter::onError));
     }
 
     @NonNull

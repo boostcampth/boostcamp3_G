@@ -132,6 +132,8 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
         binding.getVm().getError().observe(this,
                 e -> showToast(getString(R.string.upload_error_message)));
+        binding.getVm().getAdultImageError().observe(this,
+                e -> showToast(getString(R.string.upload_adult_image_error_message)));
     }
 
     private void showToast(String msg) {
