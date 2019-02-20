@@ -2,11 +2,11 @@ package com.boostcamp.dreampicker.presentation.feed.main;
 
 import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
+import com.boostcamp.dreampicker.utils.custom.SelectionGroup;
 import com.boostcamp.dreampicker.utils.custom.ShineSelectionGroup;
 
 import androidx.annotation.NonNull;
@@ -43,9 +43,6 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     @NonNull
     private final OnItemClickListener onItemClickListener;
 
-    /*@NonNull
-    private final View.OnTouchListener touchListener = new VoteIconTouchListener();*/
-
     @NonNull
     private final OnProfileClickListener onProfileClickListener;
 
@@ -60,20 +57,25 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
         final Feed feed = getItem(holder.getAdapterPosition());
         holder.bindTo(feed);
-
         final ShineSelectionGroup group = holder.getBinding().selection;
 
         if (feed.getSelectionId() == null) {
             group.dropCancel();
-            holder.getBinding().voteResult.setVisibility(View.GONE);
         } else {
-            holder.getBinding().voteResult.setVisibility(View.VISIBLE);
             if (feed.getSelectionId().equals(feed.getItemA().getId())) {
                 group.dropLeft();
             } else {
                 group.dropRight();
             }
         }
+
+        group.setOnDropListener((selPosition -> {
+            if (selPosition == SelectionGroup.LEFT) {
+                onVoteListener.onVote(new Pair<>(feed.getId(), feed.getItemA().getId()));
+            } else if (selPosition == SelectionGroup.RIGHT) {
+                onVoteListener.onVote(new Pair<>(feed.getId(), feed.getItemB().getId()));
+            }
+        }));
 
         holder.itemView.setOnClickListener(__ ->
                 onItemClickListener.onItemClick(
@@ -84,16 +86,6 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
 
         holder.getBinding().ivWriterImg.setOnClickListener(v ->
                 onProfileClickListener.onProfileClick(feed.getWriter().getId()));
-        /*
-        holder.getBinding().ivFeedImageA.setOnDragListener(new VoteDragListener(
-                () -> {
-                    if (feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemA().getId())) {
-                        onVoteListener.onVote(new Pair<>(feed.getId(), feed.getItemA().getId()));
-                    }
-                }));
-
-        holder.getBinding().ivWriterImg.setOnClickListener(v ->
-                onProfileClickListener.onProfileClick(feed.getWriter().getId()));*/
     }
 
     private static final DiffUtil.ItemCallback<Feed> DIFF_CALLBACK =

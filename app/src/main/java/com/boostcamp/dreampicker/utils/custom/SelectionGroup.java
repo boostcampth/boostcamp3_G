@@ -35,12 +35,14 @@ import static androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.VER
 import static androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.WRAP_CONTENT;
 
 public class SelectionGroup extends ConstraintLayout {
-    protected static final int NONE = 0, LEFT = 1, RIGHT = 2;
+    public static final int NONE = 0, LEFT = 1, RIGHT = 2;
 
     @IntDef({NONE, LEFT, RIGHT})
     @Retention(RetentionPolicy.SOURCE)
     private @interface Position {
     }
+
+    private int position;
 
     protected int GUIDELINE;
     protected int CONTAINER_LEFT;
@@ -61,7 +63,7 @@ public class SelectionGroup extends ConstraintLayout {
     private OnDropListener onDropListener;
     private OnTouchListener onTouchListener = new OnTouchListener();
 
-    private interface OnDropListener {
+    public interface OnDropListener {
         void onDrop(@Position final int position);
     }
 
@@ -163,15 +165,15 @@ public class SelectionGroup extends ConstraintLayout {
     private void initListener() {
         selector.setOnTouchListener(onTouchListener);
         left.setOnDragListener(new OnDragListener(() -> {
-            dropAnimation(LEFT);
-            if (onDropListener != null) {
+            dropLeft();
+            if (onDropListener != null && getPosition() != LEFT) {
                 onDropListener.onDrop(LEFT);
             }
         }));
 
         right.setOnDragListener(new OnDragListener(() -> {
-            dropAnimation(RIGHT);
-            if (onDropListener != null) {
+            dropRight();
+            if (onDropListener != null && getPosition() != RIGHT) {
                 onDropListener.onDrop(RIGHT);
             }
         }));
@@ -203,21 +205,24 @@ public class SelectionGroup extends ConstraintLayout {
     }
 
     public void dropLeft() {
+        setPosition(LEFT);
         dropAnimation(LEFT);
     }
 
     public void dropRight() {
+        setPosition(RIGHT);
         dropAnimation(RIGHT);
     }
 
     public void dropCancel() {
+        setPosition(NONE);
         dropAnimation(NONE);
     }
 
     /**
      * Apply selector size.
      */
-    private void setSelectorSize(int size) {
+    private void setSelectorSize(final int size) {
         final LayoutParams params = (LayoutParams) selector.getLayoutParams();
         final int dpSize = dp2px(size);
         params.width = dpSize;
@@ -231,15 +236,18 @@ public class SelectionGroup extends ConstraintLayout {
         selector.setBackgroundResource(resId);
     }
 
-    private void setContainerBackgroundColor(ImageView container, @ColorInt int color) {
+    private void setContainerBackgroundColor(@NonNull final ImageView container,
+                                             @ColorInt int color) {
         container.setBackgroundColor(color);
     }
 
-    private void setContainerImageResource(ImageView container, @DrawableRes int resId) {
+    private void setContainerImageResource(@NonNull final ImageView container,
+                                           @DrawableRes int resId) {
         container.setImageResource(resId);
     }
 
-    private void setContainerImageTint(ImageView container, @ColorInt int color) {
+    private void setContainerImageTint(@NonNull final ImageView container,
+                                       @ColorInt int color) {
         container.setImageTintList(ColorStateList.valueOf(color));
     }
 
@@ -310,6 +318,15 @@ public class SelectionGroup extends ConstraintLayout {
 
     protected int dp2px(float dp) {
         return (int) (dp * getContext().getApplicationContext().getResources().getDisplayMetrics().density + 0.5f);
+    }
+
+    private void setPosition(@Position int position) {
+        this.position = position;
+    }
+
+    @Position
+    private int getPosition() {
+        return position;
     }
 
     private class OnTouchListener implements View.OnTouchListener {

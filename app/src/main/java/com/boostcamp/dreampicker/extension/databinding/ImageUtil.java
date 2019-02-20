@@ -59,7 +59,7 @@ public class ImageUtil {
                 .error(R.drawable.bg_placeholder_gray)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(group.right);
-    }
+}
 
     @BindingAdapter({"circleImage"})
     public static void loadCircleImage(ImageView imageView, String url) {
