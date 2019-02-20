@@ -106,6 +106,8 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private void showBottomPicker(final int flag) {
         TedBottomPicker.with(this)
                 .setOnImageSelectedListener(uri -> binding.getVm().setImagePath(uri, flag))
+                .setOnErrorListener(message ->
+                        showToast(getString(R.string.common_error_message, message)))
                 .setPeekHeight(800)
                 .showTitle(true)
                 .create()
