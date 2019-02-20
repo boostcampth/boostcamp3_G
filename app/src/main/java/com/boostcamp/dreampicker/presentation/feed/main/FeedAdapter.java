@@ -1,19 +1,19 @@
 package com.boostcamp.dreampicker.presentation.feed.main;
 
+import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
-import com.boostcamp.dreampicker.presentation.feed.main.listener.VoteDragListener;
-import com.boostcamp.dreampicker.presentation.feed.main.listener.VoteIconTouchListener;
+import com.boostcamp.dreampicker.utils.custom.SelectionGroup;
+import com.boostcamp.dreampicker.utils.custom.ShineSelectionGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
-class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
+public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     interface OnItemClickListener {
         void onItemClick(@NonNull final String feedId,
                          @NonNull final String imageUrlA,
@@ -25,8 +25,7 @@ class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     }
 
     interface OnVoteListener {
-        void onVote(@NonNull final String feedId,
-                    @NonNull final String selectionId);
+        void onVote(@NonNull final Pair<String, String> pair);
     }
 
     FeedAdapter(@NonNull final OnVoteListener onVoteListener,
@@ -45,9 +44,6 @@ class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     private final OnItemClickListener onItemClickListener;
 
     @NonNull
-    private final View.OnTouchListener touchListener = new VoteIconTouchListener();
-
-    @NonNull
     private final OnProfileClickListener onProfileClickListener;
 
     @NonNull
@@ -61,41 +57,32 @@ class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
         final Feed feed = getItem(holder.getAdapterPosition());
         holder.bindTo(feed);
+        final ShineSelectionGroup group = holder.getBinding().selection;
 
-        holder.startVoteAnimation(feed.getItemA().getId(), feed.getItemB().getId(), feed.getSelectionId());
-
-        holder.itemView.setOnClickListener(__ ->
-                onItemClickListener.onItemClick(feed.getId(),
-                        feed.getItemA().getImageUrl(),
-                        feed.getItemB().getImageUrl()));
-
-        if (feed.getSelectionId() != null) {
-            if (!holder.getBinding().cbFeedVoteCount.isChecked()) {
-                holder.getBinding().cbFeedVoteCount.performClick();
-            }
-            holder.getBinding().voteResult.setVisibility(View.VISIBLE);
+        if (feed.getSelectionId() == null) {
+            group.dropCancel();
         } else {
-            if (holder.getBinding().cbFeedVoteCount.isChecked()) {
-                holder.getBinding().cbFeedVoteCount.performClick();
+            if (feed.getSelectionId().equals(feed.getItemA().getId())) {
+                group.dropLeft();
+            } else {
+                group.dropRight();
             }
-            holder.getBinding().voteResult.setVisibility(View.GONE);
         }
 
-        holder.getBinding().sbSelector.setOnTouchListener(touchListener);
+        group.setOnDropListener((selPosition -> {
+            if (selPosition == SelectionGroup.LEFT) {
+                onVoteListener.onVote(new Pair<>(feed.getId(), feed.getItemA().getId()));
+            } else if (selPosition == SelectionGroup.RIGHT) {
+                onVoteListener.onVote(new Pair<>(feed.getId(), feed.getItemB().getId()));
+            }
+        }));
 
-        holder.getBinding().ivFeedImageA.setOnDragListener(new VoteDragListener(
-                () -> {
-                    if (feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemA().getId())) {
-                        onVoteListener.onVote(feed.getId(), feed.getItemA().getId());
-                    }
-                }));
-
-        holder.getBinding().ivFeedImageB.setOnDragListener(new VoteDragListener(
-                () -> {
-                    if (feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemB().getId())) {
-                        onVoteListener.onVote(feed.getId(), feed.getItemB().getId());
-                    }
-                }));
+        holder.itemView.setOnClickListener(__ ->
+                onItemClickListener.onItemClick(
+                        feed.getId(),
+                        feed.getItemA().getImageUrl(),
+                        feed.getItemB().getImageUrl()
+                ));
 
         holder.getBinding().ivWriterImg.setOnClickListener(v ->
                 onProfileClickListener.onProfileClick(feed.getWriter().getId()));

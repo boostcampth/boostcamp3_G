@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.databinding.ActivityUploadBinding;
 import com.boostcamp.dreampicker.presentation.BaseActivity;
-import com.boostcamp.dreampicker.utils.LoadingDialog;
+import com.boostcamp.dreampicker.presentation.dialog.LoadingDialog;
 import com.boostcamp.dreampicker.utils.NetworkUtil;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
