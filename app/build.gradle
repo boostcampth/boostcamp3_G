@@ -84,7 +84,7 @@ dependencies {
     implementation 'gun0912.ted:tedpermission:2.2.2'
 
     // Ted Bottom Picker
-    implementation 'gun0912.ted:tedbottompicker:1.2.6'
+    implementation 'gun0912.ted:tedbottompicker:2.0.0-alpha1'
 
     // TedRxOnActivityForResult
     implementation 'gun0912.ted:tedonactivityresult-rx2:1.0.6'

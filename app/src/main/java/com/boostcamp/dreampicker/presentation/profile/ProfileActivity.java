@@ -94,7 +94,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
 
     private void observeError() {
         binding.getVm().getError().observe(this, error ->
-                showToast(getString(R.string.comment_error_message, error.getMessage())));
+                showToast(getString(R.string.common_error_message, error.getMessage())));
     }
 
     private void showToast(String message) {

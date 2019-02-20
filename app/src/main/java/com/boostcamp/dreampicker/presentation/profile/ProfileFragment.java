@@ -3,7 +3,6 @@ package com.boostcamp.dreampicker.presentation.profile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -81,7 +80,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private void observeError(){
         binding.getVm().getError().observe(this, error ->
-                showToast(getString(R.string.comment_error_message, error.getMessage())));
+                showToast(getString(R.string.common_error_message, error.getMessage())));
     }
 
     private void showToast(String message){
