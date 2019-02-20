@@ -5,5 +5,6 @@
         <attr name="rightImage" format="reference|integer" />
         <attr name="selectorSize" format="reference|integer"/>
         <attr name="selector" format="reference|integer" />
+        <attr name="selectorTag" format="reference|string"/>
     </declare-styleable>
 </resources>
