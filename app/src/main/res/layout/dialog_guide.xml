@@ -2,9 +2,8 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
-    android:layout_height="@dimen/feed_photo_image_height">
+    android:layout_height="250dp">
 
     <Button
         android:id="@+id/btn_close"
@@ -15,86 +14,37 @@
         android:backgroundTint="@color/colorWhite"
         android:elevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tv_title"/>
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:elevation="5dp"
         android:gravity="center"
         android:text="@string/dialog_tip_message"
+        android:background="#99BDBDBD"
         android:textSize="16sp"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <View
-        android:id="@+id/view_container_left"
+    <com.boostcamp.dreampicker.utils.ShineSelectionGroup
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/holo_red_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideline"
+        app:selector="@drawable/ic_vote_bg"
+        app:leftBgColor="@android:color/holo_red_light"
+        app:rightBgColor="@android:color/holo_blue_light"
+        app:leftTint="@color/colorWhite"
+        app:leftImage="@drawable/img_chicken"
+        app:rightImage="@drawable/img_pizza"
+        app:rightTint="@color/colorWhite"
+        app:selectorTag="Hello World"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/view_container_right"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/holo_blue_light"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_left"
-        android:layout_width="@dimen/voted_feed_container_size_height"
-        android:layout_height="@dimen/voted_feed_container_size_height"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/img_chicken"
-        android:tint="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <View
-        android:id="@+id/view_selector"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/ic_vote_full"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/iv_right"
-        android:layout_width="@dimen/voted_feed_container_size_height"
-        android:layout_height="@dimen/voted_feed_container_size_height"
-        android:scaleType="fitXY"
-        android:src="@drawable/img_pizza"
-        android:tint="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

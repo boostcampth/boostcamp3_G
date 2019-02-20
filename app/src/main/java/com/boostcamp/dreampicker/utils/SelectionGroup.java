@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -19,6 +20,7 @@ import com.boostcamp.dreampicker.R;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
@@ -33,20 +35,20 @@ import static androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.VER
 import static androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.WRAP_CONTENT;
 
 public class SelectionGroup extends ConstraintLayout {
-    private static final int NONE = 0, LEFT = 1, RIGHT = 2;
-    private static final String AUTO_TAG = "AUTO_TAG";
+    protected static final int NONE = 0, LEFT = 1, RIGHT = 2;
+    protected static final String AUTO_TAG = "AUTO_TAG";
 
     @IntDef({NONE, LEFT, RIGHT})
     @Retention(RetentionPolicy.SOURCE)
     private @interface Position {
     }
 
-    private int GUIDELINE;
-    private int CONTAINER_LEFT;
-    private int CONTAINER_RIGHT;
-    private int SELECTOR;
+    protected int GUIDELINE;
+    protected int CONTAINER_LEFT;
+    protected int CONTAINER_RIGHT;
+    protected int SELECTOR;
 
-    private int DEFAULT_SIZE = 64;
+    protected int DEFAULT_SIZE = 56;
 
     private int index = 0;
 
@@ -84,7 +86,7 @@ public class SelectionGroup extends ConstraintLayout {
         getAttrs(attrs, defStyle);
     }
 
-    private void initView() {
+    protected void initView() {
         initViewId();
         initGuideline();
         initContainer();
@@ -141,7 +143,7 @@ public class SelectionGroup extends ConstraintLayout {
         return imageView;
     }
 
-    private void initSelector() {
+    protected void initSelector() {
         selector = new View(getContext());
 
         final int size = dp2px(DEFAULT_SIZE);
@@ -175,7 +177,10 @@ public class SelectionGroup extends ConstraintLayout {
         }));
     }
 
-    private void dropAnimation(@Position final int position) {
+    /**
+     * After dropdown, Selector move parameter's position.
+     */
+    protected void dropAnimation(@Position final int position) {
         selector.startAnimation(new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
@@ -226,6 +231,18 @@ public class SelectionGroup extends ConstraintLayout {
         selector.setBackgroundResource(resId);
     }
 
+    private void setContainerBackgroundColor(ImageView container, @ColorInt int color) {
+        container.setBackgroundColor(color);
+    }
+
+    private void setContainerImageResource(ImageView container, @DrawableRes int resId) {
+        container.setImageResource(resId);
+    }
+
+    private void setContainerImageTint(ImageView container, @ColorInt int color) {
+        container.setImageTintList(ColorStateList.valueOf(color));
+    }
+
     /**
      * @param data Send clip data to drop view.
      */
@@ -248,29 +265,35 @@ public class SelectionGroup extends ConstraintLayout {
         this.onDropListener = onDropListener;
     }
 
-    private void getAttrs(AttributeSet attrs) {
+    /**
+     * If shadow mode, When dragging disappear selector.
+     */
+    public void setShadowMode(boolean isShadow) {
+        onTouchListener.setShadowMode(isShadow);
+    }
+
+    protected void getAttrs(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SelectionGroup);
         setTypeArray(typedArray);
     }
 
 
-    private void getAttrs(AttributeSet attrs, int defStyle) {
+    protected void getAttrs(AttributeSet attrs, int defStyle) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SelectionGroup, defStyle, 0);
         setTypeArray(typedArray);
     }
 
     private void setTypeArray(TypedArray typedArray) {
-        int selectorBgResId = typedArray.getResourceId(R.styleable.SelectionGroup_selector, 0);
-        setSelectorBackgroundResource(selectorBgResId);
+        setSelectorBackgroundResource(typedArray.getResourceId(R.styleable.SelectionGroup_selector, 0));
+        setSelectorSize(typedArray.getResourceId(R.styleable.SelectionGroup_selectorSize, DEFAULT_SIZE));
 
-        int leftImageBgId = typedArray.getResourceId(R.styleable.SelectionGroup_leftImage, 0);
-        left.setBackgroundResource(leftImageBgId);
+        setContainerImageResource(left, typedArray.getResourceId(R.styleable.SelectionGroup_leftImage, 0));
+        setContainerBackgroundColor(left, typedArray.getColor(R.styleable.SelectionGroup_leftBgColor, 0));
+        setContainerImageTint(left, typedArray.getColor(R.styleable.SelectionGroup_leftTint, 0));
 
-        int rightImageBgId = typedArray.getResourceId(R.styleable.SelectionGroup_rightImage, 0);
-        right.setBackgroundResource(rightImageBgId);
-
-        int size = typedArray.getResourceId(R.styleable.SelectionGroup_selectorSize, DEFAULT_SIZE);
-        setSelectorSize(size);
+        setContainerImageResource(right, typedArray.getResourceId(R.styleable.SelectionGroup_rightImage, 0));
+        setContainerBackgroundColor(right, typedArray.getColor(R.styleable.SelectionGroup_rightBgColor, 0));
+        setContainerImageTint(right, typedArray.getColor(R.styleable.SelectionGroup_rightTint, 0));
 
         final String tag = typedArray.getString(R.styleable.SelectionGroup_selectorTag);
         this.tag = tag == null ? AUTO_TAG : tag;
@@ -279,11 +302,11 @@ public class SelectionGroup extends ConstraintLayout {
         typedArray.recycle();
     }
 
-    private int getIndex() {
+    protected int getIndex() {
         return index++;
     }
 
-    private int dp2px(float dp) {
+    protected int dp2px(float dp) {
         return (int) (dp * getContext().getApplicationContext().getResources().getDisplayMetrics().density + 0.5f);
     }
 
@@ -292,12 +315,18 @@ public class SelectionGroup extends ConstraintLayout {
         private String label;
         private String data;
 
+        private boolean isShadowMode = false;
+
         private void setLabel(@NonNull final String label) {
             this.label = label;
         }
 
         private void setData(@NonNull final String data) {
             this.data = data;
+        }
+
+        private void setShadowMode(boolean isShadowMode) {
+            this.isShadowMode = isShadowMode;
         }
 
         @SuppressLint("ClickableViewAccessibility")
@@ -324,9 +353,9 @@ public class SelectionGroup extends ConstraintLayout {
                             0 // No operation
                     );
                 }
-                // If touch selector, it is INVISIBLE state.
-                // After dropdown, Back VISIBLE state.
-                v.setVisibility(View.INVISIBLE);
+                if (isShadowMode) {
+                    v.setVisibility(View.INVISIBLE);
+                }
                 return true;
             } else {
                 return false;
