@@ -344,8 +344,8 @@ public class SelectionGroup extends ConstraintLayout {
 
     private class OnTouchListener implements View.OnTouchListener {
         private String DEFAULT_DATA = "";
-        private String label;
-        private String data;
+        private String label; // Selector tag.
+        private String data; // Clip data(option)
 
         private boolean isShadowMode = false;
 
