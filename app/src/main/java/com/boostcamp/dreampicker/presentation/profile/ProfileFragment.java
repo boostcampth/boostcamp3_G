@@ -50,8 +50,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private void initViewModel() {
         binding.setVm(ViewModelProviders.of(this, factory).get(ProfileViewModel.class));
-        binding.getVm().loadUserDetail(userId);
-        binding.getVm().loadMyFeeds(userId);
+        binding.getVm().init(userId);
         binding.getVm().getIsLoggedOut().observe(this, isLoggedOut -> {
             if (isLoggedOut) {
                 startActivity(new Intent(context, SplashActivity.class));
@@ -62,13 +61,11 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
 
     private void initRecyclerView() {
         MyFeedAdapter adapter = new MyFeedAdapter(
-                item -> binding.getVm().toggleVoteEnded(userId, item, !item.isEnded()),
+                item -> binding.getVm().toggleVoteEnded(item, !item.isEnded()),
                 this::startFeedDetailActivity,
                 true);
 
         binding.content.rvProfileFeed.setAdapter(adapter);
-        binding.content.swipeRefresh.setOnRefreshListener(() ->
-                binding.getVm().loadMyFeeds(userId));
 
         binding.getVm().getIsLoading().observe(this, isLoading -> {
             if (!isLoading) {
