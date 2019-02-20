@@ -242,18 +242,6 @@ public class FeedRepositoryImpl implements FeedRepository {
         });
     }
 
-    // TODO : 이미지 삭제
-    public void deleteAdultImageStorage(@NonNull final String imageUrl) {
-        final String filename = Uri.parse(imageUrl).getLastPathSegment();
-        if (filename != null) {
-            storage.getReference()
-                    .child(filename)
-                    .delete()
-                    .addOnFailureListener(IllegalArgumentException::new);
-
-        }
-    }
-
     @NonNull
     @Override
     public Single<FeedDetail> getFeedDetail(@NonNull final String userId,
