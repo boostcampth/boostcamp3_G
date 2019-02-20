@@ -36,7 +36,6 @@ import static androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.WRA
 
 public class SelectionGroup extends ConstraintLayout {
     protected static final int NONE = 0, LEFT = 1, RIGHT = 2;
-    protected static final String AUTO_TAG = "AUTO_TAG";
 
     @IntDef({NONE, LEFT, RIGHT})
     @Retention(RetentionPolicy.SOURCE)
@@ -48,11 +47,12 @@ public class SelectionGroup extends ConstraintLayout {
     protected int CONTAINER_RIGHT;
     protected int SELECTOR;
 
-    protected int DEFAULT_SIZE = 56;
+    protected final int DEFAULT_SIZE = 56;
+    protected final String DEFAULT_TAG = "DEFAULT_TAG";
 
     private int index = 0;
 
-    private String tag;
+    private String selectorTag;
 
     public ImageView left, right;
     public View selector;
@@ -92,6 +92,7 @@ public class SelectionGroup extends ConstraintLayout {
         initContainer();
         initSelector();
         initListener();
+        invalidate();
     }
 
     private void initViewId() {
@@ -137,7 +138,6 @@ public class SelectionGroup extends ConstraintLayout {
         params.endToEnd = endToEnd;
 
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setAdjustViewBounds(true);
         imageView.setLayoutParams(params);
 
         return imageView;
@@ -252,10 +252,11 @@ public class SelectionGroup extends ConstraintLayout {
 
     /**
      * This params decide drop range.
-     * If "SelectionGroups" are same tag, There are possible to dropdown.
+     * If "SelectionGroups" are same selectorTag, There are possible to dropdown.
      */
-    public void setTag(@NonNull final String tag) {
-        this.tag = tag;
+    public void setSelectorTag(@NonNull final String selectorTag) {
+        this.selectorTag = selectorTag;
+        onTouchListener.setLabel(this.selectorTag);
     }
 
     /**
@@ -289,15 +290,16 @@ public class SelectionGroup extends ConstraintLayout {
 
         setContainerImageResource(left, typedArray.getResourceId(R.styleable.SelectionGroup_leftImage, 0));
         setContainerBackgroundColor(left, typedArray.getColor(R.styleable.SelectionGroup_leftBgColor, 0));
-        setContainerImageTint(left, typedArray.getColor(R.styleable.SelectionGroup_leftTint, 0));
+        final int leftTint = typedArray.getColor(R.styleable.SelectionGroup_leftTint, 0);
+        if (leftTint != 0) setContainerImageTint(left, leftTint);
 
         setContainerImageResource(right, typedArray.getResourceId(R.styleable.SelectionGroup_rightImage, 0));
         setContainerBackgroundColor(right, typedArray.getColor(R.styleable.SelectionGroup_rightBgColor, 0));
-        setContainerImageTint(right, typedArray.getColor(R.styleable.SelectionGroup_rightTint, 0));
+        final int rightTint = typedArray.getColor(R.styleable.SelectionGroup_rightTint, 0);
+        if (rightTint != 0) setContainerImageTint(right, rightTint);
 
         final String tag = typedArray.getString(R.styleable.SelectionGroup_selectorTag);
-        this.tag = tag == null ? AUTO_TAG : tag;
-        onTouchListener.setLabel(this.tag);
+        setSelectorTag(tag == null ? DEFAULT_TAG : tag);
 
         typedArray.recycle();
     }
@@ -375,7 +377,7 @@ public class SelectionGroup extends ConstraintLayout {
         public boolean onDrag(View v, DragEvent event) {
             if (event.getAction() == DragEvent.ACTION_DROP) {
                 final CharSequence label = event.getClipData().getDescription().getLabel();
-                if (label != null && label.toString().equals(tag)) callback.onDrop();
+                if (label != null && label.toString().equals(selectorTag)) callback.onDrop();
                 else return false;
             } else if (event.getAction() == DragEvent.ACTION_DRAG_ENDED) {
                 selector.setVisibility(View.VISIBLE);

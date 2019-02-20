@@ -3,6 +3,8 @@ package com.boostcamp.dreampicker.extension.databinding;
 import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
@@ -62,6 +64,30 @@ public class BindingUtil {
         progressBar.setProgress(progress);
     }
 
+    @BindingAdapter({"visible"})
+    public static void setVoteReulstContainerVisible(@NonNull final LinearLayout layout,
+                                                     @Nullable final String selectionId) {
+        if (selectionId == null) {
+            layout.setVisibility(View.GONE);
+        } else {
+            layout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @BindingAdapter({"voteChecked"})
+    public static void setVotedCheckBox(@NonNull final CheckBox box,
+                                        @Nullable final String selectionId) {
+        if (selectionId == null) {
+            if (box.isChecked()) {
+                box.performClick();
+            }
+        } else {
+            if (!box.isChecked()) {
+                box.performClick();
+            }
+        }
+    }
+
     @SuppressLint("SimpleDateFormat")
     @BindingAdapter({"date"})
     public static void convertDateToDisplayText(@NonNull final TextView textView,
@@ -95,7 +121,8 @@ public class BindingUtil {
 
     @SuppressLint("ResourceAsColor")
     @BindingAdapter(value = {"isEnded", "isVotePosition"})
-    public static void setVoteButton(@NonNull final Button button, final boolean isEnded, final boolean isVotePosition) {
+    public static void setVoteButton(@NonNull final Button button, final boolean isEnded,
+                                     final boolean isVotePosition) {
         if (isEnded) {
             button.setBackgroundResource(R.color.colorGray);
             button.setClickable(false);

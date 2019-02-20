@@ -7,14 +7,13 @@ import android.view.ViewGroup;
 
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
-import com.boostcamp.dreampicker.presentation.feed.main.listener.VoteDragListener;
-import com.boostcamp.dreampicker.presentation.feed.main.listener.VoteIconTouchListener;
+import com.boostcamp.dreampicker.utils.custom.ShineSelectionGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
-class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
+public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     interface OnItemClickListener {
         void onItemClick(@NonNull final String feedId,
                          @NonNull final String imageUrlA,
@@ -44,8 +43,8 @@ class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
     @NonNull
     private final OnItemClickListener onItemClickListener;
 
-    @NonNull
-    private final View.OnTouchListener touchListener = new VoteIconTouchListener();
+    /*@NonNull
+    private final View.OnTouchListener touchListener = new VoteIconTouchListener();*/
 
     @NonNull
     private final OnProfileClickListener onProfileClickListener;
@@ -62,27 +61,30 @@ class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
         final Feed feed = getItem(holder.getAdapterPosition());
         holder.bindTo(feed);
 
-        holder.startVoteAnimation(feed.getItemA().getId(), feed.getItemB().getId(), feed.getSelectionId());
+        final ShineSelectionGroup group = holder.getBinding().selection;
 
-        holder.itemView.setOnClickListener(__ ->
-                onItemClickListener.onItemClick(feed.getId(),
-                        feed.getItemA().getImageUrl(),
-                        feed.getItemB().getImageUrl()));
-
-        if (feed.getSelectionId() != null) {
-            if (!holder.getBinding().cbFeedVoteCount.isChecked()) {
-                holder.getBinding().cbFeedVoteCount.performClick();
-            }
-            holder.getBinding().voteResult.setVisibility(View.VISIBLE);
-        } else {
-            if (holder.getBinding().cbFeedVoteCount.isChecked()) {
-                holder.getBinding().cbFeedVoteCount.performClick();
-            }
+        if (feed.getSelectionId() == null) {
+            group.dropCancel();
             holder.getBinding().voteResult.setVisibility(View.GONE);
+        } else {
+            holder.getBinding().voteResult.setVisibility(View.VISIBLE);
+            if (feed.getSelectionId().equals(feed.getItemA().getId())) {
+                group.dropLeft();
+            } else {
+                group.dropRight();
+            }
         }
 
-        holder.getBinding().sbSelector.setOnTouchListener(touchListener);
+        holder.itemView.setOnClickListener(__ ->
+                onItemClickListener.onItemClick(
+                        feed.getId(),
+                        feed.getItemA().getImageUrl(),
+                        feed.getItemB().getImageUrl()
+                ));
 
+        holder.getBinding().ivWriterImg.setOnClickListener(v ->
+                onProfileClickListener.onProfileClick(feed.getWriter().getId()));
+        /*
         holder.getBinding().ivFeedImageA.setOnDragListener(new VoteDragListener(
                 () -> {
                     if (feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemA().getId())) {
@@ -90,15 +92,8 @@ class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
                     }
                 }));
 
-        holder.getBinding().ivFeedImageB.setOnDragListener(new VoteDragListener(
-                () -> {
-                    if (feed.getSelectionId() == null || !feed.getSelectionId().equals(feed.getItemB().getId())) {
-                        onVoteListener.onVote(new Pair<>(feed.getId(), feed.getItemB().getId()));
-                    }
-                }));
-
         holder.getBinding().ivWriterImg.setOnClickListener(v ->
-                onProfileClickListener.onProfileClick(feed.getWriter().getId()));
+                onProfileClickListener.onProfileClick(feed.getWriter().getId()));*/
     }
 
     private static final DiffUtil.ItemCallback<Feed> DIFF_CALLBACK =

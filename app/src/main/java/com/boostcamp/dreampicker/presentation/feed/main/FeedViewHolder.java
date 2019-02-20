@@ -8,6 +8,7 @@ import android.view.animation.Transformation;
 import com.boostcamp.dreampicker.R;
 import com.boostcamp.dreampicker.data.model.Feed;
 import com.boostcamp.dreampicker.databinding.ItemFeedBinding;
+import com.boostcamp.dreampicker.databinding.ItemFeedLegacyBinding;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
 import androidx.annotation.NonNull;
@@ -26,16 +27,15 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
 
     void bindTo(@NonNull final Feed feed) {
         binding.setFeed(feed);
-        binding.executePendingBindings();
-        binding.ivFeedImageA.setTag(R.id.iv_feed_image_a, feed.getId());
+        /*binding.ivFeedImageA.setTag(R.id.iv_feed_image_a, feed.getId());
         binding.ivFeedImageB.setTag(R.id.iv_feed_image_b, feed.getId());
-        binding.sbSelector.setTag(R.id.sb_selector, feed.getId());
+        binding.sbSelector.setTag(R.id.sb_selector, feed.getId());*/
     }
 
     void startVoteAnimation(@NonNull final String itemAId,
                             @NonNull final String itemBId,
                             @Nullable final String selectionId) {
-        final Context context = binding.getRoot().getContext();
+/*        final Context context = binding.getRoot().getContext();
         final int size = context.getResources().getDimensionPixelSize(R.dimen.vote_icon_size);
 
         final ShineButton button = binding.sbSelector;
@@ -64,7 +64,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
                 }
                 button.setLayoutParams(params);
             }
-        });
+        });*/
     }
 
     public ItemFeedBinding getBinding() {

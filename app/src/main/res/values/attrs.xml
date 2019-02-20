@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="SelectionGroup">
-        <attr name="leftBgColor" format="reference|color"/>
         <attr name="leftImage" format="reference|integer" />
+        <attr name="leftBgColor" format="reference|color"/>
         <attr name="leftTint" format="reference|color"/>
 
         <attr name="rightBgColor" format="reference|color"/>
