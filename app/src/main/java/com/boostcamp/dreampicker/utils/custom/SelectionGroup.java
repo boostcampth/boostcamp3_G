@@ -133,9 +133,9 @@ public class SelectionGroup extends ConstraintLayout {
     }
 
     @NonNull
-    private ImageView createContainer(@NonNull LayoutParams params,
-                                      @IdRes int startToStart,
-                                      @IdRes int endToEnd) {
+    private ImageView createContainer(@NonNull final LayoutParams params,
+                                      @IdRes final int startToStart,
+                                      @IdRes final int endToEnd) {
         final ImageView imageView = new ImageView(getContext());
         params.topToTop = PARENT_ID;
         params.bottomToBottom = PARENT_ID;
@@ -240,23 +240,32 @@ public class SelectionGroup extends ConstraintLayout {
         selector.setBackgroundResource(resId);
     }
 
+    /**
+     *  Apply container background color.
+     */
     private void setContainerBackgroundColor(@NonNull final ImageView container,
                                              @ColorInt int color) {
         container.setBackgroundColor(color);
     }
 
+    /**
+     * Apply container image resource.
+     */
     private void setContainerImageResource(@NonNull final ImageView container,
                                            @DrawableRes int resId) {
         container.setImageResource(resId);
     }
 
+    /**
+     * Apply container image tint.
+     */
     private void setContainerImageTint(@NonNull final ImageView container,
                                        @ColorInt int color) {
         container.setImageTintList(ColorStateList.valueOf(color));
     }
 
     /**
-     * @param data Send clip data to drop view.
+     * Send clip data to drop view.
      */
     public void setData(@NonNull final String data) {
         onTouchListener.setData(data);
