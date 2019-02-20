@@ -5,7 +5,7 @@
 
     <!-- 로그인 화면에서 사용-->
     <string name="sign_in_fail">로그인 처리중 에러가 발생했습니다.</string>
-    <string name="comment_error_message">에러가 발생했습니다. %1$s</string>
+    <string name="common_error_message">에러가 발생했습니다. %1$s</string>
 
     <!-- 메인화면에서 사용 -->
     <string name="main_navigation_home">홈</string>
