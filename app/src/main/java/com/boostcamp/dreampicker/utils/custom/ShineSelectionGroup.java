@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.utils;
+package com.boostcamp.dreampicker.utils.custom;
 
 import android.content.Context;
 import android.graphics.Color;

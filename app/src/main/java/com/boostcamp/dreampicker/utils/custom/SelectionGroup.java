@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.utils;
+package com.boostcamp.dreampicker.utils.custom;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
