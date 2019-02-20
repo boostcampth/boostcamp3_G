@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import io.reactivex.Observable;
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.subjects.PublishSubject;
 
@@ -48,20 +48,19 @@ public class FeedViewModel extends BaseViewModel {
         isLoading.setValue(false);
         isLastPage.setValue(false);
 
-        addDisposable(voteSubject.switchMap(pair -> {
+        addDisposable(voteSubject.switchMapCompletable(pair -> {
             final Feed oldFeed = findFeedById(pair.first);
             if (oldFeed == null) {
-                return Observable.error(new IllegalArgumentException(ERROR_NOT_EXIST));
+                return Completable.error(new IllegalArgumentException(ERROR_NOT_EXIST));
             }
-
             final Feed newFeed = createVoteFeed(oldFeed, pair.second);
             if (newFeed == null) {
-                return Observable.just(pair.first);
+                return Completable.complete();
             } else {
                 updateFeedList(newFeed);
-                return repository.vote(userId, pair.first, pair.second).andThen(Observable.just(pair.first));
+                return repository.vote(userId, pair.first, pair.second);
             }
-        }).subscribe(feedId -> getFeed(userId, feedId), error::setValue));
+        }).subscribe(() -> { /* No Operation */ }, error::setValue));
     }
 
     void loadFeedList(@NonNull final String userId) {
@@ -89,6 +88,9 @@ public class FeedViewModel extends BaseViewModel {
                     isLoading.setValue(true);
                     error.setValue(e);
                 }));
+    }
+    void vote(@NonNull final Pair<String, String> pair) {
+        voteSubject.onNext(pair);
     }
 
     void getFeed(@NonNull final String userId, @NonNull final String feedId) {
@@ -166,11 +168,6 @@ public class FeedViewModel extends BaseViewModel {
         }
         feed.setSelectionId(selectionId);
         return feed;
-    }
-
-    @NonNull
-    PublishSubject<Pair<String, String>> getVoteSubject() {
-        return voteSubject;
     }
 
     @NonNull

@@ -2,7 +2,6 @@ package com.boostcamp.dreampicker.presentation.feed.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Toast;
 
@@ -65,9 +64,9 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
 
     private void initRecyclerView() {
         final FeedAdapter adapter = new FeedAdapter(
-                (feedId, selectionId) -> binding.getVm().getVoteSubject().onNext(new Pair<>(feedId, selectionId)),
+                binding.getVm()::vote,
                 this::startFeedDetailActivity,
-                writer -> startActivity(ProfileActivity.getLaunchIntent(context, writer)));
+                this::startProfileActivity);
 
         binding.rvFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -126,9 +125,9 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
         return R.layout.fragment_feed;
     }
 
-    private void startFeedDetailActivity(@NonNull String feedId,
-                                         @NonNull String imageUrlA,
-                                         @NonNull String imageUrlB) {
+    private void startFeedDetailActivity(@NonNull final String feedId,
+                                         @NonNull final String imageUrlA,
+                                         @NonNull final String imageUrlB) {
         disposable.add(TedRxOnActivityResult.with(context)
                 .startActivityForResult(
                         FeedDetailActivity.getLaunchIntent(context, feedId, imageUrlA, imageUrlB))
@@ -138,6 +137,10 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
                         binding.getVm().getFeed(userId, feedId);
                     }
                 }));
+    }
+
+    private void startProfileActivity(@NonNull final String writer) {
+        startActivity(ProfileActivity.getLaunchIntent(context, writer));
     }
 
     @Override

@@ -13,7 +13,7 @@ import com.boostcamp.dreampicker.presentation.feed.main.FeedFragment;
 import com.boostcamp.dreampicker.presentation.feed.voted.VotedFragment;
 import com.boostcamp.dreampicker.presentation.profile.ProfileFragment;
 import com.boostcamp.dreampicker.presentation.upload.UploadActivity;
-import com.boostcamp.dreampicker.utils.GuideDialog;
+import com.boostcamp.dreampicker.presentation.dialog.GuideDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import javax.inject.Inject;

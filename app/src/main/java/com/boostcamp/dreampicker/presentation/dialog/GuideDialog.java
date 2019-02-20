@@ -1,4 +1,4 @@
-package com.boostcamp.dreampicker.utils;
+package com.boostcamp.dreampicker.presentation.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,14 +8,17 @@ import com.boostcamp.dreampicker.R;
 
 import androidx.annotation.NonNull;
 
-public class LoadingDialog extends Dialog {
-    public LoadingDialog(@NonNull Context context) {
+public class GuideDialog extends Dialog {
+    public GuideDialog(@NonNull Context context) {
         super(context);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_loading);
+        setContentView(R.layout.dialog_guide);
+
+        findViewById(R.id.btn_close).setOnClickListener(v -> dismiss());
     }
+
 }
