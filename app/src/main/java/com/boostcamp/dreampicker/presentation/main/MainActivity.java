@@ -27,13 +27,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
         implements BottomNavigationView.OnNavigationItemSelectedListener {
     @Inject
     FeedFragment feedFragment;
-
     @Inject
     VotedFragment votedFragment;
     @Inject
     ProfileFragment profileFragment;
-    private FragmentManager fm = getSupportFragmentManager();
 
+    private FragmentManager fm = getSupportFragmentManager();
     private Fragment active;
 
     @Override
@@ -53,8 +52,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding>
     }
 
     private void initNavigation() {
-
-        // 내비게이션 바 생성
         binding.navigation.setOnNavigationItemSelectedListener(this);
 
         active = feedFragment;

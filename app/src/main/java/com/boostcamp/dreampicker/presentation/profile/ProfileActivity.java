@@ -56,8 +56,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
 
     private void initViewModel() {
         binding.setVm(ViewModelProviders.of(this, factory).get(ProfileViewModel.class));
-        binding.getVm().loadUserDetail(userId);
-        binding.getVm().loadMyFeeds(userId);
+        binding.getVm().init(userId);
     }
 
     private void initViews() {
@@ -67,7 +66,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
 
     private void initToolbar() {
         setSupportActionBar(binding.toolbar);
-        ActionBar toolbar = getSupportActionBar();
+        final ActionBar toolbar = getSupportActionBar();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setDisplayShowTitleEnabled(false);
@@ -76,13 +75,11 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
 
     private void initRecyclerView() {
         final MyFeedAdapter adapter = new MyFeedAdapter(
-                item -> binding.getVm().toggleVoteEnded(userId, item, !item.isEnded()),
+                item -> binding.getVm().toggleVoteEnded(item, !item.isEnded()),
                 this::startFeedDetailActivity,
                 false);
 
         binding.content.rvProfileFeed.setAdapter(adapter);
-        binding.content.swipeRefresh.setOnRefreshListener(() ->
-                binding.getVm().loadMyFeeds(userId));
 
         binding.getVm().getIsLoading().observe(this, isLoading -> {
             if (!isLoading) {
@@ -97,7 +94,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
 
     private void observeError() {
         binding.getVm().getError().observe(this, error ->
-                showToast(getString(R.string.comment_error_message, error.getMessage())));
+                showToast(getString(R.string.common_error_message, error.getMessage())));
     }
 
     private void showToast(String message) {
