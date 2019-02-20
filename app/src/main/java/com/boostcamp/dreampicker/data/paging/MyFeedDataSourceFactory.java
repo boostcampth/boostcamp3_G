@@ -6,7 +6,6 @@ import com.boostcamp.dreampicker.data.remote.firestore.UserDataSource;
 import java.util.Date;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 
 public class MyFeedDataSourceFactory extends DataSource.Factory<Date, MyFeed> {
@@ -22,13 +21,9 @@ public class MyFeedDataSourceFactory extends DataSource.Factory<Date, MyFeed> {
         this.userId = userId;
     }
 
-    private final MutableLiveData<MyFeedDataSource> sourceLiveData = new MutableLiveData<>();
-
     @NonNull
     @Override
     public DataSource<Date, MyFeed> create() {
-        MyFeedDataSource source = new MyFeedDataSource(remoteDataSource, userId);
-        sourceLiveData.postValue(source);
-        return source;
+        return new MyFeedDataSource(remoteDataSource, userId);
     }
 }
