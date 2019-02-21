@@ -169,19 +169,21 @@ public class SelectionGroup extends ConstraintLayout {
     private void initListener() {
         selector.setOnTouchListener(onTouchListener);
         left.setOnDragListener(new OnDragListener(() -> {
-            dropLeft();
-            if (onDropListener != null && getPosition() != LEFT) {
-                onDropListener.onDrop(LEFT);
+            if (getPosition() != LEFT) {
+                dropLeft();
+                if (onDropListener != null) {
+                    onDropListener.onDrop(LEFT);
+                }
             }
-            setPosition(LEFT);
         }));
 
         right.setOnDragListener(new OnDragListener(() -> {
-            dropRight();
-            if (onDropListener != null && getPosition() != RIGHT) {
-                onDropListener.onDrop(RIGHT);
+            if (getPosition() != RIGHT) {
+                dropRight();
+                if (onDropListener != null) {
+                    onDropListener.onDrop(RIGHT);
+                }
             }
-            setPosition(RIGHT);
         }));
     }
 
@@ -212,15 +214,17 @@ public class SelectionGroup extends ConstraintLayout {
 
     public void dropLeft() {
         dropAnimation(LEFT);
+        setPosition(LEFT);
     }
 
     public void dropRight() {
         dropAnimation(RIGHT);
+        setPosition(RIGHT);
     }
 
     public void dropCancel() {
-        setPosition(NONE);
         dropAnimation(NONE);
+        setPosition(NONE);
     }
 
     /**
@@ -241,7 +245,7 @@ public class SelectionGroup extends ConstraintLayout {
     }
 
     /**
-     *  Apply container background color.
+     * Apply container background color.
      */
     private void setContainerBackgroundColor(@NonNull final ImageView container,
                                              @ColorInt int color) {
@@ -333,12 +337,12 @@ public class SelectionGroup extends ConstraintLayout {
         return (int) (dp * getContext().getApplicationContext().getResources().getDisplayMetrics().density + 0.5f);
     }
 
-    private void setPosition(@Position int position) {
+    protected void setPosition(@Position int position) {
         this.position = position;
     }
 
     @Position
-    private int getPosition() {
+    protected int getPosition() {
         return position;
     }
 

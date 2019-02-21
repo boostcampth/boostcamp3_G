@@ -61,27 +61,7 @@ public class ShineSelectionGroup extends SelectionGroup {
         addView(selector, getIndex());
     }
 
-    @Override
-    protected void dropAnimation(int position) {
-        selector.startAnimation(new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                final ConstraintLayout.LayoutParams params =
-                        (ConstraintLayout.LayoutParams) selector.getLayoutParams();
-
-                if (position == NONE) {
-                    params.startToStart = PARENT_ID;
-                    params.endToEnd = PARENT_ID;
-                } else if (position == LEFT) {
-                    params.startToStart = PARENT_ID;
-                    params.endToEnd = GUIDELINE;
-                } else if (position == RIGHT) {
-                    params.startToStart = GUIDELINE;
-                    params.endToEnd = PARENT_ID;
-                }
-                selector.setLayoutParams(params);
-                selector.showAnim();
-            }
-        });
+    public void showAnim() {
+        selector.showAnim();
     }
 }

@@ -67,6 +67,7 @@ public class FeedAdapter extends ListAdapter<Feed, FeedViewHolder> {
             } else {
                 group.dropRight();
             }
+            group.showAnim();
         }
 
         group.setOnDropListener((selPosition -> {
