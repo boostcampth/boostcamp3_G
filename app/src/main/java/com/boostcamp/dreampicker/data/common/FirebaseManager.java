@@ -17,7 +17,7 @@ public class FirebaseManager {
     @Nullable
     public static User getCurrentUser() {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(firebaseUser == null) {
+        if (firebaseUser == null) {
             return null;
         } else {
             return new User(

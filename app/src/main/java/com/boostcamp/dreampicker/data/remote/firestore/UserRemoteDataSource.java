@@ -133,16 +133,16 @@ public class UserRemoteDataSource implements UserDataSource {
                     firestore.collection(COLLECTION_USER).document(userId);
 
             firestore.runTransaction(transaction -> {
-                        DocumentSnapshot snapshot = transaction.get(reference);
-                        if (!snapshot.exists()) {
-                            transaction.set(reference, userDetail);
-                        } else {
-                            transaction.update(reference,
-                                    "profileImageUrl",
-                                    userDetail.getProfileImageUrl());
-                        }
-                        return true;
-                    })
+                DocumentSnapshot snapshot = transaction.get(reference);
+                if (!snapshot.exists()) {
+                    transaction.set(reference, userDetail);
+                } else {
+                    transaction.update(reference,
+                            "profileImageUrl",
+                            userDetail.getProfileImageUrl());
+                }
+                return true;
+            })
                     .addOnSuccessListener(__ -> emitter.onComplete())
                     .addOnFailureListener(emitter::onError);
         });

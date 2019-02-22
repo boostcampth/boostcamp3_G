@@ -19,7 +19,7 @@ class MyFeedDataSource extends PageKeyedDataSource<Date, MyFeed> {
     private boolean isLastPage = false;
 
     MyFeedDataSource(@NonNull UserDataSource remoteDataSource,
-                            @NonNull String userId) {
+                     @NonNull String userId) {
         this.remoteDataSource = remoteDataSource;
         this.userId = userId;
     }

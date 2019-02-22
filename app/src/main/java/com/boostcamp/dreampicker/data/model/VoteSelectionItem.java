@@ -51,7 +51,7 @@ public class VoteSelectionItem {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if(o instanceof VoteSelectionItem) {
+        if (o instanceof VoteSelectionItem) {
             VoteSelectionItem item = (VoteSelectionItem) o;
             return voteCount == item.voteCount &&
                     Objects.equals(id, item.id) &&

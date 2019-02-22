@@ -24,7 +24,7 @@ public abstract class FeedRepositoryModule {
     @Singleton
     @Provides
     static AppDatabase provideDb(Application context) {
-        return Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,"app_database")
+        return Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "app_database")
                 .build();
     }
 

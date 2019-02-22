@@ -22,7 +22,7 @@ class MyFeedItemViewHolder extends RecyclerView.ViewHolder {
         binding.setItem(feed);
     }
 
-    ItemMyFeedBinding binding(){
+    ItemMyFeedBinding binding() {
         return binding;
     }
 }

@@ -28,7 +28,7 @@ public interface UserDataSource {
      * @param userId     유저 ID
      * @param startAfter 이 값의 다음 데이터를 요청
      * @param pageSize   페이지의 size
-     * @return Single<List       <       MyFeed>>
+     * @return Single<List               <               MyFeed>>
      */
     @NonNull
     Single<List<MyFeed>> getFeedListByUserId(@NonNull final String userId,

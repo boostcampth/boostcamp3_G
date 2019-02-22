@@ -57,7 +57,7 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
     private void initViewModel() {
         binding.setVm(ViewModelProviders.of(this, factory).get(LoginViewModel.class));
         binding.getVm().getIsLoggedIn().observe(this, isLoggedIn -> {
-            if(isLoggedIn){
+            if (isLoggedIn) {
                 startMainActivityAndFinish();
             }
         });
@@ -76,7 +76,7 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
                         error -> Toast.makeText(context, R.string.sign_in_fail, Toast.LENGTH_SHORT).show()));
     }
 
-    private void processSignInResultIntent(Intent intent){
+    private void processSignInResultIntent(Intent intent) {
         try {
             final GoogleSignInAccount account = GoogleSignIn
                     .getSignedInAccountFromIntent(intent)
@@ -94,12 +94,12 @@ public class LogInActivity extends BaseActivity<ActivityLogInBinding> {
         finish();
     }
 
-    private void observeError(){
+    private void observeError() {
         binding.getVm().getError().observe(this, error ->
                 showToast(getString(R.string.common_error_message, error.getMessage())));
     }
 
-    private void showToast(String message){
+    private void showToast(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
