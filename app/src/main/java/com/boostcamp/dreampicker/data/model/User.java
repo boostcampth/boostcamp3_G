@@ -8,7 +8,8 @@ public class User {
     private String profileImageUrl; // 유저 프로필 사진 url
 
     @SuppressWarnings("unused")
-    public User() { }
+    public User() {
+    }
 
     public User(String id, String name, String profileImageUrl) {
         this.id = id;
@@ -31,7 +32,7 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if(o instanceof User) {
+        if (o instanceof User) {
             User user = (User) o;
             return Objects.equals(id, user.id) &&
                     Objects.equals(name, user.name) &&

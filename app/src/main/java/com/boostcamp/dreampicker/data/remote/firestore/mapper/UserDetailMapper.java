@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 public class UserDetailMapper {
 
     @NonNull
-    public static UserDetail toUserDetail(@NonNull String id, @NonNull UserDetailRemoteData response){
+    public static UserDetail toUserDetail(@NonNull String id, @NonNull UserDetailRemoteData response) {
 
         return new UserDetail(
                 id,

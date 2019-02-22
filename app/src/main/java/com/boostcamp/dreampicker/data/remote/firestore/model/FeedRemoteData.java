@@ -17,7 +17,8 @@ public class FeedRemoteData {
     private boolean isEnded;
 
     @SuppressWarnings("unused")
-    public FeedRemoteData() { }
+    public FeedRemoteData() {
+    }
 
     public FeedRemoteData(FeedItemRemoteData itemA,
                           FeedItemRemoteData itemB,

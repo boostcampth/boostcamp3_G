@@ -24,7 +24,7 @@ public class UploadViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if(modelClass.isAssignableFrom(UploadViewModel.class)) {
+        if (modelClass.isAssignableFrom(UploadViewModel.class)) {
             //noinspection unchecked
             return (T) new UploadViewModel(feedRepository);
         } else {

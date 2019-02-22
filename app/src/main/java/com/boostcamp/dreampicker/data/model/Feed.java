@@ -90,7 +90,7 @@ public class Feed {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if(o instanceof Feed) {
+        if (o instanceof Feed) {
             Feed feed = (Feed) o;
             return Objects.equals(id, feed.id) &&
                     Objects.equals(writer, feed.writer) &&

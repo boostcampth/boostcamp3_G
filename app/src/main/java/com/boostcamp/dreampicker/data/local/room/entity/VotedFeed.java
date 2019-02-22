@@ -22,10 +22,10 @@ public class VotedFeed {
     @NonNull
     private final String content;
     @NonNull
-    @ColumnInfo(name ="image_url_a")
+    @ColumnInfo(name = "image_url_a")
     private final String imageUrlA;
     @NonNull
-    @ColumnInfo(name ="image_url_b")
+    @ColumnInfo(name = "image_url_b")
     private final String imageUrlB;
     @NonNull
     private final Date date;
@@ -84,7 +84,7 @@ public class VotedFeed {
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;
-        if(o instanceof VotedFeed) {
+        if (o instanceof VotedFeed) {
             final VotedFeed feed = (VotedFeed) o;
             return Objects.equals(id, feed.id) &&
                     Objects.equals(name, feed.name) &&

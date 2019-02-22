@@ -44,7 +44,7 @@ class MyFeedAdapter extends PagedListAdapter<MyFeed, MyFeedItemViewHolder> {
         holder.bindTo(item);
 
         holder.itemView.setOnClickListener(v -> {
-            if(onItemClickListener != null){
+            if (onItemClickListener != null) {
                 onItemClickListener.onItemClick(item.getId(), item.getImageUrlA(), item.getImageUrlB());
             }
         });
