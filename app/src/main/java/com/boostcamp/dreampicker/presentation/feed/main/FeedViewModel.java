@@ -23,6 +23,7 @@ import io.reactivex.subjects.PublishSubject;
 public class FeedViewModel extends BaseViewModel {
     private static final int PAGE_SIZE = 4;
     private static final int ERROR_REPEAT_COUNT = 3;
+
     private static final String ERROR_NOT_EXIST = "Not exists feed";
 
     @NonNull
@@ -53,15 +54,11 @@ public class FeedViewModel extends BaseViewModel {
             if (oldFeed == null) {
                 return Completable.error(new IllegalArgumentException(ERROR_NOT_EXIST));
             }
-            final Feed newFeed = createVoteFeed(oldFeed, pair.second);
-            if (newFeed == null) {
-                return Completable.complete();
-            } else {
-                updateFeedList(newFeed);
-                return repository.vote(userId, pair.first, pair.second);
-            }
+            updateFeedList(createVoteFeed(oldFeed, pair.second));
+            return repository.vote(userId, pair.first, pair.second);
         }).subscribe(() -> { /* No Operation */ }, error::setValue));
     }
+
 
     void loadFeedList(@NonNull final String userId) {
         if (Boolean.TRUE.equals(isLoading.getValue()) || Boolean.TRUE.equals(isLastPage.getValue())) {
@@ -89,6 +86,7 @@ public class FeedViewModel extends BaseViewModel {
                     error.setValue(e);
                 }));
     }
+
     void vote(@NonNull final Pair<String, String> pair) {
         voteSubject.onNext(pair);
     }
@@ -144,7 +142,7 @@ public class FeedViewModel extends BaseViewModel {
         loadFeedList(userId);
     }
 
-    @Nullable
+    @NonNull
     private Feed createVoteFeed(@NonNull final Feed oldFeed, @NonNull final String selectionId) {
         final Feed feed = new Feed(oldFeed);
         if (feed.getSelectionId() == null) {
@@ -162,8 +160,6 @@ public class FeedViewModel extends BaseViewModel {
                     feed.getItemB().setVoteCount(feed.getItemB().getVoteCount() + 1);
                     feed.getItemA().setVoteCount(feed.getItemA().getVoteCount() - 1);
                 }
-            } else {
-                return null;
             }
         }
         feed.setSelectionId(selectionId);
