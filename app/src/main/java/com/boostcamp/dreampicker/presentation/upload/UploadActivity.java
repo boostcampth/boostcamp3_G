@@ -63,7 +63,6 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private void initViews() {
         initToolbar();
         initImageViews();
-        initDialog();
     }
 
     private void initToolbar() {
@@ -79,11 +78,6 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
     private void initImageViews() {
         binding.ivUploadA.setOnClickListener(__ -> onImageClick(A));
         binding.ivUploadB.setOnClickListener(__ -> onImageClick(B));
-    }
-
-    private void initDialog() {
-        loadingDialog = new LoadingDialog(this);
-        loadingDialog.setCancelable(false);
     }
 
     private void onImageClick(final int flag) {
@@ -126,9 +120,11 @@ public class UploadActivity extends BaseActivity<ActivityUploadBinding> {
 
         binding.getVm().getIsLoading().observe(this, loading -> {
             if (loading) {
+                loadingDialog = new LoadingDialog(this);
+                loadingDialog.setCancelable(false);
                 loadingDialog.show();
             } else {
-                loadingDialog.hide();
+                if (loadingDialog != null) loadingDialog.dismiss();
             }
         });
 
