@@ -107,12 +107,6 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.21'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
 
-    // leakcanary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
-    // for support library fragments
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
-
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
