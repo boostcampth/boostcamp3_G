@@ -27,7 +27,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
         super.onCreate(savedInstanceState);
 
         // 2초후 액티비티 전환
-        final int LAUNCHING_TIME_OUT = 0;
+        final int LAUNCHING_TIME_OUT = 2;
         disposable.add(Completable
                 .timer(LAUNCHING_TIME_OUT, TimeUnit.SECONDS)
                 .subscribe(() -> {
