@@ -1,0 +1,9 @@
+*.iml
+.gradle
+/local.properties
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.idea
+client_secret_532308683354-lcc1quttq2hr9n6ab877gcbe3pvokqr9.apps.googleusercontent.com.json

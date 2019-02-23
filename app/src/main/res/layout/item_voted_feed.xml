@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="feed"
+            type="com.boostcamp.dreampicker.data.local.room.entity.VotedFeed"/>
+    </data>
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="5dp"
+        android:elevation="5dp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/voted_feed_container_size_height">
+
+            <ImageView
+                android:id="@+id/iv_voted_feed_profile_image"
+                android:layout_width="@dimen/profile_image_size_median"
+                android:layout_height="@dimen/profile_image_size_median"
+                android:layout_margin="@dimen/space_x_small"
+                app:circleImage="@{feed.profileImageUrl}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_x_small"
+                android:textSize="@dimen/text_s_large"
+                android:textColor="@color/colorBlack"
+                android:text="@{feed.name}"
+                app:layout_constraintTop_toTopOf="@id/iv_voted_feed_profile_image"
+                app:layout_constraintStart_toEndOf="@id/iv_voted_feed_profile_image"/>
+
+            <TextView
+                android:id="@+id/tv_voted_feed_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_x_small"
+                android:layout_marginTop="8dp"
+                android:textSize="@dimen/text_sub_size"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{feed.content}"
+                app:layout_constraintEnd_toStartOf="@id/iv_voted_feed_image_a"
+                app:layout_constraintStart_toEndOf="@id/iv_voted_feed_profile_image"
+                app:layout_constraintBottom_toBottomOf="@id/iv_voted_feed_profile_image"/>
+
+            <ImageView
+                android:id="@+id/iv_voted_feed_image_a"
+                android:layout_width="@dimen/voted_feed_image_size"
+                android:layout_height="@dimen/voted_feed_image_size"
+                android:layout_marginEnd="@dimen/space_xx_small"
+                android:scaleType="fitXY"
+                app:image="@{feed.imageUrlA}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_voted_feed_image_b"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/iv_voted_feed_image_b"
+                android:layout_width="@dimen/voted_feed_image_size"
+                android:layout_height="@dimen/voted_feed_image_size"
+                android:layout_marginStart="@dimen/space_x_small"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="@dimen/space_x_small"
+                app:image="@{feed.imageUrlB}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="ContentDescription" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>

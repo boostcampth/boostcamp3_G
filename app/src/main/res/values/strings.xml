@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">정해드림</string>
+    <string name="app_copyright">Boost Camp Android G Team</string>
+    <string name="network_connection_state_notification">네트워크 연결 상태를 확인해주세요.</string>
+
+    <!-- 로그인 화면에서 사용-->
+    <string name="sign_in_fail">로그인 처리중 에러가 발생했습니다.</string>
+    <string name="common_error_message">에러가 발생했습니다. %1$s</string>
+
+    <!-- 메인화면에서 사용 -->
+    <string name="main_navigation_home">홈</string>
+    <string name="main_navigation_upload">업로드</string>
+    <string name="main_navigation_notification">내투표</string>
+    <string name="main_navigation_profile">프로필</string>
+
+    <!-- 메인 피드 -->
+    <string name="feed_last_page">마지막 페이지입니다.</string>
+    <string name="feed_error_message">에러가 발생했습니다.</string>
+
+    <!-- 프로필 화면에서 사용 -->
+    <string name="profile_logout">로그아웃</string>
+    <string name="profile_feed_versus">vs</string>
+    <string name="profile_feed_count">업로드</string>
+    <string name="profile_vote_not_ended">진행중인 투표</string>
+    <string name="profile_vote_ended">마감된 투표</string>
+    <string name="profile_request_end">마감하기</string>
+    <string name="profile_request_restart">재진행하기</string>
+
+    <!-- 투표 결과에서 사용 -->
+    <string name="vote_result_title">투표</string>
+
+    <!-- 업로드 화면에서 사용 -->
+    <string name="upload_et_content_hint">무슨 고민이 있나요?</string>
+    <string name="upload_tag_hint">추가</string>
+    <string name="permission_denied_message">권한이 없습니다.</string>
+    <string name="upload_fail_message">사진과 게시글을 작성해주세요.</string>
+    <string name="upload_success_message">투표 등록 완료</string>
+    <string name="upload_back_press_denied_message">업로드 중 입니다.</string>
+    <string name="upload_error_message">업로드에 실패하였습니다.</string>
+    <string name="upload_adult_image_error_message">불건전한 이미지 입니다.</string>
+
+    <!-- 피드 상세 화면 -->
+    <string name="feed_detail_error_message">상세정보를 불러 올 수 없습니다.</string>
+    <string name="feed_detail_vote_button">투표하기</string>
+    <string name="feed_detail_ended_vote_button">마감된 투표입니다.</string>
+
+    <!-- 투표 결과 화면 -->
+    <string name="voted_feed_empty_message">투표를 진행해 주세요!</string>
+
+    <string name="dialog_tip_message">끌어다 놓으면 투표가 됩니다</string>
+</resources>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.boostcamp.dreampicker.presentation.feed.detail.FeedDetailViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.65" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorWhite"
+            android:elevation="3dp"
+            app:contentInsetStart="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                style="@style/ImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/space_x_small"
+                android:src="@drawable/img_logo"
+                tools:ignore="ContentDescription" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <View
+            android:id="@+id/view_detail_page_1"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="@dimen/space_xx_small"
+            android:layout_marginBottom="@dimen/space_xx_small"
+            android:background="@{safeUnbox(vm.position) == 0 ? @drawable/ic_radio_button_checked_black_8dp : @drawable/ic_radio_button_unchecked_black_8dp}"
+            app:layout_constraintEnd_toStartOf="@id/guideline_center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/pager" />
+
+        <View
+            android:id="@+id/view_detail_page_2"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="@dimen/space_xx_small"
+            android:layout_marginBottom="@dimen/space_xx_small"
+            android:background="@{safeUnbox(vm.position) == 0 ? @drawable/ic_radio_button_unchecked_black_8dp : @drawable/ic_radio_button_checked_black_8dp}"
+            app:layout_constraintStart_toEndOf="@id/guideline_center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/pager" />
+
+        <com.sackcentury.shinebuttonlib.ShineButton
+            android:layout_width="@dimen/profile_image_size_small"
+            android:layout_height="@dimen/profile_image_size_small"
+            android:layout_margin="@dimen/space_x_small"
+            android:elevation="5dp"
+            android:scaleType="fitXY"
+            app:allow_random_color="true"
+            app:big_shine_color="#66FFFF"
+            app:btn_color="@color/colorPrimary"
+            app:btn_fill_color="@color/colorPrimary"
+            app:click_animation_duration="200"
+            app:enable_flashing="false"
+            app:isVotePosition="@{vm.position == vm.votePosition}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pager"
+            app:shine_animation_duration="1500"
+            app:shine_count="8"
+            app:shine_turn_angle="10"
+            app:siShape="@raw/ic_finger"
+            app:small_shine_color="#CC9999"
+            app:small_shine_offset_angle="20" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/pb_feed_detail_progress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_detail_page_1">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite">
+
+                <me.gujun.android.taggroup.TagGroup
+                    android:id="@+id/tg_feed_detail_tag"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space_x_small"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tagItems="@{safeUnbox(vm.position) == 0 ? vm.feedDetail.itemA.tagList : vm.feedDetail.itemB.tagList}" />
+
+                <ImageView
+                    android:id="@+id/iv_feed_detail_user_image"
+                    android:layout_width="@dimen/profile_image_size_small"
+                    android:layout_height="@dimen/profile_image_size_small"
+                    android:layout_margin="@dimen/space_x_small"
+                    app:circleImage="@{vm.feedDetail.writer.profileImageUrl}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tg_feed_detail_tag"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tv_feed_detail_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_x_small"
+                    android:text="@{vm.feedDetail.writer.name}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toEndOf="@id/iv_feed_detail_user_image"
+                    app:layout_constraintTop_toTopOf="@id/iv_feed_detail_user_image" />
+
+                <TextView
+                    android:id="@+id/tv_feed_detail_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_x_small"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    app:date="@{vm.feedDetail.date}"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_feed_detail_user_image"
+                    app:layout_constraintStart_toEndOf="@id/iv_feed_detail_user_image" />
+
+                <TextView
+                    android:id="@+id/tv_feed_detail_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space_x_small"
+                    android:text="@{vm.feedDetail.content}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_feed_detail_user_image"
+                    app:layout_constraintVertical_bias="0.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <ProgressBar
+            android:id="@+id/pb_feed_detail_progress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:max="@{vm.feedDetail.itemA.voteCount + vm.feedDetail.itemB.voteCount}"
+            android:progress="@{safeUnbox(vm.position) == 0 ? vm.feedDetail.itemA.voteCount : vm.feedDetail.itemB.voteCount}"
+            android:visibility="@{safeUnbox(vm.votePosition) == 3 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@id/btn_feed_detail_vote"
+            app:layout_constraintEnd_toStartOf="@id/tv_feed_detail_vote_count"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_feed_detail_vote_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_x_small"
+            android:text="@{String.valueOf(safeUnbox(vm.position) == 0 ? vm.feedDetail.itemA.voteCount : vm.feedDetail.itemB.voteCount)}"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            android:visibility="@{safeUnbox(vm.votePosition) == 3 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@id/btn_feed_detail_vote"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btn_feed_detail_vote"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            app:isEnded="@{vm.feedDetail.isEnded}"
+            app:isVotePosition="@{(vm.position == vm.votePosition)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
