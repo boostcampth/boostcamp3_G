@@ -128,6 +128,7 @@ public class FeedDetailActivity extends BaseActivity<ActivityFeedDetailBinding> 
                                          @NonNull String imageUrlB) {
 
         final Intent intent = new Intent(context, FeedDetailActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(EXTRA_FEED_ID, feedId);
         intent.putExtra(EXTRA_IMAGE_URL_A, imageUrlA);
         intent.putExtra(EXTRA_IMAGE_URL_B, imageUrlB);
