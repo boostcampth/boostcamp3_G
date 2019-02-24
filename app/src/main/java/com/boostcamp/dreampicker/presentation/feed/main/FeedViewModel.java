@@ -21,7 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.subjects.PublishSubject;
 
 public class FeedViewModel extends BaseViewModel {
-    private static final int PAGE_SIZE = 8;
+    private static final int PAGE_SIZE = 4;
     private static final int ERROR_REPEAT_COUNT = 3;
 
     private static final String ERROR_NOT_EXIST = "Not exists feed";

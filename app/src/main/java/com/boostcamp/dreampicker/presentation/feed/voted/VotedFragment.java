@@ -50,6 +50,9 @@ public class VotedFragment extends BaseFragment<FragmentVotedBinding> {
             if (list.isEmpty()) {
                 binding.ivVotedFeedEmptyFinger.setVisibility(View.VISIBLE);
                 binding.tvVotedFeedEmptyText.setVisibility(View.VISIBLE);
+            } else {
+                binding.ivVotedFeedEmptyFinger.setVisibility(View.GONE);
+                binding.tvVotedFeedEmptyText.setVisibility(View.GONE);
             }
         });
     }
