@@ -128,7 +128,7 @@ public class FeedFragment extends BaseFragment<FragmentFeedBinding> {
     private void startFeedDetailActivity(@NonNull final String feedId,
                                          @NonNull final String imageUrlA,
                                          @NonNull final String imageUrlB) {
-        disposable.add(TedRxOnActivityResult.with(context)
+        disposable.add(TedRxOnActivityResult.with(getContext())
                 .startActivityForResult(
                         FeedDetailActivity.getLaunchIntent(context, feedId, imageUrlA, imageUrlB))
                 .observeOn(AndroidSchedulers.mainThread())
