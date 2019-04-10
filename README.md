@@ -44,9 +44,10 @@
 
 
 ### 스크린샷
-<div>
+<p align="center">
 <img src="https://user-images.githubusercontent.com/28249981/55798722-a2c30080-5b0a-11e9-9345-2ce8fa723c41.gif" width=360 height=300/>
-</div>
+<img src="https://user-images.githubusercontent.com/28249981/55843089-6c6c9c00-5b71-11e9-9cd0-bf7c3b4a4cfe.gif" width=360 height=300/>
+</p>
 
 ***
 
